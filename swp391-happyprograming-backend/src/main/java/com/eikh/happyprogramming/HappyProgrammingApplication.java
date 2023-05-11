@@ -1,13 +1,13 @@
-package com.eikh.swe291;
+package com.eikh.happyprogramming;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Swe291Application {
+public class HappyProgrammingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Swe291Application.class, args);
+		SpringApplication.run(HappyProgrammingApplication.class, args);
 	}
 
 }
