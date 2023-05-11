@@ -1,4 +1,4 @@
-package com.eikh.swe291;
+package com.eikh.happyprogramming;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

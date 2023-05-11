@@ -11,7 +11,7 @@
 	<groupId>com.eikh</groupId>
 	<artifactId>swe291</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>swe291</name>
+	<name>SWP391-HappyPrograming</name>
 	<description>Project for SWE291</description>
 	<properties>
 		<java.version>1.8</java.version>
