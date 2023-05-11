@@ -1,10 +1,13 @@
-import logo from "./logo.svg";
-import "./App.css";
+//Componentss
+import Home from "./Pages/Home";
+
+//CSS
+// import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <h1>Hapi Programming</h1>
+      <Home></Home>
     </div>
   );
 }
