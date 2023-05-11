@@ -3,7 +3,8 @@ CREATE DATABASE FU_SWP391_HappyProgramming ;
   
 USE FU_SWP391_HappyProgramming;
 
-CREATE TABLE `User`(
+CREATE TABLE `User`
+(
 	username varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
     displayName nvarchar (255),
@@ -16,13 +17,15 @@ CREATE TABLE `User`(
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
 
-CREATE TABLE `Role`(
+CREATE TABLE `Role`
+(
 	roleId int NOT NULL AUTO_INCREMENT,
 	roleName varchar(255),
 	CONSTRAINT PK_Role PRIMARY KEY (roleId)
 );
 
-CREATE TABLE User_Role(
+CREATE TABLE User_Role
+(
 	username varchar(255) NOT NULL,
 	roleId int NOT NULL,
 	CONSTRAINT PK_UserRole PRIMARY KEY (username, roleId)
@@ -34,7 +37,8 @@ ALTER TABLE User_Role ADD CONSTRAINT FK_UserRole_Role FOREIGN KEY(roleId)
 REFERENCES `Role` (roleId);
 
 
-CREATE TABLE Feature(
+CREATE TABLE Feature
+(
 	featureId int NOT NULL AUTO_INCREMENT, 
 	featureName varchar(255),
 	url varchar(255),
@@ -52,17 +56,17 @@ REFERENCES `Role`(roleId);
 ALTER TABLE Role_Feature ADD CONSTRAINT FK_RoleFeature_Feature FOREIGN KEY(featureId)
 REFERENCES Feature(featureId);
 
-CREATE TABLE UserRating 
+CREATE TABLE Rating 
 (
 	ratedFromUser varchar(255),
     ratedToUser varchar(255),
     noStar int,
     ratingComment longtext,
-    CONSTRAINT PK_UserRating PRIMARY KEY(ratedFromUser, ratedToUser)
+    CONSTRAINT PK_Rating PRIMARY KEY(ratedFromUser, ratedToUser)
 );
-ALTER TABLE UserRating ADD CONSTRAINT FK_UserRatingFrom_User FOREIGN KEY(ratedFromUser)
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingFrom_User FOREIGN KEY(ratedFromUser)
 REFERENCES `User`(username);
-ALTER TABLE UserRating ADD CONSTRAINT FK_UserRatingTo_User FOREIGN KEY(ratedToUser)
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingTo_User FOREIGN KEY(ratedToUser)
 REFERENCES `User`(username);
 
 CREATE TABLE Conversation
