@@ -111,7 +111,7 @@ CREATE TABLE Participate
 (
 	courseId int,
 	username varchar(255),
-    participateRole int, 
+    participateRole int UNIQUE, 
     `status` bit DEFAULT false,
     CONSTRAINT PK_Participate PRIMARY KEY (courseId, username)
 );
