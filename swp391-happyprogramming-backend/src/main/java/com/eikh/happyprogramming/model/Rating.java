@@ -8,6 +8,9 @@ import com.eikh.happyprogramming.modelkey.RatingKey;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import lombok.*;
 
@@ -25,6 +28,17 @@ public class Rating implements Serializable{
     @EmbeddedId
     private RatingKey ratingKey;
     
+    
     private int noStar;
     private String ratingComment;
+    
+    @ManyToOne
+    @MapsId("ratedFromUser")
+    @JoinColumn(name = "username")
+    private User ratedFromUser; 
+    
+    @ManyToOne
+    @MapsId("ratedToUser")
+    @JoinColumn(name = "username")
+    private User ratedToUser; 
 }

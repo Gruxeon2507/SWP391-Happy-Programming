@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.modelkey;
 
+import com.eikh.happyprogramming.model.User;
 import java.io.Serializable;
 import javax.persistence.Embeddable;
 import lombok.*;
@@ -18,7 +19,6 @@ import lombok.*;
 @AllArgsConstructor
 @Embeddable
 public class RatingKey implements Serializable{
-    private String ratedFromUser;
-    private String ratedToUser;
-    
+    private User ratedFromUser;
+    private User ratedToUser;
 }
