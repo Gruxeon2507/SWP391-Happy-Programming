@@ -30,40 +30,23 @@ function NavBar(props) {
           <div className="brand">
             <img src={logo} alt="logo" />
             <a href="#" className="logo">
-              HPYPRO
+              <span>H</span>
+              PYPRO
             </a>
           </div>
         </div>
         <ul className="nav-menu">
           <li className="nav-item">
-            <a href="#" className="nav-link">
-              Register
-            </a>
+            <NavLink to="/home">Home</NavLink>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">
-              Login
-            </a>
+            <NavLink to="/login">Login</NavLink>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">
-              home
-            </a>
+            <NavLink to="/register">Regis</NavLink>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">
-              ph
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link">
-              ph
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link">
-              chat
-            </a>
+            <NavLink to="/chat">Chat</NavLink>
           </li>
         </ul>
       </nav>
