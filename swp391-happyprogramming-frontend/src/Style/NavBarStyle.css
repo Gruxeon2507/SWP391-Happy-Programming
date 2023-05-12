@@ -1,0 +1,85 @@
+@import url(ColorPalette.css);
+
+.NavBar {
+  position: fixed;
+  top: 1rem;
+  left: calc(calc(100vw - calc(70vw - (100vw - 100%))) / 2);
+  width: calc(70vw - (100vw - 100%));
+  border: 2px solid var(--light);
+  border-radius: 20px;
+  background-color: var(--light);
+  transition: 0.5s all ease;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 10px;
+}
+
+.brand img {
+  width: 3rem;
+  height: 3rem;
+  padding: 4px 4px;
+  margin: auto;
+  display: block;
+}
+
+.NavBar.active {
+  top: 1.5rem;
+  background-color: var(--lightItem);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
+  transition: 0.5s all ease;
+}
+
+:where(.nav-menu, .NavBar, .logo) {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.logo {
+  margin: auto 1rem auto 0rem;
+  font-size: 1.8rem !important;
+}
+
+.logo span {
+  color: var(--item2);
+}
+
+.NavBar a {
+  color: var(--darkItem2);
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.3rem;
+}
+
+.nav-menu {
+  margin: auto 1rem auto auto;
+  list-style: none;
+}
+.nav-item {
+  border-radius: 8px;
+  padding: 4px 8px;
+  text-align: center;
+  margin: 0.8rem;
+  transition: 0.5s all ease;
+}
+.nav-item:hover {
+  border-radius: 8px;
+  background-color: #b8b8b8;
+  padding: 4px 8px;
+  text-align: center;
+  margin: 0.8rem;
+  transition: 0.5s all ease;
+}
+
+.NavBar.active .nav-item:hover {
+  border-radius: 8px;
+  background-color: var(--light);
+  padding: 4px 8px;
+  text-align: center;
+  margin: 0.8rem;
+  transition: 0.5s all ease;
+}
