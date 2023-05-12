@@ -1,0 +1,28 @@
+.regis-frag {
+  width: 80%;
+  height: 80vh;
+  background-color: var(--light);
+  margin: 0px auto;
+  border-radius: 1rem;
+  border: 3px solid var(--item);
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+
+.regis-frag * {
+  border: 1px solid black;
+}
+
+.regis-form {
+  border: 2px solid red;
+  width: 50%;
+  margin: 0px auto 0px 0px;
+}
+
+.confirm-email {
+  border: 2px solid red;
+  width: 50%;
+  margin: auto 0px auto auto;
+  /* padding: 2rem 4rem; */
+}
