@@ -44,6 +44,10 @@
   font-size: 1.8rem !important;
 }
 
+.logo span {
+  color: var(--item2);
+}
+
 .NavBar a {
   color: var(--darkItem2);
   font-weight: bold;
