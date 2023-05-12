@@ -34,11 +34,11 @@ public class Rating implements Serializable{
     
     @ManyToOne
     @MapsId("ratedFromUser")
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "ratedFromUser", referencedColumnName = "username")   
     private User ratedFromUser; 
     
     @ManyToOne
     @MapsId("ratedToUser")
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "ratedToUser", referencedColumnName = "username")  
     private User ratedToUser; 
 }
