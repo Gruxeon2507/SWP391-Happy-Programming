@@ -22,7 +22,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "`User`")
+@Table(name = "Conversation")
 public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
