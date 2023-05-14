@@ -34,7 +34,7 @@ public class Post implements Serializable {
     private int postId;
 
     private Date postedAt;
-    private String postComment;
+    private String postContent;
 
     @ManyToOne
     @JoinColumn(name = "postedBy", referencedColumnName = "username")
