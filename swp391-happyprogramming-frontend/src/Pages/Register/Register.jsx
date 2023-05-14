@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import NavBar from "../Components/NavBar";
-import "../Style/RegisStyle.css";
+import NavBar from "../../Components/Navbar/NavBar";
+import "../../Components/Navbar/NavBar.css";
+import "./Register.css";
 import { Button } from "bootstrap";
 
 function Register(props) {

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import "../Style/HomeStyle.css";
-import NavBar from "../Components/NavBar";
-import bg from "../Assets/backround.jpg";
+// import "../Home";
+import NavBar from "../../Components/Navbar/NavBar";
+import "./Home.css";
+import bg from "../../Assets/backround.jpg";
 import { NavLink } from "react-router-dom";
 
 function Home(props) {
@@ -10,7 +11,7 @@ function Home(props) {
       <NavBar></NavBar>
       <div className="banner-1">
         <div className="quotes">
-          <h1>Học đi con trai</h1>
+          <h1>Học đi các bạn ơi!!</h1>
           <p>
             Văn động viên mấy con vợ tham gia course <br />
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque
