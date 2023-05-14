@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NavBar from "../Components/NavBar";
+import NavBar from "../../Components/Navbar/NavBar";
 
 function Chat(props) {
   return (

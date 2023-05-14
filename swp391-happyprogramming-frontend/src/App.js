@@ -5,12 +5,12 @@ import {
   Navigate,
 } from "react-router-dom";
 //Componentss
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import Chat from "./Pages/Chat";
+import Home from "./Pages/Home/Home";
+import Login from "./Pages/Login/Login";
+import Register from "./Pages/Register/Register";
+import Chat from "./Pages/Chat/Chat";
 //CSS
-import "./global/global.css";
+// import "./global/global.css";
 function App() {
   return (
     <Routes>

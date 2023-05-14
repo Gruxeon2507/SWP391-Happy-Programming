@@ -1,7 +1,8 @@
 import React, { Component, useState } from "react";
-import NavBar from "../Components/NavBar";
-import "../Style/LoginStyle.css";
-import loginBG from "../Assets/loginBG.jpg";
+import NavBar from "../../Components/Navbar/NavBar";
+import "../../Components/Navbar/NavBar.css";
+import "./Login.css";
+import loginBG from "../../Assets/loginBG.jpg";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 
@@ -20,7 +21,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (checkUsername) {
-      alert('can not load data to login');
+      alert("can not load data to login");
       return;
     }
     try {
@@ -28,11 +29,11 @@ function Login() {
         "http://localhost:1111/api/auth/login",
         { username, password }
       );
-      console.log(response)
+      console.log(response);
       const token = response.data.token;
       // Store the token in localStorage or a state management solution
-      localStorage.setItem('token', token);
-      console.log(token)
+      localStorage.setItem("token", token);
+      console.log(token);
       // window.sessionStorage.setItem("user", response.data);
       // window.localStorage.removeItem("user");
       // window.localStorage.removeItem("role");
@@ -51,7 +52,6 @@ function Login() {
       // display an error message to the user
     }
   };
-
 
   return (
     <div>
