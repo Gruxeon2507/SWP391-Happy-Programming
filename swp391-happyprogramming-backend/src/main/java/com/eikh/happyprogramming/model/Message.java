@@ -32,8 +32,8 @@ public class Message implements Serializable {
     private String msgContent;
 
     @ManyToOne
-    @MapsId("sentedBy")
-    @JoinColumn(name = "sentedBy", referencedColumnName = "username")
+    @MapsId("sentBy")
+    @JoinColumn(name = "sentBy", referencedColumnName = "username")
     private User user;
 
     @ManyToOne

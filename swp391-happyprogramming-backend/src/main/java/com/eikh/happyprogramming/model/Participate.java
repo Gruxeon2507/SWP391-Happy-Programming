@@ -5,6 +5,7 @@
 package com.eikh.happyprogramming.model;
 
 import com.eikh.happyprogramming.modelkey.ParticipateKey;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -33,15 +34,18 @@ public class Participate implements Serializable{
     @ManyToOne
     @MapsId("username")
     @JoinColumn(name = "username")
+    @JsonIgnore
     private User user; 
     
     @ManyToOne
     @MapsId("courseId")
     @JoinColumn(name = "courseId")
+    @JsonIgnore
     private Course course; 
     
     @OneToOne
     @JoinColumn(name = "participateRole", referencedColumnName = "roleId")
+    @JsonIgnore
     private Role role;
     
     private boolean status;
