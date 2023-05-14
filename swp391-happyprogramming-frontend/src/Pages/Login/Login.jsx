@@ -83,7 +83,6 @@ function Login() {
             </div>
             {loginFailed ? (
               <>
-                <div style={{ height: "0px" }}></div>
                 <div className="loginFailed">{messageLoginFailed}</div>
               </>
             ) : null}
