@@ -3,7 +3,7 @@ import NavBar from "../Components/NavBar";
 import "../Style/LoginStyle.css";
 import loginBG from "../Assets/loginBG.jpg";
 import { NavLink } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -62,33 +62,44 @@ function Login() {
         </div>
         <div className="login-form" onSubmit={handleSubmit}>
           <form>
+            <h1>Login</h1>
             <div className="user-input">
-              <input type="text" id="userName" required onChange={(event) => setUsername(event.target.value)}></input>
-              <label htmlFor="userName">UserName</label>
-              <span></span>
+              <input
+                type="text"
+                id="userName"
+                required
+                onChange={(event) => setUsername(event.target.value)}
+              ></input>
+              <span>UserName</span>
             </div>
             <div className="user-input">
-              <input type="text" id="userPassword" required onChange={(event) => setPassword(event.target.value)}></input>
-              <label htmlFor="userPassword">Password</label>
-              <span></span>
-            </div>{loginFailed ? (
+              <input
+                type="password"
+                id="userPassword"
+                required
+                onChange={(event) => setPassword(event.target.value)}
+              ></input>
+              <span>Password</span>
+            </div>
+            {loginFailed ? (
               <>
-                <div style={{ height: "10px" }}></div>
-                <div className="loginFailed">
-                  {messageLoginFailed}
-                </div>
-
+                <div style={{ height: "0px" }}></div>
+                <div className="loginFailed">{messageLoginFailed}</div>
               </>
             ) : null}
-            <p>Don't have an account ? <span className='sign-in'><NavLink to="/register">Sign Up</NavLink></span></p>
+            <p>
+              Don't have an account ?{" "}
+              <span className="sign-in">
+                <NavLink to="/register">Sign Up</NavLink>
+              </span>
+            </p>
             <button className="btn btn--form" type="submit" value="Login">
-            Log in
-          </button>
+              LOGIN
+            </button>
           </form>
         </div>
       </div>
     </div>
-
   );
 }
-export default Login
+export default Login;
