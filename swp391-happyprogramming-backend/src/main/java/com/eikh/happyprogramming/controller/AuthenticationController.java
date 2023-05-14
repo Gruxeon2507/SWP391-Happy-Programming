@@ -84,7 +84,7 @@ public class AuthenticationController {
         user.setVerified(false);
         String subject = "HAPPY PROGRAMMING - Verify your email address";
         String body = "Please click the following link to verify your email address: "
-                + "http://localhost:1111/api/users/verify?code=" + verificationCode + "&username=" + user.getUsername();
+                + "http://localhost:1111/api/auth/verify?code=" + verificationCode + "&username=" + user.getUsername();
         try {
             EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
         } catch (EmailException ex) {
