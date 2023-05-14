@@ -40,8 +40,10 @@ public class User implements UserDetails {
     private String avatarPath;
     private String CVPath;
     private boolean activeStatus;
+    private boolean isVerified;
+    private String verification_code;
 
-    @ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @OneToMany(mappedBy = "user")

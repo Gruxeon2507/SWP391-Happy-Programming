@@ -30,7 +30,7 @@ function Login() {
         { username, password }
       );
       console.log(response);
-      const token = response.data.token;
+      const token = response.data;
       // Store the token in localStorage or a state management solution
       localStorage.setItem("token", token);
       console.log(token);

@@ -7,7 +7,7 @@ package com.eikh.happyprogramming.controller;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.UserRepository;
-import com.eikh.happyprogramming.util.JwtTokenUtil;
+import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

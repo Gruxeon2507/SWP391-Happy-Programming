@@ -13,7 +13,10 @@ CREATE TABLE `User`
     createdDate date,
     avatarPath varchar(255),
     CVPath longtext,
-    activeStatus bit, 
+    activeStatus bit,
+    isVerified bit default 1,
+    verification_code varchar(255) default "",
+
 	
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
@@ -179,6 +182,7 @@ REFERENCES Post(postId);
 
 
  
+
 
 
 
