@@ -5,7 +5,7 @@
 package com.eikh.happyprogramming.configuration;
 
 import com.eikh.happyprogramming.services.UserServices;
-import com.eikh.happyprogramming.util.JwtTokenUtil;
+import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
