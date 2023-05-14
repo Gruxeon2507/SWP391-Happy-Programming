@@ -20,6 +20,6 @@ import lombok.*;
 @Embeddable
 public class MessageKey implements Serializable{
     private int conversationId;
-    private String sentedBy;
-    private Date sentedAt;
+    private String sentBy;
+    private Date sentAt;
 }

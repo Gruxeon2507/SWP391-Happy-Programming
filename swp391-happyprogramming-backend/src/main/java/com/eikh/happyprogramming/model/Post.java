@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -38,10 +39,12 @@ public class Post implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "postedBy", referencedColumnName = "username")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "courseId")
+    @JsonIgnore
     private Course course;
 
     @OneToMany(mappedBy = "post")
