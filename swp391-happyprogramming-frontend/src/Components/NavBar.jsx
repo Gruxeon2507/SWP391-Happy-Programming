@@ -26,14 +26,12 @@ function NavBar(props) {
   return (
     <div>
       <nav className={navBarClass} id="NavBar">
-        <div>
-          <div className="brand">
-            <img src={logo} alt="logo" />
-            <a href="#" className="logo">
-              <span>H</span>
-              PYPRO
-            </a>
-          </div>
+        <div className="brand">
+          <img src={logo} alt="logo" />
+          <a href="#" className="logo">
+            <span>H</span>
+            PYPRO
+          </a>
         </div>
         <ul className="nav-menu">
           <li className="nav-item">

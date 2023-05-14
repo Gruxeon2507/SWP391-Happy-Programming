@@ -10,8 +10,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Chat from "./Pages/Chat";
 //CSS
-// import "./App.css";
-
+import "./global/global.css";
 function App() {
   return (
     <Routes>
