@@ -28,15 +28,20 @@ function Login() {
         "http://localhost:1111/api/auth/login",
         { username, password }
       );
-      window.sessionStorage.setItem("user", response.data);
-      window.localStorage.removeItem("user");
-      window.localStorage.removeItem("role");
-      window.localStorage.setItem("user", response.data.username);
-      window.localStorage.setItem("role", response.data.roles[0].roleName);
-      console.log(response.data);
-      console.log(window.localStorage.getItem("user"));
-      console.log(window.localStorage.getItem("role"));
-      console.log("user:"+ response.data.username);
+      console.log(response)
+      const token = response.data.token;
+      // Store the token in localStorage or a state management solution
+      localStorage.setItem('token', token);
+      console.log(token)
+      // window.sessionStorage.setItem("user", response.data);
+      // window.localStorage.removeItem("user");
+      // window.localStorage.removeItem("role");
+      // window.localStorage.setItem("user", response.data.username);
+      // window.localStorage.setItem("role", response.data.roles[0].roleName);
+      // console.log(response.data);
+      // console.log(window.localStorage.getItem("user"));
+      // console.log(window.localStorage.getItem("role"));
+      // console.log("user:"+ response.data.username);
       // Set a timeout to remove the "user" item after 30 minutes (1,800,000 milliseconds)
       // window.location.href = "/";
     } catch (error) {
