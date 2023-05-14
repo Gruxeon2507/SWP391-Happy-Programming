@@ -6,13 +6,17 @@ package com.eikh.happyprogramming.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -24,7 +28,7 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "`User`")
-public class User implements Serializable {
+public class User implements UserDetails {
 
     @Id
     private String username;
@@ -37,7 +41,7 @@ public class User implements Serializable {
     private String CVPath;
     private boolean activeStatus;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @OneToMany(mappedBy = "user")
@@ -54,5 +58,30 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }
