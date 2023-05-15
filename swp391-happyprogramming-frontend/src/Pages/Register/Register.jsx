@@ -4,6 +4,7 @@ import "../../Components/Navbar/NavBar.css";
 import "./Register.css";
 import axios from "axios";
 import { Button } from "bootstrap";
+import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 
 function Register(props) {
 
@@ -34,37 +35,36 @@ function Register(props) {
 
     setUser({
       ...user,
-      username : inputUsername,
-    })
-  }
+      username: inputUsername,
+    });
+  };
 
   const onChangePassword = (event) => {
     const inputPassword = event.target.value;
     setUser({
       ...user,
-      password : inputPassword,
-    })
-  }
+      password: inputPassword,
+    });
+  };
 
   const onChangeRePassword = (event) => {
     const inputRePassword = event.target.value;
-    if(inputRePassword != user.password){
+    if (inputRePassword != user.password) {
       setCheckRePassword(true);
-      setMessageRePassword("Re Password not match")
-    }else{
+      setMessageRePassword("Re Password not match");
+    } else {
       setCheckRePassword(false);
     }
-  }
-  
+  };
 
   const onChangeEmail = (event) => {
     const inputEmail = event.target.value;
     setUser({
       ...user,
-      mail : inputEmail,
-    })
-  }
-  
+      mail: inputEmail,
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -73,60 +73,77 @@ function Register(props) {
       return;
     }
 
-     axios.post("http://localhost:1111/api/auth/register",user)
-    .then((res) => {
-      console.log(res.data)
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    axios
+      .post("http://localhost:1111/api/auth/register", user)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
 
     setMessageVerify("Please verify mail your account");
-
-  }
+  };
 
   return (
     <div>
       <NavBar></NavBar>
-      <div className="regis-frag">
-        <div className="regis-form">
-          <form onSubmit={handleSubmit}>
-            <div className="form-header">
-              <h1>Registration form</h1>
-            </div>
-            <div className="user-input">
-              <input type="text" id="userName" required onChange={onChangeUsername}></input>
-              <span>UserName</span>
-            </div>  
-            {checkUsernameDuplicate ? (<>
-              <div style={{ height: "0px" }}></div>
-              <div >Username is duplicated</div>
-            </>) : null}
-            <div className="user-input">
-              <input type="password" id="userPassword" required onChange={onChangePassword}></input>
-              <span>Password</span>
-            </div>
-            <div className="user-input">
-              <input type="password" id="re-userPassword" required onChange={onChangeRePassword}></input>
-              <span>Re Enter Password</span>
-            </div>
-            {checkRePassword ? (
-              <>
-                <div style={{ height: "0px" }}></div>
-                <div >{MessageRePassword}</div>
-              </>
-            ) : null}
-            <div className="user-input">
-              <input type="email" id="email-I" required onChange={onChangeEmail}></input>
-              <span>Email</span>
-            </div>
-            <button type="submit" >Register</button>
-          </form>
-          {messageVerify != "" ? (<><div style={{height : "0px"}}></div>
-          <div>{messageVerify}</div></>) : null}
+
+      {messageVerify ? (
+        <VerifyDialog email={user.mail} />
+      ) : (
+        <div className="regis-frag">
+          <div className="regis-form">
+            <form onSubmit={handleSubmit}>
+              <div className="form-header">
+                <h1>Registration form</h1>
+              </div>
+              <div className="user-input">
+                <input
+                  type="text"
+                  id="userName"
+                  required
+                  onChange={onChangeUsername}
+                ></input>
+                <span>UserName</span>
+              </div>
+              <div className="user-input">
+                <input
+                  type="password"
+                  id="userPassword"
+                  required
+                  onChange={onChangePassword}
+                ></input>
+                <span>Password</span>
+              </div>
+              <div className="user-input">
+                <input
+                  type="password"
+                  id="re-userPassword"
+                  required
+                  onChange={onChangeRePassword}
+                ></input>
+                <span>Re Enter Password</span>
+              </div>
+              {checkRePassword ? (
+                <>
+                  <div className="w-message">{MessageRePassword}</div>
+                </>
+              ) : null}
+              <div className="user-input">
+                <input
+                  type="email"
+                  id="email-I"
+                  required
+                  onChange={onChangeEmail}
+                ></input>
+                <span>Email</span>
+              </div>
+              <button type="submit">Register</button>
+            </form>
+          </div>
         </div>
-        
-      </div>
+      )}
     </div>
   );
 }

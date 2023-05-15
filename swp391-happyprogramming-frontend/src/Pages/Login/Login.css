@@ -12,8 +12,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: row;
-  box-shadow: rgba(50, 50, 93, 0.3) 0px 10px 30px -12px inset,
-    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  box-shadow: rgba(50, 50, 93, 0) 0px 10px 30px -12px inset,
+    rgba(0, 0, 0, 0.452) 0px 18px 36px -18px inset;
 }
 
 .login-frag .login-form h1 {
@@ -24,9 +24,9 @@
   margin-top: 0px;
 }
 
-.login-frag * {
-  /* border: 1px solid black; */
-}
+/* .login-frag * {
+  border: 1px solid black;
+} */
 
 .login-frag .login-bg {
   width: 50%;
@@ -37,15 +37,12 @@
   width: 100%;
   margin: auto 2rem auto auto;
   display: block;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 0.5rem;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 0.5rem;
+  border-radius: 1rem;
   overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.2) 8px 16px 30px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
 }
 
 .login-frag .login-form {
-  /* width: 40vw; */
   width: 45%;
   margin: auto;
   box-sizing: border-box;
@@ -53,32 +50,28 @@
   flex-wrap: wrap;
   padding: 2rem;
   border-radius: 1rem;
-  /* flex-direction: column; */
   justify-content: center;
-  /* border: 1px solid red; */
   background-color: var(--lightItem);
   box-shadow: rgba(0, 0, 0, 0.2) 8px 16px 30px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
 }
 
 .login-frag .user-input {
   position: relative;
-  /* width: 100%; */
-  /* padding: 10px; */
-  /* border: 1px solid blue; */
   margin: 1rem 0;
 }
 
-.login-frag .input-container {
-  /* border: 2px solid blue; */
-}
+/* .login-frag .input-container {
+  border: 2px solid blue;
+} */
 
 .login-frag .user-input input {
   width: calc(100% - 16px);
   background-color: var(--light);
+  /* background-color: var(--item2); */
   border: none;
   border-radius: 8px;
   padding: 1rem 8px;
-  color: var(--item);
+  color: var(--dark);
   font-size: 1.2em;
   border-bottom: 2px solid var(--item);
   outline: none;
@@ -89,7 +82,6 @@
   color: var(--lightItem);
   width: calc(100%);
   font-size: 1rem;
-  /* background-color: var(--item); */
   background: rgb(243, 114, 84);
   background: linear-gradient(
     90deg,
@@ -124,18 +116,22 @@
   color: var(--item);
   transition: 0.3s all ease;
   pointer-events: none;
+  padding: 0 4px !important;
+  transition: 0.5s all ease;
 }
 
 .login-frag .user-input input:valid ~ span,
 .login-frag .user-input input:focus ~ span {
-  transform: translateX(2px) translateY(-2.6rem);
-  font-weight: bold;
+  transform: translateX(0px) translateY(-2.5rem);
+  /* font-weight: bold; */
   padding: 0 10px;
   /* color: var(--lightItem); */
   /* background-color: var(--item); */
-  border-left: 1px solid var(--item);
-  border-right: 1px solid var(--item);
+  border-left: 3px solid var(--item);
+  border-right: 3px solid var(--item);
   border-radius: 4px;
+  background-color: var(--light);
+  transition: 0.5s all ease;
 }
 
 .login-frag .user-input input:valid ~ input,
@@ -145,7 +141,7 @@
 
 .loginFailed {
   color: red;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 .loginFailed::after {
