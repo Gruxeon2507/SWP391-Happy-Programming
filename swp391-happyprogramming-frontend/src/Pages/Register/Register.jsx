@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../../Components/Navbar/NavBar.css";
 import "./Register.css";
@@ -15,12 +15,23 @@ function Register(props) {
   })
   const [rePassword,setRePassword] = useState("");
   const [checkRePassword,setCheckRePassword] = useState(true);
+  const [checkUsernameDuplicate,setcheckUsernameDuplicate] = useState(true);
   const [MessageRePassword,setMessageRePassword] = useState("");
   const [messageVerify,setMessageVerify] = useState("");
 
 
+
+
   const onChangeUsername = (event) => {
     const inputUsername = event.target.value;
+    
+    try {
+      const response = axios.get(`http://localhost:1111/api/auth/${inputUsername}`);
+      setcheckUsernameDuplicate(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+
     setUser({
       ...user,
       username : inputUsername,
@@ -57,7 +68,7 @@ function Register(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if(checkRePassword == true){
+    if(checkRePassword || checkUsernameDuplicate){
       alert(MessageRePassword);
       return;
     }
@@ -87,6 +98,10 @@ function Register(props) {
               <input type="text" id="userName" required onChange={onChangeUsername}></input>
               <span>UserName</span>
             </div>  
+            {checkUsernameDuplicate ? (<>
+              <div style={{ height: "0px" }}></div>
+              <div >Username is duplicated</div>
+            </>) : null}
             <div className="user-input">
               <input type="password" id="userPassword" required onChange={onChangePassword}></input>
               <span>Password</span>

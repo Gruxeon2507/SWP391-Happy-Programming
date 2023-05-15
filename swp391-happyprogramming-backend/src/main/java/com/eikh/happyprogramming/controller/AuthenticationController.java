@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -104,6 +105,12 @@ public class AuthenticationController {
         } else {
             return null;
         }
+    }
+    
+    @GetMapping(value = "/{username}")
+    public boolean checkUsername(@PathParam("username") String username){
+        User user = UserRepository.findByUsername(username);
+        return user == null;
     }
 
     @Autowired
