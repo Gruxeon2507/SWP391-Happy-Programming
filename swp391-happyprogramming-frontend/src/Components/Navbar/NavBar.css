@@ -33,7 +33,7 @@
 }
 
 .NavBar.active {
-  top: 1.5rem;
+  top: 0.1rem;
   background-color: var(--lightItem);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
 }
@@ -41,7 +41,7 @@
 :where(.nav-menu, .NavBar, .logo) {
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  /* overflow: hidden; */
   /* border: 1px solid red; */
 }
 
@@ -75,10 +75,13 @@
 }
 .nav-item:hover {
   border-radius: 8px;
-  background-color: #b8b8b8;
+  /* background-color: #b8b8b8; */
+  background-color: var(--lightItem);
   padding: 4px 8px;
   text-align: center;
   margin: 0 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
+
   transition: 0.5s all ease;
 }
 

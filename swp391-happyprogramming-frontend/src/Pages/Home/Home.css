@@ -4,6 +4,9 @@ body {
   background-color: var(--lightItem);
   margin-top: 100px;
 }
+.banner-1 * {
+  border: 1px solid red;
+}
 
 .banner-1 img {
   margin: 1rem 2rem 2rem auto;
@@ -18,7 +21,8 @@ body {
 
 .quotes {
   width: 100%;
-  margin: auto 0px auto auto;
+  /* margin: auto 0px auto auto; */
+  margin: auto 0 auto auto;
   max-width: 30vw;
   /* border: 1px solid red; */
 }
