@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,7 +86,7 @@ public class AuthenticationController {
         user.setVerified(false);
         String subject = "HAPPY PROGRAMMING - Verify your email address";
         String body = "Please click the following link to verify your email address: "
-                + "http://localhost:1111/api/users/verify?code=" + verificationCode + "&username=" + user.getUsername();
+                + "http://localhost:1111/api/auth/verify?code=" + verificationCode + "&username=" + user.getUsername();
         try {
             EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
         } catch (EmailException ex) {
@@ -104,6 +106,18 @@ public class AuthenticationController {
         } else {
             return null;
         }
+    }
+    
+    @GetMapping(value = "/{username}")
+    public boolean checkUsername(@PathVariable("username") String username){
+        User user = UserRepository.findByUsername(username);
+        return user != null;
+    }
+    
+    @GetMapping(value = "/mail/{mail}")
+    public boolean checkEmail(@PathVariable("mail") String mail){
+        User user = userRepository.findByMail(mail);
+        return user != null;
     }
 
     @Autowired
