@@ -14,7 +14,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserRepository extends JpaRepository<User, String>{
     
-     User findByUsername(String username);
+     public User findByUsername(String username);
+     
      public List<User> findByIsVerified(boolean isVerified);
+     
+     public User findByMail(String mail);
+         
     
 }

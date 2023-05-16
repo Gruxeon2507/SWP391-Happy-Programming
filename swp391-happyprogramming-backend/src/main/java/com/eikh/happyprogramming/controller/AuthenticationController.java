@@ -28,6 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,9 +109,15 @@ public class AuthenticationController {
     }
     
     @GetMapping(value = "/{username}")
-    public boolean checkUsername(@PathParam("username") String username){
+    public boolean checkUsername(@PathVariable("username") String username){
         User user = UserRepository.findByUsername(username);
-        return user == null;
+        return user != null;
+    }
+    
+    @GetMapping(value = "/mail/{mail}")
+    public boolean checkEmail(@PathVariable("mail") String mail){
+        User user = userRepository.findByMail(mail);
+        return user != null;
     }
 
     @Autowired
