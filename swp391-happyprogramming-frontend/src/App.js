@@ -10,6 +10,7 @@ import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import Chat from "./Pages/Chat/Chat";
 import Setting from "./Pages/Setting/Setting";
+import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Route path="/login" element={<Login></Login>} />
       <Route path="/register" element={<Register></Register>} />
       <Route path="/setting" element={<Setting></Setting>} />
+      <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>}/>
     </Routes>
   );
 }

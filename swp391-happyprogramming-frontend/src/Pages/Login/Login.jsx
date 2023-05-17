@@ -92,6 +92,11 @@ function Login() {
                 <NavLink to="/register">Sign Up</NavLink>
               </span>
             </p>
+            <p>
+              <span>
+                <NavLink to="/forgetpassword"> Forget your password ? </NavLink>
+              </span>
+            </p>
             <button className="btn btn--form" type="submit" value="Login">
               LOGIN
             </button>

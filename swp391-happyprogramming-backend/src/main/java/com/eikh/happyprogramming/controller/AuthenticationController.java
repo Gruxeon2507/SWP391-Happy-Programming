@@ -109,16 +109,16 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping(value = "forgetpassword/{mail}")
-    public boolean forgetPassword(@PathVariable("mail") String mail) {
-        User user = userRepository.findByMail(mail);
+    @PostMapping(value = "forgetpassword/{username}")
+    public boolean forgetPassword(@PathVariable("username") String username) {
+        User user = userRepository.findByMail(username);
         if (user != null) {
             String verificationCode = UUID.randomUUID().toString();
             user.setVerification_code(verificationCode);
             userRepository.save(user);
             String subject = "HAPPY PROGRAMMING - Reset your password";
             String body = "Please click the following link to reset your password: "
-                    + "http://localhost:1111/api/auth/resetpassword?code=" + verificationCode + "&username=" + user.getUsername();
+                    + "http://localhost:3000/resetpassword?code=" + verificationCode + "&username=" + user.getUsername();
 
             try {
                 EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
@@ -146,12 +146,21 @@ public class AuthenticationController {
             return false;
         }
     }
+    
+    @GetMapping(value = "/profile/{username}")
+    public User profileUser(@PathVariable("username") String username){
+        User user = userRepository.findByUsername(username);
+        user.setPassword("");
+        user.setVerification_code("");
+        return user;
+    }
 
     @GetMapping(value = "/{username}")
     public boolean checkUsername(@PathVariable("username") String username) {
         User user = UserRepository.findByUsername(username);
         return user != null;
     }
+    
 
     @GetMapping(value = "/mail/{mail}")
     public boolean checkEmail(@PathVariable("mail") String mail) {
