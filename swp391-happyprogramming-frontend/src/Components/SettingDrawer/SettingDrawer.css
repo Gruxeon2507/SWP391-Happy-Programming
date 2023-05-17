@@ -13,5 +13,8 @@
 }
 
 .drawer.active {
-  transform: translateX(500px);
+  transform: translateX(100%);
+}
+
+draw-Toggle {
 }

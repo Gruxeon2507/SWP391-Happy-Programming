@@ -55,7 +55,7 @@ function Login() {
 
   return (
     <div>
-      <NavBar></NavBar>
+      <NavBar mode={1} />
       <div className="login-frag">
         <div className="login-bg">
           <img src={loginBG} alt="loginBG"></img>

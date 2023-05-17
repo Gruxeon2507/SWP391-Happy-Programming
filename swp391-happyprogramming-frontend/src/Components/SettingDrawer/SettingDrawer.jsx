@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import "./SettingDrawer.css";
+import "../../Pages/Chat/Chat.css";
 
 SettingDrawer.propTypes = {
   //
@@ -16,7 +17,7 @@ function SettingDrawer(props) {
 
   return (
     <div>
-      <div>
+      <div className="draw-Toggle">
         <input
           type="checkbox"
           style={{ width: "100px", height: "100px" }}
