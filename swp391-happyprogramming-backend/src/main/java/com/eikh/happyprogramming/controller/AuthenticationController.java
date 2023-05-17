@@ -26,6 +26,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -107,15 +108,53 @@ public class AuthenticationController {
             return null;
         }
     }
-    
+
+    @PostMapping(value = "forgetpassword/{mail}")
+    public boolean forgetPassword(@PathVariable("mail") String mail) {
+        User user = userRepository.findByMail(mail);
+        if (user != null) {
+            String verificationCode = UUID.randomUUID().toString();
+            user.setVerification_code(verificationCode);
+            userRepository.save(user);
+            String subject = "HAPPY PROGRAMMING - Reset your password";
+            String body = "Please click the following link to reset your password: "
+                    + "http://localhost:1111/api/auth/resetpassword?code=" + verificationCode + "&username=" + user.getUsername();
+
+            try {
+                EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
+            } catch (EmailException ex) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error when send email");
+            }
+        }
+        return user == null;
+    }
+
+    @GetMapping(value = "resetpassword")
+    public boolean resetPassword(MultiValueMap<String,String> formData) {
+        String username = formData.getFirst("username");
+        String code = formData.getFirst("code");
+        User user = userRepository.findByUsername(username);
+        if(user.getVerification_code().equals(code)){
+            String password = formData.getFirst("password");
+            password = AuthenticationUtils.hashPassword(password);
+            user.setPassword(password);
+            user.setVerification_code("");
+            userRepository.save(user);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     @GetMapping(value = "/{username}")
-    public boolean checkUsername(@PathVariable("username") String username){
+    public boolean checkUsername(@PathVariable("username") String username) {
         User user = UserRepository.findByUsername(username);
         return user != null;
     }
-    
+
     @GetMapping(value = "/mail/{mail}")
-    public boolean checkEmail(@PathVariable("mail") String mail){
+    public boolean checkEmail(@PathVariable("mail") String mail) {
         User user = userRepository.findByMail(mail);
         return user != null;
     }
