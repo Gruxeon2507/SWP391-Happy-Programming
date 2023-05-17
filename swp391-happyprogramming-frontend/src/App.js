@@ -10,6 +10,7 @@ import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import Chat from "./Pages/Chat/Chat";
 import Setting from "./Pages/Setting/Setting";
+import Homepage from "./Pages/Homepage/Homepage";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -17,6 +18,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
       <Route path="/home" element={<Home></Home>} />
+      <Route path="/homepage" element={<Homepage></Homepage>} />
+
       <Route path="/chat" element={<Chat></Chat>} />
       <Route path="/login" element={<Login></Login>} />
       <Route path="/register" element={<Register></Register>} />

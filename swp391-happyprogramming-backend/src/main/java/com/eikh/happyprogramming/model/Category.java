@@ -5,7 +5,6 @@
 package com.eikh.happyprogramming.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,25 +23,14 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "Course")
-public class Course implements Serializable {
-
+@Table(name = "Category")
+public class Category implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int courseId;
+    private int categoryId;
 
-    private String courseName;
-
-    private Date createdAt;
-
-    private String courseDescription;
-
-    @OneToMany(mappedBy = "course")
-    private List<Participate> participates;
-
-    @OneToMany(mappedBy = "course")
-    private List<Post> posts;
-
-    @OneToMany(mappedBy = "course")
+    private String categoryName;
+    
+    @OneToMany(mappedBy = "category")
     private List<Course_Category> course_categories;
 }
