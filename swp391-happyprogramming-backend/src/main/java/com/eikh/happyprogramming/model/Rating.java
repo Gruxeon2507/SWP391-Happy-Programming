@@ -5,6 +5,7 @@
 package com.eikh.happyprogramming.model;
 
 import com.eikh.happyprogramming.modelkey.RatingKey;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -34,11 +35,13 @@ public class Rating implements Serializable{
     
     @ManyToOne
     @MapsId("ratedFromUser")
-    @JoinColumn(name = "ratedFromUser", referencedColumnName = "username")   
+    @JoinColumn(name = "ratedFromUser", referencedColumnName = "username")
+    @JsonIgnore
     private User ratedFromUser; 
     
     @ManyToOne
     @MapsId("ratedToUser")
     @JoinColumn(name = "ratedToUser", referencedColumnName = "username")  
+    @JsonIgnore
     private User ratedToUser; 
 }

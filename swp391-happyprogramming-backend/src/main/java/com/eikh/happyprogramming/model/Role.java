@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
@@ -28,7 +29,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "Role")
-public class Role  implements Serializable{
+public class Role  implements GrantedAuthority{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,4 +56,9 @@ public class Role  implements Serializable{
 
     @OneToOne( mappedBy = "role")
     private Participate participateRole;
+
+    @Override
+    public String getAuthority() {
+        return "test";
+    }
 }

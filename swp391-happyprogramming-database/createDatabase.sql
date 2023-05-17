@@ -1,5 +1,5 @@
 DROP DATABASE FU_SWP391_HappyProgramming;
-CREATE DATABASE FU_SWP391_HappyProgramming ;
+CREATE DATABASE FU_SWP391_HappyProgramming;
   
 USE FU_SWP391_HappyProgramming;
 
@@ -13,7 +13,11 @@ CREATE TABLE `User`
     createdDate date,
     avatarPath varchar(255),
     CVPath longtext,
-    activeStatus bit, 
+    activeStatus bit,
+    isVerified bit default 1,
+    verification_code varchar(255) default "",
+
+	
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
 
@@ -90,14 +94,14 @@ REFERENCES Conversation (conversationId);
 CREATE TABLE Message 
 (	
 	conversationId int,
-    sentedBy varchar(255),
-    sentedAt datetime,
+    sentBy varchar(255),
+    sentAt datetime,
     msgContent longtext,
-    CONSTRAINT PK_Message PRIMARY KEY (conversationId, sentedBy, sentedAt)
+    CONSTRAINT PK_Message PRIMARY KEY (conversationId, sentBy, sentAt)
 );
 ALTER TABLE Message ADD CONSTRAINT FK_Message_Conversation FOREIGN KEY(conversationId)
 REFERENCES Conversation (conversationId);
-ALTER TABLE Message ADD CONSTRAINT FK_Message_User FOREIGN KEY(sentedBy)
+ALTER TABLE Message ADD CONSTRAINT FK_Message_User FOREIGN KEY(sentBy)
 REFERENCES `User` (username);
 
 CREATE TABLE Course 
@@ -106,7 +110,17 @@ CREATE TABLE Course
     courseName nvarchar(255),
     CONSTRAINT PK_Course PRIMARY KEY (courseId)
 );
-
+/*
+CREATE TABLE Lesson  
+(
+	lessonId int NOT NULL AUTO_INCREMENT,
+    slotNumber int,
+    lessonName nvarchar(255),
+    CONSTRAINT PK_Lesson  PRIMARY KEY (lessonId)
+);
+ALTER TABLE Lesson ADD CONSTRAINT FK_Lesson_Course FOREIGN KEY(courseId)
+REFERENCES Course(courseId);
+*/
 CREATE TABLE Participate
 (
 	courseId int,
@@ -150,8 +164,8 @@ REFERENCES Post(postId);
 ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_User FOREIGN KEY(commentedBy)
 REFERENCES `User`(username);
 
-CREATE TABLE Attachment 
-(
+CREATE TABLE Attachment
+( 
 	attachmentId int NOT NULL AUTO_INCREMENT, 
     attachmentLink longtext,
     postId int,
@@ -166,7 +180,9 @@ REFERENCES Post(postId);
 
 
 
+
  
+
 
 
 

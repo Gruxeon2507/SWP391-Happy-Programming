@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import "../Style/NavBarStyle.css";
-import logo from "../Assets/logo.png";
+import "../Navbar/NavBar.css";
+import logo from "../../Assets/logo.png";
+import { Alert } from "bootstrap";
 
 function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
@@ -26,14 +27,12 @@ function NavBar(props) {
   return (
     <div>
       <nav className={navBarClass} id="NavBar">
-        <div>
-          <div className="brand">
-            <img src={logo} alt="logo" />
-            <a href="#" className="logo">
-              <span>H</span>
-              PYPRO
-            </a>
-          </div>
+        <div className="brand">
+          <img src={logo} alt="logo" />
+          <a href="#" className="logo">
+            <span>H</span>
+            PYPRO
+          </a>
         </div>
         <ul className="nav-menu">
           <li className="nav-item">
@@ -47,6 +46,14 @@ function NavBar(props) {
           </li>
           <li className="nav-item">
             <NavLink to="/chat">Chat</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              to="/login"
+              onClick={() => alert("Are you sure you want to logout?")}
+            >
+              logout
+            </NavLink>
           </li>
         </ul>
       </nav>

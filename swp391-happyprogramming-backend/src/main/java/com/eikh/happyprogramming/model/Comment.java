@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "Comment")
+@Table(name = "`Comment`")
 public class Comment implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +36,12 @@ public class Comment implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "postId")
+    @JsonIgnore
     private Post post;
     
     @ManyToOne
     @JoinColumn(name = "commentedBy", referencedColumnName = "username")
+    @JsonIgnore
     private User user;
     
 }

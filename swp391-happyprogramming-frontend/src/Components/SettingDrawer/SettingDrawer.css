@@ -1,0 +1,17 @@
+@import url(../../global/ColorPalette.css);
+.drawer {
+  position: fixed;
+  top: 15svh;
+  right: 8px;
+  /* border: 1px solid red; */
+  width: 20vw;
+  background-color: var(--light);
+  border-radius: 1rem;
+  height: 80svh;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: 0.5s all ease;
+}
+
+.drawer.active {
+  transform: translateX(500px);
+}

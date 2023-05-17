@@ -1,0 +1,132 @@
+@import url(../../global/ColorPalette.css);
+
+/* .regis-frag {
+  width: calc(74% - calc(100vw - 100%));
+  background-color: var(--light);
+  margin: 0px auto;
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8rem;
+  margin-bottom: 2rem;
+  box-shadow: rgba(50, 50, 93, 0.3) 0px 10px 30px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+} */
+
+/* .regis-frag * {
+  border: 1px solid black;
+} */
+
+.regis-form,
+.confirm-email {
+  /* border: 2px solid red; */
+  border-radius: 1rem;
+  width: 50%;
+  margin: 4rem auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.regis-frag .login-bg img {
+  width: 100%;
+  margin: auto 2rem auto auto;
+  display: block;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.regis-frag .user-input {
+  position: relative;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+}
+
+.regis-frag .user-input input {
+  width: calc(100% - 16px);
+  background-color: var(--light);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 8px;
+  color: var(--item2);
+  font-size: 1.2em;
+  border-bottom: 2px solid var(--item);
+  outline: none;
+}
+
+.regis-frag .regis-form button,
+.confirm-email button {
+  color: var(--lightItem);
+  width: calc(100% - 2rem - 2rem);
+  font-size: 1rem;
+  background-color: var(--item);
+  border: 4px solid var(--itemActive);
+  padding: 0.6rem 2rem;
+  border-radius: 1rem;
+  margin: 1rem 2rem;
+}
+
+.regis-frag .sign-in a {
+  color: var(--item2);
+}
+
+.regis-frag .user-input span {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 24px;
+  text-transform: uppercase;
+  color: var(--item);
+  transition: 0.5s all ease;
+  padding: 0 4px !important;
+  pointer-events: none;
+}
+
+.regis-frag .user-input input:valid ~ span,
+.regis-frag .user-input input:focus ~ span {
+  transform: translateX(2px) translateY(-2.5rem);
+  /* font-weight: bold; */
+  padding: 0 10px;
+  border-left: 2px solid var(--item);
+  border-right: 2px solid var(--item);
+  border-radius: 4px;
+  background-color: var(--light);
+}
+
+.regis-frag .user-input input:valid ~ input,
+.regis-frag .user-input input:focus ~ input {
+  border: 2px solid var(--light);
+}
+
+.form-header {
+  color: var(--light);
+  border: 1px solid var(--item);
+  text-align: center;
+  background: var(--item);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.w-message {
+  color: red;
+  margin-left: 1rem;
+}
+
+.verifyDia {
+  background-color: var(--light);
+  width: 50svw;
+  border: 8px solid var(--lightItem);
+  border-radius: 1rem;
+  margin: auto;
+  text-align: center;
+  padding: 1rem;
+  margin-top: calc(50svh - 15svh);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.verifyDia {
+  color: var(--item);
+}
