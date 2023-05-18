@@ -11,6 +11,7 @@ import Register from "./Pages/Register/Register";
 import Chat from "./Pages/Chat/Chat";
 import Setting from "./Pages/Setting/Setting";
 import Homepage from "./Pages/Homepage/Homepage";
+import CourseCreate from "./Pages/CourseCreate/CourseCreate";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path="/login" element={<Login></Login>} />
       <Route path="/register" element={<Register></Register>} />
       <Route path="/setting" element={<Setting></Setting>} />
+      <Route path="/creCourse" element={<CourseCreate></CourseCreate>} />
     </Routes>
   );
 }

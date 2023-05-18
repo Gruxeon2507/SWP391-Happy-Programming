@@ -5,8 +5,10 @@
   /* height: 75vh; */
   /* height: 100%; */
   background-color: var(--light);
+  /* background-color: red; */
   margin: auto;
-  padding: 1rem;
+  padding: 1rem 0px;
+  /* margin-left: 1rem; */
   border-radius: 1rem;
   /* border: 3px solid var(--item); */
   overflow: hidden;
@@ -14,6 +16,11 @@
   flex-direction: row;
   box-shadow: rgba(50, 50, 93, 0) 0px 10px 30px -12px inset,
     rgba(0, 0, 0, 0.452) 0px 18px 36px -18px inset;
+}
+
+.login-frag .login-form form {
+  width: 100%;
+  padding: 0px;
 }
 
 .login-frag .login-form h1 {
@@ -30,7 +37,7 @@
 
 .login-frag .login-bg {
   width: 50%;
-  /* height: 50vh; */
+  margin-left: 1rem;
 }
 
 .login-frag .login-bg img {
@@ -147,4 +154,20 @@
 }
 .loginFailed::after {
   content: "!";
+}
+
+@media (max-width: 991px) {
+  .login-frag {
+    width: 100%;
+    background-color: var(--lightItem);
+    box-shadow: none;
+    overflow: visible;
+  }
+  .login-frag .login-bg {
+    display: none;
+  }
+  .login-frag .login-form {
+    width: 80%;
+    margin: auto;
+  }
 }

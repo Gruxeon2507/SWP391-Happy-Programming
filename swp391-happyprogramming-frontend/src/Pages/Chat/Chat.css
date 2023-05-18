@@ -1,6 +1,6 @@
 @import url(../../global/ColorPalette.css);
 .Chat-container {
-  /* background-color: var(--lightItem); */
+  /* background-color: red; */
   width: calc(100% - calc(100vw - 100%));
   height: calc(82vh);
   display: flex;

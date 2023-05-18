@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
+import NavBar from "../../Components/Navbar/NavBar";
 
 function Homepage() {
-
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [pageCourses, setPageCourses] = useState([]);
@@ -31,30 +30,31 @@ function Homepage() {
       });
   };
   const getPageCourses = (pageNumber, pageSize, sortField, sortOrder) => {
-    CourseServices.getPageAllCourses(pageNumber, pageSize,sortField, sortOrder)
+    CourseServices.getPageAllCourses(pageNumber, pageSize, sortField, sortOrder)
       .then((response) => {
         setPageCourses(response.data);
+        console.log("course");
+        console.log(response.data);
       })
       .catch((error) => {
         console.log("loi lay ra page Course");
       });
   };
 
-
   useEffect(() => {
     getAllCategories();
     getPageCourses(0, 20, "courseName", "asc");
   }, []);
   return (
-
-    <>
+    <div className="homePage">
+      <NavBar mode={1} />
       <h2>LIST CATEGORY</h2>
       {categories.map((category) => (
-        <div className="select col-6 col-md-3 col-sm-4 d-flex ">
+        <div className="select">
           <label key={category.categoryId}>
             <input
               type="checkbox"
-              className="form-check-input w-20 h-20 ms-1 me-1"
+              className="form-check-input"
               checked={checked.includes(category.categoryId)}
               onChange={() => handleCheck(category.categoryId)}
             />
@@ -64,21 +64,16 @@ function Homepage() {
       ))}
 
       <div className="list-books">
-        {
-          pageCourses.map((course) =>(
-            <div>
-              <p>{course.courseName}</p>
-              <p>{course.createdAt}</p>
-              <p>{course.courseDescription}</p>
-            </div>
-
-          ))
-        }
+        {pageCourses.map((course) => (
+          <div>
+            <p>{course.courseName}</p>
+            <p>{course.createdAt}</p>
+            <p>{course.courseDescription}</p>
+          </div>
+        ))}
       </div>
-
-    </>
-  )
+    </div>
+  );
 }
 
-export default Homepage
-
+export default Homepage;
