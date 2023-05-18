@@ -1,11 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
 import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
 function Homepage() {
-
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [pageCourses, setPageCourses] = useState([]);
@@ -111,11 +109,11 @@ function Homepage() {
       />
       <h2>LIST CATEGORY</h2>
       {categories.map((category) => (
-        <div className="select col-6 col-md-3 col-sm-4 d-flex ">
+        <div className="select">
           <label key={category.categoryId}>
             <input
               type="checkbox"
-              className="form-check-input w-20 h-20 ms-1 me-1"
+              className="form-check-input"
               checked={checked.includes(category.categoryId)}
               onChange={() => handleCheck(category.categoryId)}
             />
@@ -157,5 +155,4 @@ function Homepage() {
   )
 }
 
-export default Homepage
-
+export default Homepage;
