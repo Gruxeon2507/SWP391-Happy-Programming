@@ -14,6 +14,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import userProfile from "./Pages/UserProfile/userProfile";
 import api from "./services/BaseAuthenticationService";
+import Homepage from "./Pages/Homepage/Homepage";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -38,6 +39,7 @@ function App() {
       <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
       <Route path="/chat" element={<Chat />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/homepage" element={<Homepage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
       {features &&

@@ -136,8 +136,8 @@ CREATE TABLE Participate
 (
 	courseId int,
 	username varchar(255),
-    participateRole int UNIQUE, 
-    `status` bit DEFAULT false,
+    participateRole int, 
+    `status` int,
     CONSTRAINT PK_Participate PRIMARY KEY (courseId, username)
 );
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_User FOREIGN KEY(username)
@@ -146,6 +146,11 @@ ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Course FOREIGN KEY(courseI
 REFERENCES Course(courseId);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Role FOREIGN KEY(participateRole)
 REFERENCES `Role` (roleId);
+
+CREATE TABLE Status 
+(
+	
+)
 
 CREATE TABLE Post 
 (
