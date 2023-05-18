@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.*;
@@ -43,6 +44,6 @@ public class Course implements Serializable {
     @OneToMany(mappedBy = "course")
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "course")
-    private List<Course_Category> course_categories;
+    @ManyToMany(mappedBy = "courses")
+    private List<Category> categories;
 }

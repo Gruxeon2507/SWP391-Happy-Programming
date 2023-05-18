@@ -6,6 +6,7 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.repository.CourseRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,17 +35,6 @@ public class CourseController {
         return courseRepository.findAll();
     }
 
-    @GetMapping("page")
-    public List<Course> getBooks(
-            @RequestParam Integer pageNumber,
-            @RequestParam Integer pageSize
-    ) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Course> pageBooks = courseRepository.findAll(pageable);
-        List<Course> books = pageBooks.getContent();
-        return books;
-    }
-    
     @GetMapping("/condition/page")
     public Page<Course> getCourses(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -51,10 +42,33 @@ public class CourseController {
             @RequestParam(defaultValue = "courseId") String sortField,
             @RequestParam(defaultValue = "asc") String sortOrder
     ) {
-        
+
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return courseRepository.findAll(pageable);
     }
-    
+
+    @GetMapping("/by-categories/{categoryIds}")
+    public Page<Course> getPageCoursesByCategories(
+            @PathVariable("categoryIds") Integer[] categoryIds,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+            
+    ) {
+
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        List<Course> courses = courseRepository.getCourseByCategoryIds(categoryIds);
+        List<Integer> courseIds = new ArrayList<>();
+        for (Course course : courses) {
+            courseIds.add(course.getCourseId());
+        }
+        Page<Course> pageCourses = courseRepository.findByCourseIdIn(courseIds, pageable);
+        return pageCourses;
+    }
+
 }
+
+
