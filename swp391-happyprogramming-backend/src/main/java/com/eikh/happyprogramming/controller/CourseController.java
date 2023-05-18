@@ -35,7 +35,7 @@ public class CourseController {
         return courseRepository.findAll();
     }
 
-    @GetMapping("/condition/page")
+    @GetMapping("/page")
     public Page<Course> getCourses(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize,
