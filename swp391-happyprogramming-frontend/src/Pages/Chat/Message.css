@@ -1,0 +1,19 @@
+:where(.message-from, .message-to) {
+  /* border: 1px solid blue; */
+  background-color: var(--item);
+  color: var(--lightItem);
+  padding: 8px;
+  border-radius: 1rem;
+  width: fit-content;
+  max-width: 60%;
+}
+
+.message-from {
+  text-align: left;
+  margin: 8px auto 8px 2rem;
+}
+
+.message-to {
+  text-align: right;
+  margin: 8px 2rem 8px auto;
+}
