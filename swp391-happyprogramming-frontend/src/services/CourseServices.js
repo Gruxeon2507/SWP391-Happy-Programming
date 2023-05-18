@@ -23,9 +23,9 @@ class CourseServices{
         );
       }
 
-    filterCourse(pageNumber, pageSize, searchText){
-        console.log(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-        return axios.get(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    filterCourse(searchText, pageNumber, pageSize, sortField, sortOrder ){
+        console.log(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`);
+        return axios.get(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`);
     }
 }
 export default new CourseServices();

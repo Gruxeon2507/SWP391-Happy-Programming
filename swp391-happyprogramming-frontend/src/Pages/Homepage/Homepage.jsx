@@ -3,6 +3,7 @@ import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
 import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
+
 function Homepage() {
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -70,7 +71,8 @@ function Homepage() {
   useEffect(() => {
     getAllCategories();
     getPageCourses(0, 5, "createdAt", "desc");
-    // filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage );
+    console.log("da chay filter");
+    findCondition();
   }, []);
   const handleSubmit = () => {
     console.log("check on submit:" + checked);
@@ -80,33 +82,48 @@ function Homepage() {
     console.log("categoryIds" + categoryIds);
     getPageCoursesByCategories(categoryIds, 0, sizePerPage, "createdAt", "desc");
   };
-  // const filterCourse = (searchText, pageNumber, pageSize , sortField, sortOrder ) =>
-  //   CourseServices.filterCourse(searchText,pageNumber, pageSize, sortField, sortOrder).then(
-  //     (response) => {
-  //       setPageCourses(response.data.content);
-  //       setTotalItems(response.data.totalElements);
-  //     }
-  //   );
-  // const findCondition = () => {
-  //   setCondition(condition);
-  //   console.log(condition.length)
-  //   if (condition.length) {
-  //     getPageCourses(0, 5, "createdAt", "desc");
-  //   }
-  // }
+  const filterCourse = (searchText, pageNumber, pageSize , sortField, sortOrder ) =>
+    CourseServices.filterCourse(searchText,pageNumber, pageSize, sortField, sortOrder).then(
+      (response) => {
+        setPageCourses(response.data.content);
+        setTotalItems(response.data.totalElements);
+      }
+    );
+  const findCondition = () => {
+    console.log("da click search");
+    console.log(condition);
+    console.log(condition.length);
+    if(condition.length > 0) {
+      console.log("goi api");
+      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage,  "createdAt", "desc" );
+    }else{
+      getPageCourses(0, 5, "createdAt", "desc");
+    }
+    
+  }
+  const handleReset = ()=>{
+    setCondition('')
+    console.log("da click reset ");
+    getPageCourses(0, 5, "createdAt", "desc");
 
+  }
 
   return (
 
     <>
-      <FormControl
-        placeholder="Search Courses Here"
-        name="search"
-        className={"info-border  text-black w-50 "}
-        value={condition}
-        onChange={(e) => { setCondition(e.target.value) }}
-        // onInput={(e) => { findCondition() }}
-      />
+      
+      <div className="find d-flex justify-content-center">
+        <FormControl
+          placeholder="Search course here"
+          name="search"
+          className={"info-border bg-dark text-white w-50 "}
+          value={condition}
+          onChange={(e) => {setCondition(e.target.value); console.log(e.target.value);}}
+        />
+        <button onClick={() => findCondition()}>Search</button>
+        <button onClick={() => handleReset()}>Reset</button>
+      </div>
+ 
       <h2>LIST CATEGORY</h2>
       {categories.map((category) => (
         <div className="select">
