@@ -22,5 +22,10 @@ class CourseServices{
           `${COURSE_BASE_REST_API_URL}/by-categories/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
         );
       }
+
+    filterCourse(pageNumber, pageSize, searchText){
+        console.log(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    }
 }
 export default new CourseServices();

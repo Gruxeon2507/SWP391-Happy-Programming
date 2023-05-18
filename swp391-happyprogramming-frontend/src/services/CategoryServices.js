@@ -1,7 +1,7 @@
 import axios from "axios";
 const CATEGORY_BASE_REST_API_URL = "http://localhost:1111/api/auth/categories";
 
-class CategoryService {
+class CategoryServices {
   getAllCategories() {
     return axios.get(CATEGORY_BASE_REST_API_URL);
   }
@@ -11,4 +11,4 @@ class CategoryService {
   }
 }
 
-export default new CategoryService();
+export default new CategoryServices();
