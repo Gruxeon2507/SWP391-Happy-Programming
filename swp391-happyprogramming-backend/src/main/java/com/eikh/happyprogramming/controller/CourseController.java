@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +59,6 @@ public class CourseController {
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "courseId") String sortField,
             @RequestParam(defaultValue = "asc") String sortOrder
-            
     ) {
 
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
@@ -71,6 +72,21 @@ public class CourseController {
         return pageCourses;
     }
 
+    @GetMapping("/search/{searchText}")
+    ResponseEntity<Page<Course>> findAllPublic(
+            @PathVariable String searchText,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) {
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        if (searchText.length() < 1) {
+            return new ResponseEntity<>(courseRepository.findAll(pageable), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
+
+        }
+    }
 }
-
-

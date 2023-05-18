@@ -22,4 +22,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer>{
     public List<Course> getCourseByCategoryIds(Integer[] categoryIds);
 
     public Page<Course> findByCourseIdIn(List<Integer> courseIds, Pageable pageable);
+    
+    @Query(value = "select * from Course co where co.courseName LIKE %?1% OR co.createdAt LIKE %?1%" , nativeQuery = true)
+    Page<Course> findAllSearch(Pageable pageable, String searchText);
 }
