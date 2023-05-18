@@ -39,21 +39,24 @@
 
 .seach-chat ion-icon {
   font-size: 1.5rem;
+  color: var(--item);
   transform: translateY(10%);
 }
 .seach-chat button {
-  background-color: var(--light);
+  background-color: var(--lightItem);
   border: none;
   border-radius: 8px;
-  margin-left: 1rem;
+  /* margin-left: 1rem; */
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: 2px solid var(--item);
 }
 
 .seach-chat input {
   padding: 0.6rem 1rem;
   border-radius: 8px;
   border: none;
-  width: 60%;
+  width: auto;
+  max-width: 50%;
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
     rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
 }
@@ -68,23 +71,28 @@
   overflow: hidden;
   margin-right: 1rem;
 }
+
 .messages {
   width: 100%;
   height: 90%;
   /* background-color: blueviolet; */
-  background-color: var(--item);
-  overflow: hidden;
+  background-color: var(--lightItem);
+  overflow-y: scroll;
 }
+
 .input-message {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+  padding: 0 1rem;
   background-color: var(--lightItem);
   height: 60px;
+  /* border-top: 2px solid #a1a1a155; */
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .input-message input {
-  width: 50%;
+  width: 80%;
   height: 32px;
   border-radius: 1rem;
   border: none;
@@ -103,4 +111,15 @@
 .input-message button {
   background: transparent;
   border: none;
+}
+
+.Chat-container input:focus,
+.Chat-container input:valid {
+  /* border: 2px solid var(--item); */
+  color: var(--item);
+  font-size: 1.1rem;
+}
+
+.Chat-container input::placeholder {
+  color: var(--item);
 }
