@@ -4,15 +4,16 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.*;
 
@@ -25,25 +26,19 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "Course")
-public class Course implements Serializable {
+@Table(name = "Category")
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int courseId;
+    private int categoryId;
 
-    private String courseName;
+    private String categoryName;
 
-    private Date createdAt;
-
-    private String courseDescription;
-
-    @OneToMany(mappedBy = "course")
-    private List<Participate> participates;
-
-    @OneToMany(mappedBy = "course")
-    private List<Post> posts;
-
-    @ManyToMany(mappedBy = "courses")
-    private List<Category> categories;
+    @ManyToMany
+    @JoinTable(name = "Course_Category",
+            joinColumns = @JoinColumn(name = "categoryId"),
+            inverseJoinColumns = @JoinColumn(name = "courseId"))
+    @JsonIgnore
+    private List<Course> courses;
 }

@@ -7,6 +7,7 @@ import { Alert } from "bootstrap";
 
 function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
+  const [navMenuOpen, setNavMenuOpen] = useState(false);
 
   useEffect(() => {
     function handleScroll() {
@@ -22,7 +23,13 @@ function NavBar(props) {
     };
   }, []);
 
-  const navBarClass = isNavBarActive ? "NavBar active" : "NavBar";
+  let navBarClass = "NavBar active";
+  if (props.mode === 1) {
+    navBarClass = isNavBarActive ? "NavBar active" : "NavBar";
+  }
+
+  // const navBarClass = isNavBarActive ? "NavBar active" : "NavBar";
+  const navMenuClass = navMenuOpen ? "nav-menu active" : "nav-menu";
 
   return (
     <div>
@@ -34,9 +41,12 @@ function NavBar(props) {
             PYPRO
           </a>
         </div>
-        <ul className="nav-menu">
+        <ul className={navMenuClass}>
           <li className="nav-item">
             <NavLink to="/home">Home</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/homepage">Homepage</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/login">Login</NavLink>
@@ -56,6 +66,11 @@ function NavBar(props) {
             </NavLink>
           </li>
         </ul>
+        <div className="navToggle">
+          <button onClick={() => setNavMenuOpen(!navMenuOpen)}>
+            <ion-icon name="reorder-three-outline"></ion-icon>
+          </button>
+        </div>
       </nav>
     </div>
   );

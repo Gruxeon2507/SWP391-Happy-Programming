@@ -2,14 +2,24 @@
 
 .NavBar {
   position: fixed;
-  left: calc(calc(100vw - calc(70vw - (100vw - 100%))) / 2);
-  width: calc(70vw - (100vw - 100%));
+  left: calc(calc(100vw - calc(90vw - (100vw - 100%))) / 2);
+  /* width: calc(70vw - (100vw - 100%)); */
+  width: calc(90vw - (100vw - 100%));
   border: 2px solid var(--light);
   border-radius: 20px;
-  transition: 0.5s all ease;
   top: 1rem;
   background-color: var(--light);
   z-index: 100;
+  transition: 0.5s all ease;
+}
+
+.NavBar.active {
+  width: calc(70vw - (100vw - 100%));
+  left: calc(calc(100vw - calc(70vw - (100vw - 100%))) / 2);
+  top: 0.1rem;
+  background-color: var(--lightItem);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
+  transition: 0.5s all ease;
 }
 
 /* * {
@@ -30,12 +40,6 @@
   padding: 4px 4px;
   margin: auto;
   display: block;
-}
-
-.NavBar.active {
-  top: 0.1rem;
-  background-color: var(--lightItem);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
 }
 
 :where(.nav-menu, .NavBar, .logo) {
@@ -92,4 +96,58 @@
   text-align: center;
   margin: 0 0.5rem;
   transition: 0.5s all ease;
+}
+
+.navToggle {
+  margin: auto 0px auto auto;
+  display: none;
+}
+
+.navToggle button {
+  background: var(--light);
+  border-radius: 1rem;
+  border: none;
+  text-align: center;
+  margin-right: 1rem;
+  color: var(--item3);
+}
+.navToggle ion-icon {
+  font-size: 2.5rem;
+  transform: translateY(5%);
+  text-align: center;
+}
+
+@media (max-width: 991px) {
+  .nav-menu {
+    position: absolute;
+    right: 0;
+    height: 0;
+    overflow: hidden;
+    top: 3.5rem;
+    background-color: var(--lightItem);
+    flex-direction: column;
+    justify-items: center;
+    /* width: 50vw; */
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px,
+      rgba(0, 0, 0, 0.105) 0px 6px 6px;
+    transition: 0.2s all ease;
+  }
+  .nav-menu.active {
+    height: auto;
+    padding: 2rem;
+    transition: 0.5s all ease;
+  }
+  .nav-item a {
+    color: var(--item3);
+  }
+  .NavBar.active .nav-item:hover {
+    background-color: var(--light);
+  }
+  .banner-1 div:nth-child(2) {
+    order: 1;
+  }
+  .navToggle {
+    display: block;
+  }
 }
