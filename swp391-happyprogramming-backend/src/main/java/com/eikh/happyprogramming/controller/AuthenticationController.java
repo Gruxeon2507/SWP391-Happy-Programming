@@ -160,6 +160,7 @@ public class AuthenticationController {
     @GetMapping(value = "/profile/{username}")
     public User profileUser(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username);
+        user.setMail("");
         user.setPassword("");
         user.setVerification_code("");
         return user;
