@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 function Home(props) {
   return (
     <div>
+      {/* {props.url} */}
       <NavBar mode={1} />
       <div className="banner-1">
         <img src={bg} alt="background" />

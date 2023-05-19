@@ -13,6 +13,7 @@ function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [condition, setCondition] = useState("");
+  const [filter, setFilter] = useState("all");
   const sizePerPage = 5;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
@@ -96,8 +97,10 @@ function Homepage() {
   useEffect(() => {
     getAllCategories();
     getPageCourses(0, 5, "createdAt", "desc");
-    // filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage );
+    console.log("da chay filter");
+    handleSearch();
   }, []);
+
   const handleSubmit = () => {
     console.log("check on submit:" + checked);
     setCurrentPage(1);
@@ -112,36 +115,72 @@ function Homepage() {
       "desc"
     );
   };
-  // const filterCourse = (searchText, pageNumber, pageSize , sortField, sortOrder ) =>
-  //   CourseServices.filterCourse(searchText,pageNumber, pageSize, sortField, sortOrder).then(
-  //     (response) => {
-  //       setPageCourses(response.data.content);
-  //       setTotalItems(response.data.totalElements);
-  //     }
-  //   );
-  // const findCondition = () => {
-  //   setCondition(condition);
-  //   console.log(condition.length)
-  //   if (condition.length) {
-  //     getPageCourses(0, 5, "createdAt", "desc");
-  //   }
-  // }
+  const filterCourse = (searchText, pageNumber, pageSize , sortField, sortOrder ) =>
+    CourseServices.filterCourse(searchText,pageNumber, pageSize, sortField, sortOrder).then(
+      (response) => {
+        setPageCourses(response.data.content);
+        setTotalItems(response.data.totalElements);
+      }
+    );
+  const handleSearch = () => {
+    console.log("da click search");
+    console.log(condition);
+    console.log(condition.length);
+    if(condition.length > 0) {
+      console.log("goi api");
+      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage,  "createdAt", "desc" );
+    }else{
+      getPageCourses(0, 5, "createdAt", "desc");
+      // handleCheckFilter();
+    }
+    
+    
+  }
+  const handleReset = ()=>{
+    setCondition('')
+    console.log("da click reset ");
+    getPageCourses(0, 5, "createdAt", "desc");
+
+  }
+  const handleCheckFilter = (checkedFilter)=>{
+    console.log(checkedFilter);
+    const sortField = checkedFilter.split('|')[1];
+    const sortOrder = checkedFilter.split('|')[0];
+    console.log("sortField = " + sortField);
+    console.log("sortOrder = " + sortOrder);
+    if(condition.length > 0) {
+      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage,  sortField, sortOrder );
+    }else{
+      getPageCourses(0, 5,  sortField, sortOrder);
+    }
+
+
+
+  }
 
   return (
-    <div className="home-page">
-      <NavBar mode={1}></NavBar>
-      <div className="form-CC">
+
+    <>
+      
+      <div className="find d-flex justify-content-center">
         <FormControl
-          placeholder="Search Courses Here"
+          placeholder="Search course here"
           name="search"
-          className={"info-border"}
+          className={"info-border bg-dark text-white w-50 "}
           value={condition}
-          onChange={(e) => {
-            setCondition(e.target.value);
-          }}
-          // onInput={(e) => { findCondition() }}
+          onChange={(e) => {setCondition(e.target.value); console.log(e.target.value);}}
         />
+        <button onClick={() => handleSearch()}>Search</button>
+        <button onClick={() => handleReset()}>Reset</button>
+        <select name="filter" id="" onChange={(e)=>handleCheckFilter(e.target.value)} >
+          <option disabled>---- Filter -----</option>
+          <option value="asc|courseName">A-Z Name</option>
+          <option value="desc|courseName">Z-A Name</option>
+          <option value="asc|createdAt">Newest </option>
+          <option value="desc|createdAt">Oldest</option>
+        </select>
       </div>
+ 
       <h2>LIST CATEGORY</h2>
       <div className="select-list">
         {categories.map((category) => (
