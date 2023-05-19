@@ -46,6 +46,7 @@ CREATE TABLE Feature
 	featureId int NOT NULL AUTO_INCREMENT, 
 	featureName varchar(255),
 	url varchar(255),
+    `component` varchar(255),
 	CONSTRAINT PK_Feature PRIMARY KEY (featureId)
 );
 
