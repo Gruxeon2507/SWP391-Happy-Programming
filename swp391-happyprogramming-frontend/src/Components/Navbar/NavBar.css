@@ -18,7 +18,8 @@
 
 .NavBar.active {
   width: calc(70vw - (100vw - 100%));
-  left: calc(calc(100vw - calc(70vw - (100vw - 100%))) / 2);
+  /* left: calc(calc(100vw - calc(70vw - (100vw - 100%))) / 2); */
+  left: 50vw;
   top: 0.1rem;
   background-color: var(--lightItem);
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px; */
