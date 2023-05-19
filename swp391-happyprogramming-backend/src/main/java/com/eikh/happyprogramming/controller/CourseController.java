@@ -24,10 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author maiphuonghoang
- */
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("api/auth/courses")
@@ -44,7 +40,7 @@ public class CourseController {
 //        return courseRepository.findAll();
 //    }
     /**
-     * Author: maiphuonghoang
+     * @author maiphuonghoang
      *
      * Paging, sorting for all course in homepage
      */
@@ -62,7 +58,7 @@ public class CourseController {
     }
 
     /**
-     * Author: maiphuonghoang
+     * @author maiphuonghoang
      *
      * Paging, sorting for course by categories in homepage
      */
@@ -87,7 +83,7 @@ public class CourseController {
     }
 
     /**
-     * Author: maiphuonghoang
+     * @author maiphuonghoang
      *
      * Filter, paging, sorting for all course or by categories course
      */
@@ -114,15 +110,14 @@ public class CourseController {
 //            @RequestParam(defaultValue = "1") Integer status) {
 //        return userRepository.getCourseByUsernameAndStatus(username, status);
 //    }
-
     /**
-     * Author: maiphuonghoang
+     * @author maiphuonghoang
      *
      * get Course by username, statusId and participateRole in (mentor, mentee)
      */
-    @GetMapping("by-user/{username}")
+    @GetMapping("/{username}")
     List<Course> getCourseByUsernameAndStatus(@PathVariable String username,
-            @RequestParam(defaultValue = "1") Integer status) {
-        return courseRepository.getCourseByUsernameAndStatus(username, status);
+            @RequestParam(defaultValue = "1") Integer statusId) {
+        return courseRepository.getCourseByUsernameAndStatusId(username, statusId);
     }
 }

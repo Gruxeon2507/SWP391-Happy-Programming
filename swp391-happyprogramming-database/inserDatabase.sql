@@ -1,9 +1,6 @@
 USE FU_SWP391_HappyProgramming;
 
 
-
-select * from `User`;
-delete from `User` where username != '';
 -- Insert into `User`
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namlx', '123', 'Lê Xuân Nam', '2003-1-29', 'namlxhe153241@fpt.edu.vn', '2023-5-12', '', '', 0);
