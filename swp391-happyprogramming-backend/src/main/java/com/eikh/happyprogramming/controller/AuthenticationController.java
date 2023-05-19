@@ -111,7 +111,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "forgetpassword/{username}")
     public boolean forgetPassword(@PathVariable("username") String username) {
-        User user = userRepository.findByMail(username);
+        User user = userRepository.findByUsername(username);
         if (user != null) {
             String verificationCode = UUID.randomUUID().toString();
             user.setVerification_code(verificationCode);
@@ -149,7 +149,12 @@ public class AuthenticationController {
     
     @GetMapping(value = "/resetpassword/check")
     public boolean checkResetPassword(@RequestParam("username") String username,@RequestParam("code") String code){
-        
+        User user = userRepository.findByUsername(username);
+        if(user.getVerification_code().equals(code)){
+            return true;
+        }else{
+            return false;
+        }
     }
     
     @GetMapping(value = "/profile/{username}")
