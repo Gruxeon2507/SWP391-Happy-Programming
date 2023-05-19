@@ -87,13 +87,15 @@ INSERT INTO User_Role (username, roleId) VALUES ('eikh', '1');
 
 
 -- Insert into Feature
-INSERT INTO Feature (featureId, featureName, url) VALUES ('1', 'Home Page', '/home');
+INSERT INTO Feature (featureId, featureName, url,`component`) VALUES ('1', 'Home Page', '/home','Home');
+INSERT INTO Feature (featureId, featureName, url,`component`) VALUES ('2', 'User Profile', '/user/:userId','userProfile');
 
 
 -- Insert into Role_Feature
 INSERT INTO Role_Feature (roleId, featureId) VALUES ('1', '1');
 INSERT INTO Role_Feature (roleId, featureId) VALUES ('2', '1');
 INSERT INTO Role_Feature (roleId, featureId) VALUES ('3', '1');
+INSERT INTO Role_Feature (roleId, featureId) VALUES ('2', '2');
 
 -- Insert into Category
 INSERT INTO Category (categoryId, categoryName) VALUES (1, 'Computer Science');

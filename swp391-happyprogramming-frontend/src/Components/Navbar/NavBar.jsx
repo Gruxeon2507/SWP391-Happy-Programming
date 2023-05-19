@@ -43,7 +43,8 @@ function NavBar(props) {
         </div>
         <ul className={navMenuClass}>
           <li className="nav-item">
-            <NavLink to="/home">Home</NavLink>
+            {/* <NavLink to="/home">Home</NavLink> */}
+            <a href="/home">home</a>
           </li>
           <li className="nav-item">
             <NavLink to="/homepage">Homepage</NavLink>
@@ -63,7 +64,9 @@ function NavBar(props) {
           <li className="nav-item">
             <NavLink
               to="/login"
-              onClick={() => alert("Are you sure you want to logout?")}
+              onClick={() => {alert("Are you sure you want to logout?")
+              window.localStorage.removeItem("token");
+            }}
             >
               logout
             </NavLink>
