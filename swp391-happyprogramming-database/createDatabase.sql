@@ -132,12 +132,19 @@ REFERENCES Category(categoryId);
 ALTER TABLE Course_Category ADD CONSTRAINT FK_CourseCategory_Course FOREIGN KEY(courseId)
 REFERENCES Course(courseId);
 
+CREATE TABLE `Status` 
+(
+	statusId int NOT NULL, 
+    statusName varchar(50),
+    CONSTRAINT PK_Status PRIMARY KEY (statusId)
+);
+
 CREATE TABLE Participate
 (
 	courseId int,
 	username varchar(255),
     participateRole int, 
-    `status` int,
+    statusId int,
     CONSTRAINT PK_Participate PRIMARY KEY (courseId, username)
 );
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_User FOREIGN KEY(username)
@@ -146,11 +153,9 @@ ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Course FOREIGN KEY(courseI
 REFERENCES Course(courseId);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Role FOREIGN KEY(participateRole)
 REFERENCES `Role` (roleId);
+ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Status FOREIGN KEY(statusId)
+REFERENCES `Status` (statusId);
 
-CREATE TABLE Status 
-(
-	
-)
 
 CREATE TABLE Post 
 (
@@ -194,6 +199,7 @@ REFERENCES Post(postId);
 SELECT * FROM Feature 
 SELECT * FROM Role 
 SELECT * FROM User
+SELECT * FROM `Status`
 SELECT * FROM Conversation
 SELECT * FROM User_Conversation
 SELECT * FROM Participate
