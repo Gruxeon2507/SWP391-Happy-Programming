@@ -130,7 +130,7 @@ public class AuthenticationController {
         return user == null;
     }
 
-    @GetMapping(value = "resetpassword")
+    @PostMapping(value = "resetpassword")
     public boolean resetPassword(MultiValueMap<String,String> formData) {
         String username = formData.getFirst("username");
         String code = formData.getFirst("code");
@@ -147,16 +147,7 @@ public class AuthenticationController {
         }
     }
     
-    @GetMapping(value = "/resetpassword/check")
-    public boolean checkResetPassword(@RequestParam("username") String username,@RequestParam("code") String code){
-        User user = userRepository.findByUsername(username);
-        if(user.getVerification_code().equals(code)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    
+   
     @GetMapping(value = "/profile/{username}")
     public User profileUser(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username);

@@ -37,12 +37,18 @@ function ResetPassword(props) {
 
     const formData = new FormData();
 
-    formData.append(`username`, username);
-    formData.append(`code`, code);
-    formData.append(`password`, newPassword);
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    formData.append("username", username);
+    formData.append("code", code);
+    formData.append("password", newPassword);
 
     axios
-      .get(`http://localhost:1111/api/auth/resetpassword`, formData)
+      .get(`http://localhost:1111/api/auth/resetpassword`, formData, config)
       .then((res) => {
         console.log(res.data);
       })
