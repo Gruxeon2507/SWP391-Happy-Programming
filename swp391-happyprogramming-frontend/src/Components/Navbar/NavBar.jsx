@@ -47,6 +47,12 @@ function NavBar(props) {
             <a href="/home">home</a>
           </li>
           <li className="nav-item">
+            <NavLink to="/homepage">Homepage</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/creCourse">creCourse</NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink to="/login">Login</NavLink>
           </li>
           <li className="nav-item">

@@ -1,0 +1,19 @@
+@import url(../../global/ColorPalette.css);
+.Conversation {
+  /* border: 2px solid var(--item); */
+  width: auto;
+  margin: 1rem;
+  border-radius: 1rem;
+  padding: 8px 12px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.Conversation-Name span {
+  color: var(--item);
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.latestMessage {
+}
