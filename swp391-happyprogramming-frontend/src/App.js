@@ -11,6 +11,7 @@ import Register from "./Pages/Register/Register";
 import Chat from "./Pages/Chat/Chat";
 import Setting from "./Pages/Setting/Setting";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Route path="/register" element={<Register></Register>} />
       <Route path="/setting" element={<Setting></Setting>} />
       <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>}/>
+      <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}/>
     </Routes>
   );
 }

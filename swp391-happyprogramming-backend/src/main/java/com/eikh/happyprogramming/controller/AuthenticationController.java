@@ -147,6 +147,11 @@ public class AuthenticationController {
         }
     }
     
+    @GetMapping(value = "/resetpassword/check")
+    public boolean checkResetPassword(@RequestParam("username") String username,@RequestParam("code") String code){
+        
+    }
+    
     @GetMapping(value = "/profile/{username}")
     public User profileUser(@PathVariable("username") String username){
         User user = userRepository.findByUsername(username);

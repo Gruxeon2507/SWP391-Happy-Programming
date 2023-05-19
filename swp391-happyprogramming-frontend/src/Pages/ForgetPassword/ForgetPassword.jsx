@@ -53,6 +53,7 @@ function ForgetPassword(props) {
           <input
             type="text"
             name="username"
+            required
             onChange={onChangeUsername}
           ></input>
           <button>Confirm</button>
