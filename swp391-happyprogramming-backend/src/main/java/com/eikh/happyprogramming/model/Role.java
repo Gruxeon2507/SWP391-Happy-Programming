@@ -50,16 +50,16 @@ public class Role  implements GrantedAuthority{
             inverseJoinColumns = @JoinColumn(name = "featureId"))
     private List<Feature> features;
     
-    @OneToMany(mappedBy = "role")
-    private List<Participate> participates;
+//    @OneToMany(mappedBy = "role")
+//    private List<Participate> participates;
 
     @Override
     public String toString() {
         return  roleName;
     }
 
-    @OneToOne( mappedBy = "role")
-    private Participate participateRole;
+    @OneToMany( mappedBy = "role")
+    private List<Participate> participateRoles;
 
     @Override
     public String getAuthority() {

@@ -5,7 +5,9 @@
 package com.eikh.happyprogramming.repository;
 
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +19,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface CourseRepository extends JpaRepository<Course, Integer>{
     Page<Course> findAll(Pageable pageable);
-
+    
     @Query("select distinct co from Course co join co.categories c where c.categoryId in :categoryIds")
     public List<Course> getCourseByCategoryIds(Integer[] categoryIds);
 
@@ -25,4 +27,35 @@ public interface CourseRepository extends JpaRepository<Course, Integer>{
     
     @Query(value = "select * from Course co where co.courseName LIKE %?1% OR co.createdAt LIKE %?1%" , nativeQuery = true)
     Page<Course> findAllSearch(Pageable pageable, String searchText);
+
+    public List<Course> findByCourseId(int courseId);
+    
+    
+    
+//        @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+//            + "				  JOIN Course c ON p.courseId = c.courseId\n"
+//            + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
+//            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
+//            + "                  WHERE u.username = :username AND p.statusId = :status AND p.participateRole IN (2,3)", nativeQuery = true)
+//    public List<Course> getCourseByUsernameAndStatus(String username, Integer status);
+    
+        @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+            + "				  JOIN Course c ON p.courseId = c.courseId\n"
+            + "                  JOIN Role r ON r.roleId = p.participateRole\n"
+            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
+            + "                  WHERE u.username = :username AND p.statusId = :status AND p.participateRole IN (2,3)", nativeQuery = true)
+    public List<Course> getCourseByUsernameAndStatus(String username, Integer status);
+    
+        @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+            + "				  JOIN Course c ON p.courseId = c.courseId\n"
+            + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
+            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
+            + "                  WHERE u.username = :username AND p.participateRole IN (2,3)", nativeQuery = true)
+    public List<Course> getCourseByUsername(String username);
+            @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+            + "				  JOIN Course c ON p.courseId = c.courseId\n"
+            + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
+            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
+            + "                  WHERE p.participateRole IN (2,3)", nativeQuery = true)
+    public List<Course> getCourse();
 }

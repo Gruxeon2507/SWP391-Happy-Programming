@@ -5,7 +5,9 @@
 package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CourseRepository;
+import com.eikh.happyprogramming.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,18 @@ public class CourseController {
     @Autowired
     CourseRepository courseRepository;
 
-    @GetMapping
-    List<Course> getAll() {
-        return courseRepository.findAll();
-    }
+    @Autowired
+    UserRepository userRepository;
 
+//    @GetMapping
+//    List<Course> getAll() {
+//        return courseRepository.findAll();
+//    }
+    /**
+     * Author: maiphuonghoang
+     *
+     * Paging, sorting for all course in homepage
+     */
     @GetMapping("/page")
     public Page<Course> getCourses(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -52,6 +61,11 @@ public class CourseController {
         return courseRepository.findAll(pageable);
     }
 
+    /**
+     * Author: maiphuonghoang
+     *
+     * Paging, sorting for course by categories in homepage
+     */
     @GetMapping("/by-categories/{categoryIds}")
     public Page<Course> getPageCoursesByCategories(
             @PathVariable("categoryIds") Integer[] categoryIds,
@@ -72,6 +86,11 @@ public class CourseController {
         return pageCourses;
     }
 
+    /**
+     * Author: maiphuonghoang
+     *
+     * Filter, paging, sorting for all course or by categories course
+     */
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Course>> findAllPublic(
             @PathVariable String searchText,
@@ -89,5 +108,21 @@ public class CourseController {
 
         }
     }
-    
+
+//    @GetMapping("by-user/{username}")
+//    List<User> getCourseByUsernameAndStatus(@PathVariable String username,
+//            @RequestParam(defaultValue = "1") Integer status) {
+//        return userRepository.getCourseByUsernameAndStatus(username, status);
+//    }
+
+    /**
+     * Author: maiphuonghoang
+     *
+     * get Course by username, statusId and participateRole in (mentor, mentee)
+     */
+    @GetMapping("by-user/{username}")
+    List<Course> getCourseByUsernameAndStatus(@PathVariable String username,
+            @RequestParam(defaultValue = "1") Integer status) {
+        return courseRepository.getCourseByUsernameAndStatus(username, status);
+    }
 }

@@ -4,6 +4,8 @@
  */
 package com.eikh.happyprogramming.modelkey;
 
+import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import java.io.Serializable;
 import javax.persistence.Embeddable;
 import lombok.*;
@@ -20,4 +22,5 @@ import lombok.*;
 public class ParticipateKey implements Serializable{
     private int courseId;
     private String username;
+
 }

@@ -27,7 +27,6 @@ import lombok.*;
 public class Status implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int statusId;
     
     private int statusName;

@@ -36,7 +36,7 @@ public class Participate implements Serializable {
     @ManyToOne
     @MapsId("username")
     @JoinColumn(name = "username")
-    @JsonIgnore
+//    @JsonIgnore
     private User user;
 
     @ManyToOne
@@ -45,14 +45,19 @@ public class Participate implements Serializable {
     @JsonIgnore
     private Course course;
 
-    @ManyToOne
-    @JoinColumn(name = "participateRole", referencedColumnName = "roleId")
-    @JsonIgnore
-    private Role role;
 
     @ManyToOne
     @JoinColumn(name = "statusId")
     @JsonIgnore
     private Status status;
+    
+//    @ManyToOne
+//    @JoinColumn(name = "participateRole")
+//    @JsonIgnore
+//    private ParticipateRole participateRole;
+    @ManyToOne
+    @JoinColumn(name = "participateRole", referencedColumnName = "roleId")
+    @JsonIgnore
+    private  Role role;
 
 }

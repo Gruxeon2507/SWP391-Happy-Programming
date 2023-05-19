@@ -166,6 +166,10 @@ INSERT INTO `Status` (statusId, statusName) VALUES ("-1", "reject");
 INSERT INTO `Status` (statusId, statusName) VALUES ("0", "pending");
 INSERT INTO `Status` (statusId, statusName) VALUES ("1", "access");
 
+-- Insert into ParticipateRole
+-- INSERT INTO ParticipateRole (participateRole, participateRoleName) VALUES (1, "Create");
+-- INSERT INTO ParticipateRole (participateRole, participateRoleName) VALUES (2, "Mentor");
+-- INSERT INTO ParticipateRole (participateRole, participateRoleName) VALUES (3, "Mentee");
 
 -- Insert into Participate
 -- Mentor dạy 
@@ -229,7 +233,7 @@ INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES (
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '4', '3', '1');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '4', '3', '0');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '4', '3', '0');
-INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '4', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '4', '3', '1');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '4', '3', '0');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '4', '3', '1');
 
