@@ -35,10 +35,10 @@ public class CourseController {
     @Autowired
     UserRepository userRepository;
 
-//    @GetMapping
-//    List<Course> getAll() {
-//        return courseRepository.findAll();
-//    }
+    @GetMapping
+    List<Course> getAll() {
+        return courseRepository.findAll();
+    }
     /**
      * @author maiphuonghoang
      *
@@ -119,5 +119,25 @@ public class CourseController {
     List<Course> getCourseByUsernameAndStatus(@PathVariable String username,
             @RequestParam(defaultValue = "1") Integer statusId) {
         return courseRepository.getCourseByUsernameAndStatusId(username, statusId);
+    }
+
+    /**
+     * @author maiphuonghoang
+     *
+     * Get Mentor and Mentee of course 
+     */
+    @GetMapping("/find-user/{courseId}")
+    List<User> getUserOfCourse(@PathVariable Integer courseId) {
+        return userRepository.getUserOfCourse(courseId);
+    }
+
+    /**
+     * @author maiphuonghoang
+     *
+     * get Mentor of Course 
+     */
+    @GetMapping("/find-mentor/{courseId}")
+    List<User> getMentorOfCourse(@PathVariable Integer courseId) {
+        return userRepository.getMentorOfCourse(courseId);
     }
 }

@@ -21,4 +21,18 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     public User findByMail(String mail);
 
+    //mph 
+    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+            + "				  JOIN Course c ON p.courseId = c.courseId\n"
+            + "                  JOIN Role r ON r.roleId = p.participateRole\n"
+            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
+            + "                  WHERE c.courseId = :courseId  AND p.participateRole IN (2,3)", nativeQuery = true)
+    public List<User> getUserOfCourse(Integer courseId);
+    //mph 
+    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+            + "				  JOIN Course c ON p.courseId = c.courseId\n"
+            + "                  JOIN Role r ON r.roleId = p.participateRole\n"
+            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
+            + "                  WHERE c.courseId = :courseId  AND p.participateRole = 2", nativeQuery = true)
+    public List<User> getMentorOfCourse(Integer courseId);
 }

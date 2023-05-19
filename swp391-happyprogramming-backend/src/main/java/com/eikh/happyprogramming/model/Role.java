@@ -59,6 +59,7 @@ public class Role  implements GrantedAuthority{
     }
 
     @OneToMany( mappedBy = "role")
+    @JsonIgnore
     private List<Participate> participateRoles;
 
     @Override
