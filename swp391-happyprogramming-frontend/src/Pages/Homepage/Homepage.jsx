@@ -13,7 +13,9 @@ function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [condition, setCondition] = useState("");
-  const [filter, setFilter] = useState("all");
+  
+  const [mentorOfCourses, setMentorOfCourses] = useState({});
+
   const sizePerPage = 5;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
@@ -53,20 +55,9 @@ function Homepage() {
       });
   };
 
-  const getPageCoursesByCategories = async (
-    categoryIds,
-    pageNumber,
-    pageSize,
-    sortField,
-    sortOrder
-  ) => {
-    await CourseServices.getPageCoursesByCategories(
-      categoryIds,
-      pageNumber,
-      pageSize,
-      sortField,
-      sortOrder
-    )
+
+  const getPageCoursesByCategories = (categoryIds, pageNumber, pageSize, sortField, sortOrder) => {
+    CourseServices.getPageCoursesByCategories(categoryIds, pageNumber, pageSize, sortField, sortOrder)
       .then((response) => {
         setPageCourses(response.data.content);
         console.log("response" + response.data);
@@ -77,17 +68,13 @@ function Homepage() {
         console.log(error);
       });
   };
+  const categoryIds = checked.join(",");
+
   const handlePageChange = (current) => {
     if (checked.length > 0) {
       setCurrentPage(current);
       console.log("current" + current);
-      getPageCoursesByCategories(
-        checked.join(","),
-        current - 1,
-        sizePerPage,
-        "createdAt",
-        "desc"
-      );
+      getPageCoursesByCategories(categoryIds, current - 1, sizePerPage, "createdAt", "desc");
     } else {
       setCurrentPage(current);
       getPageCourses(current - 1, sizePerPage, "createdAt", "desc");
@@ -105,18 +92,10 @@ function Homepage() {
     console.log("check on submit:" + checked);
     setCurrentPage(1);
     console.log({ ids: checked });
-    const categoryIds = checked.join(",");
-    console.log("categoryIds" + categoryIds);
-    getPageCoursesByCategories(
-      categoryIds,
-      0,
-      sizePerPage,
-      "createdAt",
-      "desc"
-    );
+    getPageCoursesByCategories(categoryIds, 0, sizePerPage, "createdAt", "desc");
   };
-  const filterCourse = (searchText, pageNumber, pageSize , sortField, sortOrder ) =>
-    CourseServices.filterCourse(searchText,pageNumber, pageSize, sortField, sortOrder).then(
+  const filterCourse = (searchText, pageNumber, pageSize, sortField, sortOrder) =>
+    CourseServices.filterCourse(searchText, pageNumber, pageSize, sortField, sortOrder).then(
       (response) => {
         setPageCourses(response.data.content);
         setTotalItems(response.data.totalElements);
@@ -126,53 +105,69 @@ function Homepage() {
     console.log("da click search");
     console.log(condition);
     console.log(condition.length);
-    if(condition.length > 0) {
+    if (condition.length > 0) {
       console.log("goi api");
-      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage,  "createdAt", "desc" );
-    }else{
+      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage, "createdAt", "desc");
+    } else {
       getPageCourses(0, 5, "createdAt", "desc");
       // handleCheckFilter();
     }
-    
-    
+
+
   }
-  const handleReset = ()=>{
+  const handleReset = () => {
     setCondition('')
     console.log("da click reset ");
     getPageCourses(0, 5, "createdAt", "desc");
 
   }
-  const handleCheckFilter = (checkedFilter)=>{
+  const handleCheckFilter = (checkedFilter) => {
     console.log(checkedFilter);
     const sortField = checkedFilter.split('|')[1];
     const sortOrder = checkedFilter.split('|')[0];
     console.log("sortField = " + sortField);
     console.log("sortOrder = " + sortOrder);
-    if(condition.length > 0) {
-      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage,  sortField, sortOrder );
-    }else{
-      getPageCourses(0, 5,  sortField, sortOrder);
+    if (condition.length > 0) {
+      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage, sortField, sortOrder);
+    }else if(checked.length>0){
+      getPageCoursesByCategories(categoryIds, 0, sizePerPage, sortField, sortOrder);
     }
-
+     else {
+      getPageCourses(0, 5, sortField, sortOrder);
+    }
 
 
   }
 
+  const getMentorOfCourses = (courseId) => {
+    CourseServices.getMentorOfCourse(courseId).then((response) => {
+      setMentorOfCourses((prevUserOfCourses) => ({
+        ...prevUserOfCourses,
+        [courseId]: response.data.displayName,
+      }));
+    });
+  };
+  useEffect(() => {
+    pageCourses.forEach((course) => {
+      getMentorOfCourses(course.courseId);
+    });
+  }, [pageCourses]);
+
   return (
 
     <>
-      
+
       <div className="find d-flex justify-content-center">
         <FormControl
           placeholder="Search course here"
           name="search"
           className={"info-border bg-dark text-white w-50 "}
           value={condition}
-          onChange={(e) => {setCondition(e.target.value); console.log(e.target.value);}}
+          onChange={(e) => { setCondition(e.target.value); console.log(e.target.value); }}
         />
         <button onClick={() => handleSearch()}>Search</button>
         <button onClick={() => handleReset()}>Reset</button>
-        <select name="filter" id="" onChange={(e)=>handleCheckFilter(e.target.value)} >
+        <select name="filter" id="" onChange={(e) => handleCheckFilter(e.target.value)} >
           <option disabled>---- Filter -----</option>
           <option value="asc|courseName">A-Z Name</option>
           <option value="desc|courseName">Z-A Name</option>
@@ -180,7 +175,7 @@ function Homepage() {
           <option value="desc|createdAt">Oldest</option>
         </select>
       </div>
- 
+
       <h2>LIST CATEGORY</h2>
       <div className="select-list">
         {categories.map((category) => (
@@ -202,16 +197,20 @@ function Homepage() {
       </div>
 
       <div className="list-Courses">
-        {pageCourses.map((course) => (
-          <div>
-            <p>{course.courseName}</p>
-            <p>{course.createdAt}</p>
-            <p>Mentor</p>
-            <p>View details</p>
-            <hr />
-            {/* <p>{course.courseDescription}</p> */}
-          </div>
-        ))}
+        {
+          pageCourses.map((course) => (
+            <div>
+              <p>{course.courseName}</p>
+              <p>CreatedAt: {course.createdAt}</p>
+              <p>Mentor: {mentorOfCourses[course.courseId]}</p>
+              <p>View details</p>
+              <hr />
+              {/* <p>{course.courseDescription}</p> */}
+
+            </div>
+
+          ))
+        }
       </div>
       <Pagination
         style={{
