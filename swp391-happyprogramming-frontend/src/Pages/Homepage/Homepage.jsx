@@ -11,7 +11,7 @@ function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [condition, setCondition] = useState("");
-  const [filter, setFilter] = useState("all");
+  
   const [mentorOfCourses, setMentorOfCourses] = useState({});
 
   const sizePerPage = 5;
@@ -61,11 +61,13 @@ function Homepage() {
         console.log(error);
       });
   };
+  const categoryIds = checked.join(",");
+
   const handlePageChange = (current) => {
     if (checked.length > 0) {
       setCurrentPage(current);
       console.log("current" + current);
-      getPageCoursesByCategories(checked.join(","), current - 1, sizePerPage, "createdAt", "desc");
+      getPageCoursesByCategories(categoryIds, current - 1, sizePerPage, "createdAt", "desc");
     } else {
       setCurrentPage(current);
       getPageCourses(current - 1, sizePerPage, "createdAt", "desc");
@@ -83,8 +85,6 @@ function Homepage() {
     console.log("check on submit:" + checked);
     setCurrentPage(1);
     console.log({ ids: checked });
-    const categoryIds = checked.join(",");
-    console.log("categoryIds" + categoryIds);
     getPageCoursesByCategories(categoryIds, 0, sizePerPage, "createdAt", "desc");
   };
   const filterCourse = (searchText, pageNumber, pageSize, sortField, sortOrder) =>
@@ -122,7 +122,10 @@ function Homepage() {
     console.log("sortOrder = " + sortOrder);
     if (condition.length > 0) {
       filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage, sortField, sortOrder);
-    } else {
+    }else if(checked.length>0){
+      getPageCoursesByCategories(categoryIds, 0, sizePerPage, sortField, sortOrder);
+    }
+     else {
       getPageCourses(0, 5, sortField, sortOrder);
     }
 
