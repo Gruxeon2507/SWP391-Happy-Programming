@@ -3,6 +3,8 @@ import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
 import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
+import NavBar from "../../Components/Navbar/NavBar";
+import "../Homepage/Homepage.css";
 
 function Homepage() {
   const [categories, setCategories] = useState([]);
@@ -27,8 +29,8 @@ function Homepage() {
     });
   };
   console.log(checked);
-  const getAllCategories = () => {
-    CategoryServices.getAllCategories()
+  const getAllCategories = async () => {
+    await CategoryServices.getAllCategories()
       .then((response) => {
         setCategories(response.data);
       })
@@ -36,8 +38,13 @@ function Homepage() {
         console.log(error);
       });
   };
-  const getPageCourses = (pageNumber, pageSize, sortField, sortOrder) => {
-    CourseServices.getPageAllCourses(pageNumber, pageSize, sortField, sortOrder)
+  const getPageCourses = async (pageNumber, pageSize, sortField, sortOrder) => {
+    await CourseServices.getPageAllCourses(
+      pageNumber,
+      pageSize,
+      sortField,
+      sortOrder
+    )
       .then((response) => {
         console.log(response);
         setPageCourses(response.data.content);
@@ -170,20 +177,24 @@ function Homepage() {
       </div>
 
       <h2>LIST CATEGORY</h2>
-      {categories.map((category) => (
-        <div className="select">
-          <label key={category.categoryId}>
-            <input
-              type="checkbox"
-              className="form-check-input"
-              checked={checked.includes(category.categoryId)}
-              onChange={() => handleCheck(category.categoryId)}
-            />
-            {category.categoryName}
-          </label>
-        </div>
-      ))}
-      <div className="btn btn-success" onClick={handleSubmit}>Find</div>
+      <div className="select-list">
+        {categories.map((category) => (
+          <div className="select">
+            <label key={category.categoryId}>
+              <input
+                type="checkbox"
+                className="form-check-input"
+                checked={checked.includes(category.categoryId)}
+                onChange={() => handleCheck(category.categoryId)}
+              />
+              {category.categoryName}
+            </label>
+          </div>
+        ))}
+      </div>
+      <div className="btn btn-success" onClick={handleSubmit}>
+        Find
+      </div>
 
       <div className="list-Courses">
         {
@@ -202,7 +213,12 @@ function Homepage() {
         }
       </div>
       <Pagination
-        style={{ borderColor: "#eaa451", color: "black", boxShadow: "none", margin: "5px" }}
+        style={{
+          borderColor: "#eaa451",
+          color: "black",
+          boxShadow: "none",
+          margin: "5px",
+        }}
         total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>
@@ -213,8 +229,8 @@ function Homepage() {
           handlePageChange(current);
         }}
       />
-    </>
-  )
+    </div>
+  );
 }
 
 export default Homepage;
