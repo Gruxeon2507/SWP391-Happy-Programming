@@ -5,6 +5,7 @@ import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../Homepage/Homepage.css";
+import convertDateFormat from "../../util/DateConvert";
 
 function Homepage() {
   const [categories, setCategories] = useState([]);
@@ -155,7 +156,7 @@ function Homepage() {
 
   return (
 
-    <>
+    <div>
 
       <div className="find d-flex justify-content-center">
         <FormControl
@@ -201,7 +202,7 @@ function Homepage() {
           pageCourses.map((course) => (
             <div>
               <p>{course.courseName}</p>
-              <p>CreatedAt: {course.createdAt}</p>
+              <p>CreatedAt: {convertDateFormat(course.createdAt)}</p>
               <p>Mentor: {mentorOfCourses[course.courseId]}</p>
               <p>View details</p>
               <hr />

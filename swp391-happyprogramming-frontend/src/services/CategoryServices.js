@@ -1,5 +1,5 @@
 import axios from "axios";
-const CATEGORY_BASE_REST_API_URL = "http://localhost:1111/api/auth/categories";
+const CATEGORY_BASE_REST_API_URL = "http://localhost:1111/api/categories";
 
 class CategoryServices {
   getAllCategories() {

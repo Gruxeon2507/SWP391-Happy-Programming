@@ -4,12 +4,15 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
+import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
-@RequestMapping("api/auth/courses")
+@RequestMapping("api/courses")
 public class CourseController {
 
     @Autowired
@@ -35,10 +38,17 @@ public class CourseController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private JwtTokenFilter jwtTokenFilter;
+
     @GetMapping
     List<Course> getAll() {
         return courseRepository.findAll();
     }
+
     /**
      * @author maiphuonghoang
      *
@@ -105,26 +115,29 @@ public class CourseController {
         }
     }
 
-//    @GetMapping("by-user/{username}")
-//    List<User> getCourseByUsernameAndStatus(@PathVariable String username,
-//            @RequestParam(defaultValue = "1") Integer status) {
-//        return userRepository.getCourseByUsernameAndStatus(username, status);
-//    }
     /**
      * @author maiphuonghoang
      *
      * get Course by username, statusId and participateRole in (mentor, mentee)
      */
-    @GetMapping("/{username}")
-    List<Course> getCourseByUsernameAndStatus(@PathVariable String username,
+    @GetMapping("/by-user")
+    List<Course> getCourseByUsernameAndStatus(HttpServletRequest request,
             @RequestParam(defaultValue = "1") Integer statusId) {
-        return courseRepository.getCourseByUsernameAndStatusId(username, statusId);
+        try {
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            return courseRepository.getCourseByUsernameAndStatusId(username, statusId);
+
+        } catch (Exception e) {
+            System.out.println("non valid token");
+        }
+        return null;
     }
 
     /**
      * @author maiphuonghoang
      *
-     * Get Mentor and Mentee of course 
+     * Get Mentor and Mentee of course
      */
     @GetMapping("/find-user/{courseId}")
     List<User> getUserOfCourse(@PathVariable Integer courseId) {
@@ -134,7 +147,7 @@ public class CourseController {
     /**
      * @author maiphuonghoang
      *
-     * get Mentor of Course 
+     * get Mentor of Course
      */
     @GetMapping("/find-mentor/{courseId}")
     User getMentorOfCourse(@PathVariable Integer courseId) {
