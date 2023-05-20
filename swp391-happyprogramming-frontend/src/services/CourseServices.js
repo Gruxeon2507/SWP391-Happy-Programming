@@ -34,5 +34,10 @@ class CourseServices{
       console.log(`${COURSE_BASE_REST_API_URL}/${username}?statusId=${statusId}`);
       return axios.get(`${COURSE_BASE_REST_API_URL}/${username}?statusId=${statusId}`);
     }
+
+    getMentorOfCourse(courseId){
+      console.log(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
+      return axios.get(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
+    }
 }
 export default new CourseServices();

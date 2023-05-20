@@ -137,7 +137,7 @@ public class CourseController {
      * get Mentor of Course 
      */
     @GetMapping("/find-mentor/{courseId}")
-    List<User> getMentorOfCourse(@PathVariable Integer courseId) {
+    User getMentorOfCourse(@PathVariable Integer courseId) {
         return userRepository.getMentorOfCourse(courseId);
     }
 }

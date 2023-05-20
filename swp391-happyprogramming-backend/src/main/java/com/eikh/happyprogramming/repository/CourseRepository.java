@@ -16,16 +16,21 @@ import org.springframework.data.jpa.repository.Query;
  * @author emiukhoahoc 
  */
 public interface CourseRepository extends JpaRepository<Course, Integer>{
+    //@maiphuonghoang
     Page<Course> findAll(Pageable pageable);
     
+    //@maiphuonghoang
     @Query("select distinct co from Course co join co.categories c where c.categoryId in :categoryIds")
     public List<Course> getCourseByCategoryIds(Integer[] categoryIds);
 
+    //@maiphuonghoang
     public Page<Course> findByCourseIdIn(List<Integer> courseIds, Pageable pageable);
     
+    //@maiphuonghoang
     @Query(value = "select * from Course co where co.courseName LIKE %?1% OR co.createdAt LIKE %?1%" , nativeQuery = true)
     Page<Course> findAllSearch(Pageable pageable, String searchText);
 
+    //@maiphuonghoang
     public List<Course> findByCourseId(int courseId);
     
         @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
@@ -35,6 +40,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer>{
             + "                  WHERE u.username = :username AND p.statusId = :statusId AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<Course> getCourseByUsernameAndStatusId(String username, Integer statusId);
     
+    //@maiphuonghoang
         @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"

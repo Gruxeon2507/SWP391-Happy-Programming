@@ -7,6 +7,35 @@ const MyCourse = () => {
     const [accessCourses, setAccessCourses] = useState([]);
     const [pendingCourses, setPendingCourses] = useState([]);
     const [rejectCourses, setRejectCourses] = useState([]);
+    const [mentorOfCourses, setMentorOfCourses] = useState({});
+
+    const getMentorOfCourses = (courseId) => {
+        CourseServices.getMentorOfCourse(courseId).then((response) => {
+            setMentorOfCourses((prevUserOfCourses) => ({
+            ...prevUserOfCourses,
+            [courseId]: response.data.displayName,
+          }));
+        });
+      };
+    
+      const mapMentor = (courses) => {
+        courses.forEach((course) => {
+          getMentorOfCourses(course.courseId);
+        });
+      };
+      
+      useEffect(() => {
+        mapMentor(accessCourses);
+      }, [accessCourses]);
+      
+      useEffect(() => {
+        mapMentor(pendingCourses);
+      }, [pendingCourses]);
+      
+      useEffect(() => {
+        mapMentor(rejectCourses);
+      }, [rejectCourses]);
+
 
     const myCourses = (username, statusId) => {
         CourseServices.getCourseByUsernameAndStatusId(username, statusId)
@@ -31,8 +60,8 @@ const MyCourse = () => {
         return courses.map((course) => (
             <div key={course.courseId}>
                 <p>{course.courseName}</p>
-                <p>{course.createdAt}</p>
-                <p>Mentor</p>
+                <p>CreatedAt: {course.createdAt}</p>
+                <p>Mentor: {mentorOfCourses[course.courseId]}</p>
                 <hr />
             </div>
         ));
