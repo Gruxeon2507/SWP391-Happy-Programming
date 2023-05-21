@@ -14,7 +14,9 @@ import Chat from "./Pages/Chat/Chat";
 import Setting from "./Pages/Setting/Setting";
 import React from "react";
 import userProfile from "./Pages/UserProfile/userProfile";
+import api from "./services/BaseAuthenticationService";
 import Homepage from "./Pages/Homepage/Homepage";
+import MyCourse from "./Pages/MyCourse/MyCourse";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -41,6 +43,8 @@ function App() {
       <Route path="/chat" element={<Chat />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/homepage" element={<Homepage />} />
+      <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
       {features &&

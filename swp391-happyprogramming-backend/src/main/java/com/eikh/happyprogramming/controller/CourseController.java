@@ -5,7 +5,9 @@
 package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CourseRepository;
+import com.eikh.happyprogramming.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author maiphuonghoang
- */
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("api/auth/courses")
@@ -34,11 +32,18 @@ public class CourseController {
     @Autowired
     CourseRepository courseRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping
     List<Course> getAll() {
         return courseRepository.findAll();
     }
-
+    /**
+     * @author maiphuonghoang
+     *
+     * Paging, sorting for all course in homepage
+     */
     @GetMapping("/page")
     public Page<Course> getCourses(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -52,6 +57,11 @@ public class CourseController {
         return courseRepository.findAll(pageable);
     }
 
+    /**
+     * @author maiphuonghoang
+     *
+     * Paging, sorting for course by categories in homepage
+     */
     @GetMapping("/by-categories/{categoryIds}")
     public Page<Course> getPageCoursesByCategories(
             @PathVariable("categoryIds") Integer[] categoryIds,
@@ -72,6 +82,11 @@ public class CourseController {
         return pageCourses;
     }
 
+    /**
+     * @author maiphuonghoang
+     *
+     * Filter, paging, sorting for all course or by categories course
+     */
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Course>> findAllPublic(
             @PathVariable String searchText,
@@ -88,5 +103,41 @@ public class CourseController {
             return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
 
         }
+    }
+
+//    @GetMapping("by-user/{username}")
+//    List<User> getCourseByUsernameAndStatus(@PathVariable String username,
+//            @RequestParam(defaultValue = "1") Integer status) {
+//        return userRepository.getCourseByUsernameAndStatus(username, status);
+//    }
+    /**
+     * @author maiphuonghoang
+     *
+     * get Course by username, statusId and participateRole in (mentor, mentee)
+     */
+    @GetMapping("/{username}")
+    List<Course> getCourseByUsernameAndStatus(@PathVariable String username,
+            @RequestParam(defaultValue = "1") Integer statusId) {
+        return courseRepository.getCourseByUsernameAndStatusId(username, statusId);
+    }
+
+    /**
+     * @author maiphuonghoang
+     *
+     * Get Mentor and Mentee of course 
+     */
+    @GetMapping("/find-user/{courseId}")
+    List<User> getUserOfCourse(@PathVariable Integer courseId) {
+        return userRepository.getUserOfCourse(courseId);
+    }
+
+    /**
+     * @author maiphuonghoang
+     *
+     * get Mentor of Course 
+     */
+    @GetMapping("/find-mentor/{courseId}")
+    User getMentorOfCourse(@PathVariable Integer courseId) {
+        return userRepository.getMentorOfCourse(courseId);
     }
 }

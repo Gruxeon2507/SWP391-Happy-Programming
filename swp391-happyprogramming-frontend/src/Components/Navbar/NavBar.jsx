@@ -50,6 +50,9 @@ function NavBar(props) {
             <NavLink to="/homepage">Homepage</NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="/mycourse">MyCourse</NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink to="/creCourse">creCourse</NavLink>
           </li>
           <li className="nav-item">

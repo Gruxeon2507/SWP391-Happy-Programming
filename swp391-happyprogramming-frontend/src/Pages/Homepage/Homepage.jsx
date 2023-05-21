@@ -176,6 +176,20 @@ function Homepage() {
     fetchData();
   }, []);
 
+  const getMentorOfCourses = (courseId) => {
+    CourseServices.getMentorOfCourse(courseId).then((response) => {
+      setMentorOfCourses((prevUserOfCourses) => ({
+        ...prevUserOfCourses,
+        [courseId]: response.data.displayName,
+      }));
+    });
+  };
+  useEffect(() => {
+    pageCourses.forEach((course) => {
+      getMentorOfCourses(course.courseId);
+    });
+  }, [pageCourses]);
+
   return (
     <div className="container home-page">
       <NavBar mode={1}></NavBar>
