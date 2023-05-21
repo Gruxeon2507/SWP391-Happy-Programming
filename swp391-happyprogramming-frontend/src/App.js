@@ -16,6 +16,7 @@ import userProfile from "./Pages/UserProfile/userProfile";
 import api from "./services/BaseAuthenticationService";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
+import ChatRoom from "./Pages/ChatBeta/ChatRoom";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -38,7 +39,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
-      <Route path="/chat" element={<Chat />} />
+      <Route path="/chat" element={<ChatRoom />} />
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/mycourse" element={<MyCourse />} />

@@ -155,7 +155,7 @@ function Homepage() {
 
   return (
 
-    <>
+    <div>
 
       <div className="find d-flex justify-content-center">
         <FormControl

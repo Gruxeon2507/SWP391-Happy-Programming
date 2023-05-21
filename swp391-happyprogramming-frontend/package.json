@@ -9,11 +9,15 @@
     "antd": "^5.5.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "net": "^1.0.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
+    "sockjs": "^0.3.24",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
