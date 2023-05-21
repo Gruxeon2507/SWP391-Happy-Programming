@@ -6,8 +6,10 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.Participate;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CourseRepository;
+import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import java.util.ArrayList;
@@ -44,6 +46,9 @@ public class CourseController {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
+    @Autowired
+    ParticipateRepository participateRepository;
+    
     @GetMapping
     List<Course> getAll() {
         return courseRepository.findAll();
@@ -126,6 +131,7 @@ public class CourseController {
         try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
+            username = "hieudt";
             return courseRepository.getCourseByUsernameAndStatusId(username, statusId);
 
         } catch (Exception e) {
@@ -151,6 +157,11 @@ public class CourseController {
      */
     @GetMapping("/find-mentor/{courseId}")
     User getMentorOfCourse(@PathVariable Integer courseId) {
+        User user = userRepository.getMentorOfCourse(courseId);
+//        System.out.println(user.getDisplayName());
+        List<Participate> p = participateRepository.findByUsername(user.getUsername());
+        System.out.println(p.get(0).getCourse().getCourseName());
         return userRepository.getMentorOfCourse(courseId);
+//        return null;
     }
 }

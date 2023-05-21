@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/auth/users")
 public class UserController {
-
+    
     @Autowired
     UserRepository userRepository;
 
@@ -82,4 +82,9 @@ public class UserController {
         }
     }
     
+    
+    @PostMapping
+    public User createMentor(@RequestBody User mentor) {
+        return userRepository.save(mentor);
+    }
 }
