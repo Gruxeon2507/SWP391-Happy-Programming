@@ -81,5 +81,10 @@ public class UserController {
             }
         }
     }
+    
+    @GetMapping("/mentors")
+    public List<User> getAllMentors(){
+        return userRepository.getAllMentors();
+    }
 
 }

@@ -7,6 +7,7 @@ package com.eikh.happyprogramming.repository;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -19,6 +20,9 @@ public interface UserRepository extends JpaRepository<User, String>{
      public List<User> findByIsVerified(boolean isVerified);
      
      public User findByMail(String mail);
+     
+     @Query("select u from User u join u.roles r where r.roleId = 2")
+     public List<User> getAllMentors();
          
     
 }

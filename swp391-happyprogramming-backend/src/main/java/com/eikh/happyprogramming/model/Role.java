@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.*;
@@ -29,13 +30,13 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 @Entity
 @Table(name = "Role")
-public class Role  implements GrantedAuthority{
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roleId;
     private String roleName;
-    
+
     @ManyToMany
     @JoinTable(name = "User_Role",
             joinColumns = @JoinColumn(name = "roleId"),
@@ -51,11 +52,12 @@ public class Role  implements GrantedAuthority{
 
     @Override
     public String toString() {
-        return  roleName;
+        return roleName;
     }
 
-    @OneToOne( mappedBy = "role")
-    private Participate participateRole;
+    @OneToMany( mappedBy = "role")
+    @JsonIgnore
+    private List<Participate> participateRoles;
 
     @Override
     public String getAuthority() {
