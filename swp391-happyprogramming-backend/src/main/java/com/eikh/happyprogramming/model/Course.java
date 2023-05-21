@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -39,6 +40,8 @@ public class Course implements Serializable {
     private String courseDescription;
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
+    // Could not write JSON: For input string: "access"; nested exception is com.fasterxml.jackson.databind.JsonMappingException: For input string: "access" (through reference chain: java.util.ArrayList[0]->com.eikh.happyprogramming.model.Course["participates"])]
     private List<Participate> participates;
 
     @OneToMany(mappedBy = "course")

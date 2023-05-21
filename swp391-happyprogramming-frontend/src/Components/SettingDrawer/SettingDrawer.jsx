@@ -17,15 +17,14 @@ function SettingDrawer(props) {
 
   return (
     <div>
-      <div className="draw-Toggle">
-        <input
-          type="checkbox"
-          style={{ width: "100px", height: "100px" }}
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-        />
-      </div>
       <nav className={`drawer ${isChecked ? "active" : ""}`} id="NavBar">
+        <div className="draw-Toggle">
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+          />
+        </div>
         <ul className="draw-menu">
           <li className="draw-item">
             <NavLink to="/home">Home</NavLink>

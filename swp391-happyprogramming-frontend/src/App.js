@@ -6,15 +6,17 @@ import {
 } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "./services/BaseAuthenticationService";
+import React from "react";
 //Componentss
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import Chat from "./Pages/Chat/Chat";
 import Setting from "./Pages/Setting/Setting";
-import React from "react";
 import userProfile from "./Pages/UserProfile/userProfile";
 import Homepage from "./Pages/Homepage/Homepage";
+import MyCourse from "./Pages/MyCourse/MyCourse";
+import CourseDetails from "./Pages/Course/CourseDetails";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -39,10 +41,14 @@ function App() {
       <Route path="/" element={<Navigate to="/landing"></Navigate>}></Route>
       <Route path="/landing" element={<Home />} />
       <Route path="/chat" element={<Chat />} />
-      <Route path="/homepage" element={<Homepage />} />
+      {/* <Route path="/homepage" element={<Homepage />} /> */}
+      <Route path="/courses" element={<Homepage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/homepage" element={<Homepage />} />
+      <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
+      <Route path="/courses/:courseName" element={<CourseDetails />} />
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {

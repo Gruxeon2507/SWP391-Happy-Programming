@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Collection;
@@ -50,6 +51,7 @@ public class User implements UserDetails {
     private List<User_Conversation> user_conversations;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Participate> participates;
 
     @OneToMany(mappedBy = "user")
