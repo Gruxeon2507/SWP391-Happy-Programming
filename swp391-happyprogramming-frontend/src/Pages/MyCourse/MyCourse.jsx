@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import CourseServices from "../../services/CourseServices";
+import convertDateFormat from "../../util/DateConvert";
 
 const MyCourse = () => {
-    // const username = window.localStorage.getItem('user')
-    const username = "hieudt";
+
     const [accessCourses, setAccessCourses] = useState([]);
     const [pendingCourses, setPendingCourses] = useState([]);
     const [rejectCourses, setRejectCourses] = useState([]);
@@ -37,8 +37,8 @@ const MyCourse = () => {
       }, [rejectCourses]);
 
 
-    const myCourses = (username, statusId) => {
-        CourseServices.getCourseByUsernameAndStatusId(username, statusId)
+    const myCourses = (statusId) => {
+        CourseServices.getCourseByUsernameAndStatusId( statusId)
             .then((response) => {
                 console.log(response.data);
                 if (statusId === 1) setAccessCourses(response.data);
@@ -51,16 +51,16 @@ const MyCourse = () => {
             });
     };
     useEffect(() => {
-        myCourses(username, 1);
-        myCourses(username, 0);
-        myCourses(username, -1);
+        myCourses( 1);
+        myCourses( 0);
+        myCourses( -1);
 
     }, []);
     const renderCourseList = (courses) => {
         return courses.map((course) => (
             <div key={course.courseId}>
                 <p>{course.courseName}</p>
-                <p>CreatedAt: {course.createdAt}</p>
+                <p>CreatedAt: {convertDateFormat(course.createdAt)}</p>
                 <p>Mentor: {mentorOfCourses[course.courseId]}</p>
                 <hr />
             </div>
