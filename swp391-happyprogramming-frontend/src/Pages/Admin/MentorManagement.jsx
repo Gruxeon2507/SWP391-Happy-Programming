@@ -74,6 +74,7 @@ const MentorManagement = () => {
           <th>Avatar</th>
           <th>Created Date</th>
           <th>Email</th>
+          <th>Status</th>
           <th>Action</th>
         </thead>
         <tbody>
@@ -98,7 +99,11 @@ const MentorManagement = () => {
                 <td>{mentor.mail}</td>
 
                 <td>
-                  <button>Update Account</button>
+                  {(mentor.activeStatus == 0) ? (<p>Banned</p>) : (<p>Active</p>)}
+
+                </td>
+                <td>
+                  <button>Ban</button>
                   <button>Delete</button>
                 </td>
               </tr>
