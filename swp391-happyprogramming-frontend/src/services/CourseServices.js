@@ -1,6 +1,7 @@
 import axios from "axios";
+import api from "./BaseAuthenticationService.js";
 
-const COURSE_BASE_REST_API_URL = "http://localhost:1111/api/auth/courses";
+const COURSE_BASE_REST_API_URL = "http://localhost:1111/api/courses";
 
 class CourseServices{
     getAllCourses(){
@@ -30,9 +31,9 @@ class CourseServices{
         return axios.get(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`);
     }
     //@maiphuonghoang
-    getCourseByUsernameAndStatusId(username, statusId){
-      console.log(`${COURSE_BASE_REST_API_URL}/${username}?statusId=${statusId}`);
-      return axios.get(`${COURSE_BASE_REST_API_URL}/${username}?statusId=${statusId}`);
+    getCourseByUsernameAndStatusId( statusId){
+      console.log(`http://localhost:1111/api/courses/by-user?statusId=${statusId}`);
+      return api.get(`/api/courses/by-user?statusId=${statusId}`);
     }
 
     getMentorOfCourse(courseId){
