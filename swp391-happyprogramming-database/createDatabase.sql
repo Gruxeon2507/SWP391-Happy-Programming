@@ -46,6 +46,7 @@ CREATE TABLE Feature
 	featureId int NOT NULL AUTO_INCREMENT, 
 	featureName varchar(255),
 	url varchar(255),
+    `component` varchar(255),
 	CONSTRAINT PK_Feature PRIMARY KEY (featureId)
 );
 
@@ -131,20 +132,39 @@ REFERENCES Category(categoryId);
 ALTER TABLE Course_Category ADD CONSTRAINT FK_CourseCategory_Course FOREIGN KEY(courseId)
 REFERENCES Course(courseId);
 
+CREATE TABLE `Status` 
+(
+	statusId int NOT NULL, 
+    statusName varchar(50),
+    CONSTRAINT PK_Status PRIMARY KEY (statusId)
+);
+
+CREATE TABLE ParticipateRole
+(
+	participateRole int NOT NULL AUTO_INCREMENT,
+	participateRoleName varchar(255),
+	CONSTRAINT PK_ParticipateRole PRIMARY KEY (participateRole)
+);
+
 CREATE TABLE Participate
 (
 	courseId int,
 	username varchar(255),
-    participateRole int UNIQUE, 
-    `status` bit DEFAULT false,
+    participateRole int, 
+    statusId int,
     CONSTRAINT PK_Participate PRIMARY KEY (courseId, username)
 );
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_User FOREIGN KEY(username)
 REFERENCES `User`(username);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Course FOREIGN KEY(courseId)
 REFERENCES Course(courseId);
-ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Role FOREIGN KEY(participateRole)
-REFERENCES `Role` (roleId);
+ALTER TABLE Participate ADD CONSTRAINT FK_Participate_ParticipateRole FOREIGN KEY(participateRole)
+REFERENCES ParticipateRole (participateRole);
+-- ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Role FOREIGN KEY(participateRole)
+-- REFERENCES `Role` (roleId);
+ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Status FOREIGN KEY(statusId)
+REFERENCES `Status` (statusId);
+
 
 CREATE TABLE Post 
 (
@@ -188,6 +208,7 @@ REFERENCES Post(postId);
 SELECT * FROM Feature 
 SELECT * FROM Role 
 SELECT * FROM User
+SELECT * FROM `Status`
 SELECT * FROM Conversation
 SELECT * FROM User_Conversation
 SELECT * FROM Participate
@@ -198,16 +219,3 @@ SELECT * FROM Course
 SELECT * FROM Course_Category
 SELECT * FROM Course
 */
-
-
-
-
-
-
-
-
- 
-
-
-
-

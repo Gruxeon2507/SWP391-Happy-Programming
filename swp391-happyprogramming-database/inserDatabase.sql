@@ -1,9 +1,6 @@
 USE FU_SWP391_HappyProgramming;
 
 
-
-select * from `User`;
-delete from `User` where username != '';
 -- Insert into `User`
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namlx', '123', 'Lê Xuân Nam', '2003-1-29', 'namlxhe153241@fpt.edu.vn', '2023-5-12', '', '', 0);
@@ -82,18 +79,26 @@ INSERT INTO User_Role (username, roleId) VALUES ('phuongmentor', '2');
 INSERT INTO User_Role (username, roleId) VALUES ('ducmentor', '2');
 INSERT INTO User_Role (username, roleId) VALUES ('giangmentor', '2');
 INSERT INTO User_Role (username, roleId) VALUES ('anmentor', '2');
+INSERT INTO User_Role (username, roleId) VALUES ('huyenmentor', '3');
+INSERT INTO User_Role (username, roleId) VALUES ('phuongmentor', '3');
+INSERT INTO User_Role (username, roleId) VALUES ('ducmentor', '3');
+INSERT INTO User_Role (username, roleId) VALUES ('giangmentor', '3');
+INSERT INTO User_Role (username, roleId) VALUES ('anmentor', '3');
 INSERT INTO User_Role (username, roleId) VALUES ('eikh', '1');
 
 
 
+
 -- Insert into Feature
-INSERT INTO Feature (featureId, featureName, url) VALUES ('1', 'Home Page', '/home');
+INSERT INTO Feature (featureId, featureName, url,`component`) VALUES ('1', 'Home Page', '/home','Home');
+INSERT INTO Feature (featureId, featureName, url,`component`) VALUES ('2', 'User Profile', '/user/:userId','userProfile');
 
 
 -- Insert into Role_Feature
 INSERT INTO Role_Feature (roleId, featureId) VALUES ('1', '1');
 INSERT INTO Role_Feature (roleId, featureId) VALUES ('2', '1');
 INSERT INTO Role_Feature (roleId, featureId) VALUES ('3', '1');
+INSERT INTO Role_Feature (roleId, featureId) VALUES ('2', '2');
 
 -- Insert into Category
 INSERT INTO Category (categoryId, categoryName) VALUES (1, 'Computer Science');
@@ -152,3 +157,105 @@ INSERT INTO Course_Category (categoryId, courseId) VALUES (3, 18);
 INSERT INTO Course_Category (categoryId, courseId) VALUES (3, 19);
 INSERT INTO Course_Category (categoryId, courseId) VALUES (3, 20);
 INSERT INTO Course_Category (categoryId, courseId) VALUES (4, 5);
+
+-- Insert into Status
+INSERT INTO `Status` (statusId, statusName) VALUES ("-1", "reject");
+INSERT INTO `Status` (statusId, statusName) VALUES ("0", "pending");
+INSERT INTO `Status` (statusId, statusName) VALUES ("1", "access");
+
+-- Insert into ParticipateRole
+INSERT INTO ParticipateRole (participateRole, participateRoleName) VALUES (1, "Create");
+INSERT INTO ParticipateRole (participateRole, participateRoleName) VALUES (2, "Mentor");
+INSERT INTO ParticipateRole (participateRole, participateRoleName) VALUES (3, "Mentee");
+
+-- Insert into Participate
+-- Mentor dạy 
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenmentor', '1', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuongmentor', '2', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('ducmentor', '3', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangmentor', '4', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('anmentor', '5', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenmentor', '6', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuongmentor', '7', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('ducmentor', '8', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangmentor', '9', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('anmentor', '10', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenmentor', '11', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuongmentor', '12', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('ducmentor', '13', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangmentor', '14', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('anmentor', '15', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenmentor', '16', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuongmentor', '17', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('ducmentor', '18', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangmentor', '19', '2', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('anmentor', '20', '2', '1');
+-- Mentor học 
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenmentor', '2', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuongmentor', '1', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('ducmentor', '2', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangmentor', '2', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('anmentor', '2', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenmentor', '3', '3', '1');
+
+-- Admin chỉ join 
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('eikh', '1', '1', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('eikh', '2', '1', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('eikh', '3', '1', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('eikh', '4', '1', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('eikh', '5', '1', '1');
+
+-- Mentee học
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '1', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '1', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenntk', '1', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '1', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '1', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '1', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '1', '3', '-1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '1', '3', '-1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '1', '3', '1');
+
+
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '2', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '2', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenntk', '2', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '2', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '2', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '2', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '2', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '2', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '2', '3', '1');
+
+
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '3', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '3', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenntk', '3', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '3', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '3', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '3', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '3', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '3', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '3', '3', '1');
+
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '4', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '4', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('huyenntk', '4', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '4', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '4', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '4', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '4', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '4', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '4', '3', '1');
+
+
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '5', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '5', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('nhatvn', '5', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '5', '3', '1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '5', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '5', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '5', '3', '-1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '5', '3', '-1');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '5', '3', '1');
+
