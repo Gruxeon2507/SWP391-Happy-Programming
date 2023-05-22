@@ -5,6 +5,7 @@
 package com.eikh.happyprogramming.model;
 
 import com.eikh.happyprogramming.modelkey.MessageKey;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -34,11 +35,13 @@ public class Message implements Serializable {
     @ManyToOne
     @MapsId("sentBy")
     @JoinColumn(name = "sentBy", referencedColumnName = "username")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @MapsId("conversationId")
     @JoinColumn(name = "conversationId")
+    @JsonIgnore
     private Conversation conversation;
 
 }

@@ -5,6 +5,7 @@ import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../Homepage/Homepage.css";
+import convertDateFormat from "../../util/DateConvert";
 
 function Homepage() {
   const [categories, setCategories] = useState([]);
@@ -13,131 +14,168 @@ function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [condition, setCondition] = useState("");
-  
-  const [mentorOfCourses, setMentorOfCourses] = useState({});
+  const [filter, setFilter] = useState("all");
+  const [isActiveCateFilter, setActiveCateFilter] = useState(false);
 
-  const sizePerPage = 5;
+  const sizePerPage = 7;
+
+  const toggleActiveCateFilter = () => {
+    setActiveCateFilter(!isActiveCateFilter);
+  };
+
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
       if (isChecked) {
-        //Uncheck
         return checked.filter((item) => item !== categoryId);
       } else {
         return [...prev, categoryId];
       }
     });
   };
-  console.log(checked);
+
   const getAllCategories = async () => {
-    await CategoryServices.getAllCategories()
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await CategoryServices.getAllCategories();
+      setCategories(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   const getPageCourses = async (pageNumber, pageSize, sortField, sortOrder) => {
-    await CourseServices.getPageAllCourses(
-      pageNumber,
-      pageSize,
-      sortField,
-      sortOrder
-    )
-      .then((response) => {
-        console.log(response);
-        setPageCourses(response.data.content);
-        setTotalItems(response.data.totalElements);
-      })
-      .catch((error) => {
-        console.log("loi lay ra page Course");
-      });
+    try {
+      const response = await CourseServices.getPageAllCourses(
+        pageNumber,
+        pageSize,
+        sortField,
+        sortOrder
+      );
+      setPageCourses(response.data.content);
+      setTotalItems(response.data.totalElements);
+    } catch (error) {
+      console.log("Error retrieving page courses:", error);
+    }
   };
 
-
-  const getPageCoursesByCategories = (categoryIds, pageNumber, pageSize, sortField, sortOrder) => {
-    CourseServices.getPageCoursesByCategories(categoryIds, pageNumber, pageSize, sortField, sortOrder)
-      .then((response) => {
-        setPageCourses(response.data.content);
-        console.log("response" + response.data);
-        setTotalItems(response.data.totalElements);
-      })
-      .catch((error) => {
-        console.log("loi lay ra page Course");
-        console.log(error);
-      });
+  const getPageCoursesByCategories = async (
+    categoryIds,
+    pageNumber,
+    pageSize,
+    sortField,
+    sortOrder
+  ) => {
+    try {
+      const response = await CourseServices.getPageCoursesByCategories(
+        categoryIds,
+        pageNumber,
+        pageSize,
+        sortField,
+        sortOrder
+      );
+      setPageCourses(response.data.content);
+      setTotalItems(response.data.totalElements);
+    } catch (error) {
+      console.log("Error retrieving page courses by categories:", error);
+    }
   };
-  const categoryIds = checked.join(",");
 
   const handlePageChange = (current) => {
+    setCurrentPage(current);
     if (checked.length > 0) {
-      setCurrentPage(current);
-      console.log("current" + current);
-      getPageCoursesByCategories(categoryIds, current - 1, sizePerPage, "createdAt", "desc");
+      getPageCoursesByCategories(
+        checked.join(","),
+        current - 1,
+        sizePerPage,
+        "createdAt",
+        "desc"
+      );
     } else {
-      setCurrentPage(current);
       getPageCourses(current - 1, sizePerPage, "createdAt", "desc");
     }
   };
 
-  useEffect(() => {
-    getAllCategories();
-    getPageCourses(0, 5, "createdAt", "desc");
-    console.log("da chay filter");
-    handleSearch();
-  }, []);
-
-  const handleSubmit = () => {
-    console.log("check on submit:" + checked);
+  const handlefilterSubmit = () => {
     setCurrentPage(1);
-    console.log({ ids: checked });
-    getPageCoursesByCategories(categoryIds, 0, sizePerPage, "createdAt", "desc");
-  };
-  const filterCourse = (searchText, pageNumber, pageSize, sortField, sortOrder) =>
-    CourseServices.filterCourse(searchText, pageNumber, pageSize, sortField, sortOrder).then(
-      (response) => {
-        setPageCourses(response.data.content);
-        setTotalItems(response.data.totalElements);
-      }
+    const categoryIds = checked.join(",");
+    getPageCoursesByCategories(
+      categoryIds,
+      0,
+      sizePerPage,
+      "createdAt",
+      "desc"
     );
+  };
+
+  const filterCourse = async (
+    searchText,
+    pageNumber,
+    pageSize,
+    sortField,
+    sortOrder
+  ) => {
+    try {
+      const response = await CourseServices.filterCourse(
+        searchText,
+        pageNumber,
+        pageSize,
+        sortField,
+        sortOrder
+      );
+      setPageCourses(response.data.content);
+      setTotalItems(response.data.totalElements);
+    } catch (error) {
+      console.log("Error filtering courses:", error);
+    }
+  };
+
   const handleSearch = () => {
-    console.log("da click search");
-    console.log(condition);
-    console.log(condition.length);
     if (condition.length > 0) {
-      console.log("goi api");
-      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage, "createdAt", "desc");
+      filterCourse(
+        encodeURIComponent(condition).replace(/%20/g, "%20"),
+        0,
+        sizePerPage,
+        "createdAt",
+        "desc"
+      );
     } else {
-      getPageCourses(0, 5, "createdAt", "desc");
-      // handleCheckFilter();
+      getPageCourses(0, sizePerPage, "createdAt", "desc");
     }
+  };
 
-
-  }
   const handleReset = () => {
-    setCondition('')
-    console.log("da click reset ");
-    getPageCourses(0, 5, "createdAt", "desc");
+    setCondition("");
+    getPageCourses(0, sizePerPage, "createdAt", "desc");
+  };
 
-  }
   const handleCheckFilter = (checkedFilter) => {
-    console.log(checkedFilter);
-    const sortField = checkedFilter.split('|')[1];
-    const sortOrder = checkedFilter.split('|')[0];
-    console.log("sortField = " + sortField);
-    console.log("sortOrder = " + sortOrder);
+    const sortField = checkedFilter.split("|")[1];
+    const sortOrder = checkedFilter.split("|")[0];
     if (condition.length > 0) {
-      filterCourse(encodeURIComponent(condition).replace(/%20/g, "%20"), 0, sizePerPage, sortField, sortOrder);
-    }else if(checked.length>0){
-      getPageCoursesByCategories(categoryIds, 0, sizePerPage, sortField, sortOrder);
+      filterCourse(
+        encodeURIComponent(condition).replace(/%20/g, "%20"),
+        0,
+        sizePerPage,
+        sortField,
+        sortOrder
+      );
+    } else {
+      getPageCourses(0, sizePerPage, sortField, sortOrder);
     }
-     else {
-      getPageCourses(0, 5, sortField, sortOrder);
-    }
+  };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        getAllCategories(),
+        getPageCourses(0, sizePerPage, "createdAt", "desc"),
+      ]);
+      console.log("da chay filter");
+      handleSearch();
+    };
 
-  }
+    fetchData();
+  }, []);
 
   const getMentorOfCourses = (courseId) => {
     CourseServices.getMentorOfCourse(courseId).then((response) => {
@@ -154,8 +192,10 @@ function Homepage() {
   }, [pageCourses]);
 
   return (
+    <div className="container home-page">
+      <NavBar mode={1}></NavBar>
 
-    <>
+    <div>
 
       <div className="find d-flex justify-content-center">
         <FormControl
@@ -190,45 +230,82 @@ function Homepage() {
               {category.categoryName}
             </label>
           </div>
-        ))}
+          <input
+            type="text"
+            placeholder="Search course here"
+            name="search"
+            value={condition}
+            onChange={(e) => {
+              setCondition(e.target.value);
+            }}
+          />
+          <button onClick={handleSearch}>
+            <ion-icon name="search-circle-outline"></ion-icon>
+          </button>
+          <div className="textBttn">
+            <button onClick={handleReset}>Reset</button>
+          </div>
+          <select
+            name="filter"
+            id=""
+            onChange={(e) => {
+              handleCheckFilter(e.target.value);
+            }}
+          >
+            <option disabled>-------- Filter --------</option>
+            <option value="asc|courseName">A-Z Name</option>
+            <option value="desc|courseName">Z-A Name</option>
+            <option value="asc|createdAt">Newest</option>
+            <option value="desc|createdAt">Oldest</option>
+          </select>
+        </div>
       </div>
-      <div className="btn btn-success" onClick={handleSubmit}>
-        Find
+      <div className="cate-filter">
+        <div className={`select-list ${isActiveCateFilter ? "active" : ""}`}>
+          {categories.map((category) => (
+            <div className="select" key={category.categoryId}>
+              <label>
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={checked.includes(category.categoryId)}
+                  onChange={() => handleCheck(category.categoryId)}
+                />
+                {category.categoryName}
+              </label>
+            </div>
+          ))}
+          <div className="findByCate">
+            <button onClick={handlefilterSubmit}>Find</button>
+          </div>
+        </div>
       </div>
+      {/* ====================end region filter==================== */}
 
+      {/* ====================region List of Course==================== */}
       <div className="list-Courses">
         {
           pageCourses.map((course) => (
             <div>
               <p>{course.courseName}</p>
-              <p>CreatedAt: {course.createdAt}</p>
+              <p>CreatedAt: {convertDateFormat(course.createdAt)}</p>
               <p>Mentor: {mentorOfCourses[course.courseId]}</p>
               <p>View details</p>
               <hr />
               {/* <p>{course.courseDescription}</p> */}
 
-            </div>
+        <span>{`${currentPage} of ${Math.ceil(
+          totalItems / sizePerPage
+        )}`}</span>
 
-          ))
-        }
+        <button
+          disabled={currentPage === Math.ceil(totalItems / sizePerPage)}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </button>
       </div>
-      <Pagination
-        style={{
-          borderColor: "#eaa451",
-          color: "black",
-          boxShadow: "none",
-          margin: "5px",
-        }}
-        total={totalItems}
-        defaultPageSize={sizePerPage}
-        showTotal={(total, range) =>
-          `${range[0]}-${range[1]} of ${total} items`
-        }
-        current={currentPage}
-        onChange={(current) => {
-          handlePageChange(current);
-        }}
-      />
+      {/* ====================End region Pagination==================== */}
     </div>
   );
 }

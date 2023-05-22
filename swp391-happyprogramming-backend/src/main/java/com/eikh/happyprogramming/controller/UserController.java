@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/auth/users")
 public class UserController {
-
+    
     @Autowired
     UserRepository userRepository;
 
