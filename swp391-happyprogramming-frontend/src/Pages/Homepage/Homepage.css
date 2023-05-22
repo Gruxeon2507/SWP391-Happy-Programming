@@ -192,17 +192,50 @@
 }
 
 .Pagination-Container {
+  display: flex;
   margin: 1rem auto 1rem auto;
+  /* border: 1px solid red; */
+  justify-content: center;
+  justify-items: center;
 }
 
 /* ====================region List of Course==================== */
 .list-Courses {
-  border: 2px solid red;
+  margin: 2rem auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 16px;
+  width: 90%;
+  max-width: 1200px;
 }
 
-.course * {
-  border: 1px solid red;
+.list-Courses * {
+  /* border: 1px solid red; */
 }
 
 .course {
+  display: flex;
+  flex-direction: column;
+  /* justify-items: center; */
+  /* justify-content: center; */
+  background-color: var(--lightItem);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+/* header */
+.course span:nth-child(1) {
+  padding: 1rem;
+  /* background-color: var(--light); */
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--item);
+  /* color: var(--light); */
+}
+
+.course span {
+  display: block;
+  text-align: center;
+  /* border: 1px solid red; */
 }

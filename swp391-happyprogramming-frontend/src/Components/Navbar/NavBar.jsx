@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import "../Navbar/NavBar.css";
 import logo from "../../Assets/logo.png";
 import { Alert } from "bootstrap";
+import SettingDrawer from "../SettingDrawer/SettingDrawer";
 
 function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
@@ -33,6 +34,7 @@ function NavBar(props) {
 
   return (
     <div>
+      {/* <SettingDrawer></SettingDrawer> */}
       <nav className={navBarClass} id="NavBar">
         <div className="brand">
           <img src={logo} alt="logo" />
@@ -47,7 +49,7 @@ function NavBar(props) {
             <a href="/home">home</a>
           </li>
           <li className="nav-item">
-            <NavLink to="/homepage">Homepage</NavLink>
+            <NavLink to="/courses">Courses</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/mycourse">MyCourse</NavLink>
@@ -67,9 +69,10 @@ function NavBar(props) {
           <li className="nav-item">
             <NavLink
               to="/login"
-              onClick={() => {alert("Are you sure you want to logout?")
-              window.localStorage.removeItem("token");
-            }}
+              onClick={() => {
+                alert("Are you sure you want to logout?");
+                window.localStorage.removeItem("token");
+              }}
             >
               logout
             </NavLink>
