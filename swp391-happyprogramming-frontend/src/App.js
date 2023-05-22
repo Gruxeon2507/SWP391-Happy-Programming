@@ -14,7 +14,6 @@ import Chat from "./Pages/Chat/Chat";
 import Setting from "./Pages/Setting/Setting";
 import React from "react";
 import userProfile from "./Pages/UserProfile/userProfile";
-import api from "./services/BaseAuthenticationService";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
 import ChatRoom from "./Pages/ChatBeta/ChatRoom";
@@ -39,15 +38,8 @@ function App() {
   console.log(features);
   return (
     <Routes>
-<<<<<<< HEAD
       <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
       <Route path="/chat" element={<ChatRoom />} />
-=======
-      <Route path="/" element={<Navigate to="/landing"></Navigate>}></Route>
-      <Route path="/landing" element={<Home />} />
-      <Route path="/chat" element={<Chat />} />
-      <Route path="/homepage" element={<Homepage />} />
->>>>>>> main
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/mycourse" element={<MyCourse />} />

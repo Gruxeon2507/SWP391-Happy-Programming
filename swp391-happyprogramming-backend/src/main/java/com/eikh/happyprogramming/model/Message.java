@@ -43,6 +43,6 @@ public class Message implements Serializable {
     @JoinColumn(name = "conversationId")
     @JsonIgnore
     private Conversation conversation;
-    private com.eikh.happyprogramming.chatModel.Status status;
+//    private com.eikh.happyprogramming.chatModel.Status status;
 
 }
