@@ -36,9 +36,15 @@ class CourseServices{
       return api.get(`/api/courses/by-user?statusId=${statusId}`);
     }
 
-    getMentorOfCourse(courseId){
-      console.log(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
-      return axios.get(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
-    }
+  getMentorOfCourse(courseId) {
+    console.log(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
+    return axios.get(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
+  }
+
+  // @anthach
+  getCourseById(courseId) {
+    // console.log(`${COURSE_BASE_REST_API_URL}/courseDetails/${courseId}`);
+    return axios.get(`${COURSE_BASE_REST_API_URL}/courseDetails/${courseId}`);
+  }
 }
 export default new CourseServices();

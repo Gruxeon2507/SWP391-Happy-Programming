@@ -164,4 +164,9 @@ public class CourseController {
         return userRepository.getMentorOfCourse(courseId);
 //        return null;
     }
+
+    @GetMapping("/courseDetails/{courseId}")
+    public List<Course> getCourseByID(@PathVariable Integer courseId) {
+        return courseRepository.findByCourseId(courseId);
+    }
 }

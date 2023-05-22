@@ -16,8 +16,9 @@ function Homepage() {
   const [condition, setCondition] = useState("");
   const [filter, setFilter] = useState("all");
   const [isActiveCateFilter, setActiveCateFilter] = useState(false);
+  const [mentorOfCourses, setMentorOfCourses] = useState("");
 
-  const sizePerPage = 7;
+  const sizePerPage = 6;
 
   const toggleActiveCateFilter = () => {
     setActiveCateFilter(!isActiveCateFilter);
@@ -177,14 +178,15 @@ function Homepage() {
     fetchData();
   }, []);
 
-  const getMentorOfCourses = (courseId) => {
-    CourseServices.getMentorOfCourse(courseId).then((response) => {
+  const getMentorOfCourses = async (courseId) => {
+    await CourseServices.getMentorOfCourse(courseId).then((response) => {
       setMentorOfCourses((prevUserOfCourses) => ({
         ...prevUserOfCourses,
         [courseId]: response.data.displayName,
       }));
     });
   };
+
   useEffect(() => {
     pageCourses.forEach((course) => {
       getMentorOfCourses(course.courseId);
@@ -283,16 +285,55 @@ function Homepage() {
       {/* ====================end region filter==================== */}
 
       {/* ====================region List of Course==================== */}
+      {/* <div className="list-Courses">
+        {pageCourses.map((course) => (
+          <div className="course" key={course.courseId}>
+            <span>
+              {course.courseId}:{course.courseName}
+            </span>
+            <span>{course.createdAt}</span>
+            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+            <span>View details</span>
+            <hr />
+          </div>
+        ))}
+      </div> */}
       <div className="list-Courses">
-        {
-          pageCourses.map((course) => (
-            <div>
-              <p>{course.courseName}</p>
-              <p>CreatedAt: {convertDateFormat(course.createdAt)}</p>
-              <p>Mentor: {mentorOfCourses[course.courseId]}</p>
-              <p>View details</p>
-              <hr />
-              {/* <p>{course.courseDescription}</p> */}
+        {pageCourses.map((course) => (
+          <div className="course" key={course.courseId}>
+            <span>
+              {course.courseId}:{course.courseName}
+            </span>
+            <span>{course.createdAt}</span>
+            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+            <span>View details</span>
+            <hr />
+          </div>
+        ))}
+      </div>
+
+      {/* ====================end region List of Course==================== */}
+      <div className="Pagination-Container">
+        <Pagination
+          total={totalItems}
+          defaultPageSize={sizePerPage}
+          showTotal={(total, range) =>
+            `${range[0]}-${range[1]} of ${total} items`
+          }
+          current={currentPage}
+          onChange={(current) => {
+            handlePageChange(current);
+          }}
+        />
+      </div>
+      {/* ====================region Pagination==================== */}
+      {/* <div className="pagination-container">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          <ion-icon name="caret-back-circle-outline"></ion-icon>
+        </button>
 
         <span>{`${currentPage} of ${Math.ceil(
           totalItems / sizePerPage
@@ -304,7 +345,7 @@ function Homepage() {
         >
           <ion-icon name="caret-forward-circle-outline"></ion-icon>
         </button>
-      </div>
+      </div> */}
       {/* ====================End region Pagination==================== */}
     </div>
   );
