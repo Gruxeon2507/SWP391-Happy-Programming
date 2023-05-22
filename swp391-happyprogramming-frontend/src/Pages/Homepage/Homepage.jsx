@@ -5,6 +5,7 @@ import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../Homepage/Homepage.css";
+import convertDateFormat from "../../util/DateConvert";
 
 function Homepage() {
   const [categories, setCategories] = useState([]);
@@ -485,7 +486,7 @@ function Homepage() {
             <span>
               {course.courseId}:{course.courseName}
             </span>
-            <span>{course.createdAt}</span>
+            <span>{convertDateFormat( course.createdAt)}</span>
             <span>Mentor: {mentorOfCourses[course.courseId]}</span>
             <span>View details</span>
             <hr />
