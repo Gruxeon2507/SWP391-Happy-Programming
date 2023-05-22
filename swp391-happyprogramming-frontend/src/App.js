@@ -17,6 +17,7 @@ import userProfile from "./Pages/UserProfile/userProfile";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
 import CourseDetails from "./Pages/Courses/CourseDetails";
+import CreateCourse from "./Pages/Course/CreateCourse";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -48,6 +49,7 @@ function App() {
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
+      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {

@@ -46,5 +46,9 @@ class CourseServices{
     // console.log(`${COURSE_BASE_REST_API_URL}/courseDetails/${courseId}`);
     return axios.get(`${COURSE_BASE_REST_API_URL}/courseDetails/${courseId}`);
   }
+  createCourse(course) {
+    return api.post("api/courses/create", course);
+  }
+
 }
 export default new CourseServices();
