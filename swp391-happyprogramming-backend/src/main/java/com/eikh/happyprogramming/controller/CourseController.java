@@ -131,7 +131,6 @@ public class CourseController {
         try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
-            username = "hieudt";
             return courseRepository.getCourseByUsernameAndStatusId(username, statusId);
 
         } catch (Exception e) {
