@@ -40,4 +40,5 @@ public class Message implements Serializable {
     @MapsId("conversationId")
     @JoinColumn(name = "conversationId")
     private Conversation conversation;
+    private com.eikh.happyprogramming.chatModel.Status status;
 }
