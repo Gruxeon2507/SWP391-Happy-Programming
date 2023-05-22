@@ -53,4 +53,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
             + "                  WHERE c.courseId = :courseId  AND p.participateRole = 2", nativeQuery = true)
     public User getMentorOfCourse(Integer courseId);
+
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId")
+    List<User> findByRoleId(Integer roleId);
 }

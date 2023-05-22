@@ -17,6 +17,7 @@ import userProfile from "./Pages/UserProfile/userProfile";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
 import CourseDetails from "./Pages/Courses/CourseDetails";
+import MentorManagement from "./Pages/Admin/MentorManagement";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -45,6 +46,7 @@ function App() {
       <Route path="/courses/:coursesID" element={<CourseDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
+      <Route path="/admin" element={<MentorManagement />} />
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />

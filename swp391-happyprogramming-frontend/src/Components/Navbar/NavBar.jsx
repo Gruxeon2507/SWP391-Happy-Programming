@@ -67,6 +67,9 @@ function NavBar(props) {
             <NavLink to="/chat">Chat</NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="/admin">Mentor Management</NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink
               to="/login"
               onClick={() => {
