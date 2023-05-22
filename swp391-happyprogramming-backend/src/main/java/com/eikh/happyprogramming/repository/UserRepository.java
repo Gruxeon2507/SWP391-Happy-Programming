@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.repository;
 
+import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +24,7 @@ public interface UserRepository extends JpaRepository<User, String>{
      
      @Query("select u from User u join u.roles r where r.roleId = 2")
      public List<User> getAllMentors();
-         
-    
+     
+     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE ur.roleId = :roleId and u.username = :username", nativeQuery = true)
+     public User userHasRole(String username, int roleId);
 }

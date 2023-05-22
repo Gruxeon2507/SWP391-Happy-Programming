@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +31,7 @@ public class Conversation {
     private String conversationName;
     
     @OneToMany(mappedBy = "conversation")
+    @JsonIgnore
     private List<User_Conversation> user_conversations;
     
     @OneToMany(mappedBy = "conversation")

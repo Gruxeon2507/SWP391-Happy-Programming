@@ -43,6 +43,7 @@ public class Course implements Serializable {
     @JsonIgnore
     private List<Participate> participates;
 
+    // Could not write JSON: For input string: "access"; nested exception is com.fasterxml.jackson.databind.JsonMappingException: For input string: "access" (through reference chain: java.util.ArrayList[0]->com.eikh.happyprogramming.model.Course["participates"])]
     @OneToMany(mappedBy = "course")
     private List<Post> posts;
 

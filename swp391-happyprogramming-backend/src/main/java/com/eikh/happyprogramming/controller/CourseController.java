@@ -7,9 +7,11 @@ package com.eikh.happyprogramming.controller;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Category;
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CategoryRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
+import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @CrossOrigin("*")
 @RestController
-@RequestMapping("api/auth/courses")
+@RequestMapping("api/courses")
 public class CourseController {
 
     @Autowired
@@ -55,10 +58,9 @@ public class CourseController {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
-    @GetMapping
-    List<Course> getAll() {
-        return courseRepository.findAll();
-    }
+    @Autowired
+    private UserRepository userRepository;
+
 
     @GetMapping("/page")
     public Page<Course> getCourses(
@@ -113,26 +115,34 @@ public class CourseController {
         java.util.Date today = new java.util.Date();
         java.sql.Date createdAt = new java.sql.Date(today.getTime());
         course.setCreatedAt(createdAt);
+//        Insert into Course
         Course newCourse = courseRepository.save(course);
-        System.out.println("THERE ARE " + course.getCategories().size() + " CATEGORIES");
+        System.out.println("COURSE ID: " + newCourse.getCourseId());
+//        System.out.println("THERE ARE " + course.getCategories().size() + " CATEGORIES");
+
+//         Insert into Course
         for (Category c : newCourse.getCategories()) {
-//            System.out.println("Category: " + c.getCategoryId() + "\t " + c.getCategoryName());
             categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
         }
-//        System.out.println("COURSE ID " + c.getCourseId());
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         // insert admin into participate table
+        participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
         return newCourse;
     }
 
-    @DeleteMapping("/delete")
-    public void deleteCourse(@RequestParam("courseId") int courseId) {
-        courseRepository.deleteById(courseId);
-    }
-
-    @GetMapping("/view")
-    public Course getCourseById(@RequestParam("courseId") int courseId) {
-        return courseRepository.findById(courseId).get();
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<?> deleteCourse(@PathVariable int courseId, HttpServletRequest request) {
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        User adminUser = userRepository.userHasRole(username, 1);
+        if (adminUser != null) {
+            participateRepository.deleteParticipatesByCourseId(courseId);
+            courseRepository.deleteCourseCategoryBycourseId(courseId);
+            courseRepository.deleteById(courseId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
