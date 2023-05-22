@@ -25,6 +25,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,12 +46,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
-
+    
     @Autowired
     private UserRepository UserRepository;
     @Autowired
     private JwtTokenUtil jwtTokenProvider;
-
+    @Autowired
+    private JwtTokenFilter jwtTokenFilter;
+    
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = UserRepository.findByUsername(credentials.getUsername());
@@ -57,10 +61,10 @@ public class AuthenticationController {
             HttpSession session = request.getSession();
             user.setPassword("");
             String sessionId = UUID.randomUUID().toString();
-
+            
             session.setAttribute("sessionId", session.getId());
             session.setAttribute("user", user);
-
+            
             String token = jwtTokenProvider.generateToken(credentials);
             request.setAttribute("token", token);
             return ResponseEntity.ok(token);
@@ -68,14 +72,19 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
+    
     private final AuthenticationManager authenticationManager;
-
+    
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
-
+    
+    @PostMapping(value = "/token")
+    public String checkUsernameToken(@RequestHeader("Authorization") String token) {
+        return jwtTokenProvider.getUsernameFromToken(token.substring(7));
+    }
+    
     @PostMapping(value = "/register")
     public User registerUser(@RequestBody User user) {
         user.setPassword(AuthenticationUtils.hashPassword(user.getPassword()));
@@ -96,7 +105,7 @@ public class AuthenticationController {
         }
         return userRepository.save(user);
     }
-
+    
     @GetMapping(value = "verify")
     public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -108,7 +117,7 @@ public class AuthenticationController {
             return null;
         }
     }
-
+    
     @PostMapping(value = "forgetpassword/{username}")
     public boolean forgetPassword(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -119,7 +128,7 @@ public class AuthenticationController {
             String subject = "HAPPY PROGRAMMING - Reset your password";
             String body = "Please click the following link to reset your password: "
                     + "http://localhost:3000/resetpassword?code=" + verificationCode + "&username=" + user.getUsername();
-
+            
             try {
                 EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
             } catch (EmailException ex) {
@@ -129,47 +138,45 @@ public class AuthenticationController {
         }
         return user == null;
     }
-
+    
     @PostMapping(value = "resetpassword")
-    public boolean resetPassword(MultiValueMap<String,String> formData) {
+    public boolean resetPassword(MultiValueMap<String, String> formData) {
         String username = formData.getFirst("username");
         String code = formData.getFirst("code");
         User user = userRepository.findByUsername(username);
-        if(user.getVerification_code().equals(code)){
+        if (user.getVerification_code().equals(code)) {
             String password = formData.getFirst("password");
             password = AuthenticationUtils.hashPassword(password);
             user.setPassword(password);
             user.setVerification_code("");
             userRepository.save(user);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
     
-   
     @GetMapping(value = "/profile/{username}")
-    public User profileUser(@PathVariable("username") String username){
+    public User profileUser(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username);
         user.setMail("");
         user.setPassword("");
         user.setVerification_code("");
         return user;
     }
-
+    
     @GetMapping(value = "/{username}")
     public boolean checkUsername(@PathVariable("username") String username) {
         User user = UserRepository.findByUsername(username);
         return user != null;
     }
     
-
     @GetMapping(value = "/mail/{mail}")
     public boolean checkEmail(@PathVariable("mail") String mail) {
         User user = userRepository.findByMail(mail);
         return user != null;
     }
-
+    
     @Autowired
     private UserRepository userRepository;
 

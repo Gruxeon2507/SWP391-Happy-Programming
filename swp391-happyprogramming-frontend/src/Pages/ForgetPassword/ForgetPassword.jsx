@@ -37,7 +37,7 @@ function ForgetPassword(props) {
     }
 
     axios
-      .get(`http://localhost:1111/api/auth/forgetpassword/${username}`)
+      .post(`http://localhost:1111/api/auth/forgetpassword/${username}`)
       .then((res) => {
         console.log(res.data);
       })
