@@ -5,20 +5,31 @@ import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.DateUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -83,8 +94,55 @@ public class UserController {
     }
     
     
-    @PostMapping
-    public User createMentor(@RequestBody User mentor) {
-        return userRepository.save(mentor);
+    private final String AVT_UPLOAD_DIR = "/avatar/";
+    
+    //Date: 22/05/2023
+    //Function: Upload Avatar
+    //Writen By:DucKM
+    @PostMapping("/avatar/upload")
+    public void uploadFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(username + ".jpg");
+            try {
+                // Save the file to the uploads directory
+
+                String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    //Date: 22/05/2023
+    //Function: Get Input File Extension
+    //Writen By:DucKM
+    private static String getFileExtension(String fileName) {
+        String extension = "";
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            extension = fileName.substring(dotIndex + 1);
+        }
+
+        return extension;
+    }
+    
+    
+    //Date: 22/05/2023
+    //Function: return user data by userId
+    //Writen By:DucKM
+     @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
+        String filePath = "avatar/" + fileId + ".jpg";
+        File file = new File(filePath);
+         InputStream inputStream = new FileInputStream(file);
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+         HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(inputStreamResource);
     }
 }
