@@ -39,6 +39,5 @@ public class User_Conversation implements Serializable {
     @ManyToOne
     @MapsId("conversationId")
     @JoinColumn(name = "conversationId")
-    @JsonIgnore
     Conversation conversation;
 }
