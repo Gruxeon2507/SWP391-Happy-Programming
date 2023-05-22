@@ -13,91 +13,107 @@ function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [condition, setCondition] = useState("");
-  const [filter, setFilter] = useState("all");
   const [isActiveCateFilter, setActiveCateFilter] = useState(false);
-  const [mentorOfCourses, setMentorOfCourses] = useState("");
 
-  const sizePerPage = 6;
+  const [mentorOfCourses, setMentorOfCourses] = useState({});
 
   const toggleActiveCateFilter = () => {
     setActiveCateFilter(!isActiveCateFilter);
   };
 
+  const sizePerPage = 5;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
       if (isChecked) {
+        //Uncheck
         return checked.filter((item) => item !== categoryId);
       } else {
         return [...prev, categoryId];
       }
     });
   };
-
+  console.log(checked);
   const getAllCategories = async () => {
-    try {
-      const response = await CategoryServices.getAllCategories();
-      setCategories(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    await CategoryServices.getAllCategories()
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
   const getPageCourses = async (pageNumber, pageSize, sortField, sortOrder) => {
-    try {
-      const response = await CourseServices.getPageAllCourses(
-        pageNumber,
-        pageSize,
-        sortField,
-        sortOrder
-      );
-      setPageCourses(response.data.content);
-      setTotalItems(response.data.totalElements);
-    } catch (error) {
-      console.log("Error retrieving page courses:", error);
-    }
+    await CourseServices.getPageAllCourses(
+      pageNumber,
+      pageSize,
+      sortField,
+      sortOrder
+    )
+      .then((response) => {
+        console.log(response);
+        setPageCourses(response.data.content);
+        setTotalItems(response.data.totalElements);
+      })
+      .catch((error) => {
+        console.log("loi lay ra page Course");
+      });
   };
 
-  const getPageCoursesByCategories = async (
+  const getPageCoursesByCategories = (
     categoryIds,
     pageNumber,
     pageSize,
     sortField,
     sortOrder
   ) => {
-    try {
-      const response = await CourseServices.getPageCoursesByCategories(
-        categoryIds,
-        pageNumber,
-        pageSize,
-        sortField,
-        sortOrder
-      );
-      setPageCourses(response.data.content);
-      setTotalItems(response.data.totalElements);
-    } catch (error) {
-      console.log("Error retrieving page courses by categories:", error);
-    }
+    CourseServices.getPageCoursesByCategories(
+      categoryIds,
+      pageNumber,
+      pageSize,
+      sortField,
+      sortOrder
+    )
+      .then((response) => {
+        setPageCourses(response.data.content);
+        console.log("response" + response.data);
+        setTotalItems(response.data.totalElements);
+      })
+      .catch((error) => {
+        console.log("loi lay ra page Course");
+        console.log(error);
+      });
   };
+  const categoryIds = checked.join(",");
 
   const handlePageChange = (current) => {
-    setCurrentPage(current);
     if (checked.length > 0) {
+      setCurrentPage(current);
+      console.log("current" + current);
       getPageCoursesByCategories(
-        checked.join(","),
+        categoryIds,
         current - 1,
         sizePerPage,
         "createdAt",
         "desc"
       );
     } else {
+      setCurrentPage(current);
       getPageCourses(current - 1, sizePerPage, "createdAt", "desc");
     }
   };
 
-  const handlefilterSubmit = () => {
+  useEffect(() => {
+    getAllCategories();
+    getPageCourses(0, sizePerPage, "createdAt", "desc");
+    console.log("da chay filter");
+    handleSearch();
+  }, []);
+
+  const handleSubmit = () => {
+    console.log("check on submit:" + checked);
     setCurrentPage(1);
-    const categoryIds = checked.join(",");
+    console.log({ ids: checked });
     getPageCoursesByCategories(
       categoryIds,
       0,
@@ -106,31 +122,29 @@ function Homepage() {
       "desc"
     );
   };
-
-  const filterCourse = async (
+  const filterCourse = (
     searchText,
     pageNumber,
     pageSize,
     sortField,
     sortOrder
-  ) => {
-    try {
-      const response = await CourseServices.filterCourse(
-        searchText,
-        pageNumber,
-        pageSize,
-        sortField,
-        sortOrder
-      );
+  ) =>
+    CourseServices.filterCourse(
+      searchText,
+      pageNumber,
+      pageSize,
+      sortField,
+      sortOrder
+    ).then((response) => {
       setPageCourses(response.data.content);
       setTotalItems(response.data.totalElements);
-    } catch (error) {
-      console.log("Error filtering courses:", error);
-    }
-  };
-
+    });
   const handleSearch = () => {
+    console.log("da click search");
+    console.log(condition);
+    console.log(condition.length);
     if (condition.length > 0) {
+      console.log("goi api");
       filterCourse(
         encodeURIComponent(condition).replace(/%20/g, "%20"),
         0,
@@ -140,20 +154,31 @@ function Homepage() {
       );
     } else {
       getPageCourses(0, sizePerPage, "createdAt", "desc");
+      // handleCheckFilter();
     }
   };
-
   const handleReset = () => {
     setCondition("");
+    console.log("da click reset ");
     getPageCourses(0, sizePerPage, "createdAt", "desc");
   };
-
   const handleCheckFilter = (checkedFilter) => {
+    console.log(checkedFilter);
     const sortField = checkedFilter.split("|")[1];
     const sortOrder = checkedFilter.split("|")[0];
+    console.log("sortField = " + sortField);
+    console.log("sortOrder = " + sortOrder);
     if (condition.length > 0) {
       filterCourse(
         encodeURIComponent(condition).replace(/%20/g, "%20"),
+        0,
+        sizePerPage,
+        sortField,
+        sortOrder
+      );
+    } else if (checked.length > 0) {
+      getPageCoursesByCategories(
+        categoryIds,
         0,
         sizePerPage,
         sortField,
@@ -164,33 +189,216 @@ function Homepage() {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([
-        getAllCategories(),
-        getPageCourses(0, sizePerPage, "createdAt", "desc"),
-      ]);
-      console.log("da chay filter");
-      handleSearch();
-    };
-
-    fetchData();
-  }, []);
-
-  const getMentorOfCourses = async (courseId) => {
-    await CourseServices.getMentorOfCourse(courseId).then((response) => {
+  const getMentorOfCourses = (courseId) => {
+    CourseServices.getMentorOfCourse(courseId).then((response) => {
       setMentorOfCourses((prevUserOfCourses) => ({
         ...prevUserOfCourses,
         [courseId]: response.data.displayName,
       }));
     });
   };
-
   useEffect(() => {
     pageCourses.forEach((course) => {
       getMentorOfCourses(course.courseId);
     });
   }, [pageCourses]);
+
+  // function Homepage() {
+  //   const [categories, setCategories] = useState([]);
+  //   const [checked, setChecked] = useState([]);
+  //   const [pageCourses, setPageCourses] = useState([]);
+  //   const [currentPage, setCurrentPage] = useState(1);
+  //   const [totalItems, setTotalItems] = useState(0);
+  //   const [condition, setCondition] = useState("");
+  //   const [filter, setFilter] = useState("all");
+  //   const [isActiveCateFilter, setActiveCateFilter] = useState(false);
+  //   const [mentorOfCourses, setMentorOfCourses] = useState("");
+
+  //   const sizePerPage = 6;
+
+  //   const toggleActiveCateFilter = () => {
+  //     setActiveCateFilter(!isActiveCateFilter);
+  //   };
+
+  //   const handleCheck = (categoryId) => {
+  //     setChecked((prev) => {
+  //       const isChecked = checked.includes(categoryId);
+  //       if (isChecked) {
+  //         return checked.filter((item) => item !== categoryId);
+  //       } else {
+  //         return [...prev, categoryId];
+  //       }
+  //     });
+  //   };
+
+  //   const getAllCategories = async () => {
+  //     try {
+  //       const response = await CategoryServices.getAllCategories();
+  //       setCategories(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   const getPageCourses = async (pageNumber, pageSize, sortField, sortOrder) => {
+  //     try {
+  //       const response = await CourseServices.getPageAllCourses(
+  //         pageNumber,
+  //         pageSize,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //       setPageCourses(response.data.content);
+  //       setTotalItems(response.data.totalElements);
+  //     } catch (error) {
+  //       console.log("Error retrieving page courses:", error);
+  //     }
+  //   };
+
+  //   const getPageCoursesByCategories = async (
+  //     categoryIds,
+  //     pageNumber,
+  //     pageSize,
+  //     sortField,
+  //     sortOrder
+  //   ) => {
+  //     try {
+  //       const response = await CourseServices.getPageCoursesByCategories(
+  //         categoryIds,
+  //         pageNumber,
+  //         pageSize,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //       setPageCourses(response.data.content);
+  //       setTotalItems(response.data.totalElements);
+  //     } catch (error) {
+  //       console.log("Error retrieving page courses by categories:", error);
+  //     }
+  //   };
+
+  //   const handlePageChange = (current) => {
+  //     setCurrentPage(current);
+  //     if (checked.length > 0) {
+  //       getPageCoursesByCategories(
+  //         checked.join(","),
+  //         current - 1,
+  //         sizePerPage,
+  //         "createdAt",
+  //         "desc"
+  //       );
+  //     } else {
+  //       getPageCourses(current - 1, sizePerPage, "createdAt", "desc");
+  //     }
+  //   };
+
+  //   const handleSubmit = () => {
+  //     setCurrentPage(1);
+  //     const categoryIds = checked.join(",");
+  //     getPageCoursesByCategories(
+  //       categoryIds,
+  //       0,
+  //       sizePerPage,
+  //       "createdAt",
+  //       "desc"
+  //     );
+  //   };
+
+  //   const filterCourse = async (
+  //     searchText,
+  //     pageNumber,
+  //     pageSize,
+  //     sortField,
+  //     sortOrder
+  //   ) => {
+  //     try {
+  //       const response = await CourseServices.filterCourse(
+  //         searchText,
+  //         pageNumber,
+  //         pageSize,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //       setPageCourses(response.data.content);
+  //       setTotalItems(response.data.totalElements);
+  //     } catch (error) {
+  //       console.log("Error filtering courses:", error);
+  //     }
+  //   };
+
+  //   const handleSearch = () => {
+  //     if (condition.length > 0) {
+  //       filterCourse(
+  //         encodeURIComponent(condition).replace(/%20/g, "%20"),
+  //         0,
+  //         sizePerPage,
+  //         "createdAt",
+  //         "desc"
+  //       );
+  //     } else {
+  //       getPageCourses(0, sizePerPage, "createdAt", "desc");
+  //     }
+  //   };
+
+  //   const handleReset = () => {
+  //     setCondition("");
+  //     getPageCourses(0, sizePerPage, "createdAt", "desc");
+  //   };
+
+  //   const handleCheckFilter = (checkedFilter) => {
+  //     console.log(checkedFilter);
+  //     const sortField = checkedFilter.split("|")[1];
+  //     const sortOrder = checkedFilter.split("|")[0];
+  //     console.log("sortField = " + sortField);
+  //     console.log("sortOrder = " + sortOrder);
+  //     if (condition.length > 0) {
+  //       filterCourse(
+  //         encodeURIComponent(condition).replace(/%20/g, "%20"),
+  //         0,
+  //         sizePerPage,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //     } else if (checked.length > 0) {
+  //       getPageCoursesByCategories(
+  //         categoryIds,
+  //         0,
+  //         sizePerPage,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //     } else {
+  //       getPageCourses(0, sizePerPage, sortField, sortOrder);
+  //     }
+  //   };
+
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       await Promise.all([
+  //         getAllCategories(),
+  //         getPageCourses(0, sizePerPage, "createdAt", "desc"),
+  //       ]);
+  //       console.log("da chay filter");
+  //       handleSearch();
+  //     };
+
+  //     fetchData();
+  //   }, []);
+
+  //   const getMentorOfCourses = async (courseId) => {
+  //     await CourseServices.getMentorOfCourse(courseId).then((response) => {
+  //       setMentorOfCourses((prevUserOfCourses) => ({
+  //         ...prevUserOfCourses,
+  //         [courseId]: response.data.displayName,
+  //       }));
+  //     });
+  //   };
+
+  //   useEffect(() => {
+  //     pageCourses.forEach((course) => {
+  //       getMentorOfCourses(course.courseId);
+  //     });
+  //   }, [pageCourses]);
 
   return (
     <div className="container home-page">
@@ -201,7 +409,8 @@ function Homepage() {
         <div className="filter-1">
           <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
-              <ion-icon name="filter-circle-outline"></ion-icon>
+              {/* <ion-icon name="filter-circle-outline"></ion-icon> */}
+              <ion-icon name="list-outline"></ion-icon>
             </button>
           </div>
           <input
@@ -250,7 +459,7 @@ function Homepage() {
             </div>
           ))}
           <div className="findByCate">
-            <button onClick={handlefilterSubmit}>Find</button>
+            <button onClick={handleSubmit}>Find</button>
           </div>
         </div>
       </div>
