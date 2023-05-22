@@ -61,7 +61,6 @@ public class CourseController {
     @Autowired
     private UserRepository userRepository;
 
-
     @GetMapping("/page")
     public Page<Course> getCourses(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -111,24 +110,26 @@ public class CourseController {
     }
 
     @PostMapping("/create")
-    public Course createCourse(@RequestBody Course course, HttpServletRequest request) {
-        java.util.Date today = new java.util.Date();
-        java.sql.Date createdAt = new java.sql.Date(today.getTime());
-        course.setCreatedAt(createdAt);
-//        Insert into Course
-        Course newCourse = courseRepository.save(course);
-        System.out.println("COURSE ID: " + newCourse.getCourseId());
-//        System.out.println("THERE ARE " + course.getCategories().size() + " CATEGORIES");
-
-//         Insert into Course
-        for (Category c : newCourse.getCategories()) {
-            categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
-        }
+    public ResponseEntity<?> createCourse(@RequestBody Course course, HttpServletRequest request) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        // insert admin into participate table
-        participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
-        return newCourse;
+        User adminUser = userRepository.userHasRole(username, 1);
+        if (adminUser != null) {
+            java.util.Date today = new java.util.Date();
+            java.sql.Date createdAt = new java.sql.Date(today.getTime());
+            course.setCreatedAt(createdAt);
+//        Insert into Course
+            Course newCourse = courseRepository.save(course);
+
+//         Insert into Course_Category
+            for (Category c : newCourse.getCategories()) {
+                categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
+            }
+//             Insert admin into participate table
+            participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
+            return ResponseEntity.ok(newCourse);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @DeleteMapping("/delete/{courseId}")

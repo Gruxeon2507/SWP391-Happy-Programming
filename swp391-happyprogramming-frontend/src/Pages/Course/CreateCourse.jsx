@@ -6,7 +6,6 @@ import { COURSE_BASE_REST_API_URL } from "../../services/CourseServices";
 // import CategoryServices from "../../services/CategoryServices";
 import ParticipateServices from "../../services/ParticipateServices";
 function CreateCourse() {
-  //lay ra
   const [course, setCourse] = useState({
     courseName: "",
     courseDescription: "",
@@ -23,8 +22,8 @@ function CreateCourse() {
     // insert into Course + CourseCategories + Participate admin
     const response = await CourseServices.createCourse(course);
     const newCourse = response.data;
-    // insert mentor into Participate table
 
+    // insert mentor into Participate table
     // console.log(newCourse);
     const courseId = newCourse.courseId;
     // console.log("Course Id is: " + courseId);
@@ -42,7 +41,6 @@ function CreateCourse() {
     });
     return mentor;
   };
-  // console.log(selectedMentor);
   console.log(course.mentor);
 
   const selectCategories = (categoryId) => {
@@ -54,7 +52,7 @@ function CreateCourse() {
           isChecked = true;
         }
       });
-      console.log(isChecked);
+      // console.log(isChecked);
       if (isChecked) {
         return selectedCategories.filter(
           (item) => item.categoryId !== categoryId

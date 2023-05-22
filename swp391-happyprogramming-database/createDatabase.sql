@@ -219,3 +219,5 @@ SELECT * FROM Course
 SELECT * FROM Course_Category
 SELECT * FROM Course
 */
+
+SELECT * FROM Participate where courseId = 26;

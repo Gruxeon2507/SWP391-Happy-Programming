@@ -25,6 +25,6 @@ public interface UserRepository extends JpaRepository<User, String>{
      @Query("select u from User u join u.roles r where r.roleId = 2")
      public List<User> getAllMentors();
      
-     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE ur.roleId = :roleId and u.username = :username", nativeQuery = true)
+     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE u.username = :username and ur.roleId = :roleId", nativeQuery = true)
      public User userHasRole(String username, int roleId);
 }
