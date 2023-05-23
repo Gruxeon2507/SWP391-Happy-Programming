@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -29,8 +30,9 @@ public class Status implements Serializable {
     @Id
     private int statusId;
     
-    private int statusName;
+    private String statusName;
     
     @OneToMany(mappedBy = "status")
+    @JsonIgnore
     private List<Participate> participates;
 }

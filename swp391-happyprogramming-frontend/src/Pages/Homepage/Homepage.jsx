@@ -1,43 +1,27 @@
+import React, { useEffect, useState } from "react";
 import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
-import React, { useEffect, useState } from "react";
-import { Pagination, FormControl } from "antd";
-import { Route, Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Pagination } from "antd";
+import { FormControl } from "react-bootstrap";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../Homepage/Homepage.css";
 
 function Homepage() {
-  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [pageCourses, setPageCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [condition, setCondition] = useState("");
-  const [filter, setFilter] = useState("all");
-  const [mentorOfCourses, setMentorOfCourses] = useState({});
   const [isActiveCateFilter, setActiveCateFilter] = useState(false);
+
+  const [mentorOfCourses, setMentorOfCourses] = useState({});
 
   const toggleActiveCateFilter = () => {
     setActiveCateFilter(!isActiveCateFilter);
   };
 
-  const handlefilterSubmit = () => {
-    setCurrentPage(1);
-    const categoryIds = checked.join(",");
-    getPageCoursesByCategories(
-      categoryIds,
-      0,
-      sizePerPage,
-      "createdAt",
-      "desc"
-    );
-  };
-
-  const sizePerPage = 6;
+  const sizePerPage = 5;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
@@ -205,24 +189,216 @@ function Homepage() {
     }
   };
 
-  const getMentorOfCourses = async (courseId) => {
-    try {
-      const response = await CourseServices.getMentorOfCourse(courseId);
-      console.log(response);
+  const getMentorOfCourses = (courseId) => {
+    CourseServices.getMentorOfCourse(courseId).then((response) => {
       setMentorOfCourses((prevUserOfCourses) => ({
         ...prevUserOfCourses,
         [courseId]: response.data.displayName,
       }));
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
-
   useEffect(() => {
     pageCourses.forEach((course) => {
       getMentorOfCourses(course.courseId);
     });
   }, [pageCourses]);
+
+  // function Homepage() {
+  //   const [categories, setCategories] = useState([]);
+  //   const [checked, setChecked] = useState([]);
+  //   const [pageCourses, setPageCourses] = useState([]);
+  //   const [currentPage, setCurrentPage] = useState(1);
+  //   const [totalItems, setTotalItems] = useState(0);
+  //   const [condition, setCondition] = useState("");
+  //   const [filter, setFilter] = useState("all");
+  //   const [isActiveCateFilter, setActiveCateFilter] = useState(false);
+  //   const [mentorOfCourses, setMentorOfCourses] = useState("");
+
+  //   const sizePerPage = 6;
+
+  //   const toggleActiveCateFilter = () => {
+  //     setActiveCateFilter(!isActiveCateFilter);
+  //   };
+
+  //   const handleCheck = (categoryId) => {
+  //     setChecked((prev) => {
+  //       const isChecked = checked.includes(categoryId);
+  //       if (isChecked) {
+  //         return checked.filter((item) => item !== categoryId);
+  //       } else {
+  //         return [...prev, categoryId];
+  //       }
+  //     });
+  //   };
+
+  //   const getAllCategories = async () => {
+  //     try {
+  //       const response = await CategoryServices.getAllCategories();
+  //       setCategories(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   const getPageCourses = async (pageNumber, pageSize, sortField, sortOrder) => {
+  //     try {
+  //       const response = await CourseServices.getPageAllCourses(
+  //         pageNumber,
+  //         pageSize,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //       setPageCourses(response.data.content);
+  //       setTotalItems(response.data.totalElements);
+  //     } catch (error) {
+  //       console.log("Error retrieving page courses:", error);
+  //     }
+  //   };
+
+  //   const getPageCoursesByCategories = async (
+  //     categoryIds,
+  //     pageNumber,
+  //     pageSize,
+  //     sortField,
+  //     sortOrder
+  //   ) => {
+  //     try {
+  //       const response = await CourseServices.getPageCoursesByCategories(
+  //         categoryIds,
+  //         pageNumber,
+  //         pageSize,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //       setPageCourses(response.data.content);
+  //       setTotalItems(response.data.totalElements);
+  //     } catch (error) {
+  //       console.log("Error retrieving page courses by categories:", error);
+  //     }
+  //   };
+
+  //   const handlePageChange = (current) => {
+  //     setCurrentPage(current);
+  //     if (checked.length > 0) {
+  //       getPageCoursesByCategories(
+  //         checked.join(","),
+  //         current - 1,
+  //         sizePerPage,
+  //         "createdAt",
+  //         "desc"
+  //       );
+  //     } else {
+  //       getPageCourses(current - 1, sizePerPage, "createdAt", "desc");
+  //     }
+  //   };
+
+  //   const handleSubmit = () => {
+  //     setCurrentPage(1);
+  //     const categoryIds = checked.join(",");
+  //     getPageCoursesByCategories(
+  //       categoryIds,
+  //       0,
+  //       sizePerPage,
+  //       "createdAt",
+  //       "desc"
+  //     );
+  //   };
+
+  //   const filterCourse = async (
+  //     searchText,
+  //     pageNumber,
+  //     pageSize,
+  //     sortField,
+  //     sortOrder
+  //   ) => {
+  //     try {
+  //       const response = await CourseServices.filterCourse(
+  //         searchText,
+  //         pageNumber,
+  //         pageSize,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //       setPageCourses(response.data.content);
+  //       setTotalItems(response.data.totalElements);
+  //     } catch (error) {
+  //       console.log("Error filtering courses:", error);
+  //     }
+  //   };
+
+  //   const handleSearch = () => {
+  //     if (condition.length > 0) {
+  //       filterCourse(
+  //         encodeURIComponent(condition).replace(/%20/g, "%20"),
+  //         0,
+  //         sizePerPage,
+  //         "createdAt",
+  //         "desc"
+  //       );
+  //     } else {
+  //       getPageCourses(0, sizePerPage, "createdAt", "desc");
+  //     }
+  //   };
+
+  //   const handleReset = () => {
+  //     setCondition("");
+  //     getPageCourses(0, sizePerPage, "createdAt", "desc");
+  //   };
+
+  //   const handleCheckFilter = (checkedFilter) => {
+  //     console.log(checkedFilter);
+  //     const sortField = checkedFilter.split("|")[1];
+  //     const sortOrder = checkedFilter.split("|")[0];
+  //     console.log("sortField = " + sortField);
+  //     console.log("sortOrder = " + sortOrder);
+  //     if (condition.length > 0) {
+  //       filterCourse(
+  //         encodeURIComponent(condition).replace(/%20/g, "%20"),
+  //         0,
+  //         sizePerPage,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //     } else if (checked.length > 0) {
+  //       getPageCoursesByCategories(
+  //         categoryIds,
+  //         0,
+  //         sizePerPage,
+  //         sortField,
+  //         sortOrder
+  //       );
+  //     } else {
+  //       getPageCourses(0, sizePerPage, sortField, sortOrder);
+  //     }
+  //   };
+
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       await Promise.all([
+  //         getAllCategories(),
+  //         getPageCourses(0, sizePerPage, "createdAt", "desc"),
+  //       ]);
+  //       console.log("da chay filter");
+  //       handleSearch();
+  //     };
+
+  //     fetchData();
+  //   }, []);
+
+  //   const getMentorOfCourses = async (courseId) => {
+  //     await CourseServices.getMentorOfCourse(courseId).then((response) => {
+  //       setMentorOfCourses((prevUserOfCourses) => ({
+  //         ...prevUserOfCourses,
+  //         [courseId]: response.data.displayName,
+  //       }));
+  //     });
+  //   };
+
+  //   useEffect(() => {
+  //     pageCourses.forEach((course) => {
+  //       getMentorOfCourses(course.courseId);
+  //     });
+  //   }, [pageCourses]);
 
   return (
     <div className="container home-page">
@@ -233,7 +409,8 @@ function Homepage() {
         <div className="filter-1">
           <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
-              <ion-icon name="filter-circle-outline"></ion-icon>
+              {/* <ion-icon name="filter-circle-outline"></ion-icon> */}
+              <ion-icon name="list-outline"></ion-icon>
             </button>
           </div>
           <input
@@ -282,40 +459,40 @@ function Homepage() {
             </div>
           ))}
           <div className="findByCate">
-            <button onClick={handlefilterSubmit}>Find</button>
+            <button onClick={handleSubmit}>Find</button>
           </div>
         </div>
       </div>
       {/* ====================end region filter==================== */}
 
       {/* ====================region List of Course==================== */}
-      <div className="list-Courses">
+      {/* <div className="list-Courses">
         {pageCourses.map((course) => (
-          <div
-            className="course"
-            key={course.courseId}
-            onClick={() => {
-              // const courseName = encodeURIComponent(course.courseName);
-              // navigate(`/homepage/${course.courseName}`);
-              navigate(`/courses/${course.courseId}`);
-              // alert(course.courseId);
-            }}
-          >
+          <div className="course" key={course.courseId}>
             <span>
               {course.courseId}:{course.courseName}
             </span>
-
             <span>{course.createdAt}</span>
             <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+            <span>View details</span>
+            <hr />
+          </div>
+        ))}
+      </div> */}
+      <div className="list-Courses">
+        {pageCourses.map((course) => (
+          <div className="course" key={course.courseId}>
             <span>
-              {/* {" "} */}
-              {/* <Link to={`/homepage/${course.courseName}`} target="_blank"> */}
-              Detail
-              {/* </Link> */}
+              {course.courseId}:{course.courseName}
             </span>
+            <span>{course.createdAt}</span>
+            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+            <span>View details</span>
+            <hr />
           </div>
         ))}
       </div>
+
       {/* ====================end region List of Course==================== */}
       <div className="Pagination-Container">
         <Pagination
@@ -330,7 +507,6 @@ function Homepage() {
           }}
         />
       </div>
-
       {/* ====================region Pagination==================== */}
       {/* <div className="pagination-container">
         <button

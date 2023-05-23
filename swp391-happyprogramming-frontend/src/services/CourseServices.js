@@ -1,6 +1,7 @@
 import axios from "axios";
+import api from "./BaseAuthenticationService.js";
 
-const COURSE_BASE_REST_API_URL = "http://localhost:1111/api/auth/courses";
+const COURSE_BASE_REST_API_URL = "http://localhost:1111/api/courses";
 
 class CourseServices {
   getAllCourses() {
@@ -40,23 +41,21 @@ class CourseServices {
     );
   }
   //@maiphuonghoang
-  getCourseByUsernameAndStatusId(username, statusId) {
-    console.log(`${COURSE_BASE_REST_API_URL}/${username}?statusId=${statusId}`);
-    return axios.get(
-      `${COURSE_BASE_REST_API_URL}/${username}?statusId=${statusId}`
+  getCourseByUsernameAndStatusId(statusId) {
+    console.log(
+      `http://localhost:1111/api/courses/by-user?statusId=${statusId}`
     );
+    return api.get(`/api/courses/by-user?statusId=${statusId}`);
   }
 
   getMentorOfCourse(courseId) {
     console.log(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
     return axios.get(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
   }
-  // @anthach
-  getCourseByID(courseId) {
-    console.log(
-      `getCourse: ${COURSE_BASE_REST_API_URL}/coursedetail/${courseId}`
-    );
-    return axios.get(`${COURSE_BASE_REST_API_URL}/coursedetail/${courseId}`);
+
+  // @HuyenNTK
+  createCourse(course) {
+    return api.post("api/courses/create", course);
   }
 }
 export default new CourseServices();

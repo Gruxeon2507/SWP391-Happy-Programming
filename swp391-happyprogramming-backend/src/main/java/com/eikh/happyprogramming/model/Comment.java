@@ -36,7 +36,6 @@ public class Comment implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "postId")
-    @JsonIgnore
     private Post post;
     
     @ManyToOne

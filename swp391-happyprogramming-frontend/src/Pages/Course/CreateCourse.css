@@ -1,0 +1,6 @@
+.createCourse-container {
+  border: 1px solid red;
+}
+.createCourse-container * {
+  border: 1px solid red;
+}

@@ -139,12 +139,12 @@ CREATE TABLE `Status`
     CONSTRAINT PK_Status PRIMARY KEY (statusId)
 );
 
--- CREATE TABLE ParticipateRole
--- (
--- 	participateRole int NOT NULL AUTO_INCREMENT,
--- 	participateRoleName varchar(255),
--- 	CONSTRAINT PK_ParticipateRole PRIMARY KEY (participateRole)
--- );
+CREATE TABLE ParticipateRole
+(
+	participateRole int NOT NULL AUTO_INCREMENT,
+	participateRoleName varchar(255),
+	CONSTRAINT PK_ParticipateRole PRIMARY KEY (participateRole)
+);
 
 CREATE TABLE Participate
 (
@@ -158,10 +158,10 @@ ALTER TABLE Participate ADD CONSTRAINT FK_Participate_User FOREIGN KEY(username)
 REFERENCES `User`(username);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Course FOREIGN KEY(courseId)
 REFERENCES Course(courseId);
--- ALTER TABLE Participate ADD CONSTRAINT FK_Participate_ParticipateRole FOREIGN KEY(participateRole)
--- REFERENCES ParticipateRole (participateRole);
-ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Role FOREIGN KEY(participateRole)
-REFERENCES `Role` (roleId);
+ALTER TABLE Participate ADD CONSTRAINT FK_Participate_ParticipateRole FOREIGN KEY(participateRole)
+REFERENCES ParticipateRole (participateRole);
+-- ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Role FOREIGN KEY(participateRole)
+-- REFERENCES `Role` (roleId);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Status FOREIGN KEY(statusId)
 REFERENCES `Status` (statusId);
 
@@ -220,15 +220,4 @@ SELECT * FROM Course_Category
 SELECT * FROM Course
 */
 
-
-
-
-
-
-
-
- 
-
-
-
-
+SELECT * FROM Participate where courseId = 26;

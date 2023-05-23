@@ -51,6 +51,7 @@ public class Role  implements GrantedAuthority{
     private List<Feature> features;
     
 //    @OneToMany(mappedBy = "role")
+//    @JsonIgnore
 //    private List<Participate> participates;
 
     @Override
@@ -58,9 +59,9 @@ public class Role  implements GrantedAuthority{
         return  roleName;
     }
 
-    @OneToMany( mappedBy = "role")
-    @JsonIgnore
-    private List<Participate> participateRoles;
+//    @OneToMany( mappedBy = "role")
+//    @JsonIgnore
+//    private List<Participate> participateRoles;
 
     @Override
     public String getAuthority() {

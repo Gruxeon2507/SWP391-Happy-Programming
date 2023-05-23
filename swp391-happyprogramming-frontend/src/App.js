@@ -17,6 +17,7 @@ import userProfile from "./Pages/UserProfile/userProfile";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
 import CourseDetails from "./Pages/Course/CourseDetails";
+import CreateCourse from "./Pages/Course/CreateCourse";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -41,13 +42,14 @@ function App() {
       <Route path="/" element={<Navigate to="/landing"></Navigate>}></Route>
       <Route path="/landing" element={<Home />} />
       <Route path="/chat" element={<Chat />} />
-      {/* <Route path="/homepage" element={<Homepage />} /> */}
       <Route path="/courses" element={<Homepage />} />
+      <Route path="/courses/:coursesID" element={<CourseDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
+      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />
       <Route path="/courses/:courseName" element={<CourseDetails />} />
       {features &&
         features.map((feature) => {

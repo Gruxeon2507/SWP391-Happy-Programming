@@ -194,7 +194,11 @@
 }
 
 .Pagination-Container {
+  display: flex;
   margin: 1rem auto 1rem auto;
+  /* border: 1px solid red; */
+  justify-content: center;
+  justify-items: center;
 }
 
 /* ====================region List of Course==================== */

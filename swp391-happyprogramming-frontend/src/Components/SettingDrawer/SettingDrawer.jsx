@@ -16,7 +16,7 @@ function SettingDrawer(props) {
   };
 
   return (
-    <div>
+    <>
       <nav className={`drawer ${isChecked ? "active" : ""}`} id="NavBar">
         <div className="draw-Toggle">
           <input
@@ -48,7 +48,7 @@ function SettingDrawer(props) {
           </li>
         </ul>
       </nav>
-    </div>
+    </>
   );
 }
 

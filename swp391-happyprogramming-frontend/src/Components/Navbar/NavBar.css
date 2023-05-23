@@ -14,7 +14,7 @@
   background-color: var(--light);
   z-index: 100;
   transition: 0.5s all ease;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .NavBar.active {
@@ -27,10 +27,6 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   transition: 0.5s all ease;
 }
-
-/* * {
-  border: 1px solid red;
-} */
 
 .brand {
   display: flex;
@@ -121,6 +117,37 @@
   font-size: 2.5rem;
   transform: translateY(5%);
   text-align: center;
+}
+
+.NavBar,
+.NavBar *,
+.SettingBar * {
+  border: 1px solid rebeccapurple;
+}
+
+.SettingBar {
+  position: fixed;
+  top: 1rem;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+  align-items: flex-end;
+}
+
+.pf-dropdown {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.avatar img {
+  width: 100%;
+  display: block;
+  margin: auto;
 }
 
 @media (max-width: 991px) {
