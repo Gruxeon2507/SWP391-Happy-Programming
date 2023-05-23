@@ -38,7 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @CrossOrigin(origins = {"*"})
 @RestController
-@RequestMapping("api/auth/users")
+@RequestMapping("api/users")
 public class UserController {
     
     @Autowired
@@ -145,10 +145,6 @@ public class UserController {
                 .headers(headers)
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(inputStreamResource);
-    }
-    @GetMapping("/mentors")
-    public List<User> getAllMentors() {
-        return userRepository.getAllMentors();
     }
 
 }
