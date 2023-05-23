@@ -55,7 +55,7 @@ function NavBar(props) {
             <NavLink to="/mycourse">MyCourse</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/creCourse">creCourse</NavLink>
+            <NavLink to="/createCourse">creCourse</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/login">Login</NavLink>
