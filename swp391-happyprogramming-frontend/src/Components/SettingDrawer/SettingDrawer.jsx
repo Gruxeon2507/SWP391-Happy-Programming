@@ -11,20 +11,9 @@ SettingDrawer.propTypes = {
 function SettingDrawer(props) {
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
-
   return (
     <>
-      <nav className={`drawer ${isChecked ? "active" : ""}`} id="NavBar">
-        <div className="draw-Toggle">
-          <input
-            type="checkbox"
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-          />
-        </div>
+      <nav className="drawer" id="NavBar">
         <ul className="draw-menu">
           <li className="draw-item">
             <NavLink to="/home">Home</NavLink>

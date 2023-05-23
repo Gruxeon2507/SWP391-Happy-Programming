@@ -3,8 +3,8 @@ import CategoryServices from "../../services/CategoryServices";
 import UserService from "../../services/UserService";
 import CourseServices from "../../services/CourseServices";
 import { COURSE_BASE_REST_API_URL } from "../../services/CourseServices";
-// import CategoryServices from "../../services/CategoryServices";
 import ParticipateServices from "../../services/ParticipateServices";
+import PublicService from "../../services/PublicService";
 import "../Course/CreateCourse.css";
 import NavBar from "../../Components/Navbar/NavBar";
 
@@ -27,14 +27,10 @@ function CreateCourse() {
     const newCourse = response.data;
 
     // insert mentor into Participate table
-    // console.log(newCourse);
     const courseId = newCourse.courseId;
-    // console.log("Course Id is: " + courseId);
     const username = course.mentor;
-    // console.log("USER NAME IS " + username);
     ParticipateServices.saveParticipate(username, courseId, 2, 1);
   };
-  // console.log(course.categories.length + " categories SUBMITTED");
 
   const selectMentor = (mentor) => {
     setSelectedMentor(mentor);
@@ -49,13 +45,11 @@ function CreateCourse() {
   const selectCategories = (categoryId) => {
     setSelectedCategories((current) => {
       let isChecked = false;
-      // const isChecked = selectedCategories.includes({categoryId: categoryId});
       selectedCategories.forEach((category) => {
         if (category.categoryId == categoryId) {
           isChecked = true;
         }
       });
-      // console.log(isChecked);
       if (isChecked) {
         return selectedCategories.filter(
           (item) => item.categoryId !== categoryId
@@ -64,19 +58,15 @@ function CreateCourse() {
         return [...current, { categoryId: categoryId }];
       }
     });
-    // console.log(selectedCategories);
-    // setCourse({ ...course, categories: selectedCategories });
   };
   console.log(selectedCategories);
   console.log(selectedCategories.length + " categories selected");
-  // console.log(course.categories);
-  // console.log(course.categories.length + " categories selected");
 
   useEffect(() => {
     CategoryServices.getAllCategories().then((res) => setCategories(res.data));
   }, []);
   useEffect(() => {
-    UserService.getAlllMentors().then((res) => setMentors(res.data));
+    PublicService.getActiveMentors().then((res) => setMentors(res.data));
   }, []);
 
   useEffect(() => {
