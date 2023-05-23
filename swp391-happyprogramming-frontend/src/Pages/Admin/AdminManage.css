@@ -1,0 +1,87 @@
+@import url("../../global/ColorPalette.css");
+
+.body-wraper {
+  width: 100%;
+  height: 100%;
+  background-color: var(--light);
+}
+
+.body-wraper * {
+  box-sizing: border-box;
+}
+
+.admin-navbar {
+  width: 100%;
+  height: 4rem;
+  position: fixed;
+  top: 0;
+  background-color: var(--light);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.anb- {
+  margin: auto 8px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 4px;
+  width: min-content;
+}
+
+.brand * {
+  /* border: 1px solid red; */
+}
+
+.brand img {
+  width: 54px;
+  height: 54px;
+}
+
+.brand span {
+  color: var(--item2);
+}
+
+.brand a {
+  color: var(--item);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.brand.ima .brand * {
+  /* border: 1px solid blue; */
+}
+
+.body-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.fragment-nav-bar {
+  width: 30%;
+  height: calc(100svh);
+  padding-top: 4rem;
+  /* opacity: 0.2; */
+}
+
+.fragment-nav-bar li {
+  list-style: none;
+}
+
+.main-content {
+  position: fixed;
+  bottom: 16px;
+  right: 3rem;
+  /* border: 1px solid red; */
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 80%;
+  height: calc(100svh - 5rem);
+  background-color: var(--light);
+  overflow-y: scroll;
+  background-color: var(--lightItem);
+}
