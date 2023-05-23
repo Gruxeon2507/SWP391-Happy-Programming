@@ -94,7 +94,7 @@ function NavBar(props) {
             <img src={basicAvatar} alt="avatar"></img>
           </div>
         </div>
-        <SettingDrawer></SettingDrawer>x
+        {/* <SettingDrawer></SettingDrawer>x */}
       </div>
     </div>
   );

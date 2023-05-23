@@ -18,7 +18,7 @@ import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
 import CourseDetails from "./Pages/Course/CourseDetails";
 import CreateCourse from "./Pages/Course/CreateCourse";
-import AdminManage from "./Pages/Admin/AdminManage";
+// import AdminManage from "./Pages/Admin/AdminManage";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -46,7 +46,7 @@ function App() {
       <Route path="/courses/:coursesID" element={<CourseDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
-      <Route path="/admin" element={<AdminManage />} />
+      {/* <Route path="/admin" element={<AdminManage />} /> */}
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
