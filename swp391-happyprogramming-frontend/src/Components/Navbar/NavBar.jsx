@@ -68,6 +68,9 @@ function NavBar(props) {
             <NavLink to="/chat">Chat</NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="/admin">admin</NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink
               to="/login"
               onClick={() => {
@@ -91,7 +94,7 @@ function NavBar(props) {
             <img src={basicAvatar} alt="avatar"></img>
           </div>
         </div>
-        <SettingDrawer></SettingDrawer>
+        <SettingDrawer></SettingDrawer>x
       </div>
     </div>
   );

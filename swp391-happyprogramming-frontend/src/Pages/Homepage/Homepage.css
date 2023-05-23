@@ -1,10 +1,10 @@
 @import url("../../global/ColorPalette.css");
 
-/* .home-page {
-  border: 1px solid red;
+.home-page {
+  margin-top: 7rem;
 }
 
-.filter-container * {
+/* .filter-container * {
   border: 1px solid red;
 }
 
@@ -14,7 +14,7 @@
 
 .cate-filter * {
   border: 1px solid red;
-} */
+}  */
 
 /* ====================region filter==================== */
 
