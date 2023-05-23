@@ -56,7 +56,15 @@ public class UserController {
         }
     }
     
-    
+    @GetMapping(value = "/setting/profile")
+    public ResponseEntity<?> checkUsernameToken(@RequestHeader("Authorization") String token) {
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        User user = userRepository.findByUsername(username);
+        user.setMail("");
+        user.setPassword("");
+        user.setVerification_code("");
+        return ResponseEntity.ok(user);
+    }
     @Scheduled(fixedRate = 3600000) // Run every hour
     public void cleanUserNotVerified(){
         List<User> users = userRepository.findByIsVerified(false);

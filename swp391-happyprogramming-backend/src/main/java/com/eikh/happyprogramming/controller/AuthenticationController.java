@@ -47,14 +47,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
-    
+
     @Autowired
     private UserRepository UserRepository;
     @Autowired
     private JwtTokenUtil jwtTokenProvider;
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
-    
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = UserRepository.findByUsername(credentials.getUsername());
@@ -62,10 +62,10 @@ public class AuthenticationController {
             HttpSession session = request.getSession();
             user.setPassword("");
             String sessionId = UUID.randomUUID().toString();
-            
+
             session.setAttribute("sessionId", session.getId());
             session.setAttribute("user", user);
-            
+
             String token = jwtTokenProvider.generateToken(credentials);
             request.setAttribute("token", token);
             return ResponseEntity.ok(token);
@@ -73,19 +73,14 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-    
+
     private final AuthenticationManager authenticationManager;
-    
+
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
-    
-    @PostMapping(value = "/token")
-    public String checkUsernameToken(@RequestHeader("Authorization") String token) {
-        return jwtTokenProvider.getUsernameFromToken(token.substring(7));
-    }
-    
+
     @PostMapping(value = "/register")
     public User registerUser(@RequestBody User user) {
         user.setPassword(AuthenticationUtils.hashPassword(user.getPassword()));
@@ -106,7 +101,7 @@ public class AuthenticationController {
         }
         return userRepository.save(user);
     }
-    
+
     @GetMapping(value = "verify")
     public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -118,7 +113,7 @@ public class AuthenticationController {
             return null;
         }
     }
-    
+
     @PostMapping(value = "forgetpassword/{username}")
     public boolean forgetPassword(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -129,7 +124,7 @@ public class AuthenticationController {
             String subject = "HAPPY PROGRAMMING - Reset your password";
             String body = "Please click the following link to reset your password: "
                     + "http://localhost:3000/resetpassword?code=" + verificationCode + "&username=" + user.getUsername();
-            
+
             try {
                 EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
             } catch (EmailException ex) {
@@ -139,7 +134,7 @@ public class AuthenticationController {
         }
         return user == null;
     }
-    
+
     @PostMapping(value = "resetpassword")
     public boolean resetPassword(MultiValueMap<String, String> formData) {
         String username = formData.getFirst("username");
@@ -156,7 +151,7 @@ public class AuthenticationController {
             return false;
         }
     }
-    
+
     @GetMapping(value = "/profile/{username}")
     public User profileUser(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -165,19 +160,24 @@ public class AuthenticationController {
         user.setVerification_code("");
         return user;
     }
-    
+
     @GetMapping(value = "/{username}")
     public boolean checkUsername(@PathVariable("username") String username) {
         User user = UserRepository.findByUsername(username);
         return user != null;
     }
-    
+
+    @GetMapping(value = "/token")
+    public String checkUsernameToken(@RequestHeader("Authorization") String token) {
+        return jwtTokenProvider.getUsernameFromToken(token.substring(7));
+    }
+
     @GetMapping(value = "/mail/{mail}")
     public boolean checkEmail(@PathVariable("mail") String mail) {
         User user = userRepository.findByMail(mail);
         return user != null;
     }
-    
+
     @Autowired
     private UserRepository userRepository;
 
