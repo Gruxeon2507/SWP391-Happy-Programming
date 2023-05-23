@@ -35,7 +35,7 @@ class CourseServices{
       console.log(`http://localhost:1111/api/courses/by-user?statusId=${statusId}`);
       return api.get(`/api/courses/by-user?statusId=${statusId}`);
     }
-
+//@maiphuonghoang
   getMentorOfCourse(courseId) {
     console.log(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
     return axios.get(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
@@ -46,5 +46,15 @@ class CourseServices{
     // console.log(`${COURSE_BASE_REST_API_URL}/courseDetails/${courseId}`);
     return axios.get(`${COURSE_BASE_REST_API_URL}/courseDetails/${courseId}`);
   }
+
+      //@maiphuonghoang
+      getSearchCheckAndFilterCourses(categoryIds,searchText, pageNumber, pageSize, sortField, sortOrder) {
+        console.log(
+          `${COURSE_BASE_REST_API_URL}/search-and-categories-filter?categoryIds=${categoryIds}&searchText=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
+        );
+        return axios.get(
+          `${COURSE_BASE_REST_API_URL}/search-and-categories-filter?categoryIds=${categoryIds}&searchText=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
+        );
+      }
 }
 export default new CourseServices();

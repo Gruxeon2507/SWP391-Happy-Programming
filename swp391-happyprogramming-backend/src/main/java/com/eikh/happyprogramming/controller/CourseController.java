@@ -48,7 +48,7 @@ public class CourseController {
 
     @Autowired
     ParticipateRepository participateRepository;
-    
+
     @GetMapping
     List<Course> getAll() {
         return courseRepository.findAll();
@@ -75,7 +75,7 @@ public class CourseController {
     /**
      * @author maiphuonghoang
      *
-     * Paging, sorting for course by categories in homepage
+     * Paging, sorting for all course by categories in homepage
      */
     @GetMapping("/by-categories/{categoryIds}")
     public Page<Course> getPageCoursesByCategories(
@@ -118,6 +118,53 @@ public class CourseController {
             return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
 
         }
+    }
+
+    /**
+     * @author maiphuonghoang
+     *
+     * Filter, Paging, sorting for combination search text course by categories
+     * in homepage
+     */
+    @GetMapping("/search-and-categories-filter")
+    public ResponseEntity<Page<Course>> searchCheckAndFilterCourses(
+            @RequestParam Integer[] categoryIds,
+            @RequestParam String searchText,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) {
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        System.out.println("searchText" +searchText +"length"+searchText.length() + "categoryIds" + categoryIds.length);
+        System.out.println(searchText.length()>0?"searchText length > 0":"searchText length = 0");
+        List<Integer> courseIds = new ArrayList<>();
+        
+        if (searchText.length() < 1 && categoryIds.length == 0) {
+            return new ResponseEntity<>(courseRepository.findAll(pageable), HttpStatus.OK);
+        }
+        
+        if (searchText.length() > 0 && categoryIds.length == 0) {
+            System.out.println("khong co category, chi co text");
+            return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
+        }
+
+        if (categoryIds.length > 0) {
+            List<Course> courses = courseRepository.getCourseByCategoryIds(categoryIds);
+            for (Course course : courses) {
+                courseIds.add(course.getCourseId());
+            }
+        }
+
+        Page<Course> pageCourses;
+        if (searchText.length() < 1) {
+            pageCourses = courseRepository.findByCourseIdIn(courseIds, pageable);
+        } else {
+            pageCourses = courseRepository.findAllSearchByCategories(pageable, categoryIds, searchText);
+        }
+
+        return new ResponseEntity<>(pageCourses, HttpStatus.OK);
     }
 
     /**
