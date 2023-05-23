@@ -2,7 +2,7 @@
 
 body {
   background-color: var(--lightItem);
-  margin-top: 100px;
+  /* margin-top: 4rem; */
 }
 
 /* .banner-1 * {
@@ -18,7 +18,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding-top: 2rem;
+  padding-top: 10rem;
 }
 
 .quotes {

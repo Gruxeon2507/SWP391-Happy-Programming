@@ -89,68 +89,118 @@ function CreateCourse() {
 
   return (
     <>
-      <NavBar mode={0} />
+      {/* <NavBar mode={0} /> */}
       <div className="createCourse-container">
-        <form id="courseForm">
-          <label>Course Name: </label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCourse({
-                ...course,
-                courseName: e.target.value,
-              })
-            }
-          ></input>
-          <p>Name: {course.courseName}</p>
-          <br />
-          <label>Course Description: </label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCourse({
-                ...course,
-                courseDescription: e.target.value,
-              })
-            }
-          ></input>
-          <p>Description: {course.courseDescription}</p>
-          <br />
-          <label>Categories:</label>
+        <form id="courseForm" className="courseForm">
+          <table border="1px" className="table-input">
+            <tr>
+              <td>
+                <label>Preview: </label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                <div className="courseName-head">
+                  <span>{course.courseName}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Description: </label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2} style={{ textAlign: "center" }}>
+                {course.courseDescription}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Course Name: </label>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Input course name"
+                  onChange={(e) =>
+                    setCourse({
+                      ...course,
+                      courseName: e.target.value,
+                    })
+                  }
+                ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Course Description: </label>
+              </td>
+              <td>
+                <textarea
+                  type="text"
+                  placeholder="Input course Description:"
+                  onChange={(e) =>
+                    setCourse({
+                      ...course,
+                      courseDescription: e.target.value,
+                    })
+                  }
+                ></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Categories:</label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                <div className="cate-list">
+                  {categories.map((category) => (
+                    <div key={category.categoryId} className="cate">
+                      <input
+                        type="checkbox"
+                        name="categories"
+                        id={category.categoryId}
+                        value={category.categoryId}
+                        onChange={() => selectCategories(category.categoryId)}
+                      ></input>
 
-          {categories.map((category) => (
-            <div key={category.categoryId}>
-              <input
-                type="checkbox"
-                name="categories"
-                id={category.categoryId}
-                value={category.categoryId}
-                onChange={() => selectCategories(category.categoryId)}
-              ></input>
+                      <label htmlFor={category.categoryId}>
+                        {category.categoryName}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Mentor:</label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                {mentors.map((mentor) => (
+                  <div key={mentor.username}>
+                    <input
+                      type="radio"
+                      name="mentor"
+                      id={mentor.username}
+                      value={mentor.username}
+                      onChange={() => selectMentor(mentor.username)}
+                      required
+                    ></input>
+                    <label htmlFor={mentor.username}>
+                      {mentor.displayName} ({mentor.username})
+                    </label>
+                  </div>
+                ))}
+              </td>
+            </tr>
+          </table>
 
-              <label htmlFor={category.categoryId}>
-                {category.categoryName}
-              </label>
-            </div>
-          ))}
-          <br />
-          <label>Mentor:</label>
-          <input type="radio" name="mentor" id={0}></input>
-          {mentors.map((mentor) => (
-            <div key={mentor.username}>
-              <input
-                type="radio"
-                name="mentor"
-                id={mentor.username}
-                value={mentor.username}
-                onChange={() => selectMentor(mentor.username)}
-                required
-              ></input>
-              <label htmlFor={mentor.username}>
-                {mentor.displayName} ({mentor.username})
-              </label>
-            </div>
-          ))}
           <br />
           <button onClick={handleSubmit}>Create course</button>
         </form>

@@ -1,6 +1,62 @@
 .createCourse-container {
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 .createCourse-container * {
-  border: 1px solid red;
+  /* border: 1px solid red; */
+}
+
+.courseName-head {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+  /* background-color: red; */
+  height: max-content;
+  justify-content: center;
+}
+
+.courseName-head span {
+  color: var(--item);
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  overflow-wrap: break-word;
+  max-height: 4em;
+  overflow: auto;
+  text-align: center;
+}
+
+.courseForm input[type="text"] {
+  border: 3px solid var(--item);
+  border-radius: 1rem;
+  width: 100%;
+  padding: 0.6rem;
+}
+
+.courseForm {
+  /* background-color: red; */
+  width: 100%;
+}
+.courseForm textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 3px solid var(--item);
+  border-radius: 1rem;
+  padding: 0.6rem;
+}
+
+.courseForm table {
+  width: 100%;
+}
+
+td:nth-child(1) {
+  width: 20%;
+}
+
+td:nth-child(2) {
+  width: 80%;
+}
+
+.cate {
+  /* background-color: rosybrown; */
 }
