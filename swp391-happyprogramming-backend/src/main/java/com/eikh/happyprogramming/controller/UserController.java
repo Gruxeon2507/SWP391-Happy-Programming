@@ -1,43 +1,33 @@
 package com.eikh.happyprogramming.controller;
 
-<<<<<<< HEAD
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
-=======
 import com.eikh.happyprogramming.model.Role;
->>>>>>> main
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.DateUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
-<<<<<<< HEAD
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
-=======
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
->>>>>>> main
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-=======
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
->>>>>>> main
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,10 +47,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
-<<<<<<< HEAD
-
-=======
->>>>>>> main
     
     @Autowired
     UserRepository userRepository;
@@ -68,7 +54,6 @@ public class UserController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-<<<<<<< HEAD
 
     @PostMapping("/profile/update")
     public User updateProfile(@RequestHeader("Authorization") String token,@RequestBody User user){
@@ -80,7 +65,8 @@ public class UserController {
             return userRepository.save(updateUser);
         }else{
             return null;
-=======
+        }
+    }
     /**
      * *
      * Author: giangpthe170907
@@ -105,10 +91,9 @@ public class UserController {
         } catch (EmailException ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error when send email");
->>>>>>> main
         }
+        return null;
     }
-<<<<<<< HEAD
     
     @PostMapping("/profile/changepassword")
     public User changePassword(@RequestHeader("Authorization") String token,@RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword){
@@ -116,15 +101,17 @@ public class UserController {
         User user = userRepository.findByUsername(username);
         if(user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())){
             user.setPassword(AuthenticationUtils.hashPassword(newPassword));
-=======
-
+            return user;
+        }else{
+            return null;
+        }
+    }
     @GetMapping(value = "verify")
     public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);
         if (user.getVerification_code().equals(code)) {
             user.setVerified(true);
             user.setVerification_code("");
->>>>>>> main
             return userRepository.save(user);
         } else {
             return null;
@@ -135,11 +122,7 @@ public class UserController {
     public void cleanUserNotVerified() {
         List<User> users = userRepository.findByIsVerified(false);
         for (User user : users) {
-<<<<<<< HEAD
             if(user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())){
-=======
-            if (DateUtils.isExpired(user.getCreatedDate())) {
->>>>>>> main
                 userRepository.delete(user);
             }
         }
