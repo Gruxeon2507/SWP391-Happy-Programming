@@ -6,8 +6,11 @@ package com.eikh.happyprogramming.repository;
 
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -20,23 +23,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     public List<User> findByIsVerified(boolean isVerified);
 
     public User findByMail(String mail);
-
-    //@maiphuonghoang
-//    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
-//            + "				  JOIN Course c ON p.courseId = c.courseId\n"
-//            + "                  JOIN Role r ON r.roleId = p.participateRole\n"
-//            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
-//            + "                  WHERE c.courseId = :courseId  AND p.participateRole IN (2,3)", nativeQuery = true)
-//    public List<User> getUserOfCourse(Integer courseId);
-//    
-//    //@maiphuonghoang
-//    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
-//            + "				  JOIN Course c ON p.courseId = c.courseId\n"
-//            + "                  JOIN Role r ON r.roleId = p.participateRole\n"
-//            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
-//            + "                  WHERE c.courseId = :courseId  AND p.participateRole = 2", nativeQuery = true)
-//    public User getMentorOfCourse(Integer courseId);
-    
     
         //@maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
@@ -56,4 +42,10 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId")
     List<User> findByRoleId(Integer roleId);
+    
+    
+        @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO User_Role(username, roleId) VALUES ( :username, :roleId);", nativeQuery = true)
+    void saveUser_Role(@Param("username") String username, @Param("roleId") Integer roleId);
 }

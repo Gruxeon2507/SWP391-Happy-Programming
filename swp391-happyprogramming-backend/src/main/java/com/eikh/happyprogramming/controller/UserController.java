@@ -47,7 +47,7 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -97,8 +97,9 @@ public class UserController {
     @Scheduled(fixedRate = 3600000) // Run every hour
     public void cleanUserNotVerified() {
         List<User> users = userRepository.findByIsVerified(false);
+
         for (User user : users) {
-            if (DateUtils.isExpired(user.getCreatedDate())) {
+            if (user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())) {
                 userRepository.delete(user);
             }
         }
@@ -157,9 +158,32 @@ public class UserController {
     }
 
     //Date: 22/05/2023
+    //Function: List mentor
+    //author: maiphuonghoang 
+    @GetMapping("/mentors")
+    public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        User user = userRepository.findByUsername(username);
+        System.out.println(user.getUsername());
+        System.out.println(user.getRoles());
+        boolean isAdmin = false;
+        for (Role role : user.getRoles()) {
+            if (role.getRoleId() == 1) {
+                isAdmin = true;
+            }
+        }
+        if (!isAdmin) {
+            return null;
+        }
+        return userRepository.findByRoleId(2);
+
+    }
+
+    //Date: 24/05/2023
     //Function: Insert Mentor into database 
     //author: maiphuonghoang 
-    @PostMapping
+    @PostMapping("/mentor-account")
     public User createMentor(HttpServletRequest request, @RequestBody User mentor) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -175,27 +199,15 @@ public class UserController {
         if (!isAdmin) {
             return null;
         }
-        return userRepository.save(mentor);
-    }
-    
-    @GetMapping("/mentors")
-    public List<User> getAllMentors(HttpServletRequest request, Integer roleId){
-         String token = jwtTokenFilter.getJwtFromRequest(request);
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        User user = userRepository.findByUsername(username);
-        System.out.println(user.getUsername());
-        System.out.println(user.getRoles());
-        boolean isAdmin = false;
-        for (Role role : user.getRoles()) {
-            if (role.getRoleId() == 1) {
-                isAdmin = true;
-            }
-        }
-        if (!isAdmin) {
-            return null;
-        }
-        return userRepository.findByRoleId(2);
-        
+        mentor.setPassword(AuthenticationUtils.hashPassword(mentor.getPassword()));
+        java.util.Date today = new java.util.Date();
+        java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+        mentor.setCreatedDate(sqlToday);     
+        mentor.setActiveStatus(true);
+        User createdMentor = userRepository.save(mentor);
+        userRepository.saveUser_Role(mentor.getUsername(), 2);
+        userRepository.saveUser_Role(mentor.getUsername(), 3);
+        return createdMentor;
     }
 
 }
