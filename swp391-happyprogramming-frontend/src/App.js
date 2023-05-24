@@ -21,6 +21,7 @@ import CreateCourse from "./Pages/Course/CreateCourse";
 import ChangePassword from "./Pages/ChangePassword/ChangePassword";
 import ChangeSetting from "./Pages/ChangeSetting/ChangeSetting";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
+import ViewProfile from "./Pages/ViewProfile/ViewProfile";
 //CSS
 // import "./global/global.css";
 function App() {
@@ -56,6 +57,7 @@ function App() {
       <Route path="/changepassword" element={<ChangePassword></ChangePassword>} />
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
       <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>}/>
+      <Route path="/profile/:username" element={<ViewProfile></ViewProfile>}/>
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {
