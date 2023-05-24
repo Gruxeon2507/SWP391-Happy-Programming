@@ -18,6 +18,7 @@ function ChangeSetting(props) {
 
   const onChangeDob = (event) => {
     const inputDob = event.target.value;
+
     setUser({
       ...user,
       dob: inputDob,
@@ -49,26 +50,26 @@ function ChangeSetting(props) {
   };
 
   const requestHeaders = {
-    "Content-Type": `application/json`,
+    "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
 
   useEffect(() => {
+    // console.log(token);
+
     axios
-      .get(`http://localhost:1111/api/auth/token`, null, {
+      .post(`http://localhost:1111/api/auth/token`, null, {
         headers: requestHeaders,
       })
       .then((res) => {
+        console.log(res.data);
         setId(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error when get token : " + error);
       });
-    console.log(requestHeaders);
     axios
-      .get(`http://localhost:1111/api/auth/profile/${id}`, null, {
-        headers: requestHeaders,
-      })
+      .get(`http://localhost:1111/api/auth/profile/${id}`)
       .then((res) => {
         setUser(res.data);
       })

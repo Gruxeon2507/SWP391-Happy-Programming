@@ -58,7 +58,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = UserRepository.findByUsername(credentials.getUsername());
-        if (user != null && (user.getPassword().equals(credentials.getPassword()))) {
+        if (user != null && ((user.getPassword().equals(credentials.getPassword())) || AuthenticationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
             HttpSession session = request.getSession();
             user.setPassword("");
             String sessionId = UUID.randomUUID().toString();
@@ -167,7 +167,7 @@ public class AuthenticationController {
         return user != null;
     }
 
-    @GetMapping(value = "/token")
+    @PostMapping(value = "/token")
     public String checkUsernameToken(@RequestHeader("Authorization") String token) {
         return jwtTokenProvider.getUsernameFromToken(token.substring(7));
     }

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,33 +44,37 @@ public class UserController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
+
     @PostMapping("/profile/update")
-    public ResponseEntity<?> updateProfile(@RequestHeader("Authorization") String token ,@RequestBody User user){
+    public User updateProfile(@RequestHeader("Authorization") String token,@RequestBody User user){
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         if(user.getUsername().equals(username)){
             User updateUser = userRepository.findByUsername(username);
             updateUser.setDisplayName(user.getDisplayName());
             updateUser.setDob(user.getDob());
-            return ResponseEntity.ok(userRepository.save(updateUser));
+            return userRepository.save(updateUser);
         }else{
-            return ResponseEntity.ok("You can not access to update this user");
+            return null;
         }
     }
     
-    @GetMapping(value = "/setting/profile")
-    public ResponseEntity<?> checkUsernameToken(@RequestHeader("Authorization") String token) {
+    @PostMapping("/profile/changepassword")
+    public User changePassword(@RequestHeader("Authorization") String token,@RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword){
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         User user = userRepository.findByUsername(username);
-        user.setMail("");
-        user.setPassword("");
-        user.setVerification_code("");
-        return ResponseEntity.ok(user);
+        if(user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())){
+            user.setPassword(AuthenticationUtils.hashPassword(newPassword));
+            return userRepository.save(user);
+        }else{
+            return null;
+        }
     }
+    
     @Scheduled(fixedRate = 3600000) // Run every hour
     public void cleanUserNotVerified(){
         List<User> users = userRepository.findByIsVerified(false);
         for (User user : users) {
-            if(DateUtils.isExpired(user.getCreatedDate())){
+            if(user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())){
                 userRepository.delete(user);
             }
         }

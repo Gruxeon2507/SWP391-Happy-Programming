@@ -14,6 +14,8 @@ import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import ViewProfile from "./Pages/ViewProfile/ViewProfile";
 import ChangeSetting from "./Pages/ChangeSetting/ChangeSetting";
+import ChangePassword from "./Pages/ChangePassword/ChangePassword";
+
 //CSS
 // import "./global/global.css";
 function App() {
@@ -29,6 +31,7 @@ function App() {
       <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}/>
       <Route path="/profile/:id" element={<ViewProfile></ViewProfile>}/>
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>}/>
+      <Route path="/changepassword" element={<ChangePassword></ChangePassword>}/>
     </Routes>
   );
 }
