@@ -22,7 +22,6 @@ function Homepage() {
     setActiveCateFilter(!isActiveCateFilter);
   };
 
-  const sizePerPage = 5;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
@@ -419,40 +418,13 @@ function Homepage() {
     <div className="container home-page">
       <NavBar mode={1}></NavBar>
 
-    <div>
-
-      <div className="find d-flex justify-content-center">
-        <FormControl
-          placeholder="Search course here"
-          name="search"
-          className={"info-border bg-dark text-white w-50 "}
-          value={condition}
-          onChange={(e) => { setCondition(e.target.value); console.log(e.target.value); }}
-        />
-        <button onClick={() => handleSearch()}>Search</button>
-        <button onClick={() => handleReset()}>Reset</button>
-        <select name="filter" id="" onChange={(e) => handleCheckFilter(e.target.value)} >
-          <option disabled>---- Filter -----</option>
-          <option value="asc|courseName">A-Z Name</option>
-          <option value="desc|courseName">Z-A Name</option>
-          <option value="asc|createdAt">Newest </option>
-          <option value="desc|createdAt">Oldest</option>
-        </select>
-      </div>
-
-      <h2>LIST CATEGORY</h2>
-      <div className="select-list">
-        {categories.map((category) => (
-          <div className="select">
-            <label key={category.categoryId}>
-              <input
-                type="checkbox"
-                className="form-check-input"
-                checked={checked.includes(category.categoryId)}
-                onChange={() => handleCheck(category.categoryId)}
-              />
-              {category.categoryName}
-            </label>
+      {/* ====================region filter==================== */}
+      <div className="filter-container">
+        <div className="filter-1">
+          <div className="cate-filter-head">
+            <button onClick={toggleActiveCateFilter}>
+              <ion-icon name="filter-circle-outline"></ion-icon>
+            </button>
           </div>
           <input
             type="text"
