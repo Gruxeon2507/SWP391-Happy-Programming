@@ -222,3 +222,4 @@ SELECT * FROM Course
 
 SELECT * FROM Participate where courseId = 26;
 UPDATE `User` set activeStatus = 1 WHERE username != '';
+
