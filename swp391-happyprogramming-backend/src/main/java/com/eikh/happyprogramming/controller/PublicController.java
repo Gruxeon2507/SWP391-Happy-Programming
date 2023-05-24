@@ -46,13 +46,16 @@ public class PublicController {
         return courseRepository.findAll();
     }
 
+    @GetMapping("/active-mentors")
+    public List<User> getAllActiveMentors() {
+        return userRepository.getUsersByRoleActiveStatus(2, 1);
+    }
+
     @GetMapping("/categories/all")
     List<Category> getAllCategory() {
         return categoryRepository.findAll();
     }
 
-    @GetMapping("/active-mentors")
-    public List<User> getAllActiveMentors() {
-        return userRepository.getUsersByRoleActiveStatus(2, 1);
-    }
+
+
 }

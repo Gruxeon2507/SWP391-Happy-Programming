@@ -7,8 +7,11 @@ package com.eikh.happyprogramming.repository;
 import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -23,27 +26,14 @@ public interface UserRepository extends JpaRepository<User, String> {
     public User findByMail(String mail);
 
     //@maiphuonghoang
-//    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
-//            + "				  JOIN Course c ON p.courseId = c.courseId\n"
-//            + "                  JOIN Role r ON r.roleId = p.participateRole\n"
-//            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
-//            + "                  WHERE c.courseId = :courseId  AND p.participateRole IN (2,3)", nativeQuery = true)
-//    public List<User> getUserOfCourse(Integer courseId);
-//    
-//    //@maiphuonghoang
-//    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
-//            + "				  JOIN Course c ON p.courseId = c.courseId\n"
-//            + "                  JOIN Role r ON r.roleId = p.participateRole\n"
-//            + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
-//            + "                  WHERE c.courseId = :courseId  AND p.participateRole = 2", nativeQuery = true)
-//    public User getMentorOfCourse(Integer courseId);
-    //@maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
             + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
             + "                  WHERE c.courseId = :courseId  AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<User> getUserOfCourse(Integer courseId);
+
+
 
     //@maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
@@ -61,4 +51,18 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur ON u.username = ur.username WHERE ur.roleId = :roleId and u.activeStatus = :activeStatus", nativeQuery = true)
     public List<User> getUsersByRoleActiveStatus(int roleId, int activeStatus);
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId")
+    List<User> findByRoleId(Integer roleId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO User_Role(username, roleId) VALUES ( :username, :roleId);", nativeQuery = true)
+    void saveUser_Role(@Param("username") String username, @Param("roleId") Integer roleId);
+
+    public boolean existsByUsername(String username);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE `User` u SET u.activeStatus = :status WHERE u.username = :username", nativeQuery = true)
+    public void updateActiveStatus( Integer status, String username);
 }

@@ -69,6 +69,7 @@ function NavBar(props) {
           </li>
           <li className="nav-item">
             <NavLink to="/admin">admin</NavLink>
+            <NavLink to="/admin1">Mentor Management</NavLink>
           </li>
           <li className="nav-item">
             <NavLink
