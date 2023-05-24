@@ -14,14 +14,14 @@ function Homepage() {
   const [totalItems, setTotalItems] = useState(0);
   const [condition, setCondition] = useState("");
   const [isActiveCateFilter, setActiveCateFilter] = useState(false);
+  const [mentorOfCourses, setMentorOfCourses] = useState("");
 
-  const [mentorOfCourses, setMentorOfCourses] = useState({});
+  const sizePerPage = 7;
 
   const toggleActiveCateFilter = () => {
     setActiveCateFilter(!isActiveCateFilter);
   };
 
-  const sizePerPage = 5;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
@@ -189,6 +189,19 @@ function Homepage() {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        getAllCategories(),
+        getPageCourses(0, sizePerPage, "createdAt", "desc"),
+      ]);
+      console.log("da chay filter");
+      handleSearch();
+    };
+
+    fetchData();
+  }, []);
+
   const getMentorOfCourses = (courseId) => {
     CourseServices.getMentorOfCourse(courseId).then((response) => {
       setMentorOfCourses((prevUserOfCourses) => ({
@@ -197,6 +210,7 @@ function Homepage() {
       }));
     });
   };
+
   useEffect(() => {
     pageCourses.forEach((course) => {
       getMentorOfCourses(course.courseId);
@@ -409,8 +423,7 @@ function Homepage() {
         <div className="filter-1">
           <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
-              {/* <ion-icon name="filter-circle-outline"></ion-icon> */}
-              <ion-icon name="list-outline"></ion-icon>
+              <ion-icon name="filter-circle-outline"></ion-icon>
             </button>
           </div>
           <input
