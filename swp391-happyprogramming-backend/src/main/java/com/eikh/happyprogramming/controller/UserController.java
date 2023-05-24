@@ -56,6 +56,9 @@ public class UserController {
     
     @Autowired
     JwtTokenUtil jwtTokenUtil;
+    
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
 
     @PostMapping("/profile/update")

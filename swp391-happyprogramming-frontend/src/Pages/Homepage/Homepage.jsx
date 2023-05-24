@@ -83,19 +83,6 @@ function Homepage() {
     });
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([
-        getAllCategories(),
-        getPageCourses(0, sizePerPage, "createdAt", "desc"),
-      ]);
-      console.log("da chay filter");
-      handleSearch();
-    };
-
-    fetchData();
-  }, []);
-
   const getMentorOfCourses = (courseId) => {
     CourseServices.getMentorOfCourse(courseId).then((response) => {
       setMentorOfCourses((prevUserOfCourses) => ({
@@ -104,7 +91,6 @@ function Homepage() {
       }));
     });
   };
-
   useEffect(() => {
     pageCourses.forEach((course) => {
       getMentorOfCourses(course.courseId);
@@ -126,7 +112,6 @@ function Homepage() {
     getSearchCheckAndFilterCourses("", "", 0, sizePerPage, sortField, sortOrder)
   };
   const handleSearchCheckAndFilter = async (source, value) => {
-    // var searchText = encodeURIComponent(condition).replace(/%20/g, "%20")
     setCurrentPage(1);
     if (source === 'filterButton') {
       const sortField = value.split("|")[1];
@@ -150,7 +135,8 @@ function Homepage() {
         <div className="filter-1">
           <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
-              <ion-icon name="filter-circle-outline"></ion-icon>
+              {/* <ion-icon name="filter-circle-outline"></ion-icon> */}
+              <ion-icon name="list-outline"></ion-icon>
             </button>
           </div>
           <input

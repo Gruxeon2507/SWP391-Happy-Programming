@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
@@ -50,6 +51,7 @@ public class AuthenticationController {
     private UserRepository UserRepository;
     @Autowired
     private JwtTokenUtil jwtTokenProvider;
+    
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
