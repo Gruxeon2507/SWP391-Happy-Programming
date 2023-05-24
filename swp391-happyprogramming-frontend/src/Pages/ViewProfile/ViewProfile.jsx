@@ -14,9 +14,12 @@ function ViewProfile(props) {
     password: "",
     displayName: "",
     mail: "",
+    avatarPath: "",
     dob: "",
     createdDate: "",
   });
+
+  const avatar = require(`../../../../swp391-happyprogramming-backend/avatar/${user.avatarPath}`);
 
   useEffect(() => {
     axios
@@ -32,6 +35,12 @@ function ViewProfile(props) {
 
   return (
     <div>
+      <div>
+        <label>Avatar</label>
+        <div>
+          <img src={avatar} alt="User Avatar" />
+        </div>
+      </div>
       <div>
         <label>Username</label>
         <h1>{user.username}</h1>

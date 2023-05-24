@@ -2,7 +2,7 @@ USE FU_SWP391_HappyProgramming;
 
 
 -- Insert into `User`
-INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', '', '', 0);
+INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', 'namnh.jpg', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namlx', '123', 'Lê Xuân Nam', '2003-1-29', 'namlxhe153241@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('lamtn', '123', 'Tống Ngọc Lâm', '2003-7-25', 'lamtnhe153679@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('chauntm', '123', 'Nguyễn Thị Minh Châu', '2003-6-18', 'chaunthe161283@fpt.edu.vn', '2023-5-12', '', '', 0);
@@ -16,7 +16,7 @@ INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, ava
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('thinhnp', '123', 'Nguyễn Phùng Thịnh', '2003-1-1', 'thinhnphe170833@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('haunt', '123', 'Nguyễn Thanh Hậu', '2003-1-1', 'haunthe170842@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('huyenntk', '123', 'Nguyễn Thị Khánh Huyền', '2003-1-1', 'huyennthe170863@fpt.edu.vn', '2023-5-12', '', '', 0);
-INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('giangpt', '123', 'Phạm Trường Giang', '2003-1-1', 'giangpthe170907@fpt.edu.vn', '2023-5-12', '', '', 0);
+INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('giangpt', '123', 'Phạm Trường Giang', '2003-1-1', 'giangpthe170907@fpt.edu.vn', '2023-5-12', 'giangpt.jpg', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('duckm', '123', 'Khiếu Minh Đức', '2003-1-1', 'duckmhe170996@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('nhatvn', '123', 'Vũ Ngọc Nhất', '2003-1-1', 'nhatvnhe171071@fpt.edu.vn', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('phuonghm', '123', 'Hoàng Mai Phương', '2003-1-1', 'phuonghmhe171073@fpt.edu.vn', '2023-5-12', '', '', 0);
@@ -32,7 +32,7 @@ INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, ava
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('huyenmentor', '123', 'Nguyễn Thị Khánh Huyền', '2003-8-6', 'hn8319542@gmail.com', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('phuongmentor', '123', 'Hoàng Mai Phương', '2003-1-29', 'maiphuonghoangmpk@gmail.com', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('ducmentor', '123', 'Khiếu Minh Đức', '2003-7-25', 'khieuminhduc2012@gmail.com', '2023-5-12', '', '', 0);
-INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('giangmentor', '123', 'Phạm Trường Giang', '2003-6-18', 'nocolor06@gmail.com', '2023-5-12', '', '', 0);
+INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('giangmentor', '123', 'Phạm Trường Giang', '2003-6-18', 'nocolor06@gmail.com', '2023-5-12', 'giangmentor.jpg', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('anmentor', '123', 'Triệu Thạch Ân', '2003-5-2', 'anlalahello@gmail.com', '2023-5-12', '', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('eikh', '123', 'Em Yêu Khoa Học', '2021-7-21', 'emiukhoahoc@gmail.com', '2023-5-12', '', '', 0);
 
