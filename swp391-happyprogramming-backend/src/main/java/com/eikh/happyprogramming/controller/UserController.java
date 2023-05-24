@@ -204,6 +204,7 @@ public class UserController {
         java.sql.Date sqlToday = new java.sql.Date(today.getTime());
         mentor.setCreatedDate(sqlToday);     
         mentor.setActiveStatus(true);
+        mentor.setDisplayName(mentor.getUsername());
         User createdMentor = userRepository.save(mentor);
         userRepository.saveUser_Role(mentor.getUsername(), 2);
         userRepository.saveUser_Role(mentor.getUsername(), 3);
