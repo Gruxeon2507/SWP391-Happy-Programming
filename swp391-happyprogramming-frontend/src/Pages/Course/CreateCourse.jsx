@@ -7,6 +7,8 @@ import ParticipateServices from "../../services/ParticipateServices";
 import PublicService from "../../services/PublicService";
 import "../Course/CreateCourse.css";
 import NavBar from "../../Components/Navbar/NavBar";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 function CreateCourse() {
   const [course, setCourse] = useState({
@@ -19,6 +21,7 @@ function CreateCourse() {
   const [mentors, setMentors] = useState([]);
   const [selectedMentor, setSelectedMentor] = useState({});
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [temp, setTemp] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,9 +71,12 @@ function CreateCourse() {
   useEffect(() => {
     PublicService.getActiveMentors().then((res) => setMentors(res.data));
   }, []);
-
+  // const options = categories.map((cate) => {
+  //   return { value: cate.categoryId, label: cate.categoryName };
+  // });
   useEffect(() => {
     // Update the course state whenever selectedCategories change
+    setSelectedCategories(temp.map((c) => ({ categoryId: c.value })));
     setCourse((prevCourse) => ({
       ...prevCourse,
       categories: selectedCategories,
@@ -82,12 +88,7 @@ function CreateCourse() {
       {/* <NavBar mode={0} /> */}
       <div className="createCourse-container">
         <form id="courseForm" className="courseForm">
-          <table border="1px" className="table-input">
-            <tr>
-              <td>
-                <label>Preview: </label>
-              </td>
-            </tr>
+          <table border={1} className="table-input">
             <tr>
               <td colSpan={2}>
                 <div className="courseName-head">
@@ -97,7 +98,7 @@ function CreateCourse() {
             </tr>
             <tr>
               <td>
-                <label>Description: </label>
+                <label>Input </label>
               </td>
             </tr>
             <tr>
@@ -143,8 +144,23 @@ function CreateCourse() {
               <td>
                 <label>Categories:</label>
               </td>
+              <td>
+                {/* <Select options={options} isMulti onChange={}/> */}
+                <Select
+                  options={categories.map((category) => ({
+                    value: category.categoryId,
+                    label: category.categoryName,
+                  }))}
+                  isMulti
+                  value={temp}
+                  onChange={(values) => {
+                    // setSelectedCategories(values);
+                    setTemp(values);
+                  }}
+                />
+              </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td colSpan={2}>
                 <div className="cate-list">
                   {categories.map((category) => (
@@ -164,7 +180,7 @@ function CreateCourse() {
                   ))}
                 </div>
               </td>
-            </tr>
+            </tr> */}
             <tr>
               <td>
                 <label>Mentor:</label>

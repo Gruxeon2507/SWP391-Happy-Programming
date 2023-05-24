@@ -1,13 +1,24 @@
+:where(.courseForm, .createCourse-container) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .createCourse-container {
-  overflow-y: scroll;
+}
+.courseForm {
+  width: 90%;
+}
+
+:where(.courseName-head, .createCourse-container) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .courseName-head {
-  display: flex;
   flex-direction: row;
-  align-items: center;
   height: max-content;
-  justify-content: center;
 }
 
 .courseName-head span {
@@ -28,11 +39,6 @@
   padding: 0.6rem;
 }
 
-.courseForm {
-  /* background-color: red; */
-  width: 100%;
-  overflow-y: scroll;
-}
 .courseForm textarea {
   width: 100%;
   min-height: 100px;
@@ -65,9 +71,20 @@
 
 .courseForm table {
   width: 100%;
+  padding: 1rem;
+  border-collapse: collapse;
+  border-color: transparent;
 }
 
-td:nth-child(1) {
+.table-input tr {
+  border-bottom: 2px solid var(--item);
+}
+
+.table-input td {
+  padding: 1rem;
+}
+
+.courseForm td:nth-child(1) {
   width: 20%;
 }
 
