@@ -130,18 +130,34 @@ public class UserController {
     
     
     private final String AVT_UPLOAD_DIR = "/avatar/";
+    private final String PDF_UPLOAD_DIR = "/pdf/";
+    
+    @PostMapping("/pdf/upload")
+    public void uploadCvFile(@RequestParam("pdfPath") MultipartFile file, @RequestParam("username") String username) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(username + ".pdf");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
     
     //Date: 22/05/2023
     //Function: Upload Avatar
     //Writen By:DucKM
     @PostMapping("/avatar/upload")
-    public void uploadFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+    public void uploadAvatarFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".jpg");
             try {
                 // Save the file to the uploads directory
-
                 String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
                 file.transferTo(new File(uploadDir + fileName));
             } catch (IOException e) {

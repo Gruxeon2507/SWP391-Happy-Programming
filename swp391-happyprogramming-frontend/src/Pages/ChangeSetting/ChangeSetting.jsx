@@ -11,6 +11,7 @@ function ChangeSetting(props) {
     username: "",
     password: "",
     displayName: "",
+    avatarPath: "",
     dob: "",
   });
 
@@ -34,6 +35,10 @@ function ChangeSetting(props) {
     });
   };
 
+  const onChangeAvatarPath = (event) => {};
+
+  const handleSubmitAvatar = (event) => {};
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -53,6 +58,8 @@ function ChangeSetting(props) {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
+
+  const avatar = require(`../../../../swp391-happyprogramming-backend/avatar/${user.avatarPath}`);
 
   useEffect(() => {
     // console.log(token);
@@ -81,6 +88,22 @@ function ChangeSetting(props) {
   return (
     <form onSubmit={handleSubmit}>
       <div>
+        <form onSubmit={handleSubmitAvatar}>
+          <div>
+            <label>Avatar</label>
+            <div>
+              <img src={avatar} alt="User Avatar" />
+            </div>
+          </div>
+          <div>
+            <lable>Upload Avatar</lable>
+            <input
+              type="file"
+              name="avatarPath"
+              onChange={onChangeAvatarPath}
+            />
+          </div>
+        </form>
         <div>
           <label>Displayname</label>
           <input
