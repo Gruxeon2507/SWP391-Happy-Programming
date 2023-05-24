@@ -33,6 +33,8 @@ public interface UserRepository extends JpaRepository<User, String> {
             + "                  WHERE c.courseId = :courseId  AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<User> getUserOfCourse(Integer courseId);
 
+
+
     //@maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
@@ -41,6 +43,14 @@ public interface UserRepository extends JpaRepository<User, String> {
             + "                  WHERE c.courseId = :courseId  AND p.participateRole = 2", nativeQuery = true)
     public User getMentorOfCourse(Integer courseId);
 
+    @Query("select u from User u join u.roles r where r.roleId = 2")
+    public List<User> getAllMentors();
+
+    @Query(value = "SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE u.username = :username and ur.roleId = :roleId", nativeQuery = true)
+    public User userHasRole(String username, int roleId);
+
+    @Query(value = "SELECT * FROM `User` u JOIN User_Role ur ON u.username = ur.username WHERE ur.roleId = :roleId and u.activeStatus = :activeStatus", nativeQuery = true)
+    public List<User> getUsersByRoleActiveStatus(int roleId, int activeStatus);
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId")
     List<User> findByRoleId(Integer roleId);
 
@@ -55,10 +65,4 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Transactional
     @Query(value = "UPDATE `User` u SET u.activeStatus = :status WHERE u.username = :username", nativeQuery = true)
     public void updateActiveStatus( Integer status, String username);
-     
-     @Query("select u from User u join u.roles r where r.roleId = 2")
-     public List<User> getAllMentors();
-     
-     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE u.username = :username and ur.roleId = :roleId", nativeQuery = true)
-     public User userHasRole(String username, int roleId);
 }

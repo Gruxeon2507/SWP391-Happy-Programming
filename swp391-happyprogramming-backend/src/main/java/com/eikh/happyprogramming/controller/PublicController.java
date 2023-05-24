@@ -6,8 +6,10 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.model.Category;
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CategoryRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
+import com.eikh.happyprogramming.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,9 +29,12 @@ public class PublicController {
 
     @Autowired
     CourseRepository courseRepository;
-    
+
     @Autowired
     CategoryRepository categoryRepository;
+    
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/courses/view/{courseId}")
     public Course getCourseById(@PathVariable int courseId) {
@@ -41,8 +46,16 @@ public class PublicController {
         return courseRepository.findAll();
     }
 
+    @GetMapping("/active-mentors")
+    public List<User> getAllActiveMentors() {
+        return userRepository.getUsersByRoleActiveStatus(2, 1);
+    }
+
     @GetMapping("/categories/all")
     List<Category> getAllCategory() {
         return categoryRepository.findAll();
     }
+
+
+
 }

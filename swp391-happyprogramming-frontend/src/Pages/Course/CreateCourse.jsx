@@ -3,8 +3,11 @@ import CategoryServices from "../../services/CategoryServices";
 import UserService from "../../services/UserService";
 import CourseServices from "../../services/CourseServices";
 import { COURSE_BASE_REST_API_URL } from "../../services/CourseServices";
-// import CategoryServices from "../../services/CategoryServices";
 import ParticipateServices from "../../services/ParticipateServices";
+import PublicService from "../../services/PublicService";
+import "../Course/CreateCourse.css";
+import NavBar from "../../Components/Navbar/NavBar";
+
 function CreateCourse() {
   const [course, setCourse] = useState({
     courseName: "",
@@ -24,14 +27,10 @@ function CreateCourse() {
     const newCourse = response.data;
 
     // insert mentor into Participate table
-    // console.log(newCourse);
     const courseId = newCourse.courseId;
-    // console.log("Course Id is: " + courseId);
     const username = course.mentor;
-    // console.log("USER NAME IS " + username);
     ParticipateServices.saveParticipate(username, courseId, 2, 1);
   };
-  // console.log(course.categories.length + " categories SUBMITTED");
 
   const selectMentor = (mentor) => {
     setSelectedMentor(mentor);
@@ -46,13 +45,11 @@ function CreateCourse() {
   const selectCategories = (categoryId) => {
     setSelectedCategories((current) => {
       let isChecked = false;
-      // const isChecked = selectedCategories.includes({categoryId: categoryId});
       selectedCategories.forEach((category) => {
         if (category.categoryId == categoryId) {
           isChecked = true;
         }
       });
-      // console.log(isChecked);
       if (isChecked) {
         return selectedCategories.filter(
           (item) => item.categoryId !== categoryId
@@ -61,19 +58,15 @@ function CreateCourse() {
         return [...current, { categoryId: categoryId }];
       }
     });
-    // console.log(selectedCategories);
-    // setCourse({ ...course, categories: selectedCategories });
   };
   console.log(selectedCategories);
   console.log(selectedCategories.length + " categories selected");
-  // console.log(course.categories);
-  // console.log(course.categories.length + " categories selected");
 
   useEffect(() => {
     CategoryServices.getAllCategories().then((res) => setCategories(res.data));
   }, []);
   useEffect(() => {
-    UserService.getAlllMentors().then((res) => setMentors(res.data));
+    PublicService.getActiveMentors().then((res) => setMentors(res.data));
   }, []);
 
   useEffect(() => {
@@ -86,67 +79,126 @@ function CreateCourse() {
 
   return (
     <>
-      <form id="courseForm">
-        <label>Course Name: </label>
-        <input
-          type="text"
-          onChange={(e) =>
-            setCourse({
-              ...course,
-              courseName: e.target.value,
-            })
-          }
-        ></input>
-        <p>Name: {course.courseName}</p>
-        <br />
-        <label>Course Description: </label>
-        <input
-          type="text"
-          onChange={(e) =>
-            setCourse({
-              ...course,
-              courseDescription: e.target.value,
-            })
-          }
-        ></input>
-        <p>Description: {course.courseDescription}</p>
-        <br />
-        <label>Categories:</label>
+      {/* <NavBar mode={0} /> */}
+      <div className="createCourse-container">
+        <form id="courseForm" className="courseForm">
+          <table border="1px" className="table-input">
+            <tr>
+              <td>
+                <label>Preview: </label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                <div className="courseName-head">
+                  <span>{course.courseName}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Description: </label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2} style={{ textAlign: "center" }}>
+                {course.courseDescription}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Course Name: </label>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Input course name"
+                  onChange={(e) =>
+                    setCourse({
+                      ...course,
+                      courseName: e.target.value,
+                    })
+                  }
+                ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Course Description: </label>
+              </td>
+              <td>
+                <textarea
+                  type="text"
+                  placeholder="Input course Description:"
+                  onChange={(e) =>
+                    setCourse({
+                      ...course,
+                      courseDescription: e.target.value,
+                    })
+                  }
+                ></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Categories:</label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                <div className="cate-list">
+                  {categories.map((category) => (
+                    <div key={category.categoryId} className="cate">
+                      <input
+                        type="checkbox"
+                        name="categories"
+                        id={category.categoryId}
+                        value={category.categoryId}
+                        onChange={() => selectCategories(category.categoryId)}
+                      ></input>
 
-        {categories.map((category) => (
-          <div key={category.categoryId}>
-            <input
-              type="checkbox"
-              name="categories"
-              id={category.categoryId}
-              value={category.categoryId}
-              onChange={() => selectCategories(category.categoryId)}
-            ></input>
-
-            <label htmlFor={category.categoryId}>{category.categoryName}</label>
-          </div>
-        ))}
-        <br />
-        <label>Mentor:</label>
-        <input type="radio" name="mentor" id={0}></input>
-        {mentors.map((mentor) => (
-          <div key={mentor.username}>
-            <input
-              type="radio"
-              name="mentor"
-              id={mentor.username}
-              value={mentor.username}
-              onChange={() => selectMentor(mentor.username)}
-              required
-            ></input>
-            <label htmlFor={mentor.username}>
-              {mentor.displayName} ({mentor.username})
-            </label>
-          </div>
-        ))}
-        <br />
-        <button onClick={handleSubmit}>Create course</button>
-      </form>
+                      <label htmlFor={category.categoryId}>
+                        {category.categoryName}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Mentor:</label>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                {mentors.map((mentor) => (
+                  <div key={mentor.username}>
+                    <input
+                      type="radio"
+                      name="mentor"
+                      id={mentor.username}
+                      value={mentor.username}
+                      onChange={() => selectMentor(mentor.username)}
+                      required
+                    ></input>
+                    <label htmlFor={mentor.username}>
+                      {mentor.displayName} ({mentor.username})
+                    </label>
+                  </div>
+                ))}
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                <div className="bttnRow">
+                  <button onClick={handleSubmit}>Create course</button>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
     </>
   );
 }

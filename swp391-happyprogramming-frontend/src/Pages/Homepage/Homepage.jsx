@@ -82,7 +82,6 @@ function Homepage() {
       setTotalItems(response.data.totalElements);
     });
 
-
   const getMentorOfCourses = (courseId) => {
     CourseServices.getMentorOfCourse(courseId).then((response) => {
       setMentorOfCourses((prevUserOfCourses) => ({
@@ -168,8 +167,12 @@ function Homepage() {
             <option value="desc|courseName">Z-A Name</option>
 
           </select>
+          <div className="textBttn">
+            <button onClick={handleReset}>Reset</button>
+          </div>
         </div>
       </div>
+
       <div className="cate-filter">
         <div className={`select-list ${isActiveCateFilter ? "active" : ""}`}>
           {categories.map((category) => (

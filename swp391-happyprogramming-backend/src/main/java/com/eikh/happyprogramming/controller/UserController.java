@@ -50,7 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
-
+    
     @Autowired
     UserRepository userRepository;
     
@@ -156,7 +156,6 @@ public class UserController {
         }
 
     }
-
     //Date: 22/05/2023
     //Function: Get Input File Extension
     //Writen By:DucKM

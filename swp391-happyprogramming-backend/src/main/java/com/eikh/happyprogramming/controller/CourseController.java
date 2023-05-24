@@ -58,7 +58,7 @@ public class CourseController {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
-
+    
     @GetMapping
     List<Course> getAll() {
         return courseRepository.findAll();
@@ -278,3 +278,5 @@ public class CourseController {
         }
     }
 }
+    
+

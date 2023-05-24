@@ -27,9 +27,20 @@ class CourseServices {
   }
   //@maiphuonghoang
   filterCourse(searchText, pageNumber, pageSize, sortField, sortOrder) {
-    console.log(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`);
-    return axios.get(`${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`);
+    console.log(
+      `${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
+    );
+    return axios.get(
+      `${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
+    );
   }
+
+
+  // @HuyenNTK
+  createCourse(course) {
+    return api.post("api/courses/create", course);
+  }
+
   //@maiphuonghoang
   getCourseByUsernameAndStatusId(statusId) {
     console.log(`http://localhost:1111/api/courses/by-user?statusId=${statusId}`);
@@ -55,9 +66,6 @@ class CourseServices {
     return axios.get(
       `${COURSE_BASE_REST_API_URL}/search-and-categories-filter?categoryIds=${categoryIds}&searchText=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
     );
-  }
-  createCourse(course) {
-    return api.post("api/courses/create", course);
   }
 
 }

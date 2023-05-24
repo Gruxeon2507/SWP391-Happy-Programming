@@ -1,22 +1,8 @@
 @import url("../../global/ColorPalette.css");
 
-/* .home-page {
-  border: 1px solid red;
+.home-page {
+  margin-top: 7rem;
 }
-
-.filter-container * {
-  border: 1px solid red;
-}
-
-.home-page * {
-  border: 1px solid red;
-}
-
-.cate-filter * {
-  border: 1px solid red;
-} */
-
-/* ====================region filter==================== */
 
 .filter-container {
   background-color: var(--lightItem);
@@ -24,11 +10,11 @@
   flex-direction: column;
   justify-content: flex-start;
   justify-items: center;
-  /* padding: 1rem 1rem 0 1rem; */
   padding: 1rem;
   width: fit-content;
-  margin: 0 1rem;
-  border-radius: 1rem;
+  margin: 4px 1rem;
+  border-radius: 2rem;
+  /* border-radius: 1rem; */
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -41,15 +27,30 @@ option {
   flex-direction: row;
 }
 
+.search-border {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  /* background-color: blue; */
+  background-color: var(--lightItem);
+  border: 2px solid var(--item);
+  border-radius: 1rem;
+  /* padding: 0.5rem; */
+}
+
 .filter-container input {
-  height: min-content;
-  padding: 0.5rem;
-  border-radius: 8px;
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
-    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-  /* border: none; */
-  border: 2px solid var(--light);
-  margin: auto 0;
+  min-width: 200px;
+  border: none;
+  height: 100%;
+  width: max-content;
+  background-color: transparent;
+  padding-left: 0.5rem;
+}
+
+.filter-container input:focus {
+  outline: none;
+  border-color: red;
 }
 
 .filter-container input::placeholder {
@@ -57,9 +58,10 @@ option {
 }
 
 .filter-container button {
-  background-color: var(--item);
+  background-color: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: 1rem;
+  overflow: hidden;
   height: min-content;
   width: min-content;
   padding: 1px 2px;
@@ -73,15 +75,16 @@ option {
 }
 
 .textBttn button {
-  color: var(--light);
-  margin: auto 4px;
+  color: var(--lightItem);
+  background-color: var(--item);
+  margin: auto 4px auto 8px;
   font-size: 1.05rem;
   padding: 6px 0.4rem;
 }
 
 .filter-container ion-icon {
-  color: var(--lightItem);
-  transform: translateY(6%);
+  color: var(--item);
+  transform: translateY(9%);
   font-size: 1.5rem;
 }
 
@@ -99,6 +102,7 @@ option {
   border: 2px solid var(--item2);
   border-radius: 8px;
   transition: 0.3s all ease;
+  margin-left: 8px;
 }
 
 .cate-filter-head {
@@ -116,7 +120,7 @@ option {
 .cate-filter-head button {
   background-color: var(--item);
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   height: min-content;
   width: min-content;
   padding: 1px 2px;
@@ -160,7 +164,8 @@ option {
   white-space: nowrap;
   background-color: var(--lightItem);
   border-radius: 1rem;
-  margin: 0 auto auto auto;
+  margin: -1rem auto auto 1rem;
+  width: 0px;
   max-width: 1000px;
   height: 0px;
   transition: 0.2s all ease;
@@ -170,7 +175,8 @@ option {
 }
 
 .select-list.active {
-  margin: 1rem auto auto auto;
+  margin: 1rem auto auto 1rem;
+  width: auto;
   height: auto;
   transition: 0.3s all ease;
   padding: 1rem;

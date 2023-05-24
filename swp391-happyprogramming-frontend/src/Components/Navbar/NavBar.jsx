@@ -5,6 +5,7 @@ import "../Navbar/NavBar.css";
 import logo from "../../Assets/logo.png";
 import { Alert } from "bootstrap";
 import SettingDrawer from "../SettingDrawer/SettingDrawer";
+import basicAvatar from "../../Assets/base_user_img.png";
 
 function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
@@ -67,7 +68,8 @@ function NavBar(props) {
             <NavLink to="/chat">Chat</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/admin">Mentor Management</NavLink>
+            <NavLink to="/admin">admin</NavLink>
+            <NavLink to="/admin1">Mentor Management</NavLink>
           </li>
           <li className="nav-item">
             <NavLink
@@ -87,6 +89,14 @@ function NavBar(props) {
           </button>
         </div>
       </nav>
+      <div className="SettingBar">
+        <div className="pf-dropdown">
+          <div className="avatar">
+            <img src={basicAvatar} alt="avatar"></img>
+          </div>
+        </div>
+        {/* <SettingDrawer></SettingDrawer> */}
+      </div>
     </div>
   );
 }

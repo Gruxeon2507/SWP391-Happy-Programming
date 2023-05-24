@@ -23,6 +23,7 @@
   /* border: 2px solid red; */
   border-radius: 1rem;
   width: 50%;
+  max-width: 800px;
   margin: 4rem auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

@@ -235,7 +235,7 @@ function Register(props) {
 
   return (
     <div>
-      <NavBar mode={1} />
+      <NavBar mode={0} />
 
       {messageVerify ? (
         <VerifyDialog email={user.mail} />

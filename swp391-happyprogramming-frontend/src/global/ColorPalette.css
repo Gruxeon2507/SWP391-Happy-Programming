@@ -13,3 +13,26 @@
   --item2Active: #17aaff;
   --item3: #3e3f75;
 }
+
+/* For webkit-based browsers */
+::-webkit-scrollbar {
+  width: 10px; /* Adjust the width as per your requirements */
+}
+
+/* To remove the background */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* To style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: var(
+    --item
+  ); /* Set the color you want for the scrollbar thumb */
+  border-radius: 5px;
+}
+
+/* To style the scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666; /* Set the color you want for the scrollbar thumb on hover */
+}
