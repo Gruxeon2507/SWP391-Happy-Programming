@@ -57,7 +57,7 @@ function App() {
       <Route path="/changepassword" element={<ChangePassword></ChangePassword>} />
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
       <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>}/>
-      <Route path="/profile/:username" element={<ViewProfile></ViewProfile>}/>
+      <Route path="/profile/:username" element={<ViewProfile> </ViewProfile>}/>
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {
