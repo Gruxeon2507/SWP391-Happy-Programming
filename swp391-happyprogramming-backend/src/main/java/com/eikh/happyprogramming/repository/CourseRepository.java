@@ -6,10 +6,14 @@ package com.eikh.happyprogramming.repository;
 
 import com.eikh.happyprogramming.model.Course;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
@@ -52,4 +56,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer>{
     @Query(value = "select distinct co from Course co join co.categories c where co.courseName LIKE %:searchText% and c.categoryId in :categoryIds")
     Page<Course> findAllSearchByCategories(Pageable pageable,Integer[] categoryIds, String searchText);
 
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM Course_Category where courseId = :courseId", nativeQuery = true)
+    public void deleteCourseCategoryBycourseId(@Param("courseId") int courseId);
 }

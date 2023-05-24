@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.repository;
 
+import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -54,4 +55,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Transactional
     @Query(value = "UPDATE `User` u SET u.activeStatus = :status WHERE u.username = :username", nativeQuery = true)
     public void updateActiveStatus( Integer status, String username);
+     
+     @Query("select u from User u join u.roles r where r.roleId = 2")
+     public List<User> getAllMentors();
+     
+     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE u.username = :username and ur.roleId = :roleId", nativeQuery = true)
+     public User userHasRole(String username, int roleId);
 }

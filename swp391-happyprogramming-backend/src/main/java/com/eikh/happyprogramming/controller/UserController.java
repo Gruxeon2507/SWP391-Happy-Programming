@@ -181,7 +181,8 @@ public class UserController {
     //author: maiphuonghoang 
     @GetMapping("/mentors")
     public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
-        if (isRoleAdminFromToken(request));
+        if (!isRoleAdminFromToken(request))
+            return  null;
         return userRepository.findByRoleId(2);
 
     }
@@ -221,5 +222,5 @@ public class UserController {
             userRepository.updateActiveStatus(status, username);         
         }
         return null;
-    }
+    } 
 }
