@@ -19,6 +19,10 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,18 +48,28 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @CrossOrigin(origins = {"*"})
 @RestController
-@RequestMapping("api/auth/users")
+@RequestMapping("api/users")
 public class UserController {
 
     @Autowired
     UserRepository userRepository;
-
+    
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private JwtTokenFilter jwtTokenFilter;
 
+    @PostMapping("/profile/update")
+    public User updateProfile(@RequestHeader("Authorization") String token,@RequestBody User user){
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        if(user.getUsername().equals(username)){
+            User updateUser = userRepository.findByUsername(username);
+            updateUser.setDisplayName(user.getDisplayName());
+            updateUser.setDob(user.getDob());
+            return userRepository.save(updateUser);
+        }else{
+            return null;
+        }
+    }
     /**
      * *
      * Author: giangpthe170907
@@ -80,9 +95,20 @@ public class UserController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error when send email");
         }
-        return userRepository.save(user);
+        return null;
     }
-
+    
+    @PostMapping("/profile/changepassword")
+    public User changePassword(@RequestHeader("Authorization") String token,@RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword){
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        User user = userRepository.findByUsername(username);
+        if(user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())){
+            user.setPassword(AuthenticationUtils.hashPassword(newPassword));
+            return user;
+        }else{
+            return null;
+        }
+    }
     @GetMapping(value = "verify")
     public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);

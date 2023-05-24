@@ -60,6 +60,7 @@ public class User implements UserDetails {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Message> messages;
 
     @Override
