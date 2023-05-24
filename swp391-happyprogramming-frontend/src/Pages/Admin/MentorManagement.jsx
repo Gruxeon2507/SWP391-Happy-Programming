@@ -131,8 +131,6 @@ const MentorManagement = () => {
   };
 
 
-
-
   const handleSubmit = (e) => {
 
     if (
@@ -180,6 +178,10 @@ const MentorManagement = () => {
   useEffect(() => {
     getMentorList();
   }, []);
+
+  const handleUpdate = ()=>{
+
+  }
   return (
     mentorList.length > 0?(    
     <div>
@@ -292,7 +294,7 @@ const MentorManagement = () => {
 
                 </td>
                 <td>
-                  <button>Ban</button>
+                  <button onClick={handleUpdate}>Ban</button>
                   <button>Delete</button>
                 </td>
               </tr>
@@ -300,7 +302,7 @@ const MentorManagement = () => {
           })}
         </tbody>
       </table>
-    </div>):"Quyền gì mà vào đây "
+    </div>):"Quyền gì mà vào đây. You are not the apple of my eye"
 
   )
 }

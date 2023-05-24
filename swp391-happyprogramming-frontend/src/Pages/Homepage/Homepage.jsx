@@ -24,7 +24,7 @@ function Homepage() {
     setActiveCateFilter(!isActiveCateFilter);
   };
 
-  const sizePerPage = 10;
+  const sizePerPage = 12;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
@@ -215,7 +215,6 @@ function Homepage() {
             </span>
             <span>{convertDateFormat(course.createdAt)}</span>
             <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-            <span>View details</span>
             <hr />
           </div>
         ))}

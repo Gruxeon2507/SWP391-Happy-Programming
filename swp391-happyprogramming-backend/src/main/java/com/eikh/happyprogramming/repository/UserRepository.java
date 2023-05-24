@@ -23,15 +23,15 @@ public interface UserRepository extends JpaRepository<User, String> {
     public List<User> findByIsVerified(boolean isVerified);
 
     public User findByMail(String mail);
-    
-        //@maiphuonghoang
+
+    //@maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
             + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
             + "                  WHERE c.courseId = :courseId  AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<User> getUserOfCourse(Integer courseId);
-    
+
     //@maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
@@ -42,10 +42,16 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId")
     List<User> findByRoleId(Integer roleId);
-    
-    
-        @Modifying
+
+    @Modifying
     @Transactional
     @Query(value = "INSERT INTO User_Role(username, roleId) VALUES ( :username, :roleId);", nativeQuery = true)
     void saveUser_Role(@Param("username") String username, @Param("roleId") Integer roleId);
+
+    public boolean existsByUsername(String username);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE `User` u SET u.activeStatus = :status WHERE u.username = :username", nativeQuery = true)
+    public void updateActiveStatus( Integer status, String username);
 }

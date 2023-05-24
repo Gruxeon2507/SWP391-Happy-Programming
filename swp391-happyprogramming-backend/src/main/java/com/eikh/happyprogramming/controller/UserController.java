@@ -21,6 +21,7 @@ import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -157,11 +158,10 @@ public class UserController {
                 .body(inputStreamResource);
     }
 
-    //Date: 22/05/2023
-    //Function: List mentor
+    //Date: 24/05/2023
+    //Function: Check role admin from JWT
     //author: maiphuonghoang 
-    @GetMapping("/mentors")
-    public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
+    public boolean isRoleAdminFromToken(HttpServletRequest request) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         User user = userRepository.findByUsername(username);
@@ -173,36 +173,32 @@ public class UserController {
                 isAdmin = true;
             }
         }
-        if (!isAdmin) {
-            return null;
-        }
+        return isAdmin;
+    }
+
+    //Date: 22/05/2023
+    //Function: List mentor for only admin 
+    //author: maiphuonghoang 
+    @GetMapping("/mentors")
+    public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
+        if (isRoleAdminFromToken(request));
         return userRepository.findByRoleId(2);
 
     }
 
     //Date: 24/05/2023
-    //Function: Insert Mentor into database 
+    //Function: Insert Mentor into database and their role to user_role
     //author: maiphuonghoang 
     @PostMapping("/mentor-account")
     public User createMentor(HttpServletRequest request, @RequestBody User mentor) {
-        String token = jwtTokenFilter.getJwtFromRequest(request);
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        User user = userRepository.findByUsername(username);
-        System.out.println(user.getUsername());
-        System.out.println(user.getRoles());
-        boolean isAdmin = false;
-        for (Role role : user.getRoles()) {
-            if (role.getRoleId() == 1) {
-                isAdmin = true;
-            }
-        }
-        if (!isAdmin) {
+
+        if (!isRoleAdminFromToken(request)) {
             return null;
         }
         mentor.setPassword(AuthenticationUtils.hashPassword(mentor.getPassword()));
         java.util.Date today = new java.util.Date();
         java.sql.Date sqlToday = new java.sql.Date(today.getTime());
-        mentor.setCreatedDate(sqlToday);     
+        mentor.setCreatedDate(sqlToday);
         mentor.setActiveStatus(true);
         mentor.setDisplayName(mentor.getUsername());
         User createdMentor = userRepository.save(mentor);
@@ -211,4 +207,19 @@ public class UserController {
         return createdMentor;
     }
 
+    //Date: 24/05/2023
+    //Function: Update mentor set activeStatus to Ban mentor 
+    //author: maiphuonghoang 
+    @PutMapping("/mentors/status/{username}")
+    ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username,@RequestParam Integer status) {
+        if (!isRoleAdminFromToken(request)) {
+            return null;
+        }
+        boolean exists = userRepository.existsByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (exists) {
+            userRepository.updateActiveStatus(status, username);         
+        }
+        return null;
+    }
 }
