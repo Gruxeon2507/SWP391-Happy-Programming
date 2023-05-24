@@ -21,7 +21,7 @@ function Homepage() {
     setActiveCateFilter(!isActiveCateFilter);
   };
 
-  const sizePerPage = 5;
+  const sizePerPage = 10;
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
@@ -409,24 +409,22 @@ function Homepage() {
         <div className="filter-1">
           <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
-              {/* <ion-icon name="filter-circle-outline"></ion-icon> */}
               <ion-icon name="list-outline"></ion-icon>
             </button>
           </div>
-          <input
-            type="text"
-            placeholder="Search course here"
-            name="search"
-            value={condition}
-            onChange={(e) => {
-              setCondition(e.target.value);
-            }}
-          />
-          <button onClick={handleSearch}>
-            <ion-icon name="search-circle-outline"></ion-icon>
-          </button>
-          <div className="textBttn">
-            <button onClick={handleReset}>Reset</button>
+          <div className="search-border">
+            <input
+              type="text"
+              placeholder="Search course here"
+              name="search"
+              value={condition}
+              onChange={(e) => {
+                setCondition(e.target.value);
+              }}
+            />
+            <button onClick={handleSearch}>
+              <ion-icon name="search-circle-outline"></ion-icon>
+            </button>
           </div>
           <select
             name="filter"
@@ -441,8 +439,12 @@ function Homepage() {
             <option value="asc|createdAt">Newest</option>
             <option value="desc|createdAt">Oldest</option>
           </select>
+          <div className="textBttn">
+            <button onClick={handleReset}>Reset</button>
+          </div>
         </div>
       </div>
+
       <div className="cate-filter">
         <div className={`select-list ${isActiveCateFilter ? "active" : ""}`}>
           {categories.map((category) => (

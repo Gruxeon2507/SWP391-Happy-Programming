@@ -8,24 +8,27 @@ const CourseDetail = () => {
   const { courseName } = useParams();
   const [courseDetail, setCourseDetail] = useState(null);
 
-  const getCourse = async (courseId) => {
-    try {
-      const response = await CourseServices.getCourseByID(courseId);
-      setCourseDetail(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const getCourse = async (courseId) => {
+  //   try {
+  //     const response = await CourseServices.getCourseByID(courseId);
+  //     setCourseDetail(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getCourse(courseName);
-  }, [courseName]);
+  // useEffect(() => {
+  //   getCourse(courseName);
+  // }, [courseName]);
 
   return (
     <div>
       {!courseDetail && (
         <div>
-          <h1>404</h1>
+          <h1>
+            404:
+            {courseName}
+          </h1>
         </div>
       )}
       {courseDetail && (
@@ -35,7 +38,7 @@ const CourseDetail = () => {
             <h1>{courseDetail.courseName}</h1>
           </div>
           <div>{courseDetail.courseDescription}</div> */}
-          <pre>{JSON.stringify(courseDetail, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(courseDetail, null, 2)}</pre> */}
         </div>
       )}
     </div>

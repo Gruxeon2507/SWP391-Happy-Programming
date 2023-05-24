@@ -189,10 +189,14 @@ function CreateCourse() {
                 ))}
               </td>
             </tr>
+            <tr>
+              <td colSpan={2}>
+                <div className="bttnRow">
+                  <button onClick={handleSubmit}>Create course</button>
+                </div>
+              </td>
+            </tr>
           </table>
-
-          <br />
-          <button onClick={handleSubmit}>Create course</button>
         </form>
       </div>
     </>
