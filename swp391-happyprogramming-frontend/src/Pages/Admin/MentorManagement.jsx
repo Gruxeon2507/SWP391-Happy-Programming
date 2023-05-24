@@ -1,27 +1,31 @@
-import React, { Component, useEffect, useState } from "react";
-import NavBar from "../../Components/Navbar/NavBar";
-import "../../Components/Navbar/NavBar.css";
-import "./Register.css";
+import React, { useState, useEffect, Link } from 'react'
+import UserServices from '../../services/UserServices';
+import convertDateFormat from '../../util/DateConvert';
 import axios from "axios";
-import { Button } from "bootstrap";
-import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 
-function Register(props) {
+const MentorManagement = () => {
+  const [mentorList, setMentorList] = useState([]);
+  const [checkUsername, setCheckUsername] = useState(false);
   const [user, setUser] = useState({
     username: "",
     password: "",
-    displayName: "",
-    dob: "",
     mail: "",
   });
-  const [rePassword, setRePassword] = useState("");
+  const getMentorList = () => {
+    UserServices.getMentorList()
+      .then((response) => {
+        console.log(response.data);
+        setMentorList(response.data)
+
+      })
+      .catch((error) => {
+        console.log("loi lay ra list mentor" + error);
+      });
+  };
+
 
   // Validate input
   const [checkUsernameDuplicate, setcheckUsernameDuplicate] = useState(true);
-
-  const [checkRePassword, setCheckRePassword] = useState(true);
-  const [MessageRePassword, setMessageRePassword] = useState("");
-  const [messageVerify, setMessageVerify] = useState("");
 
   const [errorUsername, setErrorUsername] = useState("");
   const [showErrorUsername, setShowErrorUsername] = useState(false);
@@ -35,16 +39,10 @@ function Register(props) {
   const [errorEmailDuplicate, setErrorEmailDuplicate] = useState("");
   const [showErrorEmailDuplicate, setShowEmailDuplicate] = useState(false);
 
-  const [errorDisplayname, setErrorDisplayname] = useState("");
-  const [showErrorDisplayname, setShowErrorDisplayname] = useState(false);
 
   const [errorUsernameDuplicate, setErrorUsernameDuplicate] = useState("");
-  const [showErrorUsernameDuplicate, setShowUsernameDuplicate] =
-    useState(false);
+  const [showErrorUsernameDuplicate, setShowUsernameDuplicate] = useState(false);
 
-  const [todayDate, setTodayDate] = useState(
-    new Date().toISOString().substr(0, 10)
-  );
 
   const onChangeUsername = async (event) => {
     const inputUsername = event.target.value;
@@ -102,17 +100,6 @@ function Register(props) {
     });
   };
 
-  const onChangeRePassword = (event) => {
-    const inputRePassword = event.target.value;
-    if (inputRePassword != user.password) {
-      setCheckRePassword(true);
-      setMessageRePassword("Re Password not match");
-    } else {
-      setCheckRePassword(false);
-      setMessageRePassword(``);
-    }
-  };
-
   const onChangeEmail = async (event) => {
     const inputEmail = event.target.value;
 
@@ -143,55 +130,17 @@ function Register(props) {
     });
   };
 
-  const onChangeDisplayName = (event) => {
-    const inputDisplayName = event.target.value;
-    const regex =
-      /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
-    if (
-      !regex.test(inputDisplayName) ||
-      inputDisplayName.length < 6 ||
-      inputDisplayName.length > 150
-    ) {
-      setShowErrorDisplayname(true);
-      setErrorDisplayname(
-        `Please just input characters and numbers and not empty and size just from 6 to 150`
-      );
-      return;
-    }
 
-    setShowErrorDisplayname(false);
-    setErrorDisplayname(``);
-
-    setUser({
-      ...user,
-      displayName: inputDisplayName,
-    });
-  };
-
-  const onChangeDob = (event) => {
-    const inputDob = event.target.value;
-    setUser({
-      ...user,
-      dob: inputDob,
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
 
     if (
-      checkRePassword ||
       showErrorUsername ||
       showErrorPassword ||
-      showErrorDisplayname ||
       showErrorEmail ||
       showErrorUsernameDuplicate ||
       showErrorEmailDuplicate
     ) {
       let alertMessage = "";
-      if (checkRePassword) {
-        alertMessage = alertMessage + "RePassword: " + MessageRePassword + "\n";
-      }
       if (showErrorUsername) {
         alertMessage = alertMessage + "Username: " + errorUsername + "\n";
       }
@@ -205,11 +154,6 @@ function Register(props) {
         alertMessage = alertMessage + "Password: " + errorPassword + "\n";
       }
 
-      if (showErrorDisplayname) {
-        alertMessage =
-          alertMessage + "Display Name: " + errorDisplayname + "\n";
-      }
-
       if (showErrorEmail) {
         alertMessage = alertMessage + "Email: " + errorEmail + "\n";
       }
@@ -218,11 +162,10 @@ function Register(props) {
         alertMessage = alertMessage + "Email" + errorEmailDuplicate + "\n";
       }
       alert(alertMessage);
-      return;
     }
 
-    axios
-      .post("http://localhost:1111/api/auth/users/mentor-account", user)
+
+    UserServices.createMentorAccount(user)
       .then((res) => {
         console.log(res.data);
       })
@@ -230,30 +173,31 @@ function Register(props) {
         console.error(err);
       });
 
-    setMessageVerify("Please verify mail your account");
-  };
 
+  }
+  useEffect(() => {
+    getMentorList();
+  }, []);
+
+  const handleUpdate = ()=>{
+
+  }
   return (
+    mentorList.length > 0?(    
     <div>
-      <NavBar mode={0} />
-
-      {messageVerify ? (
-        <VerifyDialog email={user.mail} />
-      ) : (
-        <div className="regis-frag">
-          <div className="regis-form">
+      <div className="create-mentor">
+        <p>Create Mentor</p>
+        <div>
+          <div className="create-form">
             <form onSubmit={handleSubmit}>
-              <div className="form-header">
-                <h1>Registration form</h1>
-              </div>
               <div className="user-input">
+                <span>UserName</span>
                 <input
                   type="text"
                   id="userName"
                   required
                   onChange={onChangeUsername}
-                ></input>
-                <span>UserName</span>
+                />
               </div>
               {showErrorUsername ? (
                 <>
@@ -270,13 +214,13 @@ function Register(props) {
                 </>
               ) : null}
               <div className="user-input">
+                <span>Password</span>
                 <input
                   type="password"
                   id="userPassword"
                   required
                   onChange={onChangePassword}
-                ></input>
-                <span>Password</span>
+                />
               </div>
               {showErrorPassword ? (
                 <>
@@ -286,54 +230,13 @@ function Register(props) {
                 </>
               ) : null}
               <div className="user-input">
-                <input
-                  type="password"
-                  id="re-userPassword"
-                  required
-                  onChange={onChangeRePassword}
-                ></input>
-                <span>Re Enter Password</span>
-              </div>
-              {checkRePassword ? (
-                <>
-                  <div className="w-message">{MessageRePassword}</div>
-                </>
-              ) : null}
-
-              <div className="user-input">
-                <input
-                  type="text"
-                  id="displayname-I"
-                  required
-                  onChange={onChangeDisplayName}
-                ></input>
-                <span>Display Name</span>
-              </div>
-              {showErrorDisplayname ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorDisplayname}
-                  </div>
-                </>
-              ) : null}
-              <div className="user-input">
-                <input
-                  type="date"
-                  id="dob-I"
-                  value={todayDate}
-                  required
-                  onChange={onChangeDob}
-                ></input>
-                <span>Date of Birth</span>
-              </div>
-              <div className="user-input">
+                <span>Mail</span>
                 <input
                   type="email"
-                  id="email-I"
+                  id="userEmail"
                   required
                   onChange={onChangeEmail}
-                ></input>
-                <span>Email</span>
+                />
               </div>
               {showErrorEmail ? (
                 <>
@@ -349,13 +252,65 @@ function Register(props) {
                   </div>
                 </>
               ) : null}
-              <button type="submit">Register</button>
+              <button className="btn btn--form" type="submit">
+                create
+              </button>
             </form>
           </div>
         </div>
-      )}
-    </div>
-  );
+      </div>
+      <table className="table table-bordered table-striped">
+        <thead>
+          <th>Name</th>
+          <th>Avatar</th>
+          <th>Created Date</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+          {mentorList.map((mentor) => {
+            return (
+              <tr key={mentor.username}>
+                <td>
+
+                  {mentor.displayName}
+                </td>
+                <td>
+                  <img
+                    src={
+                      "http://localhost:1111/api/auth/users/avatar/" +
+                      mentor.username
+                    }
+                    style={{ width: 40 }}
+                    alt=""
+                  />
+                </td>
+                <td>{convertDateFormat(mentor.createdDate)}</td>
+                <td>{mentor.mail}</td>
+
+                <td>
+                  {(mentor.activeStatus == 0) ? (<p>Banned</p>) : (<p>Active</p>)}
+
+                </td>
+                <td>
+                  <button onClick={handleUpdate}>Ban</button>
+                  <button>Delete</button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>):"Quyền gì mà vào đây. You are not the apple of my eye"
+
+  )
 }
 
-export default Register;
+export default MentorManagement
+
+
+
+
+
+
