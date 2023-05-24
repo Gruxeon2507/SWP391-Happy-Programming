@@ -8,8 +8,10 @@ import { NavLink } from "react-router-dom";
 function Home(props) {
   return (
     <div>
-      <NavBar></NavBar>
+      {/* {props.url} */}
+      <NavBar mode={1} />
       <div className="banner-1">
+        <img src={bg} alt="background" />
         <div className="quotes">
           <h1>Học đi các bạn ơi!!</h1>
           <p>
@@ -23,7 +25,6 @@ function Home(props) {
             <NavLink to="/register">RegisterNow!!!</NavLink>
           </div>
         </div>
-        <img src={bg} alt="background" />
       </div>
     </div>
   );

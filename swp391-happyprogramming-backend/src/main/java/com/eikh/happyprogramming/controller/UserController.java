@@ -1,12 +1,23 @@
 package com.eikh.happyprogramming.controller;
 
+<<<<<<< HEAD
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
+=======
+import com.eikh.happyprogramming.model.Role;
+>>>>>>> main
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.DateUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
+<<<<<<< HEAD
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+=======
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+>>>>>>> main
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -14,10 +25,19 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+=======
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.StringUtils;
+>>>>>>> main
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -36,7 +57,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
     
     @Autowired
     UserRepository userRepository;
@@ -44,6 +68,7 @@ public class UserController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
+<<<<<<< HEAD
 
     @PostMapping("/profile/update")
     public User updateProfile(@RequestHeader("Authorization") String token,@RequestBody User user){
@@ -55,8 +80,35 @@ public class UserController {
             return userRepository.save(updateUser);
         }else{
             return null;
+=======
+    /**
+     * *
+     * Author: giangpthe170907
+     *
+     * @param user
+     * @return
+     */
+    @PostMapping(value = "/register")
+    public User registerUser(@RequestBody User user) {
+        user.setPassword(AuthenticationUtils.hashPassword(user.getPassword()));
+        java.util.Date today = new java.util.Date();
+        java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+        user.setCreatedDate(sqlToday);
+        String verificationCode = UUID.randomUUID().toString();
+        user.setVerification_code(verificationCode);
+        user.setVerified(false);
+        String subject = "HAPPY PROGRAMMING - Verify your email address";
+        String body = "Please click the following link to verify your email address: "
+                + "http://localhost:1111/api/users/verify?code=" + verificationCode + "&username=" + user.getUsername();
+        try {
+            EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
+        } catch (EmailException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error when send email");
+>>>>>>> main
         }
     }
+<<<<<<< HEAD
     
     @PostMapping("/profile/changepassword")
     public User changePassword(@RequestHeader("Authorization") String token,@RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword){
@@ -64,20 +116,90 @@ public class UserController {
         User user = userRepository.findByUsername(username);
         if(user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())){
             user.setPassword(AuthenticationUtils.hashPassword(newPassword));
+=======
+
+    @GetMapping(value = "verify")
+    public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
+        User user = userRepository.findByUsername(username);
+        if (user.getVerification_code().equals(code)) {
+            user.setVerified(true);
+            user.setVerification_code("");
+>>>>>>> main
             return userRepository.save(user);
-        }else{
+        } else {
             return null;
         }
     }
-    
+
     @Scheduled(fixedRate = 3600000) // Run every hour
-    public void cleanUserNotVerified(){
+    public void cleanUserNotVerified() {
         List<User> users = userRepository.findByIsVerified(false);
         for (User user : users) {
+<<<<<<< HEAD
             if(user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())){
+=======
+            if (DateUtils.isExpired(user.getCreatedDate())) {
+>>>>>>> main
                 userRepository.delete(user);
             }
         }
+    }
+    
+    
+    private final String AVT_UPLOAD_DIR = "/avatar/";
+    
+    //Date: 22/05/2023
+    //Function: Upload Avatar
+    //Writen By:DucKM
+    @PostMapping("/avatar/upload")
+    public void uploadFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(username + ".jpg");
+            try {
+                // Save the file to the uploads directory
+
+                String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    //Date: 22/05/2023
+    //Function: Get Input File Extension
+    //Writen By:DucKM
+    private static String getFileExtension(String fileName) {
+        String extension = "";
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            extension = fileName.substring(dotIndex + 1);
+        }
+
+        return extension;
+    }
+    
+    
+    //Date: 22/05/2023
+    //Function: return user data by userId
+    //Writen By:DucKM
+     @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
+        String filePath = "avatar/" + fileId + ".jpg";
+        File file = new File(filePath);
+         InputStream inputStream = new FileInputStream(file);
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+         HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(inputStreamResource);
+    }
+    @GetMapping("/mentors")
+    public List<User> getAllMentors() {
+        return userRepository.getAllMentors();
     }
 
 }

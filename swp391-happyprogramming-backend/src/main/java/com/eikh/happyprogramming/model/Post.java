@@ -51,6 +51,7 @@ public class Post implements Serializable {
     private List<Attachment> attachments;
 
     @OneToMany(mappedBy = "post")
+    @JsonIgnore
     private List<Comment> comments;
 
 }

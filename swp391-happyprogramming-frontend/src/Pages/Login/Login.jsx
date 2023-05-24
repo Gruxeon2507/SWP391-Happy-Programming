@@ -44,8 +44,8 @@ function Login() {
       // console.log(window.localStorage.getItem("role"));
       // console.log("user:"+ response.data.username);
       // Set a timeout to remove the "user" item after 30 minutes (1,800,000 milliseconds)
-      // window.location.href = "/";
-    } catch (error) {
+      window.location.href = "/";
+    } catch (error) {     
       console.log("login failed");
       setLoginFailed(true);
       console.error(error);
@@ -55,7 +55,7 @@ function Login() {
 
   return (
     <div>
-      <NavBar></NavBar>
+      <NavBar mode={1} />
       <div className="login-frag">
         <div className="login-bg">
           <img src={loginBG} alt="loginBG"></img>

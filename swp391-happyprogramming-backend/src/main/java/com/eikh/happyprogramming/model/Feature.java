@@ -25,7 +25,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "Feature")
-class Feature  implements Serializable{
+public class Feature  implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +33,10 @@ class Feature  implements Serializable{
 
     private String featureName;
     private String url;
+    private String component;       
 
     @ManyToMany(mappedBy = "features")
     @JsonIgnore
-    private List<Role> roles;
+    private List<Role> roles;   
 
 }

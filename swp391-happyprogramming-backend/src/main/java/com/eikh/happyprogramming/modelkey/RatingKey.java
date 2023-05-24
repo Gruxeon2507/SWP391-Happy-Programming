@@ -19,6 +19,6 @@ import lombok.*;
 @AllArgsConstructor
 @Embeddable
 public class RatingKey implements Serializable{
-    private User ratedFromUser;
-    private User ratedToUser;
+    private String ratedFromUser;
+    private String ratedToUser;
 }

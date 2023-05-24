@@ -4,12 +4,15 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.*;
@@ -32,9 +35,20 @@ public class Course implements Serializable {
 
     private String courseName;
 
-    @OneToMany(mappedBy = "course")
-    private List<Participate> participates;
+    private Date createdAt;
+
+    private String courseDescription;
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
+    private List<Participate> participates;
+
+    // Could not write JSON: For input string: "access"; nested exception is com.fasterxml.jackson.databind.JsonMappingException: For input string: "access" (through reference chain: java.util.ArrayList[0]->com.eikh.happyprogramming.model.Course["participates"])]
+    @OneToMany(mappedBy = "course")
     private List<Post> posts;
+
+    @ManyToMany(mappedBy = "courses")
+    private List<Category> categories;
+    
+    
 }
