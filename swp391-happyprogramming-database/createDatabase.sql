@@ -118,9 +118,11 @@ CREATE TABLE Course
     courseName nvarchar(255),
     courseDescription longtext,
     createdAt datetime, 
+    conversationId int,
     CONSTRAINT PK_Course PRIMARY KEY (courseId)
 );
-
+Alter table Course ADD CONSTRAINT FK_Course_Conversation FOREIGN KEY(conversationId) 
+REFERENCES Conversation(conversationId);
 CREATE TABLE Course_Category 
 (
     categoryId int,
