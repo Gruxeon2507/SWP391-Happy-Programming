@@ -220,4 +220,4 @@ SELECT * FROM Course_Category
 SELECT * FROM Course
 */
 
-SELECT * FROM Participate where courseId = 26;
+-- SELECT * FROM Participate where courseId = 26;-- 
