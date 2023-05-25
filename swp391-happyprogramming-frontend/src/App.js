@@ -17,8 +17,7 @@ import userProfile from "./Pages/UserProfile/userProfile";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
 
-
-import CourseDetails from "./Pages/Courses/CourseDetails";
+import CourseDetails from "./Pages/Course/CourseDetails";
 import MentorManagement from "./Pages/Admin/MentorManagement";
 import CreateCourse from "./Pages/Course/CreateCourse";
 import ChangePassword from "./Pages/ChangePassword/ChangePassword";
@@ -51,7 +50,8 @@ function App() {
       <Route path="/landing" element={<Home />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/courses" element={<Homepage />} />
-      <Route path="/courses/:coursesID" element={<CourseDetails />} />
+      <Route path="/courses/:courseID" element={<CourseDetails />} />
+      <Route path="/cdt" element={<CourseDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/admin" element={<AdminManage />} />
@@ -59,12 +59,16 @@ function App() {
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
-      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />
-      <Route path="/courses/:courseName" element={<CourseDetails />} />
-      <Route path="/changepassword" element={<ChangePassword></ChangePassword>} />
+      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />      <Route
+        path="/changepassword"
+        element={<ChangePassword></ChangePassword>}
+      />
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
-      <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>}/>
-      <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>}/>
+      <Route
+        path="/forgetpassword"
+        element={<ForgetPassword></ForgetPassword>}
+      />
+      <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>} />
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {

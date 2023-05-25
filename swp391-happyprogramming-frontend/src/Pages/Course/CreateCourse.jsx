@@ -152,6 +152,7 @@ function CreateCourse() {
                     label: category.categoryName,
                   }))}
                   isMulti
+                  isSearchable
                   value={temp}
                   onChange={(values) => {
                     // setSelectedCategories(values);
