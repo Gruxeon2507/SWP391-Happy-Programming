@@ -33,8 +33,6 @@ public class ParticipateController {
     public void saveCourseParticipate(@RequestParam("username") String username, @RequestParam("courseId") int courseId, @RequestParam("participateRoleId") int participateRoleId, @RequestParam("statusId") int statusId) {
         participateRepository.saveParticipate(username, courseId, participateRoleId, statusId);
     }
-    
-    
 
     @GetMapping("/by-course/{courseId}")
     public List<Participate> getParticipatesByCourseId(@PathVariable int courseId) {

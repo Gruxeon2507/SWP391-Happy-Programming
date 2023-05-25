@@ -9,6 +9,7 @@ import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CategoryRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
+import com.eikh.happyprogramming.repository.RatingRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,12 @@ public class PublicController {
 
     @Autowired
     CategoryRepository categoryRepository;
-    
+
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RatingRepository ratingRepository;
 
     @GetMapping("/courses/view/{courseId}")
     public Course getCourseById(@PathVariable int courseId) {
@@ -56,6 +60,13 @@ public class PublicController {
         return categoryRepository.findAll();
     }
 
+    @GetMapping("/mentor/by-course/{courseId}")
+    User getMentorByCourse(@PathVariable int courseId) {
+        return userRepository.getMentorOfCourse(courseId);
+    }
 
-
+    @GetMapping("/mentor/rating/{username}")
+    int getAvgRatingByMentor(@PathVariable String username) {
+        return ratingRepository.getAvgRatingByMentor(username);
+    }
 }
