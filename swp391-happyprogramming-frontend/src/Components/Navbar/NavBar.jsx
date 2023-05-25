@@ -37,16 +37,15 @@ function NavBar(props) {
     <div>
       {/* <SettingDrawer></SettingDrawer> */}
       <nav className={navBarClass} id="NavBar">
-        <div className="brand">
+        <div className="brand" onClick={() => window.location.href = window.location.origin}>
           <img src={logo} alt="logo" />
-          <a href="#" className="logo">
+          <a href="" className="logo">
             <span>H</span>
             PYPRO
           </a>
         </div>
         <ul className={navMenuClass}>
           <li className="nav-item">
-            {/* <NavLink to="/home">Home</NavLink> */}
             <a href="/home">home</a>
           </li>
           <li className="nav-item">
@@ -54,9 +53,6 @@ function NavBar(props) {
           </li>
           <li className="nav-item">
             <NavLink to="/mycourse">MyCourse</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/createCourse">creCourse</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/login">Login</NavLink>
@@ -69,6 +65,8 @@ function NavBar(props) {
           </li>
           <li className="nav-item">
             <NavLink to="/admin">admin</NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink to="/admin1">Mentor Management</NavLink>
           </li>
           <li className="nav-item">

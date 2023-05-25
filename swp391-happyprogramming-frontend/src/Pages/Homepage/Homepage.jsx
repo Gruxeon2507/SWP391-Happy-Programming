@@ -99,10 +99,10 @@ function Homepage() {
   var searchText = encodeURIComponent(condition).replace(/%20/g, "%20")
   useEffect(() => {
     getSearchCheckAndFilterCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
-  }, [sortField,sortOrder])
+  }, [sortField, sortOrder])
 
 
-  const handleReset =  () => {
+  const handleReset = () => {
     setSelectIndex(true);
     setCondition("");
     setChecked([]);

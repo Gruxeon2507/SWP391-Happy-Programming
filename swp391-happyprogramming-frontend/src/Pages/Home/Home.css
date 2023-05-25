@@ -2,12 +2,11 @@
 
 body {
   background-color: var(--lightItem);
-  /* margin-top: 4rem; */
 }
 
-/* .banner-1 * {
+* {
   border: 1px solid red;
-} */
+}
 
 .banner-1 img {
   width: 50%;
