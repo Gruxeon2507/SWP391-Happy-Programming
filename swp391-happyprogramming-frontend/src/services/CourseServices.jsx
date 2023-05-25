@@ -33,6 +33,7 @@ class CourseServices {
   createCourse(course) {
     return api.post("api/courses/create", course);
   }
+
 }
 export default new CourseServices();
 export {COURSE_BASE_REST_API_URL};
