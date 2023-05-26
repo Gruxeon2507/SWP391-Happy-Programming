@@ -152,8 +152,9 @@ public class UserController {
     //Function: Upload Avatar
     //Writen By:DucKM
     @PostMapping("/avatar/upload")
-    public void uploadAvatarFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+    public void uploadAvatarFile(@RequestParam("avatarFile") MultipartFile file, @RequestHeader("Authorization") String token) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".jpg");
             try {
