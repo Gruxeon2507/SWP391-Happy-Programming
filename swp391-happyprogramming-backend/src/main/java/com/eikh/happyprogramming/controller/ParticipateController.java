@@ -4,9 +4,14 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Participate;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
+import com.eikh.happyprogramming.repository.UserRepository;
+import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +34,37 @@ public class ParticipateController {
     @Autowired
     ParticipateRepository participateRepository;
 
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
+
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    UserRepository userRepository;
+
     @PostMapping("/save")
-    public void saveCourseParticipate(@RequestParam("username") String username, @RequestParam("courseId") int courseId, @RequestParam("participateRoleId") int participateRoleId, @RequestParam("statusId") int statusId) {
-        participateRepository.saveParticipate(username, courseId, participateRoleId, statusId);
+    public void saveCourseParticipate(@RequestParam("username") String username, @RequestParam("courseId") int courseId, @RequestParam("participateRoleId") int participateRoleId, @RequestParam("statusId") int statusId, HttpServletRequest request) {
+        String usn = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        User u = userRepository.userHasRole(usn, 1);
+        if (u != null) {
+            //insert mentor
+            participateRepository.saveParticipate(username, courseId, 2, 1);
+        } else {
+            User u1 = userRepository.userHasRole(usn, 3);
+            System.out.println("USERNAME: " + usn);
+            if (u1 != null) {
+                // insert request pending
+                participateRepository.saveParticipate(usn, courseId, participateRoleId, statusId);
+            }
+        }
+//        participateRepository.saveParticipate(username, courseId, participateRoleId, statusId);
+    }
+
+    @PostMapping
+    public void saveRequest(@RequestParam("courseId") int courseId, HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+
     }
 
     @GetMapping("/by-course/{courseId}")
