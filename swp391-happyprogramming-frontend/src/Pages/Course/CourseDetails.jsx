@@ -41,7 +41,13 @@ const CourseDetails = (props) => {
   }, []);
 
   const handleRequest = () => {
-    ParticipateServices.saveParticipate(mentor.username, courseID, 3, 0);
+    console.log("pressed");
+    const token = localStorage.getItem("token");
+    if (localStorage.getItem("token")) {
+      ParticipateServices.saveParticipate("", courseID, 3, 0);
+    } else {
+      window.location.href = "/login";
+    }
   };
 
   console.log("rating is: " + rating);
@@ -82,7 +88,7 @@ const CourseDetails = (props) => {
               <span>{rating}</span>
             </div>
             <div>
-              <button onClick={() => handleRequest}>request</button>
+              <button onClick={() => handleRequest()}>request</button>
             </div>
           </div>
         </div>
