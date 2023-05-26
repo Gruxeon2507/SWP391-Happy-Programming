@@ -133,7 +133,8 @@ public class UserController {
     private final String PDF_UPLOAD_DIR = "/pdf/";
     
     @PostMapping("/pdf/upload")
-    public void uploadCvFile(@RequestParam("pdfPath") MultipartFile file, @RequestParam("username") String username) {
+    public void uploadCvFile(@RequestParam("pdfFile") MultipartFile file, @RequestHeader("Authorization") String token) {
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".pdf");

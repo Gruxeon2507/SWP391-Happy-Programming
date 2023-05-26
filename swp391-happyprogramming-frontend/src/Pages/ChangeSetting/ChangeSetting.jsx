@@ -15,11 +15,15 @@ function ChangeSetting(props) {
     dob: "",
   });
 
+  const [avatar, setAvatar] = useState(null);
+
   const [avatarFile, setAvatarFile] = useState(null);
   const [showErrorAvatar, setShowErrorAvatar] = useState(false);
   const [errorAvatar, setErrorAvatar] = useState("");
 
-  const [avatar, setAvatar] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [showErrorPdf, setShowErrorPdf] = useState(false);
+  const [errorPdf, setErrorPdf] = useState("");
 
   const token = window.localStorage.getItem("token");
 
@@ -67,6 +71,46 @@ function ChangeSetting(props) {
     setShowErrorAvatar(false);
     setErrorAvatar("");
     setAvatarFile(inputAvatar);
+  };
+
+  const onChangePdfPath = (event) => {
+    const inputPdfFile = event.target.files[0];
+    if (!inputPdfFile) {
+      setShowErrorPdf(true);
+      setErrorPdf("Wrong file type (Please input PDF File) and less than 5MB");
+      return;
+    }
+    if (inputPdfFile.size > 1024 * 1024 * 5) {
+      setShowErrorPdf(true);
+      setErrorPdf("Wrong file type (Please input PDF File) and less than 5MB");
+      return;
+    }
+    if (inputPdfFile.type !== "application/pdf") {
+      setShowErrorPdf(true);
+      setErrorPdf("Wrong file type (Please input PDF File) and less than 5MB");
+      return;
+    }
+    setShowErrorPdf(false);
+    setErrorPdf("");
+    setPdfFile(inputPdfFile);
+  };
+
+  const handleSubmitPdf = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("pdfFile", pdfFile);
+
+    axios
+      .post("http://localhost:1111/api/users/pdf/upload", formData, {
+        headers: requestHeadersFormdata,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log("Error when update pdf of users" + error);
+      });
   };
 
   const handleSubmitAvatar = (event) => {
@@ -185,6 +229,29 @@ function ChangeSetting(props) {
         </div>
 
         <button>Update</button>
+      </form>
+      <form onSubmit={handleSubmitPdf}>
+        <div>
+          <label>Pdf</label>
+          <div></div>
+        </div>
+        <div>
+          <lable>Upload Pdf</lable>
+          <input
+            type="file"
+            name="pdfPath"
+            onChange={onChangePdfPath}
+            required
+          />
+        </div>
+        {showErrorPdf ? (
+          <>
+            <div className="w-message" style={{ color: "black" }}>
+              {errorPdf}
+            </div>
+          </>
+        ) : null}
+        <button>Update Pdf</button>
       </form>
     </div>
   );
