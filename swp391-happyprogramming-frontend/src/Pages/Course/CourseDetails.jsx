@@ -5,6 +5,8 @@ import "../Course/CourseDetails.css";
 import CourseServices from "../../services/CourseServices";
 import PublicService from "../../services/PublicService";
 import ParticipateServices from "../../services/ParticipateServices";
+import NavBar from "../../Components/Navbar/NavBar";
+import baseAVT from "../../Assets/base_user_img.png";
 
 function StarRating({ rating }) {
   const renderStars = () => {
@@ -39,6 +41,7 @@ const CourseDetails = (props) => {
   useEffect(() => {
     PublicService.getMentorByCourseId(courseID)
       .then((res) => {
+        console.log(res.data);
         setMentor(res.data);
         return res.data;
       })
@@ -64,47 +67,43 @@ const CourseDetails = (props) => {
     }
   };
 
-  console.log("rating is: " + rating);
-  // console.log("mentor is: " + mentor.username);
-  // console.log("course name is: " + course.courseName);
-  // console.log("course id is: " + courseID);
-  // console.log("CATEGORIES: " + course.categories);
+  // console.log("rating is: " + rating);
   return (
     <div>
-      <div className="cd-container">
-        <div className="cd-content">
-          <div className="course-info">
-            <div className="course-header">
-              <h1>
-                course detail:{courseID} - {course.courseName}
-              </h1>
-            </div>
-            <div>
-              <span>course desc: {course.courseDescription}</span>
-            </div>
-            <div>
-              <span>course cate</span>
-              {course.categories?.map((c) => (
-                <span key={c.categoryId}>{c.categoryName}</span>
-              ))}
-            </div>
+      <NavBar mode={0}></NavBar>
+      <div className="cd-content">
+        <div className="course-info">
+          <div className="course-header">
+            <h2>
+              {/* {courseID} */}
+              {course.courseName}
+            </h2>
           </div>
-          <div className="mentor-info">
-            <div>
-              <img src="" alt="image"></img>
-            </div>
-            <div>
-              <span>mentor name</span>
-              <span>{mentor.displayName}</span>
-            </div>
-            <div>
-              <span>rating: </span>
-              <span><StarRating rating={4} />  {rating}</span>
+          <div>
+            <p>{course.courseDescription}:{course.courseDescription}</p>
+          </div>
+          <div>
+            <span>Categories:</span>
+            {course.categories?.map((c) => (
+              <span key={c.categoryId}>{c.categoryName}</span>
+            ))}
+          </div>
+        </div>
+        <div className="mentor-info">
+          <div>
+            <img src={baseAVT} alt="image"></img>
+          </div>
+          <div>
+            <span>Mentor:</span>
+            <span>{mentor.displayName}</span><a href={`/profile/${mentor.username}`}>View more</a>
+          </div>
+          <div>
+            <span>rating: </span>
+            <span><StarRating rating={5} />  {rating}</span>
 
-            </div>
-            <div>
-              <button onClick={() => handleRequest()}>request</button>
-            </div>
+          </div>
+          <div>
+            <button id="requestBttn" onClick={() => handleRequest()}>Request</button>
           </div>
         </div>
       </div>
