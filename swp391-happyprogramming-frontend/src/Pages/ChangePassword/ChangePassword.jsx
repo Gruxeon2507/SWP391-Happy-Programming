@@ -1,11 +1,14 @@
 import React, { Component, useEffect, useState } from "react";
 import NavBar from "../../Components/Navbar/NavBar";
-import "../../Components/Navbar/NavBar.css";
 import axios from "axios";
 import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
+import "./ChangePassword.css";
+import { useNavigate } from "react-router-dom";
 
 function ChangePassword(props) {
+  const navigate = useNavigate();
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [reNewPassword, setReNewPassword] = useState("");
@@ -67,43 +70,52 @@ function ChangePassword(props) {
       )
       .then((res) => {
         console.log(res.data);
+        const confirmed = window.confirm("Password changed successfully. Do you want to log in again?");
+        if (confirmed) {
+          navigate("/login");
+        }
       })
       .catch((error) => {
         console.log(error);
+        alert(error);
       });
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Old password</label>
-          <input type="password" onChange={onChangeOldPassword} required />
-        </div>
-        <div>
-          <label>New password</label>
-          <input type="password" onChange={onChangeNewPassword} required />
-        </div>
-        {showErrorPassword ? (
-          <>
-            <div className="w-message" style={{ color: "black" }}>
-              {errorPassword}
-            </div>
-          </>
-        ) : null}
-        <div>
-          <label>Re new password</label>
-          <input type="Password" onChange={onChangeReNewPassword} required />
-        </div>
-        {checkRePassword ? (
-          <>
-            <div className="w-message">{MessageRePassword}</div>
-          </>
-        ) : null}
+    <>
+      <NavBar mode={1} />
+      <div className="chgpwd-container">
+        <form onSubmit={handleSubmit} className="chgpwd-form">
+          <div className="title"><h1>CHANGE PASSWORD</h1></div>
+          <div className="user-input">
+            <input type="password" onChange={onChangeOldPassword} required />
+            <span>Old password</span>
+          </div>
+          <div className="user-input">
+            <input type="password" onChange={onChangeNewPassword} required />
+            <span>New password</span>
+          </div>
+          {showErrorPassword ? (
+            <>
+              <div className="w-message" style={{ color: "black" }}>
+                {errorPassword}
+              </div>
+            </>
+          ) : null}
+          <div className="user-input">
+            <input type="Password" onChange={onChangeReNewPassword} required />
+            <span>Re new password</span>
+          </div>
+          {checkRePassword ? (
+            <>
+              <div className="w-message">{MessageRePassword}</div>
+            </>
+          ) : null}
 
-        <button>Change password</button>
-      </form>
-    </div>
+          <button>Change password</button>
+        </form>
+      </div>
+    </>
   );
 }
 

@@ -28,7 +28,7 @@ import ViewProfile from "./Pages/ViewProfile/ViewProfile";
 import AdminManage from "./Pages/Admin/AdminManage";
 
 //CSS
-// import "./global/global.css";
+import "./global/global.css";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -63,8 +63,8 @@ function App() {
       <Route path="/courses/:courseName" element={<CourseDetails />} />
       <Route path="/changepassword" element={<ChangePassword></ChangePassword>} />
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
-      <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>}/>
-      <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>}/>
+      <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>} />
+      <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>} />
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {
