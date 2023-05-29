@@ -222,3 +222,6 @@ SELECT * FROM Course
 
 SELECT * FROM Participate where courseId = 26;
 UPDATE `User` set activeStatus = 1 WHERE username != '';
+select * from Rating where ratedToUser = 'huyenmentor';
+select round(avg(noStar)) from Rating where ratedToUser = 'ducmentor';
+select * from Participate where statusId = 0;

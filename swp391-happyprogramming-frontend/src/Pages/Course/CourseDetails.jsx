@@ -1,48 +1,99 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
-import api from "../../services/BaseAuthenticationService";
+import "../Course/CourseDetails.css";
 import CourseServices from "../../services/CourseServices";
-import NavBar from "../../Components/Navbar/NavBar";
+import PublicService from "../../services/PublicService";
+import ParticipateServices from "../../services/ParticipateServices";
 
-const CourseDetail = () => {
-  const { courseName } = useParams();
-  const [courseDetail, setCourseDetail] = useState(null);
+const CourseDetails = (props) => {
+  const { courseID } = useParams();
+  const [course, setCourse] = useState({});
+  const [mentor, setMentor] = useState({});
+  const [rating, setRating] = useState(0);
 
-  // const getCourse = async (courseId) => {
-  //   try {
-  //     const response = await CourseServices.getCourseByID(courseId);
-  //     setCourseDetail(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  useEffect(() => {
+    PublicService.getCourseByCourseId(courseID)
+      .then((res) => {
+        setCourse(res.data);
+      })
+      .catch((error) => {
+        console.log("error fetching course" + error);
+      });
+  }, []);
 
-  // useEffect(() => {
-  //   getCourse(courseName);
-  // }, [courseName]);
+  useEffect(() => {
+    PublicService.getMentorByCourseId(courseID)
+      .then((res) => {
+        setMentor(res.data);
+        return res.data;
+      })
+      .then((mentor) => {
+        PublicService.getAvgRatingByMentor(mentor.username)
+          .then((res) => setRating(res.data))
+          .catch((error) => {
+            console.log("error fetching rating" + error);
+          });
+      })
+      .catch((error) => {
+        console.log("error fetching mentor" + error);
+      });
+  }, []);
 
+  const handleRequest = () => {
+    console.log("pressed");
+    const token = localStorage.getItem("token");
+    if (localStorage.getItem("token")) {
+      ParticipateServices.saveParticipate("", courseID, 3, 0);
+    } else {
+      window.location.href = "/login";
+    }
+  };
+
+  console.log("rating is: " + rating);
+  // console.log("mentor is: " + mentor.username);
+  // console.log("course name is: " + course.courseName);
+  // console.log("course id is: " + courseID);
+  // console.log("CATEGORIES: " + course.categories);
   return (
     <div>
-      {!courseDetail && (
-        <div>
-          <h1>
-            404:
-            {courseName}
-          </h1>
-        </div>
-      )}
-      {courseDetail && (
-        <div>
-          <NavBar></NavBar>
-          {/* <div>
-            <h1>{courseDetail.courseName}</h1>
+      <div className="cd-container">
+        <div className="cd-content">
+          <div className="course-info">
+            <div className="course-header">
+              <h1>
+                course detail:{courseID} - {course.courseName}
+              </h1>
+            </div>
+            <div>
+              <span>course desc: {course.courseDescription}</span>
+            </div>
+            <div>
+              <span>course cate</span>
+              {course.categories?.map((c) => (
+                <span key={c.categoryId}>{c.categoryName}</span>
+              ))}
+            </div>
           </div>
-          <div>{courseDetail.courseDescription}</div> */}
-          {/* <pre>{JSON.stringify(courseDetail, null, 2)}</pre> */}
+          <div className="mentor-info">
+            <div>
+              <img src="" alt="image"></img>
+            </div>
+            <div>
+              <span>mentor name</span>
+              <span>{mentor.displayName}</span>
+            </div>
+            <div>
+              <span>rating</span>
+              <span>{rating}</span>
+            </div>
+            <div>
+              <button onClick={() => handleRequest()}>request</button>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
-
-export default CourseDetail;
+export default CourseDetails;
