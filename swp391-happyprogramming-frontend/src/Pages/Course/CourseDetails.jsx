@@ -6,6 +6,20 @@ import CourseServices from "../../services/CourseServices";
 import PublicService from "../../services/PublicService";
 import ParticipateServices from "../../services/ParticipateServices";
 
+function StarRating({ rating }) {
+  const renderStars = () => {
+    const stars = [];
+
+    for (let i = 1; i <= rating; i++) {
+      stars.push(<span key={i}>&#9733;</span>);
+    }
+
+    return stars;
+  };
+
+  return <div>{renderStars()}</div>;
+}
+
 const CourseDetails = (props) => {
   const { courseID } = useParams();
   const [course, setCourse] = useState({});
@@ -84,8 +98,9 @@ const CourseDetails = (props) => {
               <span>{mentor.displayName}</span>
             </div>
             <div>
-              <span>rating</span>
-              <span>{rating}</span>
+              <span>rating: </span>
+              <span><StarRating rating={4} />  {rating}</span>
+
             </div>
             <div>
               <button onClick={() => handleRequest()}>request</button>
