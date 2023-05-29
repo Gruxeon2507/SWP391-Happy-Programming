@@ -11,7 +11,7 @@ function AdminManage(props) {
     <div className="body-wraper">
       <div className="fragment-nav-bar">
         <div className="admin-navbar">
-          <div className="brand">
+          <div className="brand" onClick={() => window.location.href = window.location.origin}>
             <img src={logo} alt="logo" />
             <a href="#" className="logo">
               <span>H</span>

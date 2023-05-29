@@ -99,10 +99,10 @@ function Homepage() {
   var searchText = encodeURIComponent(condition).replace(/%20/g, "%20")
   useEffect(() => {
     getSearchCheckAndFilterCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
-  }, [sortField,sortOrder])
+  }, [sortField, sortOrder])
 
 
-  const handleReset =  () => {
+  const handleReset = () => {
     setSelectIndex(true);
     setCondition("");
     setChecked([]);
@@ -128,30 +128,29 @@ function Homepage() {
   return (
     <div className="container home-page">
       <NavBar mode={1}></NavBar>
-
       {/* ====================region filter==================== */}
       <div className="filter-container">
         <div className="filter-1">
           <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
-              {/* <ion-icon name="filter-circle-outline"></ion-icon> */}
               <ion-icon name="list-outline"></ion-icon>
             </button>
           </div>
-          <input
-            type="text"
-            placeholder="Search course here"
-            name="search"
-            value={condition}
-            onChange={(e) => {
-              setCondition(e.target.value);
-            }}
-          />
-          <button onClick={() => handleSearchCheckAndFilter('searchButton')}>
-            <ion-icon name="search-circle-outline"></ion-icon>
-          </button>
-          <div className="textBttn">
-            <button onClick={handleReset}>Reset</button>
+          <div className="search-border">
+
+
+            <input
+              type="text"
+              placeholder="Search course here"
+              name="search"
+              value={condition}
+              onChange={(e) => {
+                setCondition(e.target.value);
+              }}
+            />
+            <button onClick={() => handleSearchCheckAndFilter('searchButton')}>
+              <ion-icon name="search-circle-outline"></ion-icon>
+            </button>
           </div>
           <select
             name="filter"
@@ -212,12 +211,16 @@ function Homepage() {
       <div className="list-Courses">
         {pageCourses.map((course) => (
           <div className="course" key={course.courseId}>
-            <span>
-              {course.courseId}:{course.courseName}
-            </span>
-            <span>{convertDateFormat(course.createdAt)}</span>
-            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-            <hr />
+            <div className="couse-card-view">
+              <span>
+                {/* {course.courseId} */}
+                {course.courseName}
+              </span>
+            </div>
+            <div className="course-desc">
+              {/* <span>{convertDateFormat(course.createdAt)}</span> */}
+              <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+            </div>
           </div>
         ))}
       </div>

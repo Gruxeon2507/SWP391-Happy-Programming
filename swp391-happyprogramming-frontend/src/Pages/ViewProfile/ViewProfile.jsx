@@ -5,6 +5,8 @@ import axios from "axios";
 import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import { useParams } from "react-router-dom";
+import "./ViewProfile.css"
+import { Nav } from "react-bootstrap";
 
 function ViewProfile(props) {
   const { id } = useParams();
@@ -31,25 +33,55 @@ function ViewProfile(props) {
   }, [id]);
 
   return (
-    <div>
-      <div>
-        <label>Username</label>
-        <h1>{user.username}</h1>
+    <>
+      <NavBar mode={1} />
+      <div className="user-pf-content">
+        <table className="upf-table">
+          <thead>
+            <tr>
+              <td colSpan={3}>
+                <h1>User Profile</h1>
+              </td>
+            </tr>
+          </thead>
+          <tr>
+            <td>
+              <label>Username</label>
+            </td>
+            <td>
+              <h2>{user.username}</h2>
+            </td>
+            <td><span><ion-icon name="create-outline"></ion-icon>Edit</span></td>
+          </tr>
+          <tr>
+            <td>
+              <label>Display Name</label>
+            </td>
+            <td>
+              <h2>{user.displayName}</h2>
+            </td>
+            <td><span><ion-icon name="create-outline"></ion-icon>Edit</span></td>
+          </tr>
+          <tr>
+            <td>
+              <label>Date of birth</label>
+            </td>
+            <td>
+              <p>{new Date(user.dob).toLocaleDateString(`en-GB`)}</p>
+            </td>
+            <td><span><ion-icon name="create-outline"></ion-icon>Edit</span></td>
+          </tr>
+          <tr>
+            <td>
+              <label>Member since: </label>
+            </td>
+            <td>
+              <p>{new Date(user.createdDate).toLocaleDateString(`en-GB`)}</p>
+            </td>
+          </tr>
+        </table>
       </div>
-      <div>
-        <label>Display Name</label>
-        <h2>{user.displayName}</h2>
-      </div>
-      <div>
-        <label>Date of birth</label>
-        <p>{new Date(user.dob).toLocaleDateString(`en-GB`)}</p>
-      </div>
-
-      <div>
-        <label>Created Date</label>
-        <p>{new Date(user.createdDate).toLocaleDateString(`en-GB`)}</p>
-      </div>
-    </div>
+    </>
   );
 }
 
