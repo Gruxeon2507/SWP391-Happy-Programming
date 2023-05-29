@@ -16,8 +16,9 @@
   justify-items: center;
   padding: 1rem;
   width: fit-content;
-  margin: 4px 1rem;
-  border-radius: 2rem;
+  margin: 4px 0;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -92,7 +93,7 @@ option {
 .filter-container button:hover ion-icon {
   color: var(--lightItem);
   font-weight: bold;
-  background-color: var(--item);
+  background-color: var(--item2);
   transition: 0.3s all ease;
 }
 .filter-container button:hover {
@@ -126,7 +127,7 @@ option {
   margin: auto 0.6rem auto 0;
 }
 .cate-filter-head button:hover {
-  background-color: var(--item);
+  background-color: var(--item2);
 }
 .cate-filter-head ion-icon {
   color: var(--lightItem);
@@ -229,14 +230,21 @@ option {
   display: grid;
   flex-direction: column;
   grid-template-rows: repeat(1, 1fr);
+  cursor: pointer;
 }
 
 .couse-card-view {
   background-color: var(--lightItem);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   min-height: 200px;
+}
+.couse-card-view:hover {
+  transform: translate(0, -2%);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .couse-card-view span {

@@ -51,7 +51,6 @@ function ViewProfile(props) {
             <td>
               <h2>{user.username}</h2>
             </td>
-            <td><span><ion-icon name="create-outline"></ion-icon>Edit</span></td>
           </tr>
           <tr>
             <td>
@@ -60,7 +59,6 @@ function ViewProfile(props) {
             <td>
               <h2>{user.displayName}</h2>
             </td>
-            <td><span><ion-icon name="create-outline"></ion-icon>Edit</span></td>
           </tr>
           <tr>
             <td>
@@ -69,7 +67,6 @@ function ViewProfile(props) {
             <td>
               <p>{new Date(user.dob).toLocaleDateString(`en-GB`)}</p>
             </td>
-            <td><span><ion-icon name="create-outline"></ion-icon>Edit</span></td>
           </tr>
           <tr>
             <td>
