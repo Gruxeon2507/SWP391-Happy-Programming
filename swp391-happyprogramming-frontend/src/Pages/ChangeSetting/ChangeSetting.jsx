@@ -13,7 +13,14 @@ function ChangeSetting(props) {
     displayName: "",
     avatarPath: "",
     dob: "",
+    roles: [
+      {
+        roleName: "",
+      },
+    ],
   });
+
+  const [checkMentorRole, setCheckMentorRole] = useState(false);
 
   const [avatar, setAvatar] = useState(null);
 
@@ -158,17 +165,6 @@ function ChangeSetting(props) {
     // console.log(token);
 
     axios
-      .post(`http://localhost:1111/api/auth/token`, null, {
-        headers: requestHeaders,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setId(res.data);
-      })
-      .catch((error) => {
-        console.log("Error when get token : " + error);
-      });
-    axios
       .get(`http://localhost:1111/api/auth/profile/${id}`)
       .then((res) => {
         setUser(res.data);
@@ -177,13 +173,32 @@ function ChangeSetting(props) {
         )
           .then((image) => setAvatar(image.default))
           .catch((error) => console.log(error));
+        setUser((prevUser) => ({
+          ...prevUser,
+          roles: res.data.roles, // Assuming the roles are returned as an array of role objects
+        }));
       })
-      .then((error) => {
+      .catch((error) => {
         console.log("Error when get user profile : " + error);
       });
+
     // const avatar = require(`../../../../swp391-happyprogramming-backend/avatar/${user.avatarPath}`);
     // setAvatar(avatar);
   }, [id]);
+
+  useEffect(() => {
+    axios
+      .post(`http://localhost:1111/api/auth/token`, null, {
+        headers: requestHeaders,
+      })
+      .then((res) => {
+        // console.log(res.data);
+        setId(res.data);
+      })
+      .catch((error) => {
+        console.log("Error when get token : " + error);
+      });
+  }, []);
 
   return (
     <div>
@@ -230,7 +245,34 @@ function ChangeSetting(props) {
 
         <button>Update</button>
       </form>
-      <form onSubmit={handleSubmitPdf}>
+      {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
+        <>
+          <form onSubmit={handleSubmitPdf}>
+            <div>
+              <label>Pdf</label>
+              <div></div>
+            </div>
+            <div>
+              <lable>Upload Pdf</lable>
+              <input
+                type="file"
+                name="pdfPath"
+                onChange={onChangePdfPath}
+                required
+              />
+            </div>
+            {showErrorPdf ? (
+              <>
+                <div className="w-message" style={{ color: "black" }}>
+                  {errorPdf}
+                </div>
+              </>
+            ) : null}
+            <button>Update Pdf</button>
+          </form>
+        </>
+      ) : null}
+      {/* <form onSubmit={handleSubmitPdf}>
         <div>
           <label>Pdf</label>
           <div></div>
@@ -252,7 +294,7 @@ function ChangeSetting(props) {
           </>
         ) : null}
         <button>Update Pdf</button>
-      </form>
+      </form> */}
     </div>
   );
 }
