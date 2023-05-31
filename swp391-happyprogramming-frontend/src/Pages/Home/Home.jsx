@@ -4,6 +4,7 @@ import NavBar from "../../Components/Navbar/NavBar";
 import "./Home.css";
 import bg from "../../Assets/backround.jpg";
 import { NavLink } from "react-router-dom";
+import gmt from "../../Assets/giangmentor.png";
 
 function Home(props) {
   return (
@@ -25,6 +26,17 @@ function Home(props) {
             <NavLink to="/register">RegisterNow!!!</NavLink>
           </div>
         </div>
+      </div>
+      <div className="banner-2">
+        <div className="quotes">
+          <h1>
+            Mentor siu tín
+          </h1>
+          <p>
+            Dàn mentor dày dặn kinh nghiệm, là các giáo sư có tiếng trong ngành với hơn 20 năm giảng dạy
+          </p>
+        </div>
+        <img src={gmt} alt="background" />
       </div>
     </div>
   );
