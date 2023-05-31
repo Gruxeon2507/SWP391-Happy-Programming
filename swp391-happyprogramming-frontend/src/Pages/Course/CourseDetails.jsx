@@ -19,7 +19,7 @@ function StarRating({ rating }) {
     return stars;
   };
 
-  return <div>{renderStars()}</div>;
+  return <><span>Rating: </span>{renderStars()}</>;
 }
 
 const CourseDetails = (props) => {
@@ -75,32 +75,31 @@ const CourseDetails = (props) => {
         <div className="course-info">
           <div className="course-header">
             <h2>
-              {/* {courseID} */}
               {course.courseName}
             </h2>
           </div>
           <div>
-            <p>{course.courseDescription}:{course.courseDescription}</p>
+            <p>{course.courseDescription}</p>
           </div>
           <div>
-            <span>Categories:</span>
+            <span id="cateSpan">Categories:</span>
             {course.categories?.map((c) => (
               <span key={c.categoryId}>{c.categoryName}</span>
             ))}
           </div>
         </div>
         <div className="mentor-info">
-          <div>
-            <img src={baseAVT} alt="image"></img>
+          <div className="basic-info">
+            <div>
+              <img src={"http://localhost:1111/api/users/avatar/" + mentor.username} alt="image"></img>
+            </div>
+            <div className="m-i-name">
+              <span>Mentor</span>
+              <span><a href={`/profile/${mentor.username}`}>{mentor.displayName}</a></span>
+            </div>
           </div>
-          <div>
-            <span>Mentor:</span>
-            <span>{mentor.displayName}</span><a href={`/profile/${mentor.username}`}>View more</a>
-          </div>
-          <div>
-            <span>rating: </span>
-            <span><StarRating rating={5} />  {rating}</span>
-
+          <div className="m-i-rating">
+            <span><StarRating rating={rating} />  </span>
           </div>
           <div>
             <button id="requestBttn" onClick={() => handleRequest()}>Request</button>
