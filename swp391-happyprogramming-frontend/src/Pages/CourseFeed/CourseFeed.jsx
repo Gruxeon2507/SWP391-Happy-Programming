@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import CreateCourse from "../Course/CreateCourse";
 import { useParams } from "react-router-dom";
 import CreatePost from "../../Components/CreatePost/CreatePost";
-import PostServices from "../../services/PostServices";
 import api from "../../services/BaseAuthenticationService";
 
 function CourseFeed() {
