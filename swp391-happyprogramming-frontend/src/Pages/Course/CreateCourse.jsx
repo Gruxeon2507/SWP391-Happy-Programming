@@ -74,14 +74,19 @@ function CreateCourse() {
   // const options = categories.map((cate) => {
   //   return { value: cate.categoryId, label: cate.categoryName };
   // });
+
   useEffect(() => {
     // Update the course state whenever selectedCategories change
     setSelectedCategories(temp.map((c) => ({ categoryId: c.value })));
+
+  }, [temp]);
+
+  useEffect(() => {
     setCourse((prevCourse) => ({
       ...prevCourse,
       categories: selectedCategories,
     }));
-  }, [selectedCategories]);
+  }, [selectedCategories])
 
   return (
     <>

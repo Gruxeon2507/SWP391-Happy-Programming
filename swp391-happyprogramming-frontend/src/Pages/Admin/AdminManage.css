@@ -74,10 +74,13 @@
 }
 
 .admin-navbar {
-  /* background-color: aqua; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   position: absolute;
   top: 8px;
-  left: 8px;
 }
 
 .brand {
