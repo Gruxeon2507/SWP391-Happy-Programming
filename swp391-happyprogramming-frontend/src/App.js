@@ -17,8 +17,7 @@ import userProfile from "./Pages/UserProfile/userProfile";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
 
-
-import CourseDetails from "./Pages/Courses/CourseDetails";
+import CourseDetails from "./Pages/Course/CourseDetails";
 import MentorManagement from "./Pages/Admin/MentorManagement";
 import CreateCourse from "./Pages/Course/CreateCourse";
 import ChangePassword from "./Pages/ChangePassword/ChangePassword";
@@ -28,17 +27,19 @@ import ViewProfile from "./Pages/ViewProfile/ViewProfile";
 import AdminManage from "./Pages/Admin/AdminManage";
 
 //CSS
-// import "./global/global.css";
+import "./global/global.css";
+import CreatePost from "./Components/CreatePost/CreatePost";
+import CourseFeed from "./Pages/CourseFeed/CourseFeed";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
     try {
       const response = await api.get("api/feature/all");
       setFeatures(response.data);
-      console.log(response.data);
-      console.log(features);
+      // console.log(response.data);
+      // console.log(features);
     } catch (error) {
-      console.log(error);
+
     }
   };
   useEffect(() => {
@@ -51,7 +52,8 @@ function App() {
       <Route path="/landing" element={<Home />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/courses" element={<Homepage />} />
-      <Route path="/courses/:coursesID" element={<CourseDetails />} />
+      <Route path="/courses/view/:courseID" element={<CourseDetails />} />
+      <Route path="/cdt" element={<CourseDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/admin" element={<AdminManage />} />
@@ -59,12 +61,17 @@ function App() {
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
-      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />
-      <Route path="/courses/:courseName" element={<CourseDetails />} />
-      <Route path="/changepassword" element={<ChangePassword></ChangePassword>} />
+      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />     
+      <Route
+        path="/changepassword"
+        element={<ChangePassword></ChangePassword>}
+      />
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
-      <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>}/>
-      <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>}/>
+      <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>} />
+      <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>} />
+      
+      <Route path="/createPost" element={<CreatePost></CreatePost>}></Route>
+      <Route path="/courses/feed/:courseId" element={<CourseFeed></CourseFeed>}></Route>
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {

@@ -1,0 +1,36 @@
+@import url("../../global//ColorPalette.css");
+.user-pf-content {
+  margin: 8rem 2rem 1rem 2rem;
+  height: max-content;
+}
+
+.upf-table {
+  margin: auto;
+  background-color: var(--lightItem);
+  padding: 2rem 4rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.upf-table tr:hover {
+  background-color: var(--light);
+}
+.upf-table tr:hover span {
+  color: var(--item2);
+}
+
+.upf-table tr:nth-child(1) {
+  color: var(--item);
+}
+
+.upf-table span {
+  color: var(--item);
+  text-align: center;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.upf-table td {
+  padding: 0 1rem;
+}

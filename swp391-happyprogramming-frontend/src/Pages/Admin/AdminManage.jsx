@@ -20,12 +20,12 @@ function AdminManage(props) {
     <div className="body-wraper">
       <div className="fragment-nav-bar">
         <div className="admin-navbar">
-          <div className="brand">
+          <div className="brand" onClick={() => window.location.href = window.location.origin}>
             <img src={logo} alt="logo" />
-            <a href="#" className="logo">
-              <span>H</span>
-              PYPRO
-            </a>
+            <a href="#" className="logo"><span>H</span>PYPRO</a>
+          </div>
+          <div className="admin-setting-bar">
+            <SettingBar></SettingBar>
           </div>
         </div>
         <div className="ad-nav-list">

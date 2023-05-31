@@ -65,4 +65,12 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Transactional
     @Query(value = "UPDATE `User` u SET u.activeStatus = :status WHERE u.username = :username", nativeQuery = true)
     public void updateActiveStatus( Integer status, String username);
+    
+    @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE u.username = ?1 AND p.participateRole = '2' AND p.courseId = ?2 ",nativeQuery = true)
+    public User findCourseMentor(String username, int courseId);
+    
+    
+    //duckm
+     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE u.username = ?1 AND p.courseId = ?2 AND p.statusId= 1",nativeQuery = true)
+     public User findEnrolledUserInCourse(String username, int courseId);
 }

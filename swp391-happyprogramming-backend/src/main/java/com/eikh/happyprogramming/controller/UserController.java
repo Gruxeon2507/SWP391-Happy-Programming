@@ -126,16 +126,16 @@ public class UserController {
         }
     }
 
-    @Scheduled(fixedRate = 3600000) // Run every hour
-    public void cleanUserNotVerified() {
-        List<User> users = userRepository.findByIsVerified(false);
-
-        for (User user : users) {
-            if (user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())) {
-                userRepository.delete(user);
-            }
-        }
-    }
+//    @Scheduled(fixedRate = 3600000) // Run every hour
+//    public void cleanUserNotVerified() {
+//        List<User> users = userRepository.findByIsVerified(false);
+//
+//        for (User user : users) {
+//            if (user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())) {
+//                userRepository.delete(user);
+//            }
+//        }
+//    }
 
     private final String AVT_UPLOAD_DIR = "/avatar/";
 

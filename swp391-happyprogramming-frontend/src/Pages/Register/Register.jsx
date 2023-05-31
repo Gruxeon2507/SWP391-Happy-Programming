@@ -247,12 +247,7 @@ function Register(props) {
                 <h1>Registration form</h1>
               </div>
               <div className="user-input">
-                <input
-                  type="text"
-                  id="userName"
-                  required
-                  onChange={onChangeUsername}
-                ></input>
+                <input type="text" id="userName" required onChange={onChangeUsername}></input>
                 <span>UserName</span>
               </div>
               {showErrorUsername ? (

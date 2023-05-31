@@ -45,7 +45,7 @@ function Login() {
       // console.log("user:"+ response.data.username);
       // Set a timeout to remove the "user" item after 30 minutes (1,800,000 milliseconds)
       window.location.href = "/";
-    } catch (error) {     
+    } catch (error) {
       console.log("login failed");
       setLoginFailed(true);
       console.error(error);
@@ -84,22 +84,22 @@ function Login() {
             {loginFailed ? (
               <>
                 <div className="loginFailed">{messageLoginFailed}</div>
+                <span>
+                  <NavLink to="/forgetpassword"> Forget your password ? </NavLink>
+                </span>
               </>
             ) : null}
-            <p>
-              Don't have an account ?{" "}
-              <span className="sign-in">
-                <NavLink to="/register">Sign Up</NavLink>
-              </span>
-            </p>
-            <p>
-              <span>
-                <NavLink to="/forgetpassword"> Forget your password ? </NavLink>
-              </span>
-            </p>
             <button className="btn btn--form" type="submit" value="Login">
               LOGIN
             </button>
+            <div className="login-uti-text">
+              <p>
+                Don't have an account ?{" "}
+                <span className="sign-in">
+                  <NavLink to="/register">Sign Up</NavLink>
+                </span>
+              </p>
+            </div>
           </form>
         </div>
       </div>

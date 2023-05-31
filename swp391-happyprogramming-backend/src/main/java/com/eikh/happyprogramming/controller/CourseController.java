@@ -8,10 +8,12 @@ import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Category;
 import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.model.Participate;
+import com.eikh.happyprogramming.model.Post;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CategoryRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
+import com.eikh.happyprogramming.repository.PostRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("api/courses")
 public class CourseController {
@@ -58,6 +60,8 @@ public class CourseController {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
+    @Autowired
+    PostRepository postRepository;
     
     @GetMapping
     List<Course> getAll() {
@@ -276,6 +280,18 @@ public class CourseController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+    
+    @GetMapping("/posts/{courseId}")
+    public ResponseEntity<?> getCoursePost(HttpServletRequest request,@PathVariable("courseId") int courseId){
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        User user = userRepository.findEnrolledUserInCourse(username, courseId);
+        if(user!=null){
+            List<Post> posts = postRepository.findByCourse(courseRepository.ducFindByCourseId(courseId));
+            return ResponseEntity.ok(posts);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
     
