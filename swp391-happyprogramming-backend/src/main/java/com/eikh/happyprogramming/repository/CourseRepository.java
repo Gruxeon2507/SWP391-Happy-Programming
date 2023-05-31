@@ -60,4 +60,11 @@ public interface CourseRepository extends JpaRepository<Course, Integer>{
     @Transactional
     @Query(value = "DELETE FROM Course_Category where courseId = :courseId", nativeQuery = true)
     public void deleteCourseCategoryBycourseId(@Param("courseId") int courseId);
+    
+    //@duckm
+    @Query(value = "SELECT * FROM Course c JOIN Participate p on c.courseId = p.courseId where p.username = ?1 and c.courseId=?2",nativeQuery = true)
+    public Course findMentorCourse(String username,int courseId);
+    
+    @Query(value = "SELECT * FROM Course c WHERE courseId=?1",nativeQuery = true)
+    public Course ducFindByCourseId(int courseId);
 }
