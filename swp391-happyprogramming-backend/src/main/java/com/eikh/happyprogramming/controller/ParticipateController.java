@@ -52,13 +52,11 @@ public class ParticipateController {
             participateRepository.saveParticipate(username, courseId, 2, 1);
         } else {
             User u1 = userRepository.userHasRole(usn, 3);
-            System.out.println("USERNAME: " + usn);
             if (u1 != null) {
                 // insert request pending
                 participateRepository.saveParticipate(usn, courseId, participateRoleId, statusId);
             }
         }
-//        participateRepository.saveParticipate(username, courseId, participateRoleId, statusId);
     }
 
     @PostMapping
