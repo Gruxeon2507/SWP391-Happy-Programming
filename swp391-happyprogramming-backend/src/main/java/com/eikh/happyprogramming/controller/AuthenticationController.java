@@ -54,10 +54,12 @@ public class AuthenticationController {
     
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = UserRepository.findByUsername(credentials.getUsername());
+        System.out.println(credentials.getPassword());
+        System.out.println(user.getPassword());
+        System.out.println(AuthenticationUtils.hashPassword(credentials.getPassword()));
         if (user != null && ((user.getPassword().equals(credentials.getPassword())) || AuthenticationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
             HttpSession session = request.getSession();
             user.setPassword("");

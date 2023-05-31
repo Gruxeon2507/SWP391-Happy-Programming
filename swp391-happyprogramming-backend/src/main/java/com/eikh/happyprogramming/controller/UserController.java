@@ -237,18 +237,20 @@ public class UserController {
         mentor.setDisplayName(mentor.getMail());
         String password = PasswordUtils.generatePassword();
         String subject = "HAPPY ONLINE PROGRAMMING - MENTOR ACCOUNT";
-        String body = "Here is your mentor account <br> Username:" + mentor.getUsername() + "<br>" +"Password "+ password;
+        String body = "Here is your mentor account <br> Username:" + mentor.getUsername() + "<br>" + "Password " + password;
         System.out.println(body);
 
         try {
             EmailUtils.sendVerifyEmail(mentor.getMail(), subject, body);
             System.out.println("Send email successfully");
-            mentor.setPassword(AuthenticationUtils.hashPassword(mentor.getPassword()));
+            System.out.println(password);
+            mentor.setPassword(AuthenticationUtils.hashPassword(password));
+            System.out.println(mentor.getPassword());
+            mentor.setAvatarPath("avatar.jpg");
             User createdMentor = userRepository.save(mentor);
             userRepository.saveUser_Role(mentor.getUsername(), 2);
             userRepository.saveUser_Role(mentor.getUsername(), 3);
             return createdMentor;
-
         } catch (EmailException ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error when send email");
