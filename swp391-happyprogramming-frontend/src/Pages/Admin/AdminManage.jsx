@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import "../Admin/AdminManage.css";
 import basicAvatar from "../../Assets/base_user_img.png";
 import MentorManagement from "./MentorManagement";
+import SettingBar from "../../Components/SettingBar/SettingBar";
 
 function AdminManage(props) {
 
