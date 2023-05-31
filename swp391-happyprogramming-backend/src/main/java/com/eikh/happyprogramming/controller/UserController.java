@@ -8,6 +8,7 @@ import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.DateUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+import com.eikh.happyprogramming.utils.PasswordUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -50,29 +51,29 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
-    
+
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-    
+
     @Autowired
     JwtTokenFilter jwtTokenFilter;
 
-
     @PostMapping("/profile/update")
-    public User updateProfile(@RequestHeader("Authorization") String token,@RequestBody User user){
+    public User updateProfile(@RequestHeader("Authorization") String token, @RequestBody User user) {
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
-        if(user.getUsername().equals(username)){
+        if (user.getUsername().equals(username)) {
             User updateUser = userRepository.findByUsername(username);
             updateUser.setDisplayName(user.getDisplayName());
             updateUser.setDob(user.getDob());
             return userRepository.save(updateUser);
-        }else{
+        } else {
             return null;
         }
     }
+
     /**
      * *
      * Author: giangpthe170907
@@ -100,18 +101,19 @@ public class UserController {
         }
         return null;
     }
-    
+
     @PostMapping("/profile/changepassword")
-    public User changePassword(@RequestHeader("Authorization") String token,@RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword){
+    public User changePassword(@RequestHeader("Authorization") String token, @RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword) {
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         User user = userRepository.findByUsername(username);
-        if(user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())){
+        if (user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())) {
             user.setPassword(AuthenticationUtils.hashPassword(newPassword));
             return user;
-        }else{
+        } else {
             return null;
         }
     }
+
     @GetMapping(value = "verify")
     public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -156,6 +158,7 @@ public class UserController {
         }
 
     }
+
     //Date: 22/05/2023
     //Function: Get Input File Extension
     //Writen By:DucKM
@@ -209,8 +212,9 @@ public class UserController {
     //author: maiphuonghoang 
     @GetMapping("/mentors")
     public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
-        if (!isRoleAdminFromToken(request))
-            return  null;
+        if (!isRoleAdminFromToken(request)) {
+            return null;
+        }
         return userRepository.findByRoleId(2);
 
     }
@@ -219,36 +223,54 @@ public class UserController {
     //Function: Insert Mentor into database and their role to user_role
     //author: maiphuonghoang 
     @PostMapping("/mentor-account")
-    public User createMentor(HttpServletRequest request, @RequestBody User mentor) {
+    public User createMentor(HttpServletRequest request, @RequestBody User mentor) throws EmailException {
 
         if (!isRoleAdminFromToken(request)) {
             return null;
         }
-        mentor.setPassword(AuthenticationUtils.hashPassword(mentor.getPassword()));
+
         java.util.Date today = new java.util.Date();
         java.sql.Date sqlToday = new java.sql.Date(today.getTime());
         mentor.setCreatedDate(sqlToday);
         mentor.setActiveStatus(true);
-        mentor.setDisplayName(mentor.getUsername());
-        User createdMentor = userRepository.save(mentor);
-        userRepository.saveUser_Role(mentor.getUsername(), 2);
-        userRepository.saveUser_Role(mentor.getUsername(), 3);
-        return createdMentor;
+        mentor.setUsername(mentor.getMail());
+        mentor.setDisplayName(mentor.getMail());
+        String password = PasswordUtils.generatePassword();
+        String subject = "HAPPY ONLINE PROGRAMMING - MENTOR ACCOUNT";
+        String body = "Here is your mentor account <br> Username:" + mentor.getUsername() + "<br>" + "Password " + password;
+        System.out.println(body);
+
+        try {
+            EmailUtils.sendVerifyEmail(mentor.getMail(), subject, body);
+            System.out.println("Send email successfully");
+            System.out.println(password);
+            mentor.setPassword(AuthenticationUtils.hashPassword(password));
+            System.out.println(mentor.getPassword());
+            mentor.setAvatarPath("avatar.jpg");
+            User createdMentor = userRepository.save(mentor);
+            userRepository.saveUser_Role(mentor.getUsername(), 2);
+            userRepository.saveUser_Role(mentor.getUsername(), 3);
+            return createdMentor;
+        } catch (EmailException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error when send email");
+        }
+        return null;
     }
 
     //Date: 24/05/2023
     //Function: Update mentor set activeStatus to Ban mentor 
     //author: maiphuonghoang 
     @PutMapping("/mentors/status/{username}")
-    ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username,@RequestParam Integer status) {
+    ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username, @RequestParam Integer status) {
         if (!isRoleAdminFromToken(request)) {
             return null;
         }
         boolean exists = userRepository.existsByUsername(username);
         User user = userRepository.findByUsername(username);
         if (exists) {
-            userRepository.updateActiveStatus(status, username);         
+            userRepository.updateActiveStatus(status, username);
         }
         return null;
-    } 
+    }
 }

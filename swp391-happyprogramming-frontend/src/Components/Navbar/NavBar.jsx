@@ -56,6 +56,21 @@ function NavBar(props) {
           <li className="nav-item">
             <NavLink to="/chat">Chat</NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="/admin">admin</NavLink>
+          
+          </li>
+          <li className="nav-item">
+            <NavLink
+              to="/login"
+              onClick={() => {
+                alert("Are you sure you want to logout?");
+                window.localStorage.removeItem("token");
+              }}
+            >
+              logout
+            </NavLink>
+          </li>
         </ul>
         <div className="navToggle">
           <button onClick={() => setNavMenuOpen(!navMenuOpen)}>
