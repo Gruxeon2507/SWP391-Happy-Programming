@@ -16,10 +16,20 @@ CREATE TABLE `User`
     activeStatus bit,
     isVerified bit default 1,
     verification_code varchar(255) default "",
-
-	
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
+
+CREATE TABLE Skill
+(
+	skillId int NOT NULL AUTO_INCREMENT,
+    skillName varchar(255),
+    username varchar(255) NOT NULL,
+    CONSTRAINT PK_Skill PRIMARY KEY (skillId, username)
+);
+
+ALTER TABLE Skill ADD CONSTRAINT PK_Skill FOREIGN KEY(username)
+REFERENCES `User` (username);
+
 
 CREATE TABLE `Role`
 (

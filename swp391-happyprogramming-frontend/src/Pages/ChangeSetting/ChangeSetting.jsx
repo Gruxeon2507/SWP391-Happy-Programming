@@ -18,6 +18,11 @@ function ChangeSetting(props) {
         roleName: "",
       },
     ],
+    skills: [
+      {
+        skillName: "",
+      },
+    ],
   });
 
   const [checkMentorRole, setCheckMentorRole] = useState(false);
@@ -175,7 +180,8 @@ function ChangeSetting(props) {
           .catch((error) => console.log(error));
         setUser((prevUser) => ({
           ...prevUser,
-          roles: res.data.roles, // Assuming the roles are returned as an array of role objects
+          roles: res.data.roles,
+          skills: res.data.skills,
         }));
       })
       .catch((error) => {
@@ -241,6 +247,7 @@ function ChangeSetting(props) {
             <label>Date of birth</label>
             <input type="date" value={user.dob} onChange={onChangeDob} />
           </div>
+          <div></div>
         </div>
 
         <button>Update</button>
