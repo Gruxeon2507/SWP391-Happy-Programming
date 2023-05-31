@@ -1,0 +1,12 @@
+* {
+  border: 1px solid red;
+}
+
+.cf-content {
+  background-color: aqua;
+  margin-top: 90px;
+}
+
+.r-t-editor {
+  width: 500px;
+}

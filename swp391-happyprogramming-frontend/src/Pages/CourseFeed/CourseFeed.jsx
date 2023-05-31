@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import CreatePost from "../../Components/CreatePost/CreatePost";
 import PostServices from "../../services/PostServices";
 import api from "../../services/BaseAuthenticationService";
+import "./CourseFeed.css"
+import NavBar from "../../Components/Navbar/NavBar";
 
 function CourseFeed() {
   const { courseId } = useParams();
@@ -24,20 +26,25 @@ function CourseFeed() {
 
   console.log(posts)
   return (
-    <div>
-      <CreatePost courseId={courseId} />
-      <div>
-        {posts.map((post) => (
-          <div>
-            <div>{post.postedAt}</div>
-          <div
-            key={post.id} // Adding a unique key to each rendered post
-            dangerouslySetInnerHTML={{ __html: post.postContent }}
-          />
-          </div>
-        ))}
+    <>
+      <NavBar mode={1}></NavBar>
+      <div className="cf-content">
+        <div className="r-t-edit">
+          <CreatePost courseId={courseId} />
+        </div>
+        <div>
+          {posts.map((post) => (
+            <div>
+              <div>{post.postedAt}</div>
+              <div
+                key={post.id} // Adding a unique key to each rendered post
+                dangerouslySetInnerHTML={{ __html: post.postContent }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
