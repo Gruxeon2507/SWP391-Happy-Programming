@@ -5,18 +5,19 @@ import CreateCourse from "../Course/CreateCourse";
 import { NavLink } from "react-router-dom";
 import "../Admin/AdminManage.css";
 import basicAvatar from "../../Assets/base_user_img.png";
+import SettingBar from "../../Components/SettingBar/SettingBar";
 
 function AdminManage(props) {
   return (
     <div className="body-wraper">
       <div className="fragment-nav-bar">
         <div className="admin-navbar">
-          <div className="brand">
+          <div className="brand" onClick={() => window.location.href = window.location.origin}>
             <img src={logo} alt="logo" />
-            <a href="#" className="logo">
-              <span>H</span>
-              PYPRO
-            </a>
+            <a href="#" className="logo"><span>H</span>PYPRO</a>
+          </div>
+          <div className="admin-setting-bar">
+            <SettingBar></SettingBar>
           </div>
         </div>
         <div className="ad-nav-list">
@@ -27,9 +28,6 @@ function AdminManage(props) {
             <li>admin function</li>
             <li>admin function</li>
             <li>admin function</li>
-            <li className="">
-              <NavLink to="/">Go to website</NavLink>
-            </li>
           </ul>
         </div>
       </div>

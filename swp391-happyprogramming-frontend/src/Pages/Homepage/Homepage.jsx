@@ -6,8 +6,12 @@ import { FormControl } from "react-bootstrap";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../Homepage/Homepage.css";
 import convertDateFormat from "../../util/DateConvert";
+import { useNavigate } from "react-router-dom";
 
 function Homepage() {
+  const navigate = useNavigate();
+
+
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [pageCourses, setPageCourses] = useState([]);
@@ -22,6 +26,10 @@ function Homepage() {
 
   const toggleActiveCateFilter = () => {
     setActiveCateFilter(!isActiveCateFilter);
+  };
+
+  const handleCourseNavigate = (courseId) => {
+    navigate(`/courses/${courseId}`);
   };
 
   const sizePerPage = 12;
@@ -99,10 +107,9 @@ function Homepage() {
   var searchText = encodeURIComponent(condition).replace(/%20/g, "%20")
   useEffect(() => {
     getSearchCheckAndFilterCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
-  }, [sortField,sortOrder])
+  }, [sortField, sortOrder])
 
-
-  const handleReset =  () => {
+  const handleReset = () => {
     setSelectIndex(true);
     setCondition("");
     setChecked([]);
@@ -128,30 +135,27 @@ function Homepage() {
   return (
     <div className="container home-page">
       <NavBar mode={1}></NavBar>
-
       {/* ====================region filter==================== */}
       <div className="filter-container">
         <div className="filter-1">
           <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
-              {/* <ion-icon name="filter-circle-outline"></ion-icon> */}
               <ion-icon name="list-outline"></ion-icon>
             </button>
           </div>
-          <input
-            type="text"
-            placeholder="Search course here"
-            name="search"
-            value={condition}
-            onChange={(e) => {
-              setCondition(e.target.value);
-            }}
-          />
-          <button onClick={() => handleSearchCheckAndFilter('searchButton')}>
-            <ion-icon name="search-circle-outline"></ion-icon>
-          </button>
-          <div className="textBttn">
-            <button onClick={handleReset}>Reset</button>
+          <div className="search-border">
+            <input
+              type="text"
+              placeholder="Search course here"
+              name="search"
+              value={condition}
+              onChange={(e) => {
+                setCondition(e.target.value);
+              }}
+            />
+            <button onClick={() => handleSearchCheckAndFilter('searchButton')}>
+              <ion-icon name="search-circle-outline"></ion-icon>
+            </button>
           </div>
           <select
             name="filter"
@@ -159,13 +163,11 @@ function Homepage() {
             onChange={(e) => {
               setSelectIndex(false);
               handleSearchCheckAndFilter('filterButton', e.target.value);
-            }}
-          >
+            }}>
             {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
             <option value="asc|createdAt">Oldest</option>
             <option value="asc|courseName">A-Z Name</option>
             <option value="desc|courseName">Z-A Name</option>
-
           </select>
           <div className="textBttn">
             <button onClick={handleReset}>Reset</button>
@@ -196,33 +198,24 @@ function Homepage() {
       {/* ====================end region filter==================== */}
 
       {/* ====================region List of Course==================== */}
-      {/* <div className="list-Courses">
-        {pageCourses.map((course) => (
-          <div className="course" key={course.courseId}>
-            <span>
-              {course.courseId}:{course.courseName}
-            </span>
-            <span>{course.createdAt}</span>
-            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-            <span>View details</span>
-            <hr />
-          </div>
-        ))}
-      </div> */}
       <div className="list-Courses">
         {pageCourses.map((course) => (
-          <div className="course" key={course.courseId}>
-            <span>
-              {course.courseId}:{course.courseName}
-            </span>
-            <span>{convertDateFormat(course.createdAt)}</span>
-            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-            <hr />
+          <div className="course" key={course.courseId}
+            onClick={() => handleCourseNavigate(course.courseId)}>
+            <div className="couse-card-view">
+              <span>
+                {course.courseName}
+              </span>
+            </div>
+            <div className="course-desc">
+              <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+            </div>
           </div>
         ))}
       </div>
-
       {/* ====================end region List of Course==================== */}
+
+      {/* ====================region Pagination==================== */}
       <div className="Pagination-Container">
         <Pagination
           total={totalItems}
@@ -236,26 +229,6 @@ function Homepage() {
           }}
         />
       </div>
-      {/* ====================region Pagination==================== */}
-      {/* <div className="pagination-container">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => handlePageChange(currentPage - 1)}
-        >
-          <ion-icon name="caret-back-circle-outline"></ion-icon>
-        </button>
-
-        <span>{`${currentPage} of ${Math.ceil(
-          totalItems / sizePerPage
-        )}`}</span>
-
-        <button
-          disabled={currentPage === Math.ceil(totalItems / sizePerPage)}
-          onClick={() => handlePageChange(currentPage + 1)}
-        >
-          <ion-icon name="caret-forward-circle-outline"></ion-icon>
-        </button>
-      </div> */}
       {/* ====================End region Pagination==================== */}
     </div>
   );

@@ -5,6 +5,22 @@ import "../Course/CourseDetails.css";
 import CourseServices from "../../services/CourseServices";
 import PublicService from "../../services/PublicService";
 import ParticipateServices from "../../services/ParticipateServices";
+import NavBar from "../../Components/Navbar/NavBar";
+import baseAVT from "../../Assets/base_user_img.png";
+
+function StarRating({ rating }) {
+  const renderStars = () => {
+    const stars = [];
+
+    for (let i = 1; i <= rating; i++) {
+      stars.push(<span key={i}>&#9733;</span>);
+    }
+
+    return stars;
+  };
+
+  return <><span>Rating: </span>{renderStars()}</>;
+}
 
 const CourseDetails = (props) => {
   const { courseID } = useParams();
@@ -25,6 +41,7 @@ const CourseDetails = (props) => {
   useEffect(() => {
     PublicService.getMentorByCourseId(courseID)
       .then((res) => {
+        console.log(res.data);
         setMentor(res.data);
         return res.data;
       })
@@ -50,46 +67,42 @@ const CourseDetails = (props) => {
     }
   };
 
-  console.log("rating is: " + rating);
-  // console.log("mentor is: " + mentor.username);
-  // console.log("course name is: " + course.courseName);
-  // console.log("course id is: " + courseID);
-  // console.log("CATEGORIES: " + course.categories);
+  // console.log("rating is: " + rating);
   return (
     <div>
-      <div className="cd-container">
-        <div className="cd-content">
-          <div className="course-info">
-            <div className="course-header">
-              <h1>
-                course detail:{courseID} - {course.courseName}
-              </h1>
-            </div>
+      <NavBar mode={0}></NavBar>
+      <div className="cd-content">
+        <div className="course-info">
+          <div className="course-header">
+            <h2>
+              {course.courseName}
+            </h2>
+          </div>
+          <div>
+            <p>{course.courseDescription}</p>
+          </div>
+          <div>
+            <span id="cateSpan">Categories:</span>
+            {course.categories?.map((c) => (
+              <span key={c.categoryId}>{c.categoryName}</span>
+            ))}
+          </div>
+        </div>
+        <div className="mentor-info">
+          <div className="basic-info">
             <div>
-              <span>course desc: {course.courseDescription}</span>
+              <img src={"http://localhost:1111/api/users/avatar/" + mentor.username} alt="image"></img>
             </div>
-            <div>
-              <span>course cate</span>
-              {course.categories?.map((c) => (
-                <span key={c.categoryId}>{c.categoryName}</span>
-              ))}
+            <div className="m-i-name">
+              <span>Mentor</span>
+              <span><a href={`/profile/${mentor.username}`}>{mentor.displayName}</a></span>
             </div>
           </div>
-          <div className="mentor-info">
-            <div>
-              <img src="" alt="image"></img>
-            </div>
-            <div>
-              <span>mentor name</span>
-              <span>{mentor.displayName}</span>
-            </div>
-            <div>
-              <span>rating</span>
-              <span>{rating}</span>
-            </div>
-            <div>
-              <button onClick={() => handleRequest()}>request</button>
-            </div>
+          <div className="m-i-rating">
+            <span><StarRating rating={rating} />  </span>
+          </div>
+          <div>
+            <button id="requestBttn" onClick={() => handleRequest()}>Request</button>
           </div>
         </div>
       </div>
