@@ -32,7 +32,7 @@ const CourseDetails = (props) => {
   const [course, setCourse] = useState({});
   const [mentor, setMentor] = useState({});
   const [rating, setRating] = useState(0);
-  const [participation, setParticipation] = useState(null);
+  const [participation, setParticipation] = useState({});
 
   useEffect(() => {
     ParticipateServices.getParticipateByUser(courseID)
@@ -124,7 +124,7 @@ const CourseDetails = (props) => {
               <StarRating rating={rating} />{" "}
             </span>
           </div>
-          {JSON.stringify(participation).length == 2 ? (
+          {Object.keys(participation).length == 0 ? (
             <div>
               <button id="requestBttn" onClick={() => handleRequest()}>
                 Request
