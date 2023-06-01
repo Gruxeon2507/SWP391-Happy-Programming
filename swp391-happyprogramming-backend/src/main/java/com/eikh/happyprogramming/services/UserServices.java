@@ -8,7 +8,6 @@ package com.eikh.happyprogramming.services;
  *
  * @author kmd
  */
-
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.sun.security.auth.UserPrincipal;
@@ -31,14 +30,12 @@ public class UserServices implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        try{
-             return user;
-        }
-        catch(Exception e) {
+        try {
+            return user;
+        } catch (Exception e) {
             System.out.println("User not found with username: " + username);
         }
-        return null;  
+        return null;
     }
 
 }
-

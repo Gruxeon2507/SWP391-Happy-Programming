@@ -51,7 +51,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur ON u.username = ur.username WHERE ur.roleId = :roleId and u.activeStatus = :activeStatus", nativeQuery = true)
     public List<User> getUsersByRoleActiveStatus(int roleId, int activeStatus);
-    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId")
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId order by u.createdDate")
     List<User> findByRoleId(Integer roleId);
 
     @Modifying

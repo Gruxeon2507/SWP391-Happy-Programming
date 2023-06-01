@@ -90,7 +90,6 @@ function CreateCourse() {
 
   return (
     <>
-      {/* <NavBar mode={0} /> */}
       <div className="createCourse-container">
         <form id="courseForm" className="courseForm">
           <table border={1} className="table-input">
