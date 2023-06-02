@@ -2,15 +2,16 @@
 
 .NavBar {
   position: fixed;
-  top: 1rem;
+  top: 0;
   left: 50vw;
   transform: translateX(-50%);
-  width: calc(90vw - (100vw - 100%));
-  max-width: 2000px;
+  width: calc(98vw - (100vw - 100%));
   border: 2px solid var(--light);
   border-radius: 1.5rem;
   background-color: var(--light);
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
 }
 
 .NavBar.active {
@@ -36,7 +37,7 @@
   display: block;
 }
 
-:where(.nav-menu, .NavBar, .logo, .nav-item) {
+:where(.nav-menu, .NavBar, .logo, .nav-item, .route-nav) {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -62,7 +63,7 @@
 }
 
 .nav-menu {
-  margin: auto;
+  margin: auto 2rem auto auto;
   list-style: none;
 }
 
@@ -249,6 +250,18 @@
   transform: translateX(36px);
   background-color: var(--dark);
   box-shadow: none;
+}
+
+.login-uti-text p {
+  color: var(--dark);
+  text-align: right;
+  margin-right: 1rem;
+  font-weight: 400 !important;
+}
+
+.login-uti-text a {
+  color: var(--item2Active);
+  text-align: right;
 }
 
 @media (max-width: 991px) {
