@@ -10,6 +10,7 @@ import NavBar from "../../Components/Navbar/NavBar";
 function CourseFeed() {
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -25,24 +26,39 @@ function CourseFeed() {
   }, [courseId]);
 
   console.log(posts)
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+
   return (
     <>
       <NavBar mode={1}></NavBar>
+      <div>
+        <input
+          type="checkbox"
+          style={{ width: "2rem", height: "2rem", position: "fixed" }}
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+        />
+      </div>
       <div className="cf-content">
-        <div className="r-t-edit">
-          <CreatePost courseId={courseId} />
-        </div>
         <div>
           {posts.map((post) => (
-            <div>
+            <div
+              className="post-card-wrap"
+              key={post.id}
+            >
               <div>{post.postedAt}</div>
               <div
-                key={post.id} // Adding a unique key to each rendered post
                 dangerouslySetInnerHTML={{ __html: post.postContent }}
               />
             </div>
           ))}
         </div>
+      </div>
+      <div className={`r-t-edit ${!isChecked ? "active" : ""}`}>
+        <CreatePost courseId={courseId} />
       </div>
     </>
   );

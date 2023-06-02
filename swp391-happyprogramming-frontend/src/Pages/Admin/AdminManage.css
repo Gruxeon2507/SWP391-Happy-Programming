@@ -33,7 +33,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  margin: 1rem;
+  margin: 2rem;
   width: 100%;
   cursor: pointer;
 }
@@ -46,9 +46,20 @@
   text-align: center;
   margin: 8px 0;
   border-radius: 1rem;
+  box-sizing: border-box;
+  border: 1px solid transparent;
 }
 .ad-nav-list li:hover {
   background-color: var(--lightItem);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border: 1px solid var(--item2);
+}
+.ad-nav-list li.active {
+  background-color: var(--lightItem);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border: 1px solid var(--item2);
 }
 
 .main-content {

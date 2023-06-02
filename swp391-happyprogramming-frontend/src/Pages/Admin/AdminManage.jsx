@@ -24,14 +24,41 @@ function AdminManage(props) {
         <NavBar mode={1}></NavBar>
         <div className="ad-nav-list">
           <ul>
-            <li onClick={() => setActiveMode(0)}>Create Course</li>
-            <li onClick={() => setActiveMode(1)}>Mentor Management</li>
-            <li onClick={() => setActiveMode(2)}>Create Course</li>
-            <li onClick={() => setActiveMode(3)}>Create Course</li>
-            <li onClick={() => setActiveMode(4)}>Create Course</li>
-            <li onClick={() => setActiveMode(5)}>Create Course</li>
-            <li className="">
-              <NavLink to="/">Go to website</NavLink>
+            <li
+              className={active === 0 ? "active" : ""}
+              onClick={() => setActiveMode(0)}
+            >
+              Create Course
+            </li>
+            <li
+              className={active === 1 ? "active" : ""}
+              onClick={() => setActiveMode(1)}
+            >
+              Mentor Management
+            </li>
+            <li
+              className={active === 2 ? "active" : ""}
+              onClick={() => setActiveMode(2)}
+            >
+              Create Course
+            </li>
+            <li
+              className={active === 3 ? "active" : ""}
+              onClick={() => setActiveMode(3)}
+            >
+              Create Course
+            </li>
+            <li
+              className={active === 4 ? "active" : ""}
+              onClick={() => setActiveMode(4)}
+            >
+              Create Course
+            </li>
+            <li
+              className={active === 5 ? "active" : ""}
+              onClick={() => setActiveMode(5)}
+            >
+              Create Course
             </li>
           </ul>
         </div>
