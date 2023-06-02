@@ -30,8 +30,8 @@ public interface UserRepository extends JpaRepository<User, String> {
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
             + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
-            + "                  WHERE c.courseId = :courseId  AND p.participateRole IN (2,3)", nativeQuery = true)
-    public List<User> getUserOfCourse(Integer courseId);
+            + "                  WHERE c.courseId = :courseId AND p.statusId = :statusId  AND p.participateRole IN (2,3)", nativeQuery = true)
+    public List<User> getUserOfCourseByStatusId(Integer courseId, Integer statusId);
 
 
 

@@ -199,6 +199,23 @@ public class CourseController {
         }
         return null;
     }
+    
+        /**
+     * @author maiphuonghoang
+     *
+     * get Courses of active Mentor 
+     */
+    @GetMapping("/by-mentor")
+    List<Course> getCourseOfMentor(HttpServletRequest request) {
+        try {
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            return courseRepository.getCourseOfMentor(username);
+        } catch (Exception e) {
+            System.out.println("non valid token");
+        }
+        return null;
+    }
 
     /**
      * @author maiphuonghoang
@@ -206,8 +223,10 @@ public class CourseController {
      * Get Mentor and Mentee of course
      */
     @GetMapping("/find-user/{courseId}")
-    List<User> getUserOfCourse(@PathVariable Integer courseId) {
-        return userRepository.getUserOfCourse(courseId);
+    List<User> getUserOfCourse(@PathVariable Integer courseId,
+            @RequestParam(defaultValue = "1") Integer statusId
+            ) {
+        return userRepository.getUserOfCourseByStatusId(courseId, statusId);
     }
 
     /**

@@ -31,9 +31,7 @@ public class Status implements Serializable {
     private int statusId;
     
     private String statusName;
-            
-    private String statusComment;
-    
+                
     @OneToMany(mappedBy = "status")
     @JsonIgnore
     private List<Participate> participates;

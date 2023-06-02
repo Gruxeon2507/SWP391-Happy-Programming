@@ -137,7 +137,6 @@ CREATE TABLE `Status`
 (
 	statusId int NOT NULL, 
     statusName varchar(50),
-    statusComment longtext,
     CONSTRAINT PK_Status PRIMARY KEY (statusId)
 );
 

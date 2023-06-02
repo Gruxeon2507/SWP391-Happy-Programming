@@ -18,6 +18,11 @@ class UserServices {
   getAlllMentors() {
     return axios.get(USER_BASE_REST_API_URL + "/mentors");
   }
+
+  getUserOfCourse(courseId, statusId){
+    console.log(`http://localhost:1111/api/users/find-user/${courseId}?statusId=${statusId}`);
+    return api.get(`/api/courses/find-user/${courseId}?statusId=${statusId}`);
+  }  
 }
 
 export default new UserServices();

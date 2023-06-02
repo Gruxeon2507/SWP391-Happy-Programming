@@ -16,26 +16,6 @@ class CourseServices {
       `${COURSE_BASE_REST_API_URL}/page?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
     );
   }
-  //@maiphuonghoang
-  getPageCoursesByCategories(categoryIds, pageNumber, pageSize, sortField, sortOrder) {
-    console.log(
-      `${COURSE_BASE_REST_API_URL}/by-categories/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-    return axios.get(
-      `${COURSE_BASE_REST_API_URL}/by-categories/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-  }
-  //@maiphuonghoang
-  filterCourse(searchText, pageNumber, pageSize, sortField, sortOrder) {
-    console.log(
-      `${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-    return axios.get(
-      `${COURSE_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-  }
-
-
   // @HuyenNTK
   createCourse(course) {
     return api.post("api/courses/create", course);
@@ -66,6 +46,11 @@ class CourseServices {
     return axios.get(
       `${COURSE_BASE_REST_API_URL}/search-and-categories-filter?categoryIds=${categoryIds}&searchText=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
     );
+  }
+
+  getCoursesOfMentor(){
+    console.log(`http://localhost:1111/api/courses/by-mentor`);
+    return api.get("/api/courses/by-mentor")
   }
 
 }
