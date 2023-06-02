@@ -2,7 +2,9 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Role;
+import com.eikh.happyprogramming.model.Skill;
 import com.eikh.happyprogramming.model.User;
+import com.eikh.happyprogramming.repository.SkillRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.DateUtils;
@@ -32,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +58,9 @@ public class UserController {
     UserRepository userRepository;
 
     @Autowired
+    SkillRepository skillRepository;
+
+    @Autowired
     JwtTokenUtil jwtTokenUtil;
 
     @Autowired
@@ -71,9 +77,39 @@ public class UserController {
         updateUser.setDisplayName(displayName);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date utilDate = format.parse(dob);
-        java.sql.Date dob_convert = new java.sql.Date (utilDate.getTime());
+        java.sql.Date dob_convert = new java.sql.Date(utilDate.getTime());
         updateUser.setDob(dob_convert);
         return userRepository.save(updateUser);
+    }
+
+    @PostMapping("/profile/skill/delete")
+    public boolean deleteSkillOfMentor(
+            @RequestParam("username") String username,
+            @RequestParam("skillId") String skillId,
+            HttpServletRequest request
+    ) {
+        String username_Token = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if (username_Token.equals(username)) {
+            skillRepository.deleteById(Integer.valueOf(skillId));
+            return true;
+        }
+        return false;
+    }
+
+    @PostMapping("/profile/skill/create")
+    public Skill createSkillOfMentor(
+            @RequestParam("username") String username,
+            @RequestParam("skillName") String skillName,
+            HttpServletRequest request) {
+        String username_token = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if(username_token.equals(username)){
+            User user = userRepository.findByUsername(username);
+            Skill skill = new Skill();
+            skill.setSkillName(skillName);
+            skill.setUser(user);
+            return skillRepository.save(skill);
+        }
+        return null;
     }
 
     /**

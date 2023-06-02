@@ -25,6 +25,7 @@ function ViewProfile(props) {
     ],
     skills: [
       {
+        skillId: "",
         skillName: "",
       },
     ],
@@ -50,10 +51,42 @@ function ViewProfile(props) {
   const [showErrorDisplayname, setShowErrorDisplayname] = useState(false);
 
   //date of birth
-
   const [editDateOfBirth, setEditDateOfBith] = useState(false);
 
+  //skill
+  const [editCreateSkill, setEditCreateSkill] = useState(false);
+  const [errorCreateSkill, setErrorCreateSkill] = useState("");
+  const [showErrorCreateSkill, setShowErrorCreateSkill] = useState(false);
+  const [createSkillName, setCreateSkillName] = useState("");
   const viewCVOfMentor = (event) => {};
+
+  //create skill
+  const handleEditCreateSkill = () => {
+    setEditCreateSkill(!editCreateSkill);
+  };
+
+  const onChangeCreateSkill = (event) => {
+    const inputSkill = event.target.value;
+    setCreateSkillName(inputSkill);
+  };
+
+  const handleCreateSkill = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append(`username`, id);
+    formData.append(`skillName`, createSkillName);
+    axios
+      .post(`http://localhost:1111/api/users/profile/skill/create`, formData, {
+        headers: requestHeadersFormdata,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    window.location.href = "";
+  };
 
   // Upload Avatar Path
   const onChangeAvatarPath = (event) => {
@@ -203,6 +236,25 @@ function ViewProfile(props) {
       ...user,
       dob: inputDob,
     });
+  };
+
+  // Skill handle
+  const handleDeleteSkill = (event, skillId) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("username", id);
+    formData.append("skillId", skillId);
+    axios
+      .post(`http://localhost:1111/api/users/profile/skill/delete`, formData, {
+        headers: requestHeadersFormdata,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    window.location.href = "";
   };
 
   useEffect(() => {
@@ -417,9 +469,36 @@ function ViewProfile(props) {
               <h3>Skills: </h3>
               <ul>
                 {user.skills.map((skill) => (
-                  <li>{skill.skillName}</li>
+                  <li>
+                    <form
+                      onSubmit={(event) =>
+                        handleDeleteSkill(event, skill.skillId)
+                      }
+                    >
+                      {skill.skillName}
+                      <button>Delete Skill</button>
+                    </form>
+                  </li>
                 ))}
               </ul>
+              <div>
+                <button onClick={handleEditCreateSkill}>Create a skill</button>
+                {editCreateSkill ? (
+                  <>
+                    <form onSubmit={handleCreateSkill}>
+                      <div>
+                        <label>Skill</label>
+                        <input
+                          type="text"
+                          required
+                          onChange={onChangeCreateSkill}
+                        ></input>
+                        <button>Create</button>
+                      </div>
+                    </form>
+                  </>
+                ) : null}
+              </div>
             </div>
           </div>
           <div>
