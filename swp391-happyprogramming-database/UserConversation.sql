@@ -2,8 +2,8 @@ INSERT INTO Conversation (conversationId, conversationName) VALUES ('1', 'course
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('2', 'course 2');
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('3', 'course 3');
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('4', 'huyenmentor');
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('3', 'phuongmentor');
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('4', 'ducmentor');
+INSERT INTO Conversation (conversationId, conversationName) VALUES ('5', 'phuongmentor');
+INSERT INTO Conversation (conversationId, conversationName) VALUES ('6', 'ducmentor');
 
 INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'duckm');
 INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'giangpt');

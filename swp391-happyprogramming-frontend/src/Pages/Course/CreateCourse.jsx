@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CategoryServices from "../../services/CategoryServices";
-import UserService from "../../services/UserService";
 import CourseServices from "../../services/CourseServices";
 import { COURSE_BASE_REST_API_URL } from "../../services/CourseServices";
 import ParticipateServices from "../../services/ParticipateServices";

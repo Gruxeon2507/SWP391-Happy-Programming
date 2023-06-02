@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import "../Course/CourseDetails.css";
-import CourseServices from "../../services/CourseServices";
 import PublicService from "../../services/PublicService";
 import ParticipateServices from "../../services/ParticipateServices";
 import NavBar from "../../Components/Navbar/NavBar";
