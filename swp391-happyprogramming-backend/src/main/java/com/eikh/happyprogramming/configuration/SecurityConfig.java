@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-    
+
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
@@ -54,11 +54,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .anyRequest().permitAll();
+//                .antMatchers("/api/auth/**", "/api/public/**", "/api/**").permitAll();
                 // Configure other endpoints that require authentication
 //                .anyRequest().authenticated();
         
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

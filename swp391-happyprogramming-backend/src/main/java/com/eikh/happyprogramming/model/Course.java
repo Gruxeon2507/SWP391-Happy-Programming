@@ -49,4 +49,6 @@ public class Course implements Serializable {
 
     @ManyToMany(mappedBy = "courses")
     private List<Category> categories;
+    
+    
 }

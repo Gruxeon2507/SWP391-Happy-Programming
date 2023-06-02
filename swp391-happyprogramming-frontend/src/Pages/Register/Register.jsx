@@ -222,7 +222,7 @@ function Register(props) {
     }
 
     axios
-      .post("http://localhost:1111/api/auth/register", user)
+      .post("http://localhost:1111/api/auth/users/mentor-account", user)
       .then((res) => {
         console.log(res.data);
       })
@@ -235,7 +235,7 @@ function Register(props) {
 
   return (
     <div>
-      <NavBar mode={1} />
+      <NavBar mode={0} />
 
       {messageVerify ? (
         <VerifyDialog email={user.mail} />

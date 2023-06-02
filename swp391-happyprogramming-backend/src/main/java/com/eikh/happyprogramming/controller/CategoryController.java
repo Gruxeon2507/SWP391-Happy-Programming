@@ -20,17 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author emiukhoahoc
 
  */
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("api/categories")
 public class CategoryController {
     @Autowired
     CategoryRepository categoryRepository;
-    
-    @GetMapping
-    List<Category> getAllCategory() {
-        return categoryRepository.findAll();
-    }
+
 
     @GetMapping("by-course/{courseId}")
     List<Category> getCategoryByCourse(@PathVariable Integer courseId) {

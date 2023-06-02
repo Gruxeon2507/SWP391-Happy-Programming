@@ -1,7 +1,7 @@
 package com.eikh.happyprogramming.controller;
 
-import com.eikh.happyprogramming.config.JWTTokenHelper;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
+import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
@@ -19,6 +19,10 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,7 +34,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,18 +48,31 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @CrossOrigin(origins = {"*"})
 @RestController
-@RequestMapping("api/auth/users")
+@RequestMapping("api/users")
 public class UserController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
     
     @Autowired
-    private JwtTokenFilter jwtTokenFilter;
+    JwtTokenUtil jwtTokenUtil;
+    
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
+
+    @PostMapping("/profile/update")
+    public User updateProfile(@RequestHeader("Authorization") String token,@RequestBody User user){
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        if(user.getUsername().equals(username)){
+            User updateUser = userRepository.findByUsername(username);
+            updateUser.setDisplayName(user.getDisplayName());
+            updateUser.setDob(user.getDob());
+            return userRepository.save(updateUser);
+        }else{
+            return null;
+        }
+    }
     /**
      * *
      * Author: giangpthe170907
@@ -79,9 +98,20 @@ public class UserController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error when send email");
         }
-        return userRepository.save(user);
+        return null;
     }
-
+    
+    @PostMapping("/profile/changepassword")
+    public User changePassword(@RequestHeader("Authorization") String token,@RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword){
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        User user = userRepository.findByUsername(username);
+        if(user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())){
+            user.setPassword(AuthenticationUtils.hashPassword(newPassword));
+            return user;
+        }else{
+            return null;
+        }
+    }
     @GetMapping(value = "verify")
     public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -94,15 +124,16 @@ public class UserController {
         }
     }
 
-    @Scheduled(fixedRate = 3600000) // Run every hour
-    public void cleanUserNotVerified() {
-        List<User> users = userRepository.findByIsVerified(false);
-        for (User user : users) {
-            if (DateUtils.isExpired(user.getCreatedDate())) {
-                userRepository.delete(user);
-            }
-        }
-    }
+//    @Scheduled(fixedRate = 3600000) // Run every hour
+//    public void cleanUserNotVerified() {
+//        List<User> users = userRepository.findByIsVerified(false);
+//
+//        for (User user : users) {
+//            if (user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())) {
+//                userRepository.delete(user);
+//            }
+//        }
+//    }
 
     private final String AVT_UPLOAD_DIR = "/avatar/";
 
@@ -171,4 +202,69 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     }
+    //Date: 24/05/2023
+    //Function: Check role admin from JWT
+    //author: maiphuonghoang 
+    public boolean isRoleAdminFromToken(HttpServletRequest request) {
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        User user = userRepository.findByUsername(username);
+        System.out.println(user.getUsername());
+        System.out.println(user.getRoles());
+        boolean isAdmin = false;
+        for (Role role : user.getRoles()) {
+            if (role.getRoleId() == 1) {
+                isAdmin = true;
+            }
+        }
+        return isAdmin;
+    }
+
+    //Date: 22/05/2023
+    //Function: List mentor for only admin 
+    //author: maiphuonghoang 
+    @GetMapping("/mentors")
+    public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
+        if (!isRoleAdminFromToken(request))
+            return  null;
+        return userRepository.findByRoleId(2);
+
+    }
+
+    //Date: 24/05/2023
+    //Function: Insert Mentor into database and their role to user_role
+    //author: maiphuonghoang 
+    @PostMapping("/mentor-account")
+    public User createMentor(HttpServletRequest request, @RequestBody User mentor) {
+
+        if (!isRoleAdminFromToken(request)) {
+            return null;
+        }
+        mentor.setPassword(AuthenticationUtils.hashPassword(mentor.getPassword()));
+        java.util.Date today = new java.util.Date();
+        java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+        mentor.setCreatedDate(sqlToday);
+        mentor.setActiveStatus(true);
+        mentor.setDisplayName(mentor.getUsername());
+        User createdMentor = userRepository.save(mentor);
+        userRepository.saveUser_Role(mentor.getUsername(), 2);
+        userRepository.saveUser_Role(mentor.getUsername(), 3);
+        return createdMentor;
+    }
+
+    //Date: 24/05/2023
+    //Function: Update mentor set activeStatus to Ban mentor 
+    //author: maiphuonghoang 
+    @PutMapping("/mentors/status/{username}")
+    ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username,@RequestParam Integer status) {
+        if (!isRoleAdminFromToken(request)) {
+            return null;
+        }
+        boolean exists = userRepository.existsByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (exists) {
+            userRepository.updateActiveStatus(status, username);         
+        }
+        return null;
+    } 
 }

@@ -1,0 +1,155 @@
+@import url("../../global/ColorPalette.css");
+
+* {
+  /* border: 1px solid red; */
+}
+
+:where(.fragment-nav-bar, .main-content) {
+  margin-top: 4rem;
+}
+
+.body-wraper {
+  width: 100%;
+  height: 100%;
+  background-color: var(--light);
+  display: flex;
+  flex-direction: row;
+}
+
+.body-wraper * {
+  box-sizing: border-box;
+}
+
+.fragment-nav-bar {
+  width: 20%;
+  height: calc(100svh - 5rem);
+  /* background-color: blue; */
+}
+
+.ad-nav-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.ad-nav-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin: 1rem;
+  width: 100%;
+}
+
+/* .ad-nav-list li {
+  padding: 0.4rem 1rem;
+  margin: 4px;
+  text-align: center;
+  border-radius: 1rem;
+} */
+
+:where(.avt-option li, .ad-nav-list li) {
+  width: 100%;
+  list-style: none;
+  text-decoration: none;
+  padding: 0.4rem 1rem;
+  text-align: center;
+  margin: 4px 0;
+  border-radius: 1rem;
+}
+
+.main-content {
+  width: 75%;
+  border-radius: 1rem;
+  width: 80%;
+  height: calc(100svh - 5rem);
+  background-color: var(--light);
+  overflow-y: scroll;
+  background-color: var(--lightItem);
+  /* overflow: hidden; */
+}
+.setting-bar {
+  width: 5%;
+  opacity: 0;
+}
+
+.admin-navbar {
+  /* background-color: aqua; */
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 4px;
+  width: min-content;
+}
+
+.setting-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.setting-bar .pf-dropdown {
+  /* background-color: red; */
+  margin-top: 1rem;
+}
+
+.avt-option {
+  background-color: var(--lightItem);
+  position: relative;
+  min-width: 200px;
+  border-radius: 1rem;
+  transform: translateX(-50%);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.avt-option ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0.5rem;
+}
+
+/* 
+
+.anb- {
+  margin: auto 8px;
+}
+
+
+
+.brand img {
+  width: 54px;
+  height: 54px;
+}
+
+.brand span {
+  color: var(--item2);
+}
+
+.brand a {
+  color: var(--item);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+.body-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.fragment-nav-bar li {
+  list-style: none;
+}
+
+
+
+ */

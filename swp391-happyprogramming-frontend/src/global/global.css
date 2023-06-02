@@ -1,3 +1,28 @@
-/* .user-input input {
-  box-shadow: rgba(112, 112, 112, 0.3) 0px 0px 36px 0.1px inset;
-} */
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+/* sb Y */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* sb X */
+::-webkit-scrollbar-thumb {
+  background-color: var(--item);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--itemActive);
+}
+
+body {
+  background-color: var(--light);
+}
+
+* {
+  transition: 0.3s all ease;
+  /* border: 1px solid red; */
+}
