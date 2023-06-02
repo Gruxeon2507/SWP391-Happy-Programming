@@ -23,7 +23,7 @@ function CreatePost(props) {
     useEffect(() => {
         if(content!==""){
             PostServices.createNewPost(content,courseId);
-            // window.location.reload();
+            window.location.reload();
         }
     }, [content])
 
