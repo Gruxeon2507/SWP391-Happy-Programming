@@ -21,6 +21,7 @@ CREATE TABLE `User`
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
 
+
 CREATE TABLE `Role`
 (
 	roleId int NOT NULL AUTO_INCREMENT,
@@ -136,6 +137,7 @@ CREATE TABLE `Status`
 (
 	statusId int NOT NULL, 
     statusName varchar(50),
+    statusComment longtext,
     CONSTRAINT PK_Status PRIMARY KEY (statusId)
 );
 
@@ -222,6 +224,5 @@ SELECT * FROM Course
 
 SELECT * FROM Participate where courseId = 26;
 UPDATE `User` set activeStatus = 1 WHERE username != '';
-select * from Rating where ratedToUser = 'huyenmentor';
-select round(avg(noStar)) from Rating where ratedToUser = 'ducmentor';
-select * from Participate where statusId = 0;
+
+select * from User_Role where username = 'eikh';

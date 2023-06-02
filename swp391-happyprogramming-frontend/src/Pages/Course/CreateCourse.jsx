@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CategoryServices from "../../services/CategoryServices";
-import UserService from "../../services/UserService";
+import CategoryServices from "../../services/CategoryServices.js";
+import UserServices from "../../services/UserServices.js";
 import CourseServices from "../../services/CourseServices";
-import { COURSE_BASE_REST_API_URL } from "../../services/CourseServices";
-import ParticipateServices from "../../services/ParticipateServices";
-import PublicService from "../../services/PublicService";
+import { COURSE_BASE_REST_API_URL } from "../../services/CourseServices.js";
+import ParticipateServices from "../../services/ParticipateServices.js";
+import PublicService from "../../services/PublicService.js";
 import "../Course/CreateCourse.css";
 import NavBar from "../../Components/Navbar/NavBar";
 import Select from "react-select";
@@ -74,18 +74,22 @@ function CreateCourse() {
   // const options = categories.map((cate) => {
   //   return { value: cate.categoryId, label: cate.categoryName };
   // });
+
   useEffect(() => {
     // Update the course state whenever selectedCategories change
     setSelectedCategories(temp.map((c) => ({ categoryId: c.value })));
+
+  }, [temp]);
+
+  useEffect(() => {
     setCourse((prevCourse) => ({
       ...prevCourse,
       categories: selectedCategories,
     }));
-  }, [selectedCategories]);
+  }, [selectedCategories])
 
   return (
     <>
-      {/* <NavBar mode={0} /> */}
       <div className="createCourse-container">
         <form id="courseForm" className="courseForm">
           <table border={1} className="table-input">

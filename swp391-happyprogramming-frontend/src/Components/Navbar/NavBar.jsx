@@ -6,20 +6,13 @@ import logo from "../../Assets/logo.png";
 import { Alert } from "bootstrap";
 import SettingDrawer from "../SettingDrawer/SettingDrawer";
 import basicAvatar from "../../Assets/base_user_img.png";
+import SettingBar from "../SettingBar/SettingBar";
 
 function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
   const [navMenuOpen, setNavMenuOpen] = useState(false);
-  const [navSettingOpen, setNavSettingOpen] = useState(false);
 
   useEffect(() => {
-    // if (window.localStorage.getItem("token")) {
-    //   console.log(window.localStorage.getItem("token"));
-    // } else {
-    //   console.log("login di");
-    // }
-
-
     function handleScroll() {
       window.pageYOffset > 0
         ? setIsNavBarActive(true)
@@ -34,14 +27,11 @@ function NavBar(props) {
   }, []);
 
   let navBarClass = "NavBar active";
-  if (props.mode === 1) {
+  let navMenuClass = navMenuOpen ? "nav-menu active" : "nav-menu";
+
+  if (props.mode !== 0) {
     navBarClass = isNavBarActive ? "NavBar active" : "NavBar";
   }
-
-  // const navBarClass = isNavBarActive ? "NavBar active" : "NavBar";
-  const navMenuClass = navMenuOpen ? "nav-menu active" : "nav-menu";
-  const navSettingClass = navSettingOpen ? "pf-dropdown active" : "pf-dropdown";
-  // const navSettingClass = navSettingOpen ? "nav-setting active" : "nav-setting";
 
   return (
     <div>
@@ -50,79 +40,51 @@ function NavBar(props) {
           <img src={logo} alt="logo" />
           <p className="logo">
             <span>H</span>
-            PYPRO
+            PYPRO{props.mode}
           </p>
         </div>
-        <ul className={navMenuClass}>
-          <li className="nav-item">
-            <NavLink to="/courses">Courses</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/mycourse">MyCourse</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/login">Login</NavLink>
-          </li>
-          {/* <li className="nav-item">
-            <NavLink to="/register">Regis</NavLink>
-          </li> */}
-          <li className="nav-item">
-            <NavLink to="/chat">Chat</NavLink>
-          </li>
-        </ul>
-        <div className="navToggle">
-          <button onClick={() => setNavMenuOpen(!navMenuOpen)}>
-            <ion-icon name="reorder-three-outline"></ion-icon>
-          </button>
-        </div>
-
-        <div className="SettingBar">
-          {/* <input type="checkbox"></input> */}
-          <div className={navSettingClass} onClick={() => setNavSettingOpen(!navSettingOpen)}>
-            <div className="avatar">
-              <img src={basicAvatar} alt="avatar"></img>
-            </div>
+        {(props.mode === 0 || props.mode === 1) && <>
+          <ul className={navMenuClass}>
+            <li className="nav-item">
+              <NavLink to="/courses">Courses</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/mycourse">My Course</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/login">Login</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/chat">Chat</NavLink>
+            </li>
+          </ul>
+          <div className="navToggle">
+            <button onClick={() => setNavMenuOpen(!navMenuOpen)}>
+              <ion-icon name="reorder-three-outline"></ion-icon>
+            </button>
           </div>
-          <div className="Setting-Bar">
-            <ul>
-              <li className="nav-item">
-                <NavLink to="/admin">admin</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/admin">admin</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/admin">admin</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/admin1">admin1</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/setting">setting</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/changepassword">changepassword</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/changesetting">changesetting</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/forgetpassword">forgetpassword</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  to="/login"
-                  onClick={() => {
-                    alert("Are you sure you want to logout?");
-                    window.localStorage.removeItem("token");
-                  }}
-                >
-                  logout
-                </NavLink>
-              </li>
-            </ul>
+          {window.localStorage.getItem("token") ? <SettingBar /> : <></>}
+        </>}
+        {(props.mode === 2) && <>
+          <div className="login-uti-text">
+            <p>
+              Don't have an account ?{" "}
+              <span className="sign-in">
+                <NavLink to="/register">Sign Up</NavLink>
+              </span>
+            </p>
           </div>
-        </div>
+        </>}
+        {(props.mode === 3) && <>
+          <div className="login-uti-text">
+            <p>
+              Already a member ?{" "}
+              <span className="sign-in">
+                <NavLink to="/login">Log in</NavLink>
+              </span>
+            </p>
+          </div>
+        </>}
       </nav>
     </div>
   );

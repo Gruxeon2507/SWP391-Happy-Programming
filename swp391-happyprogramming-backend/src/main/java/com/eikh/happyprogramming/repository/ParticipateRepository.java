@@ -38,4 +38,7 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
     @Transactional
     @Query(value = "DELETE FROM Participate WHERE courseId = :courseId", nativeQuery = true)
     public void deleteParticipatesByCourseId(int courseId);
+    
+    @Query(value = "SELECT * FROM Participate WHERE username = :username AND courseId = :courseId", nativeQuery = true)
+    public Participate getUserParticipateFromCourse(String username, int courseId);
 }

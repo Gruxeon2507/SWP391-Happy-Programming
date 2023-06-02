@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../../Components/Navbar/NavBar.css";
 import "./Login.css";
@@ -55,7 +55,7 @@ function Login() {
 
   return (
     <div>
-      <NavBar mode={1} />
+      <NavBar mode={2} />
       <div className="login-frag">
         <div className="login-bg">
           <img src={loginBG} alt="loginBG"></img>
@@ -92,14 +92,6 @@ function Login() {
             <button className="btn btn--form" type="submit" value="Login">
               LOGIN
             </button>
-            <div className="login-uti-text">
-              <p>
-                Don't have an account ?{" "}
-                <span className="sign-in">
-                  <NavLink to="/register">Sign Up</NavLink>
-                </span>
-              </p>
-            </div>
           </form>
         </div>
       </div>

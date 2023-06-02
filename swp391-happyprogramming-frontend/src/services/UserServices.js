@@ -7,11 +7,16 @@ class UserServices {
   }
   createMentorAccount(user) {
     console.log("http://localhost:1111/api/users/mentor-account", user);
-    return api.post("/api/users/mentor-account", user)
+    return api.post("/api/users/mentor-account", user);
   }
-  updateActiveStatusMentor(username, status){
-    console.log(`http://localhost:1111/api/users/mentors/status/${username}?status=${status}`);
-    return api.put(`/api/users/mentors/status/${username}?status=${status}`)
+  updateActiveStatusMentor(username, status) {
+    console.log(
+      `http://localhost:1111/api/users/mentors/status/${username}?status=${status}`
+    );
+    return api.put(`/api/users/mentors/status/${username}?status=${status}`);
+  }
+  getAlllMentors() {
+    return axios.get(USER_BASE_REST_API_URL + "/mentors");
   }
 }
 

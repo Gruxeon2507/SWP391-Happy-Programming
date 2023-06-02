@@ -52,13 +52,11 @@ public class ParticipateController {
             participateRepository.saveParticipate(username, courseId, 2, 1);
         } else {
             User u1 = userRepository.userHasRole(usn, 3);
-            System.out.println("USERNAME: " + usn);
             if (u1 != null) {
                 // insert request pending
                 participateRepository.saveParticipate(usn, courseId, participateRoleId, statusId);
             }
         }
-//        participateRepository.saveParticipate(username, courseId, participateRoleId, statusId);
     }
 
     @PostMapping
@@ -70,5 +68,21 @@ public class ParticipateController {
     @GetMapping("/by-course/{courseId}")
     public List<Participate> getParticipatesByCourseId(@PathVariable int courseId) {
         return participateRepository.getParticipatesByCourseId(courseId);
+    }
+
+    /**
+     * Date:            2/6/2023 
+     * Author:          HuyenNTK 
+     * Description:     get participation info from given request and courseId 
+     * Parameters:      courseId (path variable), HttpRequest 
+     * Return:          null or a Participate instance
+     *
+     */
+    @GetMapping("/by-user/{courseId}")
+    public Participate getParticipateByCourse(@PathVariable("courseId") int courseId, HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        Participate p = participateRepository.getUserParticipateFromCourse(username, courseId);
+        System.out.println("PARTICIPATE INTO " + courseId + " IS " + p);
+        return p;
     }
 }
