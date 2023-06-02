@@ -37,6 +37,9 @@ function ChangeSetting(props) {
   const [showErrorPdf, setShowErrorPdf] = useState(false);
   const [errorPdf, setErrorPdf] = useState("");
 
+  const [errorDisplayname, setErrorDisplayname] = useState("");
+  const [showErrorDisplayname, setShowErrorDisplayname] = useState(false);
+
   const token = window.localStorage.getItem("token");
 
   const onChangeDob = (event) => {

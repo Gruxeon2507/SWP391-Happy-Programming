@@ -12,10 +12,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,26 +50,32 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
-    
+
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
     @PostMapping("/profile/update")
-    public User updateProfile(@RequestHeader("Authorization") String token,@RequestBody User user){
-        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
-        if(user.getUsername().equals(username)){
-            User updateUser = userRepository.findByUsername(username);
-            updateUser.setDisplayName(user.getDisplayName());
-            updateUser.setDob(user.getDob());
-            return userRepository.save(updateUser);
-        }else{
-            return null;
-        }
+    public User updateProfile(
+            @RequestParam("displayName") String displayName,
+            @RequestParam("dob") String dob,
+            HttpServletRequest request
+    ) throws ParseException {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        User updateUser = userRepository.findByUsername(username);
+        updateUser.setDisplayName(displayName);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate = format.parse(dob);
+        java.sql.Date dob_convert = new java.sql.Date (utilDate.getTime());
+        updateUser.setDob(dob_convert);
+        return userRepository.save(updateUser);
     }
+
     /**
      * *
      * Author: giangpthe170907
@@ -94,18 +103,19 @@ public class UserController {
         }
         return null;
     }
-    
+
     @PostMapping("/profile/changepassword")
-    public User changePassword(@RequestHeader("Authorization") String token,@RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword){
+    public User changePassword(@RequestHeader("Authorization") String token, @RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword) {
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         User user = userRepository.findByUsername(username);
-        if(user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())){
+        if (user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())) {
             user.setPassword(AuthenticationUtils.hashPassword(newPassword));
             return user;
-        }else{
+        } else {
             return null;
         }
     }
+
     @GetMapping(value = "verify")
     public User verifyUser(@RequestParam("code") String code, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);
@@ -122,16 +132,15 @@ public class UserController {
     public void cleanUserNotVerified() {
         List<User> users = userRepository.findByIsVerified(false);
         for (User user : users) {
-            if(user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())){
+            if (user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())) {
                 userRepository.delete(user);
             }
         }
     }
-    
-    
+
     private final String AVT_UPLOAD_DIR = "/avatar/";
     private final String PDF_UPLOAD_DIR = "/pdf/";
-    
+
     @PostMapping("/pdf/upload")
     public void uploadCvFile(@RequestParam("pdfFile") MultipartFile file, @RequestHeader("Authorization") String token) {
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
@@ -148,7 +157,7 @@ public class UserController {
         }
 
     }
-    
+
     //Date: 22/05/2023
     //Function: Upload Avatar
     //Writen By:DucKM
@@ -168,6 +177,7 @@ public class UserController {
         }
 
     }
+
     //Date: 22/05/2023
     //Function: Get Input File Extension
     //Writen By:DucKM
@@ -180,24 +190,24 @@ public class UserController {
 
         return extension;
     }
-    
-    
+
     //Date: 22/05/2023
     //Function: return user data by userId
     //Writen By:DucKM
-     @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
         String filePath = "avatar/" + fileId + ".jpg";
         File file = new File(filePath);
-         InputStream inputStream = new FileInputStream(file);
+        InputStream inputStream = new FileInputStream(file);
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-         HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(inputStreamResource);
     }
+
     @GetMapping("/mentors")
     public List<User> getAllMentors() {
         return userRepository.getAllMentors();
