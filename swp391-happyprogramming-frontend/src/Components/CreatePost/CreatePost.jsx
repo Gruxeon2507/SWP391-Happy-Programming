@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import PostServices from '../../services/PostServices';
+import PostServices from '../../services/PostServices.js';
 import { waitFor } from '@testing-library/react';
 
 function CreatePost(props) {
