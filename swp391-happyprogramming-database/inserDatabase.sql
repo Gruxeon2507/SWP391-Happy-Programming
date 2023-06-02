@@ -258,6 +258,25 @@ INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES (
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '5', '3', '-1');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '5', '3', '1');
 
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('nhatvn', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '6', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '6', '3', '0');
+
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('nhatvn', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phuonghm', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('dungbt', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('phucdl', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '7', '3', '0');
+INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '7', '3', '0');
 
 -- Insert into Rating
 INSERT INTO Rating (ratedFromUser, ratedToUser, noStar, ratingComment) VALUES ('namnh', 'huyenmentor', 3, 'Giảng viên này thực sự xuất sắc trong việc giảng dạy. Cách truyền đạt kiến thức của anh ấy rất dễ hiểu và hấp dẫn. Anh ấy tạo ra một môi trường học tập thoải mái và khuyến khích sự tham gia của tất cả học sinh. Anh ấy luôn sẵn lòng trả lời các câu hỏi và giúp đỡ học sinh khi cần. Nhờ anh ấy, tôi đã tiến bộ rõ rệt trong môn học này và cảm thấy tự tin hơn khi đối mặt với các khía cạnh khó khăn.');

@@ -20,8 +20,13 @@ class UserServices {
   }
 
   getUserOfCourse(courseId, statusId){
-    console.log(`http://localhost:1111/api/users/find-user/${courseId}?statusId=${statusId}`);
+    console.log(`http://localhost:1111/api/courses/find-user/${courseId}?statusId=${statusId}`);
     return api.get(`/api/courses/find-user/${courseId}?statusId=${statusId}`);
+  }  
+  //test 
+  getUserOfCourse2(courseId){
+    console.log(`http://localhost:1111/api/courses/find-users/${courseId}`);
+    return api.get(`/api/courses/find-users/${courseId}`);
   }  
 }
 
