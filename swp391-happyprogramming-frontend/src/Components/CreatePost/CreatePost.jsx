@@ -16,9 +16,9 @@ function CreatePost(props) {
         }
     };
     useEffect(() => {
-        if (content !== "") {
-            PostServices.createNewPost(content, courseId);
-            // window.location.reload();
+        if(content!==""){
+            PostServices.createNewPost(content,courseId);
+            window.location.reload();
         }
     }, [content])
 
