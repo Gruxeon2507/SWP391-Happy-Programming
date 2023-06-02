@@ -44,7 +44,6 @@ function ForgetPassword(props) {
       .post(`http://localhost:1111/api/auth/forgetpassword/${username}`)
       .then((res) => {
         console.log(res.data);
-        // setScreenState(false);
       })
       .catch((error) => {
         console.log(error);
@@ -54,7 +53,7 @@ function ForgetPassword(props) {
   };
   return (
     <>
-      <NavBar mode={1} />
+      <NavBar mode={2} />
       <div className="forgetpassword-container">
         <form onSubmit={handleSubmit} className="forgetpassword-form">
           <h1>Forgot Password</h1>

@@ -6,11 +6,19 @@
   --dark: #15131d;
   --darkItem: #2d2b3c;
   --darkItem2: #1c1a26;
-  --darkItem3: #b1b1b1;
+  --darkItem3: #ececec;
+  --darkItem4: #aba9a9;
 
   --item: #fe7062;
   --itemActive: #f44545;
   --item2: #565fec;
   --item2Active: #17aaff;
   --item3: #3e3f75;
+}
+
+.dark-theme {
+  --dark: #15131d;
+  --darkItem: #2d2b3c;
+  --darkItem2: #1c1a26;
+  --darkItem3: #ececec;
 }

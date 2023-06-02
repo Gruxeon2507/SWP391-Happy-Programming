@@ -2,15 +2,16 @@
 
 .NavBar {
   position: fixed;
-  top: 1rem;
+  top: 0;
   left: 50vw;
   transform: translateX(-50%);
-  width: calc(90vw - (100vw - 100%));
-  max-width: 2000px;
+  width: calc(98vw - (100vw - 100%));
   border: 2px solid var(--light);
   border-radius: 1.5rem;
   background-color: var(--light);
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
 }
 
 .NavBar.active {
@@ -36,7 +37,7 @@
   display: block;
 }
 
-:where(.nav-menu, .NavBar, .logo, .nav-item) {
+:where(.nav-menu, .NavBar, .logo, .nav-item, .route-nav) {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -45,6 +46,9 @@
 .logo {
   margin: auto 1rem auto 0rem;
   font-size: 1.8rem !important;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--dark);
 }
 
 .logo span {
@@ -59,7 +63,7 @@
 }
 
 .nav-menu {
-  margin: auto;
+  margin: auto 2rem auto auto;
   list-style: none;
 }
 
@@ -174,6 +178,90 @@
 .Setting-Bar li:hover {
   background-color: var(--light);
   border: 1px solid var(--item2Active);
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.themeSwitch {
+  position: relative;
+  width: 100px;
+  /* padding-top: 1rem; */
+  /* border: 1px solid blueviolet; */
+  /* background-color: none; */
+}
+
+.nav-item input:checked {
+  --light: var(--dark);
+  --dark: var(--lightItem);
+}
+
+.nav-item label {
+  position: absolute;
+  width: 72px;
+  height: 36px;
+  background-color: var(--dark);
+  border-radius: 50px;
+  cursor: pointer;
+  /* border: 1px solid blueviolet; */
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.nav-item input {
+  position: absolute;
+  display: none;
+}
+
+.nav-item .slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  transform: translateX(-50%);
+  opacity: 5;
+}
+
+.nav-item input:checked ~ .slider {
+  background-color: var(--lightItem);
+}
+
+.nav-item .slider::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: inset 8px -5px 0px 1px var(--light);
+  background-color: var(--dark);
+  transition: 0.3s;
+}
+
+.nav-item input:checked ~ .slider::before {
+  transform: translateX(36px);
+  background-color: var(--dark);
+  box-shadow: none;
+}
+
+.login-uti-text p {
+  color: var(--dark);
+  text-align: right;
+  margin-right: 1rem;
+  font-weight: 400 !important;
+}
+
+.login-uti-text a {
+  color: var(--item2Active);
+  text-align: right;
 }
 
 @media (max-width: 991px) {

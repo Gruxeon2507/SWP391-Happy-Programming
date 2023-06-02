@@ -1,6 +1,6 @@
 ::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
+  height: 4px;
+  width: 4px;
 }
 
 /* sb Y */
@@ -10,8 +10,8 @@
 
 /* sb X */
 ::-webkit-scrollbar-thumb {
-  background-color: var(--item);
-  border-radius: 5px;
+  background-color: var(--item2);
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

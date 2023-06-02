@@ -29,7 +29,7 @@ function Homepage() {
   };
 
   const handleCourseNavigate = (courseId) => {
-    navigate(`/courses/${courseId}`);
+    navigate(`/courses/view/${courseId}`);
   };
 
   const sizePerPage = 12;
