@@ -248,13 +248,21 @@ option {
 }
 
 .couse-card-view span {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  color: var(--item);
+  color: var(--lightItem);
   padding: 1rem;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.course:nth-child(1) .couse-card-view span,
+.course:nth-child(3) .couse-card-view span,
+.course:nth-child(9) .couse-card-view span,
+.course:nth-child(11) .couse-card-view span,
+.course:nth-child(12) .couse-card-view span {
+  color: var(--darkItem5);
 }
 
 .couse-card-view span {

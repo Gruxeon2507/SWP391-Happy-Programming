@@ -40,7 +40,7 @@ function NavBar(props) {
           <img src={logo} alt="logo" />
           <p className="logo">
             <span>H</span>
-            PYPRO{props.mode}
+            PYPRO
           </p>
         </div>
         {(props.mode === 0 || props.mode === 1) && <>

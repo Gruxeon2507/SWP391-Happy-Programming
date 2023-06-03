@@ -2,6 +2,7 @@ import React, { useState, useEffect, Link } from 'react'
 import UserServices from '../../services/UserServices';
 import convertDateFormat from '../../util/DateConvert';
 import axios from "axios";
+import "./MentorManagement.css";
 
 const MentorManagement = () => {
   const [mentorList, setMentorList] = useState([]);
@@ -78,17 +79,17 @@ const MentorManagement = () => {
     }
     else {
       UserServices.createMentorAccount(user)
-      .then((res) => {
-        console.log(res.data);
-        if(res.data.length>0)
-          alert("The username and password is sented to " + user.mail)
-        alert("Send username and password to" + user.mail + " failed ");
-        
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.length > 0)
+            alert("The username and password is sented to " + user.mail)
+          alert("Send username and password to" + user.mail + " failed ");
+
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
     }
 
 
@@ -135,16 +136,14 @@ const MentorManagement = () => {
                   </div>
                 </>
               ) : null}
-              <button type="submit" onSubmit={handleSubmit}>
+              <button type="submit" onSubmit={handleSubmit} id='mentor-account-gen'>
                 Generate account
               </button>
-              
             </form>
-
           </div>
 
         </div>
-        <table className="table table-bordered table-striped">
+        <table className="table-mentor-manage">
           <thead>
             <th>Name</th>
             <th>Avatar</th>
@@ -159,7 +158,6 @@ const MentorManagement = () => {
               return (
                 <tr key={mentor.username}>
                   <td>
-
                     {mentor.displayName}
                   </td>
                   <td>
@@ -168,25 +166,19 @@ const MentorManagement = () => {
                         "http://localhost:1111/api/users/avatar/" +
                         mentor.username
                       }
-                      style={{ width: 40 }}
                       alt=""
                     />
                   </td>
                   <td>{convertDateFormat(mentor.createdDate)}</td>
                   <td>{mentor.mail}</td>
-
                   <td>
                     {(mentor.activeStatus == 0) ? (<p>Banned</p>) : (<p>Active</p>)}
-
                   </td>
                   <td>
-                    
-                  
                     {(mentor.activeStatus == 0) ?
-                    (<button value={mentor.username} onClick={(e)=>{handleUpdate(e, 0)}}>UnBan</button>):
-                    (<button value={mentor.username} onClick={(e)=>{handleUpdate(e, 1)}}>Ban</button>)
+                      (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 0) }}>UnBan</button>) :
+                      (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 1) }}>Ban</button>)
                     }
-                    
                   </td>
                 </tr>
               );
