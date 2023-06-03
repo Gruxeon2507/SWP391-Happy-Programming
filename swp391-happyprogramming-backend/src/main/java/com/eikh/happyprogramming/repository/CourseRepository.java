@@ -57,21 +57,22 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Transactional
     @Query(value = "DELETE FROM Course_Category where courseId = :courseId", nativeQuery = true)
     public void deleteCourseCategoryBycourseId(@Param("courseId") int courseId);
+    
 
-    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Course c \n"
-            + "inner join FU_SWP391_HappyProgramming.Participate p on c.courseId = p.courseId \n"
-            + "inner join FU_SWP391_HappyProgramming.User u on u.username = p.username\n"
-            + "inner join FU_SWP391_HappyProgramming.User_Role ur on ur.username = u.username \n"
-            + "inner join FU_SWP391_HappyProgramming.Role r on r.roleId = ur.roleId\n"
+    @Query(value = "SELECT * FROM Course c \n"
+            + "inner join Participate p on c.courseId = p.courseId \n"
+            + "inner join User u on u.username = p.username\n"
+            + "inner join User_Role ur on ur.username = u.username \n"
+            + "inner join Role r on r.roleId = ur.roleId\n"
             + "where (u.username = :usernameMentor and p.participateRole=2 and r.roleName='mentor') \n"
-            + "and c.courseId in (SELECT c.courseId FROM FU_SWP391_HappyProgramming.Course c \n"
-            + "inner join FU_SWP391_HappyProgramming.Participate p on c.courseId = p.courseId \n"
-            + "inner join FU_SWP391_HappyProgramming.User u on u.username = p.username\n"
-            + "inner join FU_SWP391_HappyProgramming.User_Role ur on ur.username = u.username \n"
-            + "inner join FU_SWP391_HappyProgramming.Role r on r.roleId = ur.roleId\n"
+            + "and c.courseId in (SELECT c.courseId FROM Course c \n"
+            + "inner join Participate p on c.courseId = p.courseId \n"
+            + "inner join User u on u.username = p.username\n"
+            + "inner join User_Role ur on ur.username = u.username \n"
+            + "inner join Role r on r.roleId = ur.roleId\n"
             + "where (u.username = :usernameMentee and p.participateRole=3 and r.roleName='mentee'))\n"
-            + "and c.courseId not in (SELECT c.courseId FROM FU_SWP391_HappyProgramming.Course c\n"
-            + "inner join FU_SWP391_HappyProgramming.Rating r on c.courseId = r.courseId\n"
+            + "and c.courseId not in (SELECT c.courseId FROM Course c\n"
+            + "inner join Rating r on c.courseId = r.courseId\n"
             + "where r.ratedFromUser=:usernameMentee and r.ratedToUser=:usernameMentor);", nativeQuery = true)
     public List<Course> findAllCourseMentorOfMentee(String usernameMentor, String usernameMentee);
 

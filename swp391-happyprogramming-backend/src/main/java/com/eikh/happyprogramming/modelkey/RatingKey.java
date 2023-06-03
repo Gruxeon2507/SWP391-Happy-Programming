@@ -21,5 +21,5 @@ import lombok.*;
 public class RatingKey implements Serializable{
     private String ratedFromUser;
     private String ratedToUser;
-    private String courseId;
+    private int courseId;
 }

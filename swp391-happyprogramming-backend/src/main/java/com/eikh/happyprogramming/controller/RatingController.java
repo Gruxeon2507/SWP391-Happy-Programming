@@ -4,10 +4,17 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.configuration.JwtTokenFilter;
+import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.model.Rating;
+import com.eikh.happyprogramming.modelkey.RatingKey;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.RatingRepository;
+import com.eikh.happyprogramming.utils.JwtTokenUtil;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,16 +31,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/ratings")
 public class RatingController {
-    
+
     @Autowired
     CourseRepository courseRepository;
-    
+
     @Autowired
     RatingRepository ratingRepository;
-    
+
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
+
     @PostMapping("rates")
-    public ResponseEntity<Rating> rateMentorByCourse(@RequestBody Rating rating){
-        
+    public ResponseEntity<?> rateMentorByCourse(@RequestParam("username") String username,
+            @RequestParam("comment") String comment,
+            @RequestParam("noStar") String noStar,
+            @RequestParam("courseId") String courseId,
+            HttpServletRequest request
+    ) {
+        String username_from = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if (Integer.parseInt(noStar) > 5 || Integer.parseInt(noStar) <= 0) {
+            return ResponseEntity.ok(null);
+        }
+        List<Course> course = courseRepository.findAllCourseMentorOfMentee(username, username_from);
+        for (Course c : course) {
+            if (c.getCourseId() == Integer.parseInt(courseId)) {
+                ratingRepository.addRateFromMentorToMentee(username_from, username,
+                        Integer.parseInt(noStar), Integer.parseInt(courseId), comment);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
     }
-    
+
 }
