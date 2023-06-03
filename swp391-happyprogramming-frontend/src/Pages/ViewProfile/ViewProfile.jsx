@@ -66,6 +66,11 @@ function ViewProfile(props) {
   const viewCVOfMentor = (event) => {};
 
   //rating course
+  const [comment, setComment] = useState("");
+  const [errorComment, setErrorComment] = useState("");
+  const [showErrorComment, setShowErrorComment] = useState(false);
+  const [noStar, setNoStar] = useState("1");
+
   const [showPopupRating, setShowPopupRating] = useState(false);
   const [courses, setCourses] = useState([
     {
@@ -73,6 +78,7 @@ function ViewProfile(props) {
       courseName: "",
     },
   ]);
+  const [editRateInfo, setEditRateInfo] = useState(false);
 
   /**
    * Handle input, submit
@@ -81,6 +87,49 @@ function ViewProfile(props) {
   //rating course
   const editShowPopupRating = () => {
     setShowPopupRating(!showPopupRating);
+  };
+  const handleEditRateInfo = () => {
+    setEditRateInfo(!editRateInfo);
+  };
+  const handleNoStar = (event) => {
+    const inputStar = event.target.value;
+    setNoStar(inputStar);
+  };
+  const onChangeComment = (event) => {
+    const inputComment = event.target.value;
+    const regex =
+      /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    if (!regex.test(inputComment)) {
+      setShowErrorComment(true);
+      setErrorComment(
+        `Please just input characters and numbers and not empty and size just from 6 to 150`
+      );
+      return;
+    }
+
+    setShowErrorComment(false);
+    setErrorComment(``);
+    setComment(inputComment);
+  };
+  const handleRateMentor = (event, courseId) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append(`username`, id);
+    formData.append(`courseId`, courseId);
+    formData.append(`comment`, comment);
+    formData.append(`noStar`, noStar);
+    axios
+      .post(`http://localhost:1111/api/ratings/rates`, formData, {
+        headers: requestHeadersFormdata,
+      })
+      .then((res) => {
+        console.log("Rate ok");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Rate failed");
+      });
+    window.location.href = "";
   };
 
   //create skill
@@ -610,7 +659,79 @@ function ViewProfile(props) {
                 <h2>Courses Being Taught</h2>
                 <ul>
                   {courses.map((course, index) => (
-                    <li key={index}>{course.courseName}</li>
+                    <li key={index}>
+                      {course.courseName}
+                      <button onClick={handleEditRateInfo}>Rate</button>
+                      {editRateInfo ? (
+                        <>
+                          {" "}
+                          <form
+                            onSubmit={(event) =>
+                              handleRateMentor(event, course.courseId)
+                            }
+                          >
+                            Vote Star:
+                            <input
+                              type="radio"
+                              name="noStart"
+                              value="1"
+                              checked={noStar === "1"}
+                              onChange={handleNoStar}
+                            />{" "}
+                            1 |
+                            <input
+                              type="radio"
+                              name="noStart"
+                              value="2"
+                              checked={noStar === "2"}
+                              onChange={handleNoStar}
+                            />{" "}
+                            2 |
+                            <input
+                              type="radio"
+                              name="noStart"
+                              value="3"
+                              checked={noStar === "3"}
+                              onChange={handleNoStar}
+                            />{" "}
+                            3 |
+                            <input
+                              type="radio"
+                              name="noStart"
+                              value="4"
+                              checked={noStar === "4"}
+                              onChange={handleNoStar}
+                            />{" "}
+                            4 |
+                            <input
+                              type="radio"
+                              name="noStart"
+                              value="5"
+                              checked={noStar === "5"}
+                              onChange={handleNoStar}
+                            />{" "}
+                            5 |<br></br>
+                            <label>Comment:</label>
+                            <input
+                              type="text"
+                              required
+                              onChange={onChangeComment}
+                            ></input>
+                            {showErrorComment ? (
+                              <>
+                                <div
+                                  className="w-message"
+                                  style={{ color: "black" }}
+                                >
+                                  {errorComment}
+                                </div>
+                              </>
+                            ) : null}
+                            <button>Rate Mentor</button>
+                          </form>
+                        </>
+                      ) : null}
+                    </li>
                   ))}
                 </ul>
               </div>
