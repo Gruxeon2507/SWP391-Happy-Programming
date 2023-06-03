@@ -21,6 +21,7 @@ import java.util.Date;
 public class Message {
     private String senderName;
     private String receiverName;
+    private int conversationId;
     private String message;
     private String date;
     private Status status;

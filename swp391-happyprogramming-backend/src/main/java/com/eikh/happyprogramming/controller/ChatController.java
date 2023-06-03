@@ -24,9 +24,9 @@ public class ChatController {
     
     
 
-    @MessageMapping("/message")
-    @SendTo("/chatroom/public")
-    public Message receiveMessage(@Payload Message message){
+    @MessageMapping("/message/{roomId}")
+    @SendTo("/chatroom/public/{roomId}")
+    public Message receiveMessage(@Payload Message message) {
         return message;
     }
 

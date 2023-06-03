@@ -31,6 +31,7 @@ import AdminManage from "./Pages/Admin/AdminManage";
 import "./global/global.css";
 import CreatePost from "./Components/CreatePost/CreatePost";
 import CourseFeed from "./Pages/CourseFeed/CourseFeed";
+import PrivateChatRoom from "./Pages/ChatBeta/ChatAlpha";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -73,6 +74,7 @@ function App() {
       
       <Route path="/createPost" element={<CreatePost></CreatePost>}></Route>
       <Route path="/courses/feed/:courseId" element={<CourseFeed></CourseFeed>}></Route>
+      <Route path="/chat2" element={<PrivateChatRoom></PrivateChatRoom>}></Route>
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {

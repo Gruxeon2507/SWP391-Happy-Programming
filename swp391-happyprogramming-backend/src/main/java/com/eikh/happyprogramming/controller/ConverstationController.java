@@ -4,12 +4,14 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.chatModel.Message;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Conversation;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.ConversationRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author kmd
  */
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("api/conversation")
 public class ConverstationController {
@@ -40,10 +42,17 @@ public class ConverstationController {
     UserRepository userRepository;
     
     @GetMapping()
-    public List<Conversation> getUserConversation(HttpServletRequest request){
+    public List<Message> getUserConversation(HttpServletRequest request){
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         List<Conversation> conversasions =  conversationRepository.getUserConversationByUsername(username);
-        return conversasions;
+        List<Message> messages = new ArrayList<Message>();
+        for(Conversation c : conversasions){
+            Message m = new Message();
+            m.setReceiverName(c.getConversationId()+"");
+            messages.add(m);
+        }
+        return messages;
+        
     }
 }
