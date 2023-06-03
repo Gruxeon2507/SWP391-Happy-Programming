@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import CourseServices from "../../services/CourseServices";
 import BarChart from "../../Components/Graph/BarChart";
 import LineChart from "../../Components/Graph/LineChart";
 import PieChart from "../../Components/Graph/PieChart";
 import DoughnutChart from "../../Components/Graph/DoughNutChart";
+import StatisticServices from "../../services/StatisticServices";
 const RequestStatistic = () => {
     const [userData, setUserData] = useState({
         labels: [],
@@ -23,8 +23,9 @@ const RequestStatistic = () => {
         ],
     });
 
-    const getCourseStatusCounts = () => {
-        CourseServices.getCourseStatusCounts()
+    const getCourseStatusCountsByCourseId = (NocourseId) => {
+        StatisticServices.getCourseStatusCountsByCourseId(NocourseId)
+        // StatisticServices.getAllCourseStatusCounts()
             .then((response) => {
                 const responseData = response.data;
                 console.log(responseData);               
@@ -82,7 +83,8 @@ const RequestStatistic = () => {
             });
     };
     useEffect(() => {
-        getCourseStatusCounts();
+        getCourseStatusCountsByCourseId(0);
+
 
     }, []);
     return (
@@ -94,12 +96,6 @@ const RequestStatistic = () => {
             <div className="" style={{ width: 700 }}>
                 <LineChart chartData={userData} />
             </div>
-            {/* <div className="" style={{ width: 200 }}>
-                <PieChart chartData={userData} />
-            </div>
-            <div className="" style={{ width: 200 }}>
-                <DoughnutChart chartData={userData} />
-            </div> */}
         </div>
     )
 }

@@ -45,6 +45,7 @@ SELECT c.courseId, s.statusId, count(s.statusId) FROM `User` u JOIN Participate 
                   order by c.courseId ;
 select sleep(5);
 
+-- Statistic for all courses 
 -- xh đủ 3 status của course 
 -- COALESCE function to handle cases where the count is NULL
 SELECT c.courseId, subq.statusId, COALESCE(countTable.statusCount, 0) AS statusCount
@@ -57,12 +58,13 @@ LEFT JOIN (
   JOIN Course c ON p.courseId = c.courseId
   JOIN `ParticipateRole` r ON r.participateRole = p.participateRole
   LEFT JOIN `Status` s ON s.statusId = p.statusId
-  WHERE p.participateRole IN (2, 3)
+  -- WHERE p.participateRole IN (2, 3)
   GROUP BY c.courseId, s.statusId
 ) countTable ON c.courseId = countTable.courseId AND subq.statusId = countTable.statusId
 ORDER BY c.courseId, subq.statusId;
 
-SELECT c.courseId as courseId, subq.statusId as statusId, COALESCE(countTable.statusCount, 0) AS statusCount
+-- Statistic for one or more course 
+SELECT c.courseId as courseId, c.courseName, subq.statusId as statusId, COALESCE(countTable.statusCount, 0) AS statusCount
 FROM Course c
 JOIN `Status` as subq
 LEFT JOIN (
@@ -72,7 +74,8 @@ LEFT JOIN (
   JOIN Course c ON p.courseId = c.courseId
   JOIN `ParticipateRole` r ON r.participateRole = p.participateRole
   LEFT JOIN `Status` s ON s.statusId = p.statusId
-  WHERE p.participateRole IN (2, 3)
-  GROUP BY c.courseId, s.statusId
+  -- WHERE p.participateRole IN (2, 3)
+  GROUP BY c.courseId, s.statusId, c.courseName
 ) countTable ON c.courseId = countTable.courseId AND subq.statusId = countTable.statusId
+ HAVING c.courseId IN (1,2,3, 10) 
 ORDER BY c.courseId, subq.statusId;

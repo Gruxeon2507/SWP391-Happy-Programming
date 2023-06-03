@@ -10,8 +10,9 @@ import java.util.List;
 
 @Repository
 public interface CourseStatusCountRepository extends JpaRepository<CourseStatusCount, CourseStatusCountKey> {
-
-    @Query(value = "SELECT c.courseId as courseId, subq.statusId as statusId, COALESCE(countTable.statusCount, 0) AS statusCount\n"
+    
+    //@maiphuonghoang
+    @Query(value = "SELECT c.courseId as courseId, c.courseName, subq.statusId as statusId, COALESCE(countTable.statusCount, 0) AS statusCount\n"
             + "FROM Course c\n"
             + "JOIN `Status` as subq\n"
             + "LEFT JOIN (\n"
@@ -21,10 +22,29 @@ public interface CourseStatusCountRepository extends JpaRepository<CourseStatusC
             + "  JOIN Course c ON p.courseId = c.courseId\n"
             + "  JOIN `ParticipateRole` r ON r.participateRole = p.participateRole\n"
             + "  LEFT JOIN `Status` s ON s.statusId = p.statusId\n"
-//            + "  WHERE p.participateRole IN (2, 3)\n"
-            + "  GROUP BY c.courseId, s.statusId\n"
+            //            + "  WHERE p.participateRole IN (2, 3)\n"
+            + "  GROUP BY c.courseId, s.statusId, c.courseName\n"
             + ") countTable ON c.courseId = countTable.courseId AND subq.statusId = countTable.statusId\n"
             + "ORDER BY c.courseId, subq.statusId;",
             nativeQuery = true)
-    List<CourseStatusCount> getCourseStatusCounts();
+    List<CourseStatusCount> getAllCourseStatusCounts();
+
+    //@maiphuonghoang
+    @Query(value = "SELECT c.courseId as courseId, c.courseName, subq.statusId as statusId, COALESCE(countTable.statusCount, 0) AS statusCount\n"
+            + "FROM Course c\n"
+            + "JOIN `Status` as subq\n"
+            + "LEFT JOIN (\n"
+            + "  SELECT c.courseId, s.statusId, count(s.statusId) AS statusCount\n"
+            + "  FROM `User` u\n"
+            + "  JOIN Participate p ON u.username = p.username\n"
+            + "  JOIN Course c ON p.courseId = c.courseId\n"
+            + "  JOIN `ParticipateRole` r ON r.participateRole = p.participateRole\n"
+            + "  LEFT JOIN `Status` s ON s.statusId = p.statusId\n"
+            + "  GROUP BY c.courseId, s.statusId, c.courseName\n"
+            + ") countTable ON c.courseId = countTable.courseId AND subq.statusId = countTable.statusId\n"
+            + "HAVING c.courseId IN (:courseIds)\n"
+            + "ORDER BY c.courseId, subq.statusId",
+            nativeQuery = true)
+    List<CourseStatusCount> getCourseStatusCountsByCourseId(List<Integer> courseIds);
+
 }

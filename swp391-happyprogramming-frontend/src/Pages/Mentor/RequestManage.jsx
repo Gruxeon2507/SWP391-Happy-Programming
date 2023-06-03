@@ -5,11 +5,11 @@ import BarChart from "../../Components/Graph/BarChart";
 import LineChart from "../../Components/Graph/LineChart";
 import PieChart from "../../Components/Graph/PieChart";
 import DoughnutChart from "../../Components/Graph/DoughNutChart";
+import StatisticServices from "../../services/StatisticServices";
 
 const RequestManage = () => {
     const [teachCourses, setTeachCourses] = useState([]);
     const [pendingUsers, setPendingUsers] = useState([]);
-    const [users, setUsers] = useState([]);
     const getCoursesOfMentor = () => {
         CourseServices.getCoursesOfMentor()
             .then((response) => {
@@ -31,32 +31,11 @@ const RequestManage = () => {
             });
     }
     const [data, setData] = useState([])
-    const getCourseStatusCounts = () => {
-        CourseServices.getCourseStatusCounts()
+    const getCourseStatusCountsByCourseId = (courseId) => {
+        StatisticServices.getCourseStatusCountsByCourseId(courseId)
             .then((response) => {
-                // setData(response.data);
-                const res = [{
-                    "courseStatusCountKey": {
-                        "courseId": 1,
-                        "statusId": -1,
-                    },
-                    "statusCount": 2
-                },
-                {
-                    "courseStatusCountKey": {
-                        "courseId": 1,
-                        "statusId": 0,
-                    },
-                    "statusCount": 2
-                },
-                {
-                    "courseStatusCountKey": {
-                        "courseId": 1,
-                        "statusId": 1,
-                    },
-                    "statusCount": 7
-                }]
-                setData(res)
+                setData(response.data);
+
             })
             .catch((error) => {
                 console.log("loi lay ra count" + error);
@@ -69,7 +48,7 @@ const RequestManage = () => {
             {
                 label: "",
                 data: [],
-                backgroundColor: ["#17aaff", "#f44545", "#ff9f2c"],
+                backgroundColor: [ "#ff9f2c", "#f44545","#17aaff"],
                 borderColor: "#ccc",
                 borderWidth: 0.5,
             },
@@ -77,7 +56,7 @@ const RequestManage = () => {
     });
     useEffect(() => {
         setUserData({
-            labels: ["Access", "Pending", "Reject"],
+            labels: [ "Reject", "Pending", "Access"],
             //data.map((item) => `Status ${item.courseStatusCountKey.statusId} (${item.statusCount})`),
             
             datasets: [
@@ -91,7 +70,6 @@ const RequestManage = () => {
 
     useEffect(() => {
         getCoursesOfMentor();
-        getCourseStatusCounts();
 
     }, []);
 
@@ -112,6 +90,7 @@ const RequestManage = () => {
     const handleCourseChange = (e) => {
         const courseId = e.target.value;
         getUserOfCourse(courseId, 0)
+        getCourseStatusCountsByCourseId(courseId);
     };
 
 

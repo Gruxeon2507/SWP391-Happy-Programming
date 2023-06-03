@@ -28,8 +28,7 @@ public class CourseStatusCount implements Serializable{
 
     @EmbeddedId
     private CourseStatusCountKey courseStatusCountKey;
-//    private int courseId;
-//    private int statusId;
+    private String courseName;
     private Integer statusCount;
 
 }
