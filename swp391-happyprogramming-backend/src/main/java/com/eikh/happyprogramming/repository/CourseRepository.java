@@ -17,35 +17,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
- * @author emiukhoahoc 
+ * @author emiukhoahoc
  */
-public interface CourseRepository extends JpaRepository<Course, Integer>{
+public interface CourseRepository extends JpaRepository<Course, Integer> {
+
     //@maiphuonghoang
     Page<Course> findAll(Pageable pageable);
-    
+
     //@maiphuonghoang
     @Query("select distinct co from Course co join co.categories c where c.categoryId in :categoryIds")
     public List<Course> getCourseByCategoryIds(Integer[] categoryIds);
 
     //@maiphuonghoang
     public Page<Course> findByCourseIdIn(List<Integer> courseIds, Pageable pageable);
-    
+
     //@maiphuonghoang
-    @Query(value = "select * from Course co where co.courseName LIKE %?1% OR co.createdAt LIKE %?1%" , nativeQuery = true)
+    @Query(value = "select * from Course co where co.courseName LIKE %?1% OR co.createdAt LIKE %?1%", nativeQuery = true)
     Page<Course> findAllSearch(Pageable pageable, String searchText);
 
     //@maiphuonghoang
     public List<Course> findByCourseId(int courseId);
-    
-        @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+
+    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN Role r ON r.roleId = p.participateRole\n"
             + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
             + "                  WHERE u.username = :username AND p.statusId = :statusId AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<Course> getCourseByUsernameAndStatusId(String username, Integer statusId);
-    
+
     //@maiphuonghoang
-        @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
             + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
@@ -56,4 +57,22 @@ public interface CourseRepository extends JpaRepository<Course, Integer>{
     @Transactional
     @Query(value = "DELETE FROM Course_Category where courseId = :courseId", nativeQuery = true)
     public void deleteCourseCategoryBycourseId(@Param("courseId") int courseId);
+
+    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Course c \n"
+            + "inner join FU_SWP391_HappyProgramming.Participate p on c.courseId = p.courseId \n"
+            + "inner join FU_SWP391_HappyProgramming.User u on u.username = p.username\n"
+            + "inner join FU_SWP391_HappyProgramming.User_Role ur on ur.username = u.username \n"
+            + "inner join FU_SWP391_HappyProgramming.Role r on r.roleId = ur.roleId\n"
+            + "where (u.username = :usernameMentor and p.participateRole=2 and r.roleName='mentor') \n"
+            + "and c.courseId in (SELECT c.courseId FROM FU_SWP391_HappyProgramming.Course c \n"
+            + "inner join FU_SWP391_HappyProgramming.Participate p on c.courseId = p.courseId \n"
+            + "inner join FU_SWP391_HappyProgramming.User u on u.username = p.username\n"
+            + "inner join FU_SWP391_HappyProgramming.User_Role ur on ur.username = u.username \n"
+            + "inner join FU_SWP391_HappyProgramming.Role r on r.roleId = ur.roleId\n"
+            + "where (u.username = :usernameMentee and p.participateRole=3 and r.roleName='mentee'))\n"
+            + "and c.courseId not in (SELECT c.courseId FROM FU_SWP391_HappyProgramming.Course c\n"
+            + "inner join FU_SWP391_HappyProgramming.Rating r on c.courseId = r.courseId\n"
+            + "where r.ratedFromUser=:usernameMentee and r.ratedToUser=:usernameMentor);", nativeQuery = true)
+    public List<Course> findAllCourseMentorOfMentee(String usernameMentor, String usernameMentee);
+
 }

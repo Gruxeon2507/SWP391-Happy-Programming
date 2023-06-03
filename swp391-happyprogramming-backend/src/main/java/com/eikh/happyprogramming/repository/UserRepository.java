@@ -7,7 +7,9 @@ package com.eikh.happyprogramming.repository;
 import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 /**
@@ -19,6 +21,11 @@ public interface UserRepository extends JpaRepository<User, String> {
     public User findByUsername(String username);
 
     public List<User> findByIsVerified(boolean isVerified);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO User_Role (username, roleId) VALUES (:username, '3');",nativeQuery = true)
+    public boolean insertRole(String username);
 
     public User findByMail(String mail);
 

@@ -1,6 +1,8 @@
 USE FU_SWP391_HappyProgramming;
 
 
+
+
 -- Insert into `User`
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', 'namnh.jpg', '', 0);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namlx', '123', 'Lê Xuân Nam', '2003-1-29', 'namlxhe153241@fpt.edu.vn', '2023-5-12', '', '', 0);
@@ -258,4 +260,7 @@ INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES (
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('hieudt', '5', '3', '-1');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '5', '3', '-1');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '5', '3', '1');
+
+INSERT INTO FU_SWP391_HappyProgramming.Skill (skillName,username) VALUES ('Java','giangmentor');
+INSERT INTO FU_SWP391_HappyProgramming.Skill (skillName,username) VALUES ('C#','giangmentor');
 

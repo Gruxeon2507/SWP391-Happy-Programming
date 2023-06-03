@@ -71,18 +71,6 @@ REFERENCES `Role`(roleId);
 ALTER TABLE Role_Feature ADD CONSTRAINT FK_RoleFeature_Feature FOREIGN KEY(featureId)
 REFERENCES Feature(featureId);
 
-CREATE TABLE Rating 
-(
-	ratedFromUser varchar(255),
-    ratedToUser varchar(255),
-    noStar int,
-    ratingComment longtext,
-    CONSTRAINT PK_Rating PRIMARY KEY(ratedFromUser, ratedToUser)
-);
-ALTER TABLE Rating ADD CONSTRAINT FK_RatingFrom_User FOREIGN KEY(ratedFromUser)
-REFERENCES `User`(username);
-ALTER TABLE Rating ADD CONSTRAINT FK_RatingTo_User FOREIGN KEY(ratedToUser)
-REFERENCES `User`(username);
 
 CREATE TABLE Conversation
 (
@@ -175,6 +163,21 @@ REFERENCES ParticipateRole (participateRole);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Status FOREIGN KEY(statusId)
 REFERENCES `Status` (statusId);
 
+CREATE TABLE Rating 
+(
+	ratedFromUser varchar(255),
+    ratedToUser varchar(255),
+    noStar int,
+    courseId int,
+    ratingComment longtext,
+    CONSTRAINT PK_Rating PRIMARY KEY(ratedFromUser, ratedToUser,courseId)
+);
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingFrom_User FOREIGN KEY(ratedFromUser)
+REFERENCES `User`(username);
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingTo_User FOREIGN KEY(ratedToUser)
+REFERENCES `User`(username);
+ALTER TABLE Rating ADD CONSTRAINT FK_courseId_Course FOREIGN KEY(courseId)
+REFERENCES Course(courseId);
 
 CREATE TABLE Post 
 (

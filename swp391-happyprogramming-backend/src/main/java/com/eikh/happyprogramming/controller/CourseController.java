@@ -230,4 +230,13 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @GetMapping("ratingCourse/{username}")
+    public ResponseEntity<?> ratingCourse(@PathVariable("username") String username,
+            HttpServletRequest request){
+        String usernameMentee = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
+        return ResponseEntity.ok(courses);
+    }
+
 }

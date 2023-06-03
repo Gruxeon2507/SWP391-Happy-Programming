@@ -44,4 +44,8 @@ public class Rating implements Serializable{
     @JoinColumn(name = "ratedToUser", referencedColumnName = "username")  
     @JsonIgnore
     private User ratedToUser; 
+    
+    @ManyToOne
+    @MapsId("courseId")
+    private Course course;
 }

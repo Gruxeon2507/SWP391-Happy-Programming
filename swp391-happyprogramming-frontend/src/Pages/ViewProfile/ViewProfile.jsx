@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import { useParams, Link } from "react-router-dom";
+import "./ViewProfile.css";
 
 function ViewProfile(props) {
   const { id } = useParams();
@@ -33,6 +34,10 @@ function ViewProfile(props) {
   const token = window.localStorage.getItem("token");
   const [avatar, setAvatar] = useState(null);
 
+  /**
+   * Constant
+   */
+
   //avatar
   const [avatarFile, setAvatarFile] = useState(null);
   const [showErrorAvatar, setShowErrorAvatar] = useState(false);
@@ -59,6 +64,24 @@ function ViewProfile(props) {
   const [showErrorCreateSkill, setShowErrorCreateSkill] = useState(false);
   const [createSkillName, setCreateSkillName] = useState("");
   const viewCVOfMentor = (event) => {};
+
+  //rating course
+  const [showPopupRating, setShowPopupRating] = useState(false);
+  const [courses, setCourses] = useState([
+    {
+      courseId: "",
+      courseName: "",
+    },
+  ]);
+
+  /**
+   * Handle input, submit
+   */
+
+  //rating course
+  const editShowPopupRating = () => {
+    setShowPopupRating(!showPopupRating);
+  };
 
   //create skill
   const handleEditCreateSkill = () => {
@@ -277,6 +300,17 @@ function ViewProfile(props) {
       .catch((error) => {
         console.log(error);
       });
+    axios
+      .get(`http://localhost:1111/api/courses/ratingCourse/${id}`, {
+        headers: requestHeadersFormdata,
+      })
+      .then((res) => {
+        setCourses(res.data);
+        console.log(courses);
+      })
+      .catch((error) => {
+        console.log(error + " When get courses");
+      }); // Replace with your actual API endpoint
   }, [id]);
 
   const requestHeaders = {
@@ -301,6 +335,22 @@ function ViewProfile(props) {
         console.log("Error when get token : " + error);
       });
   });
+
+  // useEffect(() => {
+  //   const formData = new FormData();
+  //   formData.append("username", id);
+  //   const response = axios
+  //     .get(`http://localhost:1111/api/courses/ratingCourse`, formData, {
+  //       headers: requestHeadersFormdata,
+  //     })
+  //     .then((res) => {
+  //       setCourses(res.data);
+  //       console.log(courses);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error + " When get courses");
+  //     }); // Replace with your actual API endpoint
+  // }, [id]);
 
   return (
     <div>
@@ -548,6 +598,26 @@ function ViewProfile(props) {
           </div>
         </>
       ) : null}
+      <div>
+        <button onClick={editShowPopupRating}>Rating Users</button>
+        {showPopupRating ? (
+          <>
+            <div className="popup">
+              <div className="popup-content">
+                <span className="close" onClick={editShowPopupRating}>
+                  &times;
+                </span>
+                <h2>Courses Being Taught</h2>
+                <ul>
+                  {courses.map((course, index) => (
+                    <li key={index}>{course.courseName}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </>
+        ) : null}
+      </div>
     </div>
   );
 }
