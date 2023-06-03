@@ -52,6 +52,10 @@ class CourseServices {
     console.log(`http://localhost:1111/api/courses/by-mentor`);
     return api.get("/api/courses/by-mentor")
   }
+  getCourseStatusCounts(){
+    console.log(`http://localhost:1111/courseStatusCounts`);
+    return api.get("/courseStatusCounts")
+  }
 
 
 }

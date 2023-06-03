@@ -62,3 +62,17 @@ LEFT JOIN (
 ) countTable ON c.courseId = countTable.courseId AND subq.statusId = countTable.statusId
 ORDER BY c.courseId, subq.statusId;
 
+SELECT c.courseId as courseId, subq.statusId as statusId, COALESCE(countTable.statusCount, 0) AS statusCount
+FROM Course c
+JOIN `Status` as subq
+LEFT JOIN (
+  SELECT c.courseId, s.statusId, count(s.statusId) AS statusCount
+  FROM `User` u
+  JOIN Participate p ON u.username = p.username
+  JOIN Course c ON p.courseId = c.courseId
+  JOIN `ParticipateRole` r ON r.participateRole = p.participateRole
+  LEFT JOIN `Status` s ON s.statusId = p.statusId
+  WHERE p.participateRole IN (2, 3)
+  GROUP BY c.courseId, s.statusId
+) countTable ON c.courseId = countTable.courseId AND subq.statusId = countTable.statusId
+ORDER BY c.courseId, subq.statusId;
