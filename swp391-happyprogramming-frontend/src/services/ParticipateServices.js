@@ -11,6 +11,10 @@ class ParticipateServices {
     formData.append("statusId", statusId);
     api.post("/api/participates/save", formData);
   }
+
+  getParticipateByUser(courseId) {
+    return api.get(PARTICIPATE_BASE_REST_API_URL + "/by-user/" + courseId);
+  }
 }
 
 export default new ParticipateServices();

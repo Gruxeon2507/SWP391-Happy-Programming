@@ -55,6 +55,8 @@
   border-radius: 1rem;
   justify-content: center;
   background-color: var(--lightItem);
+  background-image: url("../../Assets//layered-waves-haikei-login.png");
+  background-size: cover;
   box-shadow: rgba(0, 0, 0, 0.2) 8px 16px 30px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
 }
 
@@ -70,26 +72,30 @@
 .login-frag .user-input input {
   width: calc(100% - 16px);
   background-color: var(--light);
+  opacity: 0.5;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
   padding: 1rem 8px;
   color: var(--dark);
   font-size: 1.2em;
-  border-bottom: 2px solid var(--item);
+  border: 2px solid var(--item);
   outline: none;
 }
 
 .login-frag .login-form button {
   cursor: pointer;
-  color: var(--lightItem);
+  color: var(--item);
+  font-weight: bold;
   width: calc(100% - 8rem);
   font-size: 1.2rem;
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(243, 114, 84, 1) 0%,
     rgba(247, 119, 77, 1) 36%,
     rgba(253, 191, 68, 1) 100%
-  );
+  ); */
+  background-color: var(--light);
+  opacity: 0.6;
   border: none;
   padding: 1rem 2rem;
   border-radius: 1rem;
@@ -98,12 +104,7 @@
 }
 
 .login-frag .login-form button:hover {
-  background: linear-gradient(
-    57deg,
-    rgba(253, 73, 41, 1) 74%,
-    rgba(247, 119, 77, 1) 88%,
-    rgba(253, 191, 68, 1) 100%
-  );
+  opacity: 1;
 }
 
 .login-frag .sign-in a {
@@ -124,10 +125,10 @@
 .login-frag .user-input input:valid ~ span,
 .login-frag .user-input input:focus ~ span {
   transform: translateX(0px) translateY(-2.5rem);
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   padding: 0 10px;
-  border-left: 2px solid var(--item);
-  border-right: 2px solid var(--item);
+  border-left: 1px solid var(--item);
+  border-right: 1px solid var(--item);
   border-radius: 4px;
   background-color: var(--light);
 }

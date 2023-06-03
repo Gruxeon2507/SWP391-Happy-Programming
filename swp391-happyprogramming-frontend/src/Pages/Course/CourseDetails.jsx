@@ -19,7 +19,12 @@ function StarRating({ rating }) {
     return stars;
   };
 
-  return <><span>Rating: </span>{renderStars()}</>;
+  return (
+    <>
+      <span>Rating: </span>
+      {renderStars()}
+    </>
+  );
 }
 
 const CourseDetails = (props) => {
@@ -27,6 +32,17 @@ const CourseDetails = (props) => {
   const [course, setCourse] = useState({});
   const [mentor, setMentor] = useState({});
   const [rating, setRating] = useState(0);
+  const [participation, setParticipation] = useState({});
+
+  useEffect(() => {
+    ParticipateServices.getParticipateByUser(courseID)
+      .then((res) => {
+        setParticipation(res.data);
+      })
+      .catch((error) => {
+        console.log("error fetching participation" + error);
+      });
+  }, []);
 
   useEffect(() => {
     PublicService.getCourseByCourseId(courseID)
@@ -67,16 +83,14 @@ const CourseDetails = (props) => {
     }
   };
 
-  // console.log("rating is: " + rating);
+  // console.log("PART: " + JSON.stringify(participation));
   return (
     <div>
       <NavBar mode={0}></NavBar>
       <div className="cd-content">
         <div className="course-info">
           <div className="course-header">
-            <h2>
-              {course.courseName}
-            </h2>
+            <h2>{course.courseName}</h2>
           </div>
           <div>
             <p>{course.courseDescription}</p>
@@ -91,19 +105,36 @@ const CourseDetails = (props) => {
         <div className="mentor-info">
           <div className="basic-info">
             <div>
-              <img src={"http://localhost:1111/api/users/avatar/" + mentor.username} alt="image"></img>
+              <img
+                src={
+                  "http://localhost:1111/api/users/avatar/" + mentor.username
+                }
+                alt="image"
+              ></img>
             </div>
             <div className="m-i-name">
               <span>Mentor</span>
-              <span><a href={`/profile/${mentor.username}`}>{mentor.displayName}</a></span>
+              <span>
+                <a href={`/profile/${mentor.username}`}>{mentor.displayName}</a>
+              </span>
             </div>
           </div>
           <div className="m-i-rating">
-            <span><StarRating rating={rating} />  </span>
+            <span>
+              <StarRating rating={rating} />{" "}
+            </span>
           </div>
-          <div>
-            <button id="requestBttn" onClick={() => handleRequest()}>Request</button>
-          </div>
+          {Object.keys(participation).length == 0 ? (
+            <div>
+              <button id="requestBttn" onClick={() => handleRequest()}>
+                Request
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button id="requestBttn">Requested</button>
+            </div>
+          )}
         </div>
       </div>
     </div>
