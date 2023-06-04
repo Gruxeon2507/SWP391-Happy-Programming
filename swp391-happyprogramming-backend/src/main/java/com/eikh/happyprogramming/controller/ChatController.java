@@ -9,6 +9,7 @@ import com.eikh.happyprogramming.chatModel.Message;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -26,7 +27,7 @@ public class ChatController {
 
     @MessageMapping("/message/{roomId}")
     @SendTo("/chatroom/public/{roomId}")
-    public Message receiveMessage(@Payload Message message) {
+    public Message receiveMessage(@Payload Message message, @DestinationVariable String roomId) {
         System.out.println(message);
         return message;
     }

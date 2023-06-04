@@ -17,7 +17,8 @@ const PrivateChatRoom = () => {
         username: '',
         receivername: '',
         connected: true,
-        message: ''
+        message: '',
+        conversationId: ''
     })
 
     useEffect(() => {
@@ -59,16 +60,16 @@ const PrivateChatRoom = () => {
         const getUserConversation = async () => {
             //conversation
             const result = await api.get("/api/conversation/user-conversation");
-            
 
-            
+
+
             setConversation(result.data)
         };
         fetchUsername();
         getUserConversation();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         let map = new Map(conversationMessages);
         let list = [];
         conversations.map((conversation) => (
@@ -76,7 +77,7 @@ const PrivateChatRoom = () => {
             map.set(conversation.conversation.conversationId, list)
         ))
         setConversationMessages(map);
-    },[conversations])
+    }, [conversations])
 
     useEffect(() => {
         if (userData.username !== '') {
@@ -89,12 +90,13 @@ const PrivateChatRoom = () => {
             }
         };
     }, [userData.username]);
-    console.log(conversations)
+    // console.log(conversations)
 
     //change chat room
     const handleTabChange = (conversationId) => {
         setTab(conversationId);
         setPublicChats([]);
+        setUserData({ ...userData, conversationId: tab });
         stompClient.unsubscribe(`/chatroom/${tab}`);
         stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
     };
@@ -102,19 +104,13 @@ const PrivateChatRoom = () => {
     //when new message arrive
     const onMessageReceived = (payload) => {
         var payloadData = JSON.parse(payload.body);
-        switch (payloadData.status) {
-            case "JOIN":
-                if (!privateChats.get(payloadData.senderName)) {
-                    const updatedPrivateChats = new Map(privateChats);
-                    updatedPrivateChats.set(payloadData.senderName, []);
-                    setPrivateChats(updatedPrivateChats);
-                }
-                break;
-            case "MESSAGE":
-                setPublicChats(prevPublicChats => [...prevPublicChats, payloadData]);
-                break;
-        }
-    }
+        console.log(payloadData);
+        const updatedConversationMessages = new Map(conversationMessages);
+        updatedConversationMessages.get(payloadData.conversationId).push(payloadData);
+        setConversationMessages(updatedConversationMessages);
+        console.log(updatedConversationMessages + "tin nhan toi");
+      };
+      
 
     //send message
     const handleMessage = (event) => {
@@ -127,16 +123,17 @@ const PrivateChatRoom = () => {
             var chatMessage = {
                 senderName: userData.username,
                 message: userData.message,
-                status: "MESSAGE"
+                status: "MESSAGE",
+                conversationId: tab
             };
             console.log(chatMessage);
             console.log("tab ne: " + tab);
-            stompClient.send("/app/message/" + tab, {}, JSON.stringify(chatMessage));
+            stompClient.send("/chatroom/" + tab, {}, JSON.stringify(chatMessage));
             setUserData({ ...userData, message: "" });
         }
     };
     console.log(conversationMessages)
-    console.log(conversations);
+    // console.log(conversations);
     return (
         <div>
             <h1>chat</h1>
@@ -151,25 +148,24 @@ const PrivateChatRoom = () => {
             <div className="chat-content">
 
                 <div className="chat-messages">
-                    {tab ? 
+                    {tab ?
                         <>
                             {conversationMessages.get(tab).map((chat, index) => (
-                                // <li
-                                //     className={`message ${chat.senderName === userData.username && "self"}`}
-                                //     key={index}
-                                // >
-                                //     {chat.senderName !== userData.username && (
-                                //         <div className="avatar">{chat.senderName}</div>
-                                //     )}
-                                //     <div className="message-data">{chat.message}</div>
-                                //     {chat.senderName === userData.username && (
-                                //         <div className="avatar self">{chat.senderName}</div>
-                                //     )}
-                                // </li>
-                                <hi></hi>
+                                <li
+                                    className={`messeage ${chat.senderName === userData.username && "self"}`}
+                                    key={index}
+                                >
+                                    {chat.senderName !== userData.username && (
+                                        <div className="avatar">{chat.senderName}</div>
+                                    )}
+                                    <div className="message-data">{chat.message}</div>
+                                    {chat.senderName === userData.username && (
+                                        <div className="avatar self">{chat.senderName}</div>
+                                    )}
+                                </li>
                             ))}
                         </>
-                    :<></>}
+                        : <></>}
                 </div>
 
 
