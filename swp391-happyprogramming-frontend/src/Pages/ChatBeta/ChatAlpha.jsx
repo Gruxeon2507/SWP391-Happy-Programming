@@ -10,8 +10,9 @@ import Conversation from '../Chat/Conversation';
 var stompClient = null
 const PrivateChatRoom = () => {
     const [conversations, setConversation] = useState([]);
+    const [conversationMessages, setConversationMessages] = useState(new Map());
     const [publicChats, setPublicChats] = useState([]);
-    const [tab, setTab] = useState("");
+    const [tab, setTab] = useState();
     const [userData, setUserData] = useState({
         username: '',
         receivername: '',
@@ -46,20 +47,36 @@ const PrivateChatRoom = () => {
         stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
     };
 
-    //fetch login user
+    //fetch login user info
     useEffect(() => {
+        //username
         const fetchUsername = async () => {
             const loginuser = await UserServices.getLoginUsername();
             const username = loginuser.data;
             setUserData((prevUserData) => ({ ...prevUserData, username: username }));
         };
+        //user conversation + message
         const getUserConversation = async () => {
+            //conversation
             const result = await api.get("/api/conversation/user-conversation");
+            
+
+            
             setConversation(result.data)
         };
         fetchUsername();
         getUserConversation();
     }, []);
+
+    useEffect(()=>{
+        let map = new Map(conversationMessages);
+        let list = [];
+        conversations.map((conversation) => (
+
+            map.set(conversation.conversation.conversationId, list)
+        ))
+        setConversationMessages(map);
+    },[conversations])
 
     useEffect(() => {
         if (userData.username !== '') {
@@ -118,6 +135,8 @@ const PrivateChatRoom = () => {
             setUserData({ ...userData, message: "" });
         }
     };
+    console.log(conversationMessages)
+    console.log(conversations);
     return (
         <div>
             <h1>chat</h1>
@@ -130,9 +149,30 @@ const PrivateChatRoom = () => {
                 ))}
             </div>
             <div className="chat-content">
-                <div className="chat-messages">
 
+                <div className="chat-messages">
+                    {tab ? 
+                        <>
+                            {conversationMessages.get(tab).map((chat, index) => (
+                                // <li
+                                //     className={`message ${chat.senderName === userData.username && "self"}`}
+                                //     key={index}
+                                // >
+                                //     {chat.senderName !== userData.username && (
+                                //         <div className="avatar">{chat.senderName}</div>
+                                //     )}
+                                //     <div className="message-data">{chat.message}</div>
+                                //     {chat.senderName === userData.username && (
+                                //         <div className="avatar self">{chat.senderName}</div>
+                                //     )}
+                                // </li>
+                                <hi></hi>
+                            ))}
+                        </>
+                    :<></>}
                 </div>
+
+
                 <div className="send-message">
                     <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
                     <button type="button" className="send-button" onClick={sendValue}>send</button>
