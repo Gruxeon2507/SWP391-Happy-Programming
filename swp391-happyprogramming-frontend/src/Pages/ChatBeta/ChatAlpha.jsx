@@ -36,8 +36,8 @@ const PrivateChatRoom = () => {
     };
     const onError = (err) => {
         console.log(err);
-      };
-    
+    };
+
     const userJoin = () => {
         var chatMessage = {
             senderName: userData.username,
@@ -99,14 +99,46 @@ const PrivateChatRoom = () => {
         }
     }
 
-    return(
+    //send message
+    const handleMessage = (event) => {
+        const { value } = event.target;
+        setUserData({ ...userData, message: value });
+    };
+
+    const sendValue = () => {
+        if (stompClient) {
+            var chatMessage = {
+                senderName: userData.username,
+                message: userData.message,
+                status: "MESSAGE"
+            };
+            console.log(chatMessage);
+            console.log("tab ne: " + tab);
+            stompClient.send("/app/message/" + tab, {}, JSON.stringify(chatMessage));
+            setUserData({ ...userData, message: "" });
+        }
+    };
+    return (
         <div>
             <h1>chat</h1>
-            { conversations.map((conversation)=>(
-                <div onClick={() => handleTabChange(conversation.conversation.conversationId)} className={`member ${tab === "CHATROOM" && "active"}`}>
-                    {conversation.conversation.conversationName}
+            <div className="member-list">
+
+                {conversations.map((conversation) => (
+                    <div onClick={() => handleTabChange(conversation.conversation.conversationId)} className={`member ${tab === "CHATROOM" && "active"}`}>
+                        {conversation.conversation.conversationName}
+                    </div>
+                ))}
+            </div>
+            <div className="chat-content">
+                <div className="chat-messages">
+
                 </div>
-            ))}
+                <div className="send-message">
+                    <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
+                    <button type="button" className="send-button" onClick={sendValue}>send</button>
+
+                </div>
+            </div>
         </div>
     )
 }
