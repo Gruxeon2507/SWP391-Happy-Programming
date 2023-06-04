@@ -6,6 +6,7 @@ package com.eikh.happyprogramming.repository;
 
 import com.eikh.happyprogramming.model.Rating;
 import com.eikh.happyprogramming.modelkey.RatingKey;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,4 +23,7 @@ public interface RatingRepository extends JpaRepository<Rating, RatingKey>{
     @Query(value = "INSERT INTO Rating VALUES (:usernameMentee,:usernameMentor,:noStar,:courseId,:comment)",
             nativeQuery = true)
     public void addRateFromMentorToMentee(String usernameMentee,String usernameMentor,int noStar, int courseId,String comment);
+    
+    @Query(value = "SELECT * FROM Rating where ratedToUser= :usernameMentor",nativeQuery = true)
+    public List<Rating> findAllRatesByUsernameMentor(String usernameMentor);
 }

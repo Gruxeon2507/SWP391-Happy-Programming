@@ -47,5 +47,6 @@ public class Rating implements Serializable{
     
     @ManyToOne
     @MapsId("courseId")
+    @JoinColumn(name = "courseId")
     private Course course;
 }

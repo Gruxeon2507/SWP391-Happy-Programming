@@ -72,12 +72,15 @@ function ViewProfile(props) {
   const [noStar, setNoStar] = useState("1");
 
   const [showPopupRating, setShowPopupRating] = useState(false);
+  const [showPopupAllRating, setShowPopupAllRating] = useState(false);
   const [courses, setCourses] = useState([
     {
       courseId: "",
       courseName: "",
     },
   ]);
+
+  const [ratings, setRatings] = useState([]);
   const [editRateInfo, setEditRateInfo] = useState(false);
 
   /**
@@ -88,12 +91,19 @@ function ViewProfile(props) {
   const editShowPopupRating = () => {
     setShowPopupRating(!showPopupRating);
   };
+  const editShowPopupAllRating = () => {
+    setShowPopupAllRating(!showPopupAllRating);
+  };
   const handleEditRateInfo = () => {
     setEditRateInfo(!editRateInfo);
   };
   const handleNoStar = (event) => {
     const inputStar = event.target.value;
     setNoStar(inputStar);
+  };
+
+  const onClickNoStar = (value) => {
+    setNoStar(value);
   };
   const onChangeComment = (event) => {
     const inputComment = event.target.value;
@@ -360,7 +370,21 @@ function ViewProfile(props) {
       .catch((error) => {
         console.log(error + " When get courses");
       }); // Replace with your actual API endpoint
+    axios
+      .get(`http://localhost:1111/api/ratings/rate/${id}`)
+      .then((res) => {
+        setRatings(res.data);
+        console.log(res.data);
+        console.log(ratings);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Error when get ratings");
+      });
   }, [id]);
+  useEffect(() => {
+    console.log(ratings);
+  }, [ratings]);
 
   const requestHeaders = {
     "Content-Type": "application/json",
@@ -647,97 +671,168 @@ function ViewProfile(props) {
           </div>
         </>
       ) : null}
+
       <div>
-        <button onClick={editShowPopupRating}>Rating Users</button>
-        {showPopupRating ? (
+        {username != "" ? (
           <>
-            <div className="popup">
-              <div className="popup-content">
-                <span className="close" onClick={editShowPopupRating}>
-                  &times;
-                </span>
-                <h2>Courses Being Taught</h2>
-                <ul>
-                  {courses.map((course, index) => (
-                    <li key={index}>
-                      {course.courseName}
-                      <button onClick={handleEditRateInfo}>Rate</button>
-                      {editRateInfo ? (
-                        <>
-                          {" "}
-                          <form
-                            onSubmit={(event) =>
-                              handleRateMentor(event, course.courseId)
-                            }
-                          >
-                            Vote Star:
-                            <input
-                              type="radio"
-                              name="noStart"
-                              value="1"
-                              checked={noStar === "1"}
-                              onChange={handleNoStar}
-                            />{" "}
-                            1 |
-                            <input
-                              type="radio"
-                              name="noStart"
-                              value="2"
-                              checked={noStar === "2"}
-                              onChange={handleNoStar}
-                            />{" "}
-                            2 |
-                            <input
-                              type="radio"
-                              name="noStart"
-                              value="3"
-                              checked={noStar === "3"}
-                              onChange={handleNoStar}
-                            />{" "}
-                            3 |
-                            <input
-                              type="radio"
-                              name="noStart"
-                              value="4"
-                              checked={noStar === "4"}
-                              onChange={handleNoStar}
-                            />{" "}
-                            4 |
-                            <input
-                              type="radio"
-                              name="noStart"
-                              value="5"
-                              checked={noStar === "5"}
-                              onChange={handleNoStar}
-                            />{" "}
-                            5 |<br></br>
-                            <label>Comment:</label>
-                            <input
-                              type="text"
-                              required
-                              onChange={onChangeComment}
-                            ></input>
-                            {showErrorComment ? (
-                              <>
-                                <div
-                                  className="w-message"
-                                  style={{ color: "black" }}
-                                >
-                                  {errorComment}
+            {" "}
+            <button onClick={editShowPopupRating}>Rating Users</button>
+            {showPopupRating ? (
+              <>
+                <div className="popup">
+                  <div className="popup-content">
+                    <span className="close" onClick={editShowPopupRating}>
+                      &times;
+                    </span>
+                    <h2>Courses Being Taught</h2>
+                    <ul>
+                      {courses.map((course, index) => (
+                        <li key={index}>
+                          {course.courseName}
+                          <button onClick={handleEditRateInfo}>Rate</button>
+                          {editRateInfo ? (
+                            <>
+                              {" "}
+                              <form
+                                onSubmit={(event) =>
+                                  handleRateMentor(event, course.courseId)
+                                }
+                              >
+                                Vote Star:
+                                {/* <input
+                                  type="radio"
+                                  name="noStart"
+                                  value="1"
+                                  checked={noStar === "1"}
+                                  onChange={handleNoStar}
+                                />{" "}
+                                1 |
+                                <input
+                                  type="radio"
+                                  name="noStart"
+                                  value="2"
+                                  checked={noStar === "2"}
+                                  onChange={handleNoStar}
+                                />{" "}
+                                2 |
+                                <input
+                                  type="radio"
+                                  name="noStart"
+                                  value="3"
+                                  checked={noStar === "3"}
+                                  onChange={handleNoStar}
+                                />{" "}
+                                3 |
+                                <input
+                                  type="radio"
+                                  name="noStart"
+                                  value="4"
+                                  checked={noStar === "4"}
+                                  onChange={handleNoStar}
+                                />{" "}
+                                4 |
+                                <input
+                                  type="radio"
+                                  name="noStart"
+                                  value="5"
+                                  checked={noStar === "5"}
+                                  onChange={handleNoStar}
+                                />{" "}
+                                5 |<br></br> */}
+                                <div>
+                                  {[1, 2, 3, 4, 5].map((value) => (
+                                    <span
+                                      key={value}
+                                      onClick={() => onClickNoStar(value)}
+                                      style={{
+                                        cursor: "pointer",
+                                        color:
+                                          value <= noStar ? "gold" : "gray",
+                                      }}
+                                    >
+                                      &#9733;
+                                    </span>
+                                  ))}
                                 </div>
-                              </>
-                            ) : null}
-                            <button>Rate Mentor</button>
-                          </form>
-                        </>
-                      ) : null}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+                                <label>Comment:</label>
+                                <input
+                                  type="text"
+                                  required
+                                  onChange={onChangeComment}
+                                ></input>
+                                {showErrorComment ? (
+                                  <>
+                                    <div
+                                      className="w-message"
+                                      style={{ color: "black" }}
+                                    >
+                                      {errorComment}
+                                    </div>
+                                  </>
+                                ) : null}
+                                <button>Rate Mentor</button>
+                              </form>
+                            </>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </>
+            ) : null}
           </>
         ) : null}
+      </div>
+
+      <div>
+        <button onClick={editShowPopupAllRating}>View All Rating</button>
+        <div>
+          {showPopupAllRating ? (
+            <>
+              <div className="popup">
+                <div className="popup-content">
+                  <span className="close" onClick={editShowPopupAllRating}>
+                    &times;
+                  </span>
+                  {ratings.map((rating) => (
+                    <div>
+                      <div>
+                        <Link to={`/profile/${rating.ratingKey.ratedFromUser}`}>
+                          {rating.ratingKey.ratedFromUser}
+                        </Link>{" "}
+                        voted {rating.noStar} Stars
+                      </div>
+                      <div>
+                        {[1, 2, 3, 4, 5].map((value) => (
+                          <span
+                            key={value}
+                            style={{
+                              color: value <= rating.noStar ? "gold" : "gray",
+                            }}
+                          >
+                            &#9733;
+                          </span>
+                        ))}
+                      </div>
+                      <div>
+                        <label>Comment: </label>
+                        {rating.ratingComment}
+                      </div>
+                      About{" "}
+                      <div>
+                        <Link to={`/courses/${rating.course.courseId}`}>
+                          {rating.course.courseName}
+                        </Link>
+                      </div>
+                      -------------------------------------------
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );
