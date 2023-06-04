@@ -29,11 +29,15 @@ public class Status implements Serializable {
 
     @Id
     private int statusId;
-    
+
     private String statusName;
-                
+
     @OneToMany(mappedBy = "status")
     @JsonIgnore
     private List<Participate> participates;
-    
+
+    @OneToMany(mappedBy = "status")
+    @JsonIgnore
+    private List<Request> requests;
+
 }

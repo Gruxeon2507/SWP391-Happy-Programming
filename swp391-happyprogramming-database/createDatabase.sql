@@ -166,6 +166,20 @@ REFERENCES ParticipateRole (participateRole);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Status FOREIGN KEY(statusId)
 REFERENCES `Status` (statusId);
 
+CREATE TABLE Request
+(
+	courseId int,
+	username varchar(255),
+    requestTime datetime DEFAULT CURRENT_TIMESTAMP,
+    requestStatus int,
+    CONSTRAINT PK_Request PRIMARY KEY (courseId, username, requestTime)
+);
+ALTER TABLE Request ADD CONSTRAINT FK_Request_UserParticipate FOREIGN KEY(username)
+REFERENCES Participate(username);
+ALTER TABLE Request  ADD CONSTRAINT FK_Request_CourseParticipate FOREIGN KEY(courseId)
+REFERENCES Participate(courseId);
+ALTER TABLE Request ADD CONSTRAINT FK_Request_Participate FOREIGN KEY(requestStatus)
+REFERENCES `Status` (statusId);
 
 CREATE TABLE Post 
 (
@@ -219,9 +233,11 @@ SELECT * FROM Attachment
 SELECT * FROM Course
 SELECT * FROM Course_Category
 SELECT * FROM Course
+SELECT * FROM Request
 */
 
 SELECT * FROM Participate where courseId = 26;
 UPDATE `User` set activeStatus = 1 WHERE username != '';
 
 select * from User_Role where username = 'eikh';
+
