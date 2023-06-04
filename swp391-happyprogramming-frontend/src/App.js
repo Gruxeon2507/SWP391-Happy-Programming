@@ -30,6 +30,7 @@ import AdminManage from "./Pages/Admin/AdminManage";
 import "./global/global.css";
 import CreatePost from "./Components/CreatePost/CreatePost";
 import CourseFeed from "./Pages/CourseFeed/CourseFeed";
+import PostDetail from "./Pages/PostDetail/PostDetail";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -45,7 +46,7 @@ function App() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(features);
+  // console.log(features);
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/landing"></Navigate>}></Route>
@@ -72,6 +73,7 @@ function App() {
       
       <Route path="/createPost" element={<CreatePost></CreatePost>}></Route>
       <Route path="/courses/feed/:courseId" element={<CourseFeed></CourseFeed>}></Route>
+      <Route path="/post/view/:postId" element={<PostDetail></PostDetail>}></Route>
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {

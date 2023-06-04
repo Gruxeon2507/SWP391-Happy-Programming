@@ -21,4 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Integer>{
     @Query(value="SELECT * FROM COURSE c WHERE c.courseId=?1 ORDER BY c.postedAt desc",nativeQuery = true)
     public List<Post> getOrderByCourse(int courseId);
     
+    @Query(value = "SELECT * FROM Post p WHERE p.postId = :postId AND postedBy = :username", nativeQuery = true)
+    public Post userHasPost(String username, int postId);
+    
 }
