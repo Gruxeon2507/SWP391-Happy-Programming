@@ -6,12 +6,18 @@ import api from "../../services/BaseAuthenticationService";
 import "./CourseFeed.css";
 import NavBar from "../../Components/Navbar/NavBar";
 import PostServices from "../../services/PostServices";
-import {Modal, Button} from 'react-bootstrap'
 
 function CourseFeed() {
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
+  const [postId, setPostId] = useState();
+
+  const clickEdit = (postId) => {
+    setPostId(postId);
+    console.log("POST ID1: " + postId);
+    setIsChecked(!isChecked);
+  };
 
   const fetchData = async () => {
     try {
@@ -24,9 +30,7 @@ function CourseFeed() {
 
   useEffect(() => {
     fetchData();
-  }, [courseId]);
-
-  // console.log(posts);
+  }, [courseId, posts]);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -73,6 +77,8 @@ function CourseFeed() {
               <button
                 style={{ margin: "20px 0", padding: 0 }}
                 onClick={() => {
+                  setPostId(post.postId);
+                  // console.log("POST ID1: " + postId);
                 }}
               >
                 Edit
@@ -82,7 +88,7 @@ function CourseFeed() {
         </div>
       </div>
       <div className={`r-t-edit ${!isChecked ? "active" : ""}`}>
-        <CreatePost courseId={courseId} />
+        <CreatePost courseId={courseId} postId={postId} />
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import api from "./BaseAuthenticationService";
 
 class PostServices {
@@ -15,6 +15,11 @@ class PostServices {
 
   getPostById(postId) {
     return api.get("/api/posts/view/" + postId);
+  }
+
+  updatePost(postId, postContent) {
+    // console.log("https://localhost:1111/api/posts/update/" + postId "?");
+    api.post(`api/posts/update/${postId}`, { postContent });
   }
 }
 export default new PostServices();
