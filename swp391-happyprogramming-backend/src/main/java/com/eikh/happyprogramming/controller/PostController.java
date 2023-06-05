@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -59,7 +61,7 @@ public class PostController {
             p.setPostedAt(sqlToday);
             p.setCourse(courseRepository.findMentorCourse(username, courseId));
             p.setUser(userRepository.findByUsername(username));
-            p.setPostContent(post.getPostContent());
+            p.setPostContent(post.getPostContent()  );
             postRepository.save(p);
             return ResponseEntity.ok(p);
         } else {
@@ -91,6 +93,25 @@ public class PostController {
         String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         if (postRepository.userHasPost(username, postId) != null) {
             postRepository.deleteById(postId);
+        }
+    }
+
+    /**
+     *
+     * @author Huyen Nguyen
+     * @description update content of a post with given postId
+     * @param postId
+     * @param content
+     * @param request
+     * @return void
+     */
+    @PostMapping("/update/{postId}")
+    public void updatePost(@PathVariable("postId") int postId, @RequestBody Post post, HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        //get owner of post from postId
+        String postOwner = postRepository.findById(postId).get().getUser().getUsername();
+        if (username.equals(postOwner)) {
+            postRepository.updatePost(postId, post.getPostContent());
         }
     }
 
