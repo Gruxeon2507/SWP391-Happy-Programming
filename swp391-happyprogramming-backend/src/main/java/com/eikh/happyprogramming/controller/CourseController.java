@@ -62,7 +62,7 @@ public class CourseController {
 
     @Autowired
     PostRepository postRepository;
-    
+
     @GetMapping
     List<Course> getAll() {
         return courseRepository.findAll();
@@ -151,14 +151,14 @@ public class CourseController {
     ) {
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        System.out.println("searchText" +searchText +"length"+searchText.length() + "categoryIds" + categoryIds.length);
-        System.out.println(searchText.length()>0?"searchText length > 0":"searchText length = 0");
+        System.out.println("searchText" + searchText + "length" + searchText.length() + "categoryIds" + categoryIds.length);
+        System.out.println(searchText.length() > 0 ? "searchText length > 0" : "searchText length = 0");
         List<Integer> courseIds = new ArrayList<>();
-        
+
         if (searchText.length() < 1 && categoryIds.length == 0) {
             return new ResponseEntity<>(courseRepository.findAll(pageable), HttpStatus.OK);
         }
-        
+
         if (searchText.length() > 0 && categoryIds.length == 0) {
             System.out.println("khong co category, chi co text");
             return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
@@ -203,10 +203,36 @@ public class CourseController {
     /**
      * @author maiphuonghoang
      *
+     * get Courses of active Mentor
+     */
+    @GetMapping("/by-mentor")
+    List<Course> getCourseOfMentor(HttpServletRequest request) {
+        try {
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            return courseRepository.getCourseOfMentor(username);
+        } catch (Exception e) {
+            System.out.println("non valid token");
+        }
+        return null;
+    }
+
+    /**
+     * @author maiphuonghoang
+     *
      * Get Mentor and Mentee of course
      */
     @GetMapping("/find-user/{courseId}")
-    List<User> getUserOfCourse(@PathVariable Integer courseId) {
+    List<User> getUserOfCourse(@PathVariable Integer courseId,
+            @RequestParam(defaultValue = "1") Integer statusId
+    ) {
+        return userRepository.getUserOfCourseByStatusId(courseId, statusId);
+    }
+
+    //test
+    @GetMapping("/find-users/{courseId}")
+    List<User> getUserOfCourse(@PathVariable Integer courseId
+    ) {
         return userRepository.getUserOfCourse(courseId);
     }
 
@@ -229,6 +255,7 @@ public class CourseController {
     public List<Course> getCourseByID(@PathVariable Integer courseId) {
         return courseRepository.findByCourseId(courseId);
     }
+
     @GetMapping("/countAll")
     public long getNoCourse() {
         return courseRepository.count();
@@ -281,18 +308,16 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-    
+
     @GetMapping("/posts/{courseId}")
-    public ResponseEntity<?> getCoursePost(HttpServletRequest request,@PathVariable("courseId") int courseId){
+    public ResponseEntity<?> getCoursePost(HttpServletRequest request, @PathVariable("courseId") int courseId) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         User user = userRepository.findEnrolledUserInCourse(username, courseId);
-        if(user!=null){
+        if (user != null) {
             List<Post> posts = postRepository.findByCourse(courseRepository.ducFindByCourseId(courseId));
             return ResponseEntity.ok(posts);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
-    
-

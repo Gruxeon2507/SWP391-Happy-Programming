@@ -25,11 +25,14 @@ import ChangeSetting from "./Pages/ChangeSetting/ChangeSetting";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ViewProfile from "./Pages/ViewProfile/ViewProfile";
 import AdminManage from "./Pages/Admin/AdminManage";
+import RequestManage from "./Pages/Mentor/RequestManage";
 
 //CSS
 import "./global/global.css";
 import CreatePost from "./Components/CreatePost/CreatePost";
 import CourseFeed from "./Pages/CourseFeed/CourseFeed";
+import RequestStatistic from "./Pages/Mentor/RequestStatistic";
+
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -57,7 +60,9 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/admin" element={<AdminManage />} />
-      <Route path="/admin1" element={<MentorManagement />} />
+      <Route path="/request/manage" element={<RequestManage />} />
+      <Route path="/request/statistic" element={<RequestStatistic />} />
+
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />

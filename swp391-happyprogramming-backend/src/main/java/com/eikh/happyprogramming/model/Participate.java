@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.*;
 
@@ -44,22 +43,19 @@ public class Participate implements Serializable {
     @JoinColumn(name = "courseId")
     private Course course;
 
-
     @ManyToOne
     @JoinColumn(name = "statusId")
-//    @JsonIgnore
     private Status status;
-    
+
     @ManyToOne
     @JoinColumn(name = "participateRole")
-//    @JsonIgnore
     private ParticipateRole participateRole;
-    
-    
-    
+
+    @OneToMany(mappedBy = "participate") 
+    private List<Request> requests;
+
 //    @ManyToOne
 //    @JoinColumn(name = "participateRole", referencedColumnName = "roleId")
 //    @JsonIgnore
 //    private  Role role;
-
 }
