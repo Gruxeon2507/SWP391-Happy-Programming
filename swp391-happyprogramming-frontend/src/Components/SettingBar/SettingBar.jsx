@@ -48,6 +48,12 @@ function SettingBar() {
                         <NavLink to="/changesetting">changesetting</NavLink>
                     </li>
                     <li className="nav-item">
+                        <NavLink to="/request/statistic">Statisic</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="/request/manage">manage</NavLink>
+                    </li>
+                    <li className="nav-item">
                         <NavLink to="/forgetpassword">forgetpassword</NavLink>
                     </li>
                     <li className="nav-item">

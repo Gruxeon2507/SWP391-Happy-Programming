@@ -6,7 +6,8 @@ body {
 
 .scroll-snap-container {
   height: 100svh;
-  overflow: scroll;
+  overflow: hidden;
+  overflow-y: scroll;
   scroll-snap-type: y mandatory;
 }
 

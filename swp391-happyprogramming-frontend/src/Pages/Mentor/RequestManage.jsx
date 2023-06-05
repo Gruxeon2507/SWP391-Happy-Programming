@@ -30,43 +30,7 @@ const RequestManage = () => {
                 console.log("loi lay ra members" + error);
             });
     }
-    const [data, setData] = useState([])
-    const getCourseStatusCountsByCourseId = (courseId) => {
-        StatisticServices.getCourseStatusCountsByCourseId(courseId)
-            .then((response) => {
-                setData(response.data);
 
-            })
-            .catch((error) => {
-                console.log("loi lay ra count" + error);
-            });
-    }
-
-    const [userData, setUserData] = useState({
-        labels: [],
-        datasets: [
-            {
-                label: "",
-                data: [],
-                backgroundColor: [ "#ff9f2c", "#f44545","#17aaff"],
-                borderColor: "#ccc",
-                borderWidth: 0.5,
-            },
-        ],
-    });
-    useEffect(() => {
-        setUserData({
-            labels: [ "Reject", "Pending", "Access"],
-            //data.map((item) => `Status ${item.courseStatusCountKey.statusId} (${item.statusCount})`),
-            
-            datasets: [
-                {
-                    ...userData.datasets[0],
-                    data: data.map((item) => item.statusCount),
-                },
-            ],
-        });
-    }, [data]);
 
     useEffect(() => {
         getCoursesOfMentor();
@@ -90,15 +54,14 @@ const RequestManage = () => {
     const handleCourseChange = (e) => {
         const courseId = e.target.value;
         getUserOfCourse(courseId, 0)
-        getCourseStatusCountsByCourseId(courseId);
+        // getCourseStatusCountsByCourseId(courseId);
     };
 
 
 
     return (
         <div>
-
-            <form name="container-form" method="POST" action="/users/handle-form-actions" >
+            <form name="container-form" method="POST" action="/users/handle-form-actions">
                 <div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="checkbox-all"
@@ -145,12 +108,7 @@ const RequestManage = () => {
                 ))}
             </form>
 
-            <div className="" style={{ width: 350 }}>
-                <BarChart chartData={userData} />
-            </div>
-            <div className="" style={{ width: 200 }}>
-                <PieChart chartData={userData} />
-            </div>
+
         </div>
 
 
