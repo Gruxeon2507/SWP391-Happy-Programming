@@ -13,6 +13,7 @@ const RequestManage = () => {
     const [sortField, setSortField] = useState("username");
     const [sortOrder, setSortOrder] = useState("desc");
     const [selectedCourseId, setSelectedCourseId] = useState("");
+    const [checkedRequest, setCheckedRequest] = useState([]);
     const sizePerPage = 10;
 
     const getCoursesOfMentor = () => {
@@ -39,23 +40,33 @@ const RequestManage = () => {
     }
     useEffect(() => {
         getCoursesOfMentor();
-        console.log("user", users);
     }, []);
 
-    const handleCheckChange = (e) => {
+    const handleCheckChange = async (e) => {
         const { name, checked } = e.target;
         if (name === "allSelect") {
             let tempUser = users.map(user => { return { ...user, isChecked: checked } })
             setUsers(tempUser)
         }
         else {
-            console.log(e.target);
+            console.log("in cho nay nay", e.target.name);
             let tempUser = users.map(user => user.requestKey.username === name ? { ...user, isChecked: checked } : user)
             setUsers(tempUser)
+            console.log(checked);
+            setCheckedRequest((prev)=>{
+                const isInclude = checkedRequest.includes(name);
+                if (isInclude) {
+                  //Uncheck
+                  return checkedRequest.filter((item) => item !== name);
+                } else {
+                  return [...prev, e.target.name];
+                }
+            })
+
         }
 
     }
-
+    console.log(checkedRequest);
     const handleCourseChange = (e) => {
         const courseId = e.target.value;
         setSelectedCourseId(courseId);
@@ -65,6 +76,10 @@ const RequestManage = () => {
     const handlePageChange = (current) => {
         setCurrentPage(current);
         getPendingUserOfCourse(selectedCourseId, current - 1, sizePerPage, sortField, sortOrder);
+    };
+    const handleSubmit = (status,username) => {
+        console.log( username);
+        console.log(status );
     };
     return (
         <div>
@@ -129,11 +144,8 @@ const RequestManage = () => {
                                 </td>
 
                                 <td>
-                                    <button>Access </button>
-                                    <button
-                                    >
-                                        Reject
-                                    </button>
+                                    <button onClick={()=>handleSubmit(1,user.requestKey.username)}>Access </button>
+                                    <button onClick={()=>handleSubmit(-1,user.requestKey.username)}>Reject</button>
                                 </td>
                             </tr>
                         );
