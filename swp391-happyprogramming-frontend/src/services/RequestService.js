@@ -4,11 +4,16 @@ import api from "./BaseAuthenticationService.js";
 
 class RequestService {
 
-    getPendingUserOfCourse(courseId){
-        console.log(`http://localhost:1111/api/requests/pending/${courseId}`);
-        return api.get(`/api/requests/pending/${courseId}`)
-    }
 
+    getPendingUserOfCourse(courseId, pageNumber, pageSize, sortField, sortOrder ) {
+        const formData = new FormData()
+        formData.append("courseId", courseId);
+        formData.append("pageNumber", pageNumber);
+        formData.append("pageSize", pageSize);
+        formData.append("sortField", sortField);
+        formData.append("sortOrder", sortOrder);
+        return api.post("/api/requests/pending", formData);
+      }
 
 }
 export default new RequestService();

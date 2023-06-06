@@ -25,7 +25,7 @@ public interface RequestRepository extends JpaRepository<Request, RequestKey> {
             + "  AND re.courseId = p.courseId AND re.courseId = :courseId\n"
             + "  AND (re.username, re.requestTime) IN (\n"
             + "    SELECT username, MAX(requestTime)\n"
-            + "    FROM Request WHERE courseId = 2 AND requestStatus = 0\n"
+            + "    FROM Request WHERE courseId = :courseId AND requestStatus = 0\n"
             + "    GROUP BY username)\n", nativeQuery = true)
     public Page<Request> getRequestsUserOfCourse(Pageable pageable, Integer courseId);
 }

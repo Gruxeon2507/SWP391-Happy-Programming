@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,19 +43,18 @@ public class RequestController {
     @Autowired
     private RoleUtils roleUtils;
 
-    @GetMapping("/pending/{courseId}")
+    @PostMapping("/pending")
     ResponseEntity<Page<Request>> getPendingUserOfCourse(
             HttpServletRequest request,
-            @PathVariable Integer courseId,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "username") String sortField,
-            @RequestParam(defaultValue = "desc") String sortOrder
+            @RequestParam(name = "courseId") Integer courseId,
+            @RequestParam(defaultValue = "0", name = "pageNumber") int pageNumber,
+            @RequestParam(defaultValue = "10", name = "pageSize") int pageSize,
+            @RequestParam(defaultValue = "username", name = "sortField") String sortField,
+            @RequestParam(defaultValue = "desc", name = "sortOrder") String sortOrder
     ) {
         if (!roleUtils.hasRoleFromToken(request, 2)) {
             return null;
         }
-
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Request> pageUsers = requestRepository.getRequestsUserOfCourse(pageable, courseId);
