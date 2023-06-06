@@ -1,6 +1,8 @@
 USE FU_SWP391_HappyProgramming;
 
 
+
+
 -- Insert into `User`
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', '', '', 1);
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namlx', '123', 'Lê Xuân Nam', '2003-1-29', 'namlxhe153241@fpt.edu.vn', '2023-5-12', '', '', 1);
@@ -258,6 +260,9 @@ INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES (
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('minhnd', '5', '3', '-1');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('antt', '5', '3', '1');
 
+INSERT INTO FU_SWP391_HappyProgramming.Skill (skillName,username) VALUES ('Java','giangmentor');
+INSERT INTO FU_SWP391_HappyProgramming.Skill (skillName,username) VALUES ('C#','giangmentor');
+
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('giangpt', '6', '3', '0');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('duckm', '6', '3', '0');
 INSERT INTO Participate (username, courseId, participateRole, statusId) VALUES ('nhatvn', '6', '3', '0');
@@ -409,5 +414,3 @@ INSERT INTO Rating (ratedFromUser, ratedToUser, noStar, ratingComment) VALUES ('
 INSERT INTO Rating (ratedFromUser, ratedToUser, noStar, ratingComment) VALUES ('duongcd', 'anmentor', 4, 'Giảng viên này thiếu sự tận tâm và không quan tâm đến sự phát triển cá nhân của học sinh. Anh ấy chỉ chú trọng đến việc truyền đạt kiến thức mà không quan tâm đến việc thúc đẩy khả năng sáng tạo và tư duy của chúng tôi. Anh ấy cũng không tạo ra môi trường học tập động lực, không khuyến khích sự tham gia và tương tác. Tôi cảm thấy không có động lực và sự hứng thú khi tham gia vào môn học.');
 INSERT INTO Rating (ratedFromUser, ratedToUser, noStar, ratingComment) VALUES ('hoangdn', 'anmentor', 5, 'Giảng viên này thực sự xuất sắc trong việc giảng dạy. Cách truyền đạt kiến thức của anh ấy rất dễ hiểu và hấp dẫn. Anh ấy tạo ra một môi trường học tập thoải mái và khuyến khích sự tham gia của tất cả học sinh. Anh ấy luôn sẵn lòng trả lời các câu hỏi và giúp đỡ học sinh khi cần. Nhờ anh ấy, tôi đã tiến bộ rõ rệt trong môn học này và cảm thấy tự tin hơn khi đối mặt với các khía cạnh khó khăn.');
 INSERT INTO Rating (ratedFromUser, ratedToUser, noStar, ratingComment) VALUES ('datnq', 'anmentor', 3, 'Tôi rất hài lòng với giảng viên này. Anh ấy có kiến thức chuyên môn sâu rộng và biết cách áp dụng nó vào việc giảng dạy. Nhờ phương pháp dạy bài sáng tạo, anh ấy đã giúp tôi hiểu rõ và yêu thích môn học hơn bao giờ hết. Anh ấy cũng khuyến khích sự thảo luận và trao đổi ý kiến trong lớp, giúp tôi phát triển kỹ năng giao tiếp và tư duy phản biện.');
-
-

@@ -16,10 +16,19 @@ CREATE TABLE `User`
     activeStatus bit,
     isVerified bit default 1,
     verification_code varchar(255) default "",
-
-	
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
+
+CREATE TABLE Skill
+(
+	skillId int NOT NULL AUTO_INCREMENT,
+    skillName varchar(255),
+    username varchar(255) NOT NULL,
+    CONSTRAINT PK_Skill PRIMARY KEY (skillId, username)
+);
+
+ALTER TABLE Skill ADD CONSTRAINT PK_Skill FOREIGN KEY(username)
+REFERENCES `User` (username);
 
 
 CREATE TABLE `Role`
@@ -62,18 +71,6 @@ REFERENCES `Role`(roleId);
 ALTER TABLE Role_Feature ADD CONSTRAINT FK_RoleFeature_Feature FOREIGN KEY(featureId)
 REFERENCES Feature(featureId);
 
-CREATE TABLE Rating 
-(
-	ratedFromUser varchar(255),
-    ratedToUser varchar(255),
-    noStar int,
-    ratingComment longtext,
-    CONSTRAINT PK_Rating PRIMARY KEY(ratedFromUser, ratedToUser)
-);
-ALTER TABLE Rating ADD CONSTRAINT FK_RatingFrom_User FOREIGN KEY(ratedFromUser)
-REFERENCES `User`(username);
-ALTER TABLE Rating ADD CONSTRAINT FK_RatingTo_User FOREIGN KEY(ratedToUser)
-REFERENCES `User`(username);
 
 CREATE TABLE Conversation
 (
@@ -166,6 +163,21 @@ REFERENCES ParticipateRole (participateRole);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Status FOREIGN KEY(statusId)
 REFERENCES `Status` (statusId);
 
+CREATE TABLE Rating 
+(
+	ratedFromUser varchar(255),
+    ratedToUser varchar(255),
+    noStar int,
+    courseId int,
+    ratingComment longtext,
+    CONSTRAINT PK_Rating PRIMARY KEY(ratedFromUser, ratedToUser,courseId)
+);
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingFrom_User FOREIGN KEY(ratedFromUser)
+REFERENCES `User`(username);
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingTo_User FOREIGN KEY(ratedToUser)
+REFERENCES `User`(username);
+ALTER TABLE Rating ADD CONSTRAINT FK_courseId_Course FOREIGN KEY(courseId)
+REFERENCES Course(courseId);
 CREATE TABLE Request
 (
 	courseId int,
@@ -236,6 +248,7 @@ SELECT * FROM Course
 SELECT * FROM Request
 */
 
+-- SELECT * FROM Participate where courseId = 26;-- 
 SELECT * FROM Participate where courseId = 26;
 UPDATE `User` set activeStatus = 1 WHERE username != '';
 

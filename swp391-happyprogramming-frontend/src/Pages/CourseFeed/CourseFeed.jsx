@@ -3,13 +3,21 @@ import CreateCourse from "../Course/CreateCourse";
 import { useParams } from "react-router-dom";
 import CreatePost from "../../Components/CreatePost/CreatePost";
 import api from "../../services/BaseAuthenticationService";
-import "./CourseFeed.css"
+import "./CourseFeed.css";
 import NavBar from "../../Components/Navbar/NavBar";
+import PostServices from "../../services/PostServices";
 
 function CourseFeed() {
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
+  const [postId, setPostId] = useState();
+
+  const clickEdit = (postId) => {
+    setPostId(postId);
+    console.log("POST ID1: " + postId);
+    setIsChecked(!isChecked);
+  };
 
   const fetchData = async () => {
     try {
@@ -22,12 +30,17 @@ function CourseFeed() {
 
   useEffect(() => {
     fetchData();
-  }, [courseId]);
-
-  console.log(posts)
+  }, [courseId, posts]);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
+  };
+
+  const deletePost = (postId) => {
+    const ok = confirm("Yah sure bro?");
+    if (ok) {
+      PostServices.deletePost(postId);
+    }
   };
 
   return (
@@ -44,20 +57,38 @@ function CourseFeed() {
       <div className="cf-content">
         <div>
           {posts.map((post) => (
-            <div
-              className="post-card-wrap"
-              key={post.id}
-            >
+            <div className="post-card-wrap" key={post.postId}>
               <div>{post.postedAt}</div>
-              <div
-                dangerouslySetInnerHTML={{ __html: post.postContent }}
-              />
+              <div dangerouslySetInnerHTML={{ __html: post.postContent }} />
+              <button
+                style={{ margin: "20px 0", padding: 0 }}
+                onClick={() => deletePost(post.postId)}
+              >
+                Delete
+              </button>
+              <button
+                style={{ margin: "20px 0", padding: 0 }}
+                onClick={() => {
+                  window.location.href = "../../../post/view/" + post.postId;
+                }}
+              >
+                View
+              </button>
+              <button
+                style={{ margin: "20px 0", padding: 0 }}
+                onClick={() => {
+                  setPostId(post.postId);
+                  // console.log("POST ID1: " + postId);
+                }}
+              >
+                Edit
+              </button>
             </div>
           ))}
         </div>
       </div>
       <div className={`r-t-edit ${!isChecked ? "active" : ""}`}>
-        <CreatePost courseId={courseId} />
+        <CreatePost courseId={courseId} postId={postId} />
       </div>
     </>
   );

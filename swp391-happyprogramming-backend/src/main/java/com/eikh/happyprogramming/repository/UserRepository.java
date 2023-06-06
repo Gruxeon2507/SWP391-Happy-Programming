@@ -22,6 +22,11 @@ public interface UserRepository extends JpaRepository<User, String> {
     public User findByUsername(String username);
 
     public List<User> findByIsVerified(boolean isVerified);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO User_Role (username, roleId) VALUES (:username, '3');",nativeQuery = true)
+    public boolean insertRole(String username);
 
     public User findByMail(String mail);
 
