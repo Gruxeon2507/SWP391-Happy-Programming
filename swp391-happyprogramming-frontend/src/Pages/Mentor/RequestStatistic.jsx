@@ -4,7 +4,22 @@ import LineChart from "../../Components/Graph/LineChart";
 import PieChart from "../../Components/Graph/PieChart";
 import DoughnutChart from "../../Components/Graph/DoughNutChart";
 import StatisticServices from "../../services/StatisticServices";
+import CourseServices from "../../services/CourseServices";
+import "./RequestStatistic.css"
+import NavBar from "../../Components/Navbar/NavBar";
 const RequestStatistic = () => {
+
+    const [teachCourses, setTeachCourses] = useState([]);
+    const getCoursesOfMentor = () => {
+        CourseServices.getCoursesOfMentor()
+            .then((response) => {
+                console.log(response.data);
+                setTeachCourses(response.data);
+            })
+            .catch((error) => {
+                console.log("loi lay ra course" + error);
+            });
+    }
     const [userData, setUserData] = useState({
         labels: [],
         datasets: [
@@ -25,10 +40,10 @@ const RequestStatistic = () => {
 
     const getCourseStatusCountsByCourseId = (NocourseId) => {
         StatisticServices.getCourseStatusCountsByCourseId(NocourseId)
-        // StatisticServices.getAllCourseStatusCounts()
+            // StatisticServices.getAllCourseStatusCounts()
             .then((response) => {
                 const responseData = response.data;
-                console.log(responseData);               
+                console.log(responseData);
                 const uniqueCourseIds = [...new Set(responseData.map((item) => item.courseStatusCountKey.courseId))];
 
                 const sumStatusCountsByCourseId = uniqueCourseIds.reduce((acc, courseId) => {
@@ -83,20 +98,91 @@ const RequestStatistic = () => {
             });
     };
     useEffect(() => {
+        getCoursesOfMentor();
         getCourseStatusCountsByCourseId(0);
 
-
     }, []);
-    return (
 
-        <div>
-            <div className="" style={{ width: 700 }}>
-                <BarChart chartData={userData} />
+    const [dataOne, setDataOne] = useState([])
+    const getCourseStatusCountsByCourseIdOne = (courseId) => {
+        StatisticServices.getCourseStatusCountsByCourseId(courseId)
+            .then((response) => {
+                setDataOne(response.data);
+
+            })
+            .catch((error) => {
+                console.log("loi lay ra count" + error);
+            });
+    }
+
+    const [userDataOne, setUserDataOne] = useState({
+        labels: [],
+        datasets: [
+            {
+                label: "",
+                data: [],
+                backgroundColor: ["#ff9f2c", "#f44545", "#17aaff"],
+                borderColor: "#ccc",
+                borderWidth: 0.5,
+            },
+        ],
+    });
+    useEffect(() => {
+        setUserDataOne({
+            labels: ["Reject", "Pending", "Access"],
+            //data.map((item) => `Status ${item.courseStatusCountKey.statusId} (${item.statusCount})`),
+
+            datasets: [
+                {
+                    ...userDataOne.datasets[0],
+                    data: dataOne.map((item) => item.statusCount),
+                },
+            ],
+        });
+    }, [dataOne]);
+
+    const handleCourseChange = (courseId) => {
+        // const courseId = e.target.value;
+        getCourseStatusCountsByCourseIdOne(courseId);
+        console.log(courseId);
+
+    };
+
+
+    return (
+        <>
+            <NavBar mode={1} />
+            <div className="mentor-statistic-container">
+                <div className="mentor-menu-sideBar">
+                    some item here
+                </div>
+                {/* All courses of mentor   */}
+                <div className="overAll-statistic-container">
+                    <div className="mentor-all-course-barChart">
+                        <BarChart chartData={userData} />
+                    </div>
+                    <div className="mentor-all-course-lineChart">
+                        <LineChart chartData={userData} />
+                    </div>
+                </div>
+                <div className="list-course-by-Mentor">
+                    {teachCourses.map((course) => (
+                        <div key={course.id} value={course.courseId} onClick={() => handleCourseChange(course.courseId)}>
+                            {course.courseName}
+                        </div>
+                    ))}
+                </div>
+                {/* One course by courseId */}
+                <div className="course-statistic-container">
+                    <div className="" style={{ width: 350 }} >
+                        <BarChart chartData={userDataOne} />
+                    </div>
+                    <div className="" style={{ width: 200 }}>
+                        <PieChart chartData={userDataOne} />
+                    </div>
+                </div>
             </div>
-            <div className="" style={{ width: 700 }}>
-                <LineChart chartData={userData} />
-            </div>
-        </div>
+        </>
     )
 }
 

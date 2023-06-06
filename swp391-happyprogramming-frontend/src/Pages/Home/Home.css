@@ -6,15 +6,14 @@ body {
 
 .scroll-snap-container {
   height: 100svh;
-  overflow: scroll;
+  overflow: hidden;
+  overflow-y: scroll;
   scroll-snap-type: y mandatory;
 }
 
 .scroll-snap-item {
   scroll-snap-align: center;
   height: 100svh;
-  /* display: flex; */
-  /* align-items: center; */
   position: relative;
 }
 

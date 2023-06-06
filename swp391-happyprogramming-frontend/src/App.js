@@ -61,13 +61,14 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/admin" element={<AdminManage />} />
+
       <Route path="/request/manage" element={<RequestManage />} />
       <Route path="/request/statistic" element={<RequestStatistic />} />
 
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
-      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />     
+      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />
       <Route
         path="/changepassword"
         element={<ChangePassword></ChangePassword>}
@@ -75,7 +76,7 @@ function App() {
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
       <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>} />
       <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>} />
-      
+
       <Route path="/createPost" element={<CreatePost></CreatePost>}></Route>
       <Route path="/courses/feed/:courseId" element={<CourseFeed></CourseFeed>}></Route>
       <Route path="/post/view/:postId" element={<PostDetail></PostDetail>}></Route>

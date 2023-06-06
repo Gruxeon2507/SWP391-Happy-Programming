@@ -1,0 +1,73 @@
+@import url("../../global/ColorPalette.css");
+.mentor-statistic-container {
+  display: flex;
+  flex-direction: row;
+}
+
+:where(
+    .mentor-menu-sideBar,
+    .overAll-statistic-container,
+    .list-course-by-Mentor
+  ) {
+  position: fixed;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.mentor-menu-sideBar {
+  width: 15svw;
+  height: 85svh;
+  background-color: var(--lightItem);
+  max-width: 200px;
+  flex-shrink: 0;
+  bottom: 1rem;
+  overflow-y: scroll;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.overAll-statistic-container {
+  bottom: 1rem;
+  left: 15svw;
+  background-color: var(--lightItem);
+  border-radius: 1rem;
+  width: 65svw;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.overAll-statistic-container::before {
+  content: "Over all courses statistic";
+  position: absolute;
+  top: -2rem;
+  left: 0;
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--darkItem);
+}
+
+.mentor-all-course-barChart,
+.mentor-all-course-lineChart {
+  width: 50%;
+}
+
+.list-course-by-Mentor {
+  background-color: blueviolet;
+  position: fixed;
+  bottom: 1rem;
+  right: 0;
+  width: 19svw;
+  height: 45svh;
+}
+
+.course-statistic-container {
+  background-color: ;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  background-color: var(--lightItem);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

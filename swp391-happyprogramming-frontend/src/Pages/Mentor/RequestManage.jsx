@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import CourseServices from "../../services/CourseServices";
 import UserServices from "../../services/UserServices";
-import BarChart from "../../Components/Graph/BarChart";
-import LineChart from "../../Components/Graph/LineChart";
-import PieChart from "../../Components/Graph/PieChart";
-import DoughnutChart from "../../Components/Graph/DoughNutChart";
-import StatisticServices from "../../services/StatisticServices";
 
 const RequestManage = () => {
     const [teachCourses, setTeachCourses] = useState([]);
-    const [pendingUsers, setPendingUsers] = useState([]);
+    const [users, setUsers] = useState([]);
+
     const getCoursesOfMentor = () => {
         CourseServices.getCoursesOfMentor()
             .then((response) => {
@@ -24,76 +20,33 @@ const RequestManage = () => {
     const getUserOfCourse = (courseId, statusId) => {
         UserServices.getUserOfCourse(courseId, statusId)
             .then((response) => {
-                setPendingUsers(response.data);
+                console.log(response.data);
+                console.log("courseId " + courseId + " statusId " + statusId);
+                setUsers(response.data);
             })
             .catch((error) => {
                 console.log("loi lay ra members" + error);
             });
     }
-    const [data, setData] = useState([])
-    const getCourseStatusCountsByCourseId = (courseId) => {
-        StatisticServices.getCourseStatusCountsByCourseId(courseId)
-            .then((response) => {
-                setData(response.data);
-
-            })
-            .catch((error) => {
-                console.log("loi lay ra count" + error);
-            });
-    }
-
-    const [userData, setUserData] = useState({
-        labels: [],
-        datasets: [
-            {
-                label: "",
-                data: [],
-                backgroundColor: [ "#ff9f2c", "#f44545","#17aaff"],
-                borderColor: "#ccc",
-                borderWidth: 0.5,
-            },
-        ],
-    });
-    useEffect(() => {
-        setUserData({
-            labels: [ "Reject", "Pending", "Access"],
-            //data.map((item) => `Status ${item.courseStatusCountKey.statusId} (${item.statusCount})`),
-            
-            datasets: [
-                {
-                    ...userData.datasets[0],
-                    data: data.map((item) => item.statusCount),
-                },
-            ],
-        });
-    }, [data]);
-
     useEffect(() => {
         getCoursesOfMentor();
-
+        getUserOfCourse(2, 0);
+        console.log("user", users);
     }, []);
 
     const handleCheckChange = (e) => {
         const { name, checked } = e.target;
         if (name === "allSelect") {
-            let tempUser = pendingUsers.map(user => { return { ...pendingUsers, isChecked: checked } })
-            setPendingUsers(tempUser)
+            let tempUser = users.map(user => { return { ...user, isChecked: checked } })
+            setUsers(tempUser)
         }
         else {
             console.log(e.target);
-            let tempUser = pendingUsers.map(user => user.username === name ? { ...pendingUsers, isChecked: checked } : user)
-            setPendingUsers(tempUser)
+            let tempUser = users.map(user => user.username === name ? { ...user, isChecked: checked } : user)
+            setUsers(tempUser)
         }
 
     }
-
-    const handleCourseChange = (e) => {
-        const courseId = e.target.value;
-        getUserOfCourse(courseId, 0)
-        getCourseStatusCountsByCourseId(courseId);
-    };
-
-
 
     return (
         <div>
@@ -103,21 +56,17 @@ const RequestManage = () => {
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="checkbox-all"
                             name="allSelect"
-                            checked={pendingUsers.length > 0 ? pendingUsers.filter(user => user?.isChecked !== true).length < 1 : false}
+                            checked={users.filter(user => user?.isChecked !== true).length < 1}
                             onChange={handleCheckChange}
                         />
                         <label class="form-check-label" for="checkbox-all">
                             Check All
                         </label>
                     </div>
-                    <select class="form-control form-control-sm checkbox-select-all" name="action" required
-                        onChange={handleCourseChange}
-                    >
+                    <select class="form-control form-control-sm checkbox-select-all" name="action" required>
                         <option value="">-- Courses --</option>
                         {teachCourses.map((course) => (
-                            <option key={course.id} value={course.courseId}
-
-                            >
+                            <option key={course.id}>
                                 <span>{course.courseName}</span>
                             </option>
                         ))}
@@ -132,7 +81,7 @@ const RequestManage = () => {
                 </div>
 
 
-                {pendingUsers.map((user, index) => (
+                {users.map((user, index) => (
                     <div className="form-check">
                         <input class="form-check-input" type="checkbox" name={user.username} value="" id={user.username}
                             checked={user?.isChecked || false}
@@ -144,13 +93,6 @@ const RequestManage = () => {
                     </div>
                 ))}
             </form>
-
-            <div className="" style={{ width: 350 }}>
-                <BarChart chartData={userData} />
-            </div>
-            <div className="" style={{ width: 200 }}>
-                <PieChart chartData={userData} />
-            </div>
         </div>
 
 
@@ -158,14 +100,3 @@ const RequestManage = () => {
 };
 
 export default RequestManage;
-
-
-
-
-
-
-
-
-
-
-
