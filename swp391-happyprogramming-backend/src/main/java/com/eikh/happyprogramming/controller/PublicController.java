@@ -80,6 +80,7 @@ public class PublicController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(inputStreamResource);
+    }
 
     @GetMapping("/mentor/by-course/{courseId}")
     User getMentorByCourse(@PathVariable int courseId) {
