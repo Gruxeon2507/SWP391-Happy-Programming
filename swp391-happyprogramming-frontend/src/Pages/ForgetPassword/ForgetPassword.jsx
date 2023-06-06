@@ -4,11 +4,14 @@ import "../../Components/Navbar/NavBar.css";
 import axios from "axios";
 import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
+import "./ForogetPassword.css";
+import { Nav } from "react-bootstrap";
 
 function ForgetPassword(props) {
   const [username, setUsername] = useState("");
   const [showErrorUsername, setShowErrorUsername] = useState(false);
   const [errorUsername, setErrorUsername] = useState("");
+  const [screenState, setScreenState] = useState(true);
 
   const onChangeUsername = async (event) => {
     const inputUsername = event.target.value;
@@ -30,6 +33,7 @@ function ForgetPassword(props) {
   };
 
   const handleSubmit = (event) => {
+    setScreenState(false);
     event.preventDefault();
     if (showErrorUsername) {
       alert("Username: " + errorUsername);
@@ -43,30 +47,45 @@ function ForgetPassword(props) {
       })
       .catch((error) => {
         console.log(error);
+        alert(error);
       });
+
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Enter your username</label>
-          <input
-            type="text"
-            name="username"
-            required
-            onChange={onChangeUsername}
-          ></input>
-          <button>Confirm</button>
-        </div>
-        {showErrorUsername ? (
-          <>
-            <div className="w-message" style={{ color: "black" }}>
-              {errorUsername}
+    <>
+      <NavBar mode={2} />
+      <div className="forgetpassword-container">
+        <form onSubmit={handleSubmit} className="forgetpassword-form">
+          <h1>Forgot Password</h1>
+
+          {screenState ? <>
+            <span>Enter your Username</span>
+            <div className="user-input">
+              <input
+                type="text"
+                name="username"
+                required
+                onChange={onChangeUsername}
+              ></input>
+              <button>Confirm</button>
             </div>
-          </>
-        ) : null}
-      </form>
-    </div>
+          </> : <>
+            <div className="cm-noti">
+              <p>Please Check your Email</p>
+            </div>
+          </>}
+
+
+          {showErrorUsername ? (
+            <>
+              <div className="w-message" style={{ color: "black" }}>
+                {errorUsername}
+              </div>
+            </>
+          ) : null}
+        </form>
+      </div>
+    </>
   );
 }
 

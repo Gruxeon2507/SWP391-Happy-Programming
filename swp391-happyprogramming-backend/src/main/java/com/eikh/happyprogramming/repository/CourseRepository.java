@@ -21,21 +21,21 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
-    //@maiphuonghoang
+    // @maiphuonghoang
     Page<Course> findAll(Pageable pageable);
 
-    //@maiphuonghoang
+    // @maiphuonghoang
     @Query("select distinct co from Course co join co.categories c where c.categoryId in :categoryIds")
     public List<Course> getCourseByCategoryIds(Integer[] categoryIds);
 
-    //@maiphuonghoang
+    // @maiphuonghoang
     public Page<Course> findByCourseIdIn(List<Integer> courseIds, Pageable pageable);
 
-    //@maiphuonghoang
-    @Query(value = "select * from Course co where co.courseName LIKE %?1% OR co.createdAt LIKE %?1%", nativeQuery = true)
+    // @maiphuonghoang
+    @Query(value = "select * from Course co where co.courseName LIKE %?1%", nativeQuery = true)
     Page<Course> findAllSearch(Pageable pageable, String searchText);
 
-    //@maiphuonghoang
+    // @maiphuonghoang
     public List<Course> findByCourseId(int courseId);
 
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
@@ -45,7 +45,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             + "                  WHERE u.username = :username AND p.statusId = :statusId AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<Course> getCourseByUsernameAndStatusId(String username, Integer statusId);
 
-    //@maiphuonghoang
+    // @maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
@@ -53,11 +53,14 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             + "                  WHERE u.username = :username AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<Course> getCourseByUsername(String username);
 
+    // @maiphuonghoang
+    @Query(value = "select distinct co from Course co join co.categories c where co.courseName LIKE %:searchText% and c.categoryId in :categoryIds")
+    Page<Course> findAllSearchByCategories(Pageable pageable, Integer[] categoryIds, String searchText);
+
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM Course_Category where courseId = :courseId", nativeQuery = true)
     public void deleteCourseCategoryBycourseId(@Param("courseId") int courseId);
-    
 
     @Query(value = "SELECT * FROM Course c \n"
             + "inner join Participate p on c.courseId = p.courseId \n"
@@ -76,4 +79,16 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             + "where r.ratedFromUser=:usernameMentee and r.ratedToUser=:usernameMentor);", nativeQuery = true)
     public List<Course> findAllCourseMentorOfMentee(String usernameMentor, String usernameMentee);
 
+    // @duckm
+    @Query(value = "SELECT * FROM Course c JOIN Participate p on c.courseId = p.courseId where p.username = ?1 and c.courseId=?2", nativeQuery = true)
+    public Course findMentorCourse(String username, int courseId);
+
+    @Query(value = "SELECT * FROM Course c WHERE courseId=?1", nativeQuery = true)
+    public Course ducFindByCourseId(int courseId);
+
+    // @maiphuonghoang
+    @Query(value = "SELECT * FROM  Course c JOIN Participate p ON p.courseId = c.courseId  \n"
+            + "JOIN `Status` s ON s.statusId = p.statusId\n"
+            + "where participateRole = 2 and username = :username AND p.statusId = 1", nativeQuery = true)
+    public List<Course> getCourseOfMentor(String username);
 }

@@ -12,6 +12,7 @@ class CategoryServices {
   }
 
   saveCourseCategory(courseId, categoryIds) {
+    console.log("calling");
     categoryIds.forEach((categoryId) => {
       axios.post(
         CATEGORY_BASE_REST_API_URL +

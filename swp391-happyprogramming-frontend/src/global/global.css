@@ -1,3 +1,34 @@
-/* .user-input input {
-  box-shadow: rgba(112, 112, 112, 0.3) 0px 0px 36px 0.1px inset;
-} */
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200;0,400;0,500;0,600;0,700;0,800;0,1000;1,400;1,500&family=Oswald:wght@600&family=Roboto:wght@500;700&display=swap");
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+* {
+  font-family: "Nunito", sans-serif;
+}
+
+/* sb Y */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* sb X */
+::-webkit-scrollbar-thumb {
+  background-color: var(--item2);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--itemActive);
+}
+
+body {
+  background-color: var(--light);
+}
+
+* {
+  transition: 0.3s all ease;
+  /* border: 1px solid red; */
+}

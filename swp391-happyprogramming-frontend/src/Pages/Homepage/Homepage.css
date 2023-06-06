@@ -1,22 +1,12 @@
 @import url("../../global/ColorPalette.css");
 
-/* .home-page {
-  border: 1px solid red;
+.home-page {
+  margin-top: 7rem;
 }
 
-.filter-container * {
-  border: 1px solid red;
-}
-
-.home-page * {
-  border: 1px solid red;
-}
-
-.cate-filter * {
+/* * {
   border: 1px solid red;
 } */
-
-/* ====================region filter==================== */
 
 .filter-container {
   background-color: var(--lightItem);
@@ -24,12 +14,16 @@
   flex-direction: column;
   justify-content: flex-start;
   justify-items: center;
-  /* padding: 1rem 1rem 0 1rem; */
   padding: 1rem;
   width: fit-content;
-  margin: 0 1rem;
-  border-radius: 1rem;
+  margin: 4px 0;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+option {
+  font-size: 1.5rem;
 }
 
 .filter-1 {
@@ -37,15 +31,28 @@
   flex-direction: row;
 }
 
+.search-border {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--lightItem);
+  border: 2px solid var(--item);
+  border-radius: 1rem;
+}
+
 .filter-container input {
-  height: min-content;
-  padding: 0.5rem;
-  border-radius: 8px;
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
-    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-  /* border: none; */
-  border: 2px solid var(--light);
-  margin: auto 0;
+  min-width: 250px;
+  border: none;
+  height: 100%;
+  width: max-content;
+  background-color: transparent;
+  padding-left: 0.5rem;
+}
+
+.filter-container input:focus {
+  outline: none;
+  border-color: red;
 }
 
 .filter-container input::placeholder {
@@ -53,9 +60,10 @@
 }
 
 .filter-container button {
-  background-color: var(--item);
+  background-color: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: 1rem;
+  overflow: hidden;
   height: min-content;
   width: min-content;
   padding: 1px 2px;
@@ -69,15 +77,16 @@
 }
 
 .textBttn button {
-  color: var(--light);
-  margin: auto 4px;
+  color: var(--lightItem);
+  background-color: var(--item);
+  margin: auto 4px auto 8px;
   font-size: 1.05rem;
   padding: 6px 0.4rem;
 }
 
 .filter-container ion-icon {
-  color: var(--lightItem);
-  transform: translateY(6%);
+  color: var(--item);
+  transform: translateY(9%);
   font-size: 1.5rem;
 }
 
@@ -85,9 +94,11 @@
   color: var(--lightItem);
   font-weight: bold;
   background-color: var(--item2);
+  transition: 0.3s all ease;
 }
 .filter-container button:hover {
   background-color: var(--item2);
+  transition: 0.3s all ease;
 }
 .filter-container select {
   color: var(--item2);
@@ -95,24 +106,21 @@
   border: 2px solid var(--item2);
   border-radius: 8px;
   transition: 0.3s all ease;
+  margin-left: 8px;
 }
 
 .cate-filter-head {
   display: flex;
   width: 100%;
-  /* background-color: aqua; */
-  /* width: fit-content; */
   justify-content: center;
   justify-items: center;
   align-items: center;
-  /* background-color: red; */
-  /* padding-right: 1rem; */
 }
 
 .cate-filter-head button {
   background-color: var(--item);
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   height: min-content;
   width: min-content;
   padding: 1px 2px;
@@ -156,7 +164,8 @@
   white-space: nowrap;
   background-color: var(--lightItem);
   border-radius: 1rem;
-  margin: 0 auto auto auto;
+  margin: -1rem auto auto 1rem;
+  width: 0px;
   max-width: 1000px;
   height: 0px;
   transition: 0.2s all ease;
@@ -166,7 +175,8 @@
 }
 
 .select-list.active {
-  margin: 1rem auto auto auto;
+  margin: 1rem auto auto 1rem;
+  width: auto;
   height: auto;
   transition: 0.3s all ease;
   padding: 1rem;
@@ -201,13 +211,15 @@
 
 /* ====================region List of Course==================== */
 .list-Courses {
-  margin: 2rem auto;
+  margin: 3rem auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(2, 1fr);
-  gap: 16px;
+  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 1fr 1fr 1fr;
+  /* grid-template-columns: 1fr 1fr; */
+  gap: 2rem;
   width: 90%;
   max-width: 1200px;
+  /* background-color: red; */
 }
 
 .list-Courses * {
@@ -215,27 +227,52 @@
 }
 
 .course {
-  display: flex;
+  display: grid;
   flex-direction: column;
-  /* justify-items: center; */
-  /* justify-content: center; */
+  grid-template-rows: repeat(1, 1fr);
+  cursor: pointer;
+}
+
+.couse-card-view {
   background-color: var(--lightItem);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  min-height: 200px;
 }
-/* header */
-.course span:nth-child(1) {
-  padding: 1rem;
-  /* background-color: var(--light); */
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--item);
-  /* color: var(--light); */
+.couse-card-view:hover {
+  transform: translate(0, -2%);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.course span {
+.couse-card-view span {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--lightItem);
+  padding: 1rem;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.course:nth-child(1) .couse-card-view span,
+.course:nth-child(3) .couse-card-view span,
+.course:nth-child(9) .couse-card-view span,
+.course:nth-child(11) .couse-card-view span,
+.course:nth-child(12) .couse-card-view span {
+  color: var(--darkItem5);
+}
+
+.couse-card-view span {
   display: block;
   text-align: center;
-  /* border: 1px solid red; */
+}
+
+.course-desc span {
+  display: block;
+  padding: 8px;
+  color: var(--darkItem4);
+  font-weight: 600;
 }

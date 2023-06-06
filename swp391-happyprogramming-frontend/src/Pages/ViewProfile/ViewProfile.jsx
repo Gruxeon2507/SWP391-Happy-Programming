@@ -6,6 +6,7 @@ import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import { useParams, Link } from "react-router-dom";
 import "./ViewProfile.css";
+import { Nav } from "react-bootstrap";
 
 function ViewProfile(props) {
   const { id } = useParams();

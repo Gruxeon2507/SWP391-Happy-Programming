@@ -1,0 +1,37 @@
+@import url("../../global/ColorPalette.css");
+
+.myCourse-body {
+  margin-top: 4rem;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+}
+
+.card-wraper {
+  margin: 1rem;
+  padding: 1rem;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: var(--lightItem);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 400px;
+}
+.card-wraper:hover {
+  transform: translateY(-5%);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+:where(.AccessCourse, .PendingCourse, .RejectCourse) {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.card-title {
+  padding: 1rem;
+  color: var(--item);
+  font-size: 1.5rem;
+}

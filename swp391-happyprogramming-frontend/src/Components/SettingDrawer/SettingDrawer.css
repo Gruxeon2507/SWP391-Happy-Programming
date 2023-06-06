@@ -1,8 +1,8 @@
 @import url(../../global/ColorPalette.css);
 .drawer {
-  position: fixed;
-  top: 15svh;
-  right: 8px;
+  position: relative;
+  /* top: 15svh; */
+  left: 0;
   /* border: 1px solid red; */
   width: 20vw;
   background-color: var(--light);
@@ -13,8 +13,11 @@
 }
 
 .drawer.active {
-  transform: translateX(100%);
+  /* transform: translateX(100%); */
 }
 
-draw-Toggle {
+.draw-Toggle input[type="checkbox"] {
+  width: 60px;
+  height: 60px;
+  transform: translateX(-100%);
 }

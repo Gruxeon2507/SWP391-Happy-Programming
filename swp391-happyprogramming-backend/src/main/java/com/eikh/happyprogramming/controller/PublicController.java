@@ -6,12 +6,15 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.model.Category;
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CategoryRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import com.eikh.happyprogramming.repository.RatingRepository;
+import com.eikh.happyprogramming.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -35,9 +38,15 @@ public class PublicController {
 
     @Autowired
     CourseRepository courseRepository;
-    
+
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RatingRepository ratingRepository;
 
     @GetMapping("/courses/view/{courseId}")
     public Course getCourseById(@PathVariable int courseId) {
@@ -47,6 +56,11 @@ public class PublicController {
     @GetMapping("/courses/all")
     List<Course> getAllCourses() {
         return courseRepository.findAll();
+    }
+
+    @GetMapping("/active-mentors")
+    public List<User> getAllActiveMentors() {
+        return userRepository.getUsersByRoleActiveStatus(2, 1);
     }
 
     @GetMapping("/categories/all")
@@ -66,5 +80,14 @@ public class PublicController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(inputStreamResource);
+
+    @GetMapping("/mentor/by-course/{courseId}")
+    User getMentorByCourse(@PathVariable int courseId) {
+        return userRepository.getMentorOfCourse(courseId);
+    }
+
+    @GetMapping("/mentor/rating/{username}")
+    int getAvgRatingByMentor(@PathVariable String username) {
+        return ratingRepository.getAvgRatingByMentor(username);
     }
 }
