@@ -262,10 +262,10 @@ public class UserController {
                 .body(inputStreamResource);
     }
 
-    @GetMapping("/mentors")
-    public List<User> getAllMentors() {
-        return userRepository.getAllMentors();
-    }
+//    @GetMapping("/mentors")
+//    public List<User> getAllMentors() {
+//        return userRepository.getAllMentors();
+//    }
 
     // Date: 24/05/2023
     // Function: Check role admin from JWT
