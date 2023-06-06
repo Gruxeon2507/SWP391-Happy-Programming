@@ -79,3 +79,37 @@ LEFT JOIN (
 ) countTable ON c.courseId = countTable.courseId AND subq.statusId = countTable.statusId
  HAVING c.courseId IN (1,2,3, 10) 
 ORDER BY c.courseId, subq.statusId;
+
+
+SELECT * FROM `User` u JOIN Participate p ON u.username = p.username 
+				  JOIN Course c ON p.courseId = c.courseId
+                  JOIN Request re ON re.username = p.username 
+                  WHERE  p.statusId = 0 AND re.requestStatus = 0
+                  AND re.courseId = p.courseId AND re.courseId = 2
+                  ORDER BY re.requestTime DESC ;
+SELECT * FROM `User` u
+JOIN Participate p ON u.username = p.username
+JOIN Course c ON p.courseId = c.courseId
+JOIN Request re ON re.username = p.username
+WHERE p.statusId = 0 AND re.requestStatus = 0
+  AND re.courseId = p.courseId AND re.courseId = 2
+  AND (re.username, re.requestTime) IN (
+    SELECT username, MAX(requestTime)
+    FROM Request WHERE courseId = 2 AND requestStatus = 0
+    GROUP BY username
+  );
+  
+SELECT * FROM Request re 
+JOIN Participate p ON re.username = p.username
+JOIN Course c ON p.courseId = c.courseId
+ JOIN `User` u ON re.username = p.username
+WHERE p.statusId = 0 AND re.requestStatus = 0
+  AND re.courseId = p.courseId AND re.courseId = 2
+  AND (re.username, re.requestTime) IN (
+    SELECT username, MAX(requestTime)
+    FROM Request WHERE courseId = 2 AND requestStatus = 0
+    GROUP BY username
+  );
+  
+
+                  

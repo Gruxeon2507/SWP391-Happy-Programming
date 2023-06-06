@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import CourseServices from "../../services/CourseServices";
 import UserServices from "../../services/UserServices";
+import RequestService from "../../services/RequestService";
+import convertDateFormat from "../../util/DateConvert";
 
 const RequestManage = () => {
     const [teachCourses, setTeachCourses] = useState([]);
@@ -17,12 +19,12 @@ const RequestManage = () => {
             });
     }
 
-    const getUserOfCourse = (courseId, statusId) => {
-        UserServices.getUserOfCourse(courseId, statusId)
+    const getPendingUserOfCourse = (courseId) => {
+        RequestService.getPendingUserOfCourse(courseId)
             .then((response) => {
-                console.log(response.data);
-                console.log("courseId " + courseId + " statusId " + statusId);
-                setUsers(response.data);
+                console.log("content");
+                console.log(response.data.content);
+                setUsers(response.data.content);
             })
             .catch((error) => {
                 console.log("loi lay ra members" + error);
@@ -30,7 +32,6 @@ const RequestManage = () => {
     }
     useEffect(() => {
         getCoursesOfMentor();
-        getUserOfCourse(2, 0);
         console.log("user", users);
     }, []);
 
@@ -42,12 +43,16 @@ const RequestManage = () => {
         }
         else {
             console.log(e.target);
-            let tempUser = users.map(user => user.username === name ? { ...user, isChecked: checked } : user)
+            let tempUser = users.map(user => user.requestKey.username === name ? { ...user, isChecked: checked } : user)
             setUsers(tempUser)
         }
 
     }
 
+    const handleCourseChange = (e) => {
+        const courseId = e.target.value;
+        getPendingUserOfCourse(courseId);
+    }
     return (
         <div>
 
@@ -63,10 +68,12 @@ const RequestManage = () => {
                             Check All
                         </label>
                     </div>
-                    <select class="form-control form-control-sm checkbox-select-all" name="action" required>
-                        <option value="">-- Courses --</option>
+                    <select class="form-control form-control-sm checkbox-select-all" name="action" required
+                        onChange={(e) => handleCourseChange(e)}
+                    >
+                        <option value="" >-- Courses --</option>
                         {teachCourses.map((course) => (
-                            <option key={course.id}>
+                            <option value={course.courseId} key={course.id} >
                                 <span>{course.courseName}</span>
                             </option>
                         ))}
@@ -81,17 +88,47 @@ const RequestManage = () => {
                 </div>
 
 
-                {users.map((user, index) => (
-                    <div className="form-check">
-                        <input class="form-check-input" type="checkbox" name={user.username} value="" id={user.username}
-                            checked={user?.isChecked || false}
-                            onChange={handleCheckChange}
-                        />
-                        <label class="form-check-label" for={user.username}>
-                            {user.username} - {user.displayName}
-                        </label>
-                    </div>
-                ))}
+                <table className="table table-bordered table-striped">
+                    <thead>
+                        <th>#</th>
+                        <th>Mentee</th>
+                        <th>Request Time</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => {
+                            return (
+                                <tr key={user.requestKey.username}>
+
+                                    {/* <div className="form-check"> */}
+                                    <td>
+
+                                        <input class="form-check-input" type="checkbox" name={user.requestKey.username} value="" id={user.requestKey.username}
+                                            checked={user?.isChecked || false}
+                                            onChange={handleCheckChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <label class="form-check-label" for={user.requestKey.username}>
+                                            {user.requestKey.username}
+                                        </label>
+                                    </td>
+
+                                    {/* </div> */}
+                                    <td>{convertDateFormat(user.requestKey.requestTime)}</td>
+
+                                    <td>
+                                        <button>Access </button>
+                                        <button
+                                        >
+                                            Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </form>
         </div>
 
