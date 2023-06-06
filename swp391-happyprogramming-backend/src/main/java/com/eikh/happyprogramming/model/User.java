@@ -62,6 +62,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Message> messages;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Skill> skills;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -9,10 +9,18 @@ import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CategoryRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import com.eikh.happyprogramming.repository.RatingRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +66,20 @@ public class PublicController {
     @GetMapping("/categories/all")
     List<Category> getAllCategory() {
         return categoryRepository.findAll();
+    }
+    
+    @GetMapping(value = "/pdf/{fileId}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> getCV(@PathVariable String fileId) throws IOException {
+        String filePath = "pdf/" + fileId + ".pdf";
+        File file = new File(filePath);
+        InputStream inputStream = new FileInputStream(file);
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(inputStreamResource);
     }
 
     @GetMapping("/mentor/by-course/{courseId}")

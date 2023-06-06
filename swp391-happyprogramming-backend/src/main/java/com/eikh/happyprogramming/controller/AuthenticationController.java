@@ -92,9 +92,12 @@ public class AuthenticationController {
         String verificationCode = UUID.randomUUID().toString();
         user.setVerification_code(verificationCode);
         user.setVerified(false);
+        UserRepository.save(user);
+        userRepository.insertRole(user.getUsername());
         String subject = "HAPPY PROGRAMMING - Verify your email address";
         String body = "Please click the following link to verify your email address: "
                 + "http://localhost:1111/api/auth/verify?code=" + verificationCode + "&username=" + user.getUsername();
+        
         try {
             EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
         } catch (EmailException ex) {
