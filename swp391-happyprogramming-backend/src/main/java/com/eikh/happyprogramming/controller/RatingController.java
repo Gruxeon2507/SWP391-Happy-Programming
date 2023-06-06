@@ -85,5 +85,10 @@ public class RatingController {
         }
         return ResponseEntity.ok(null);
     }
+    
+    @GetMapping("avg/{usernameMentor}")
+    public int findAvgRateOfMentor(@PathVariable("usernameMentor") String usernameMentor){
+        return ratingRepository.getAvgRatingByMentor(usernameMentor);
+    }
 
 }
