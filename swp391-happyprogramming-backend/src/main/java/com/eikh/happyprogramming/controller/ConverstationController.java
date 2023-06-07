@@ -8,17 +8,20 @@ import com.eikh.happyprogramming.chatModel.Message;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Conversation;
 import com.eikh.happyprogramming.model.User;
+import com.eikh.happyprogramming.modelkey.MessageKey;
 import com.eikh.happyprogramming.repository.ConversationRepository;
+import com.eikh.happyprogramming.repository.MessageRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -40,7 +43,9 @@ public class ConverstationController {
     
     @Autowired
     UserRepository userRepository;
-    
+
+    @Autowired
+    MessageRepository messageRepository;
     @GetMapping()
     public List<Message> getUserConversation(HttpServletRequest request){
         String token = jwtTokenFilter.getJwtFromRequest(request);
@@ -54,5 +59,36 @@ public class ConverstationController {
         }
         return messages;
         
+    }
+
+    @PostMapping("/sentmessage")
+    public ResponseEntity<?> sentMessage(HttpServletRequest request, @RequestBody Message message){
+        try{
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            if(username.equals(message.getSenderName())){
+                com.eikh.happyprogramming.model.Message m = new com.eikh.happyprogramming.model.Message();
+
+                MessageKey mk = new MessageKey();
+                mk.setConversationId(message.getConversationId());
+                mk.setSentBy(message.getSenderName());
+
+                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                mk.setSentAt(currentTimestamp);
+
+                m.setMessageKey(mk);
+                m.setConversation(conversationRepository.findByConversationId(message.getConversationId()));
+                m.setMsgContent(message.getMessage());
+                m.setUser(userRepository.findByUsername(message.getSenderName()));
+                messageRepository.save(m);
+                return ResponseEntity.ok(m);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        }
+
     }
 }

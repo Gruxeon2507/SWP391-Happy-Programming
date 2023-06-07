@@ -6,6 +6,9 @@ import { over } from 'stompjs';
 import api from '../../services/BaseAuthenticationService';
 import UserServices from '../../services/UserServices';
 import Conversation from '../Chat/Conversation';
+import NavBar from '../../Components/Navbar/NavBar';
+import MessageTo from '../Chat/MessageTo';
+import MessageFrom from '../Chat/MessageFrom';
 
 var stompClient = null
 const PrivateChatRoom = () => {
@@ -94,23 +97,43 @@ const PrivateChatRoom = () => {
 
     //change chat room
     const handleTabChange = (conversationId) => {
+        if (stompClient) {
+            if (tab) {
+                stompClient.unsubscribe(`/chatroom/${tab}`);
+            }
+            stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
+        }
+
         setTab(conversationId);
         setPublicChats([]);
-        setUserData({ ...userData, conversationId: tab });
-        stompClient.unsubscribe(`/chatroom/${tab}`);
-        stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
+        setUserData({ ...userData, conversationId: conversationId });
+        setConversationMessages(new Map(conversationMessages)); // Update the state with a new instance of the Map
     };
+
 
     //when new message arrive
     const onMessageReceived = (payload) => {
-        var payloadData = JSON.parse(payload.body);
+        const payloadData = JSON.parse(payload.body);
         console.log(payloadData);
-        const updatedConversationMessages = new Map(conversationMessages);
-        updatedConversationMessages.get(payloadData.conversationId).push(payloadData);
-        setConversationMessages(updatedConversationMessages);
-        console.log(updatedConversationMessages + "tin nhan toi");
-      };
-      
+
+        setConversationMessages((prevConversationMessages) => {
+            const updatedConversationMessages = new Map(prevConversationMessages);
+            const conversationId = payloadData.conversationId;
+
+            if (updatedConversationMessages.has(conversationId)) {
+                const messages = updatedConversationMessages.get(conversationId);
+                updatedConversationMessages.set(conversationId, [...messages, payloadData]);
+            } else {
+                updatedConversationMessages.set(conversationId, [payloadData]);
+            }
+
+            return updatedConversationMessages;
+        });
+
+        console.log(conversationMessages);
+    };
+
+
 
     //send message
     const handleMessage = (event) => {
@@ -119,7 +142,6 @@ const PrivateChatRoom = () => {
     };
 
     const sendValue = () => {
-        if (stompClient) {
             var chatMessage = {
                 senderName: userData.username,
                 message: userData.message,
@@ -129,52 +151,73 @@ const PrivateChatRoom = () => {
             console.log(chatMessage);
             console.log("tab ne: " + tab);
             stompClient.send("/chatroom/" + tab, {}, JSON.stringify(chatMessage));
+            api.post("/api/conversation/sentmessage",chatMessage);
             setUserData({ ...userData, message: "" });
-        }
     };
     console.log(conversationMessages)
     // console.log(conversations);
     return (
         <div>
-            <h1>chat</h1>
-            <div className="member-list">
-
-                {conversations.map((conversation) => (
-                    <div onClick={() => handleTabChange(conversation.conversation.conversationId)} className={`member ${tab === "CHATROOM" && "active"}`}>
-                        {conversation.conversation.conversationName}
+            <div className="Chat-container">
+                <div className="Conversation-List">
+                    <div className="seach-chat">
+                        <input type="text" placeholder="Search"></input>
+                        <button>
+                            <ion-icon name="search-circle-outline"></ion-icon>
+                        </button>
                     </div>
-                ))}
-            </div>
-            <div className="chat-content">
-
-                <div className="chat-messages">
-                    {tab ?
-                        <>
-                            {conversationMessages.get(tab).map((chat, index) => (
-                                <li
-                                    className={`messeage ${chat.senderName === userData.username && "self"}`}
-                                    key={index}
-                                >
-                                    {chat.senderName !== userData.username && (
-                                        <div className="avatar">{chat.senderName}</div>
-                                    )}
-                                    <div className="message-data">{chat.message}</div>
-                                    {chat.senderName === userData.username && (
-                                        <div className="avatar self">{chat.senderName}</div>
-                                    )}
-                                </li>
-                            ))}
-                        </>
-                        : <></>}
+                    {conversations.map((conversation) => (
+                        <div onClick={() => handleTabChange(conversation.conversation.conversationId)} className={`member ${tab === "CHATROOM" && "active"}`}>
+                            <Conversation
+                                conversationName={conversation.conversation.conversationName}
+                                latestMessage={"Conversation latest message"}
+                            />
+                        </div>
+                    ))}
                 </div>
+                <div className="Message-List">
 
+                    <div className="messages">
+                        {tab ?
+                            <>
+                                {conversationMessages.get(tab).map((chat, index) => (
+                                    <li
+                                        className={`messeage ${chat.senderName === userData.username && "self"}`}
+                                        key={index}
+                                    >
+                                        {chat.senderName !== userData.username && (
+                                            <div>
+                                                <div className="avatar">{chat.senderName}</div>
+                                                <MessageTo message={chat.message} />
 
-                <div className="send-message">
-                    <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
-                    <button type="button" className="send-button" onClick={sendValue}>send</button>
+                                            </div>
 
+                                        )}
+                                        {chat.senderName === userData.username && (
+                                            <div>
+                                                <div className="avatar">{chat.senderName}</div>
+                                                <MessageFrom message={chat.message} />
+
+                                            </div>
+                                        )}
+                                    </li>
+                                ))}
+                            </>
+                            : <></>}
+                    </div>
+
+                    <div className="input-message">
+                        <button>
+                            <ion-icon name="add-circle-outline"></ion-icon>
+                        </button>
+                        <input type="text" placeholder="Type a message" value={userData.message} onChange={handleMessage}></input>
+                        <button>
+                            <ion-icon name="send" onClick={sendValue}></ion-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
+
         </div>
     )
 }
