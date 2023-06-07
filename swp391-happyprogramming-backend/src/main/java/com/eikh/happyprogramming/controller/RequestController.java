@@ -49,7 +49,7 @@ public class RequestController {
 
     @Autowired
     private TransactionTemplate transactionTemplate;
-    
+
     @Autowired
     private RoleUtils roleUtils;
 
@@ -73,13 +73,55 @@ public class RequestController {
         return new ResponseEntity<>(pageUsers, HttpStatus.OK);
     }
 
-    //@maiphuonghoang 
+//    //@maiphuonghoang 
+//    @Transactional
+//    @PostMapping("/status")
+//    public String updateParticipateInsertRequest(
+//            HttpServletRequest request,
+//            @RequestParam(name = "courseId") Integer courseId,
+//            @RequestParam(name = "username") String username,
+//            @RequestParam(name = "statusId") Integer statusId
+//    ) {
+//        if (!roleUtils.hasRoleFromToken(request, 2)) {
+//            return null;
+//        }
+//        try {
+//            transactionTemplate.execute(status -> {
+//                try {
+//                    Request r = new Request();
+//                    java.util.Date today = new java.util.Date();
+//                    java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+//                    Status s = new Status();
+//                    RequestKey key = new RequestKey();
+//                    key.setUsername(username);
+//                    key.setCourseId(courseId);
+//                    key.setRequestTime(sqlToday);
+//                    s.setStatusId(statusId);
+//                    r.setStatus(s);
+//                    r.setRequestKey(key);
+//                    requestRepository.save(r);
+////                    System.out.println(1/0);
+//                    participateRepository.updateStatus(statusId, courseId, username);
+//                    System.out.println("Request save and update success");
+//                } catch (Exception ex) {
+//                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+//                    status.setRollbackOnly();
+//                }
+//                return null;
+//            });
+//        } catch (Exception ex) {
+//            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return null;
+//
+//    }
+
     @Transactional
-    @PostMapping("/status")
-    public String updateParticipateInsertRequest(
+    @PostMapping("/status-many")
+    public String updateParticipateInsertRequests(
             HttpServletRequest request,
             @RequestParam(name = "courseId") Integer courseId,
-            @RequestParam(name = "username") String username,
+            @RequestParam(name = "usernames") String[] usernames,
             @RequestParam(name = "statusId") Integer statusId
     ) {
         if (!roleUtils.hasRoleFromToken(request, 2)) {
@@ -88,20 +130,24 @@ public class RequestController {
         try {
             transactionTemplate.execute(status -> {
                 try {
-                    Request r = new Request();
                     java.util.Date today = new java.util.Date();
                     java.sql.Date sqlToday = new java.sql.Date(today.getTime());
                     Status s = new Status();
                     RequestKey key = new RequestKey();
-                    key.setUsername(username);
                     key.setCourseId(courseId);
                     key.setRequestTime(sqlToday);
                     s.setStatusId(statusId);
-                    r.setStatus(s);
-                    r.setRequestKey(key);
-                    requestRepository.save(r);
-//                    System.out.println(1/0);
-                    participateRepository.updateStatus(statusId, courseId, username);                    
+
+                    for (String username : usernames) {
+                        Request r = new Request();
+                        key.setUsername(username);
+                        r.setStatus(s);
+                        r.setRequestKey(key);
+                        requestRepository.save(r);
+//                        System.out.println(1/0);
+                        participateRepository.updateStatus(statusId, courseId, username);
+                    }
+
                     System.out.println("Request save and update success");
                 } catch (Exception ex) {
                     Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
@@ -113,6 +159,5 @@ public class RequestController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-
     }
 }

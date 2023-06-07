@@ -33,7 +33,7 @@
   width: 65svw;
   display: flex;
   flex-direction: row;
-  align-items: end;
+  align-items: flex-end;
   padding: 2rem 1rem;
   box-sizing: border-box;
 }

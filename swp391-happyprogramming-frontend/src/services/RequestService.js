@@ -15,12 +15,12 @@ class RequestService {
         return api.post("/api/requests/pending", formData);
       }
     
-    updateParticipadeInsertRequest(courseId, statusId, username){
+    updateParticipadeInsertRequest(courseId, statusId, usernames){
       const formData = new FormData()
       formData.append("courseId", courseId);
       formData.append("statusId", statusId);
-      formData.append("username", username);
-      return api.post("/api/requests/status", formData);
+      formData.append("usernames", usernames);
+      return api.post("/api/requests/status-many", formData);
     }
 
 }

@@ -14,6 +14,7 @@ const RequestManage = () => {
     const [sortOrder, setSortOrder] = useState("desc");
     const [selectedCourseId, setSelectedCourseId] = useState("");
     const [checkedRequest, setCheckedRequest] = useState([]);
+    const [selectedValue, setSelectedValue] = useState('1');
     const sizePerPage = 10;
 
     const getCoursesOfMentor = () => {
@@ -39,7 +40,7 @@ const RequestManage = () => {
             });
     }
     const updateAndInsert = (courseId, statusId, username) => {
-        RequestService.updateParticipadeInsertRequest(courseId, statusId, username )
+        RequestService.updateParticipadeInsertRequest(courseId, statusId, username)
             .then((response) => {
                 console.log(response.data);
             })
@@ -47,12 +48,11 @@ const RequestManage = () => {
                 console.log("loi update and insert" + error);
             });
     }
-
     useEffect(() => {
         getCoursesOfMentor();
-    }, []);
 
-    const handleCheckChange = async (e) => {
+    }, []);
+    const handleCheckChange = (e) => {
         const { name, checked } = e.target;
         if (name === "allSelect") {
             let tempUser = users.map(user => { return { ...user, isChecked: checked } })
@@ -63,13 +63,13 @@ const RequestManage = () => {
             let tempUser = users.map(user => user.requestKey.username === name ? { ...user, isChecked: checked } : user)
             setUsers(tempUser)
             console.log(checked);
-            setCheckedRequest((prev)=>{
+            setCheckedRequest((prev) => {
                 const isInclude = checkedRequest.includes(name);
                 if (isInclude) {
-                  //Uncheck
-                  return checkedRequest.filter((item) => item !== name);
+                    //Uncheck
+                    return checkedRequest.filter((item) => item !== name);
                 } else {
-                  return [...prev, e.target.name];
+                    return [...prev, e.target.name];
                 }
             })
 
@@ -80,6 +80,7 @@ const RequestManage = () => {
     const handleCourseChange = (e) => {
         const courseId = e.target.value;
         setSelectedCourseId(courseId);
+        setCheckedRequest([])
         getPendingUserOfCourse(courseId, 0, sizePerPage, sortField, sortOrder);
     }
 
@@ -87,11 +88,23 @@ const RequestManage = () => {
         setCurrentPage(current);
         getPendingUserOfCourse(selectedCourseId, current - 1, sizePerPage, sortField, sortOrder);
     };
-    const handleSubmit = (statusId,username) => {
-        console.log(selectedCourseId);
-        updateAndInsert(selectedCourseId, statusId, username)
+
+    const handleSelectChange = (event) => {
+        const value = event.target.value;
+        setSelectedValue(value);
+    };
+    
+
+    const handleSubmitOne = async (statusId, username) => {
+        await updateAndInsert(selectedCourseId, statusId, [username]);
         getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
     };
+    const handleSubmitMany = async () => {
+        await updateAndInsert(selectedCourseId, selectedValue, checkedRequest);
+        getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
+    };
+
+
     return (
         <div>
 
@@ -100,7 +113,7 @@ const RequestManage = () => {
                     <input class="form-check-input" type="checkbox" id="checkbox-all"
                         name="allSelect"
                         checked={users.filter(user => user?.isChecked !== true).length < 1}
-                        onChange={handleCheckChange}
+                        onChange={(e) => handleCheckChange(e)}
                     />
                     <label class="form-check-label" for="checkbox-all">
                         Check All
@@ -117,16 +130,18 @@ const RequestManage = () => {
                     ))}
 
                 </select>
-                <select class="form-control form-control-sm checkbox-select-all" name="action" >
-                    <option value="">-- Action --</option>
-                    <option value="access">Access</option>
-                    <option value="reject">Reject</option>
+                <select class="form-control form-control-sm checkbox-select-all" name="action"
+                    disabled={checkedRequest.length <= 1}
+                    onChange={handleSelectChange} >
+                    <option disabled>-- Action --</option>
+                    <option value="1" >Access</option>
+                    <option value="-1" >Reject</option>
                 </select>
-                <button class="check-all-submit-btn">Thực hiện</button>
+                <button disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Thực hiện</button>
             </div>
 
 
-            <table className="table table-bordered table-striped">
+            <table >
                 <thead>
                     <th>#</th>
                     <th>Mentee<ion-icon name="filter-outline"></ion-icon></th>
@@ -142,7 +157,7 @@ const RequestManage = () => {
 
                                     <input class="form-check-input" type="checkbox" name={user.requestKey.username} value="" id={user.requestKey.username}
                                         checked={user?.isChecked || false}
-                                        onChange={handleCheckChange}
+                                        onChange={(e) => { handleCheckChange(e) }}
                                     />
                                 </td>
                                 <td>
@@ -155,8 +170,14 @@ const RequestManage = () => {
                                 </td>
 
                                 <td>
-                                    <button onClick={()=>handleSubmit(1,user.requestKey.username)}>Access </button>
-                                    <button onClick={()=>handleSubmit(-1,user.requestKey.username)}>Reject</button>
+                                    <button 
+                                    onClick={() => handleSubmitOne(1, user.requestKey.username)}
+                                    disabled={checkedRequest.length > 1}
+                                    >Access </button>
+                                    <button 
+                                    onClick={() => handleSubmitOne(-1, user.requestKey.username)}
+                                    disabled={checkedRequest.length > 1}
+                                    >Reject</button>
                                 </td>
                             </tr>
                         );
