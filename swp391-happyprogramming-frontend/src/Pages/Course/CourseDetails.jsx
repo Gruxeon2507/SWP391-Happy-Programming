@@ -74,7 +74,6 @@ const CourseDetails = (props) => {
   }, []);
 
   const handleRequest = () => {
-    console.log("pressed");
     const token = localStorage.getItem("token");
     if (localStorage.getItem("token")) {
       ParticipateServices.saveParticipate("", courseID, 3, 0);
@@ -132,7 +131,7 @@ const CourseDetails = (props) => {
             </div>
           ) : (
             <div>
-              <button id="requestBttn">Requested</button>
+              <button id="requestBttn" style={{ border: "4px solid var(--item2)", color: "var(--item2)" }}>Requested</button>
             </div>
           )}
         </div>

@@ -15,7 +15,7 @@ function Home(props) {
         <div className="scroll-snap-item">
           <div className="hapi-pro-gb">
             <div className="hapi-pro-cover">
-              <p>"Unlock Your Code Potential"</p>
+              <q>Unlock Your Code Potential</q>
             </div>
           </div>
         </div>

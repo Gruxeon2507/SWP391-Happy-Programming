@@ -24,9 +24,6 @@ function SettingBar() {
                         <NavLink to="/admin">admin</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/admin">admin</NavLink>
-                    </li>
-                    <li className="nav-item">
                         <p>Setting</p>
                         <div className="themeSwitch">
                             <label>
@@ -34,9 +31,6 @@ function SettingBar() {
                                 <span className="slider"></span>
                             </label>
                         </div>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/admin1">admin1</NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/setting">setting</NavLink>
