@@ -6,7 +6,6 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.model.Request;
 import com.eikh.happyprogramming.model.Status;
-import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.modelkey.RequestKey;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.RequestRepository;
@@ -23,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +48,9 @@ public class RequestController {
     private ParticipateRepository participateRepository;
 
     @Autowired
+    private TransactionTemplate transactionTemplate;
+    
+    @Autowired
     private RoleUtils roleUtils;
 
     //@maiphuonghoang 
@@ -72,36 +75,44 @@ public class RequestController {
 
     //@maiphuonghoang 
     @Transactional
-    @PostMapping("")
+    @PostMapping("/status")
     public String updateParticipateInsertRequest(
             HttpServletRequest request,
             @RequestParam(name = "courseId") Integer courseId,
             @RequestParam(name = "username") String username,
-            @RequestParam(name = "status") Integer status
+            @RequestParam(name = "statusId") Integer statusId
     ) {
         if (!roleUtils.hasRoleFromToken(request, 2)) {
             return null;
         }
-
         try {
-                        
-            Request r = new Request();
-            java.util.Date today = new java.util.Date();
-            java.sql.Date sqlToday = new java.sql.Date(today.getTime());
-            Status s = new Status();
-            RequestKey key = new RequestKey();
-            key.setUsername(username);
-            key.setCourseId(courseId);
-            key.setRequestTime(sqlToday);
-            s.setStatusId(status);
-            r.setStatus(s);
-            r.setRequestKey(key);
-            requestRepository.save(r);
-            System.out.println("request save success");
-
+            transactionTemplate.execute(status -> {
+                try {
+                    Request r = new Request();
+                    java.util.Date today = new java.util.Date();
+                    java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+                    Status s = new Status();
+                    RequestKey key = new RequestKey();
+                    key.setUsername(username);
+                    key.setCourseId(courseId);
+                    key.setRequestTime(sqlToday);
+                    s.setStatusId(statusId);
+                    r.setStatus(s);
+                    r.setRequestKey(key);
+                    requestRepository.save(r);
+//                    System.out.println(1/0);
+                    participateRepository.updateStatus(statusId, courseId, username);                    
+                    System.out.println("Request save and update success");
+                } catch (Exception ex) {
+                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                    status.setRollbackOnly();
+                }
+                return null;
+            });
         } catch (Exception ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+
     }
 }

@@ -102,14 +102,14 @@ WHERE p.statusId = 0 AND re.requestStatus = 0
 SELECT * FROM Request re 
 JOIN Participate p ON re.username = p.username
 JOIN Course c ON p.courseId = c.courseId
- JOIN `User` u ON re.username = p.username
+ JOIN `User` u ON u.username = p.username
 WHERE p.statusId = 0 AND re.requestStatus = 0
-  AND re.courseId = p.courseId AND re.courseId = 2
+  AND re.courseId = p.courseId AND re.courseId = 7
   AND (re.username, re.requestTime) IN (
     SELECT username, MAX(requestTime)
-    FROM Request WHERE courseId = 2 AND requestStatus = 0
+    FROM Request WHERE courseId = 7 AND requestStatus = 0
     GROUP BY username
   );
   
-
-                  
+UPDATE Participate p SET p.statusId = 0 WHERE p.username = 'phucdl' AND p.courseId = 2;
+select * from Participate p where p.username = 'phucdl' and p.courseId = 2                 

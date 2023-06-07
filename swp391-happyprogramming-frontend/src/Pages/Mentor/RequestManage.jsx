@@ -38,6 +38,16 @@ const RequestManage = () => {
                 console.log("loi lay ra members" + error);
             });
     }
+    const updateAndInsert = (courseId, statusId, username) => {
+        RequestService.updateParticipadeInsertRequest(courseId, statusId, username )
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log("loi update and insert" + error);
+            });
+    }
+
     useEffect(() => {
         getCoursesOfMentor();
     }, []);
@@ -77,9 +87,10 @@ const RequestManage = () => {
         setCurrentPage(current);
         getPendingUserOfCourse(selectedCourseId, current - 1, sizePerPage, sortField, sortOrder);
     };
-    const handleSubmit = (status,username) => {
-        console.log( username);
-        console.log(status );
+    const handleSubmit = (statusId,username) => {
+        console.log(selectedCourseId);
+        updateAndInsert(selectedCourseId, statusId, username)
+        getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
     };
     return (
         <div>
@@ -111,7 +122,7 @@ const RequestManage = () => {
                     <option value="access">Access</option>
                     <option value="reject">Reject</option>
                 </select>
-                <button class="check-all-submit-btn" disabled="disabled">Thực hiện</button>
+                <button class="check-all-submit-btn">Thực hiện</button>
             </div>
 
 
