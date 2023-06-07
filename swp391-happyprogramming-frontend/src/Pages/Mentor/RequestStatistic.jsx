@@ -7,6 +7,8 @@ import StatisticServices from "../../services/StatisticServices";
 import CourseServices from "../../services/CourseServices";
 import "./RequestStatistic.css"
 import NavBar from "../../Components/Navbar/NavBar";
+import manageIcon from "../../Assets/208-2081675_link-to-manage-travel-ttc-line-5.png"
+import statisticIcon from "../../Assets/1466735.png"
 const RequestStatistic = () => {
 
     const [teachCourses, setTeachCourses] = useState([]);
@@ -153,9 +155,18 @@ const RequestStatistic = () => {
         <>
             <NavBar mode={1} />
             <div className="mentor-statistic-container">
-                <div className="mentor-menu-sideBar">
-                    some item here
-                </div>
+                <nav className="mentor-menu-sideBar">
+                    <ul className="mentor-manageNav">
+                        <li>
+                            <img src={manageIcon}></img>
+                            <span>Manage</span>
+                        </li>
+                        <li>
+                            <img src={statisticIcon}></img>
+                            <span>Statistic</span>
+                        </li>
+                    </ul>
+                </nav>
                 {/* All courses of mentor   */}
                 <div className="overAll-statistic-container">
                     <div className="mentor-all-course-barChart">
@@ -166,22 +177,26 @@ const RequestStatistic = () => {
                     </div>
                 </div>
                 <div className="list-course-by-Mentor">
-                    {teachCourses.map((course) => (
-                        <div key={course.id} value={course.courseId} onClick={() => handleCourseChange(course.courseId)}>
-                            {course.courseName}
+                    <ul>
+                        {teachCourses.map((course) => (
+                            <li key={course.id} value={course.courseId} onClick={() => handleCourseChange(course.courseId)}>
+                                {course.courseName}
+                            </li>
+                        ))}
+                    </ul>
+                    {/* One course by courseId */}
+                    {/* <div className="course-statistic-container"> */}
+                    <div className="course-statistic-container active">
+                        <div className="bar-chart-course-content" >
+                            <BarChart chartData={userDataOne} />
                         </div>
-                    ))}
-                </div>
-                {/* One course by courseId */}
-                <div className="course-statistic-container">
-                    <div className="" style={{ width: 350 }} >
-                        <BarChart chartData={userDataOne} />
-                    </div>
-                    <div className="" style={{ width: 200 }}>
-                        <PieChart chartData={userDataOne} />
+                        <div className="pie-chart-course-content">
+                            <PieChart chartData={userDataOne} />
+                        </div>
                     </div>
                 </div>
-            </div>
+
+            </div >
         </>
     )
 }

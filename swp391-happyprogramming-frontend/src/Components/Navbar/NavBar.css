@@ -2,12 +2,12 @@
 
 .NavBar {
   position: fixed;
-  top: 0;
+  top: 0.5rem;
   left: 50vw;
   transform: translateX(-50%);
   width: calc(98vw - (100vw - 100%));
   border: 2px solid var(--light);
-  border-radius: 1.5rem;
+  border-radius: 2rem;
   background-color: var(--light);
   z-index: 100;
   display: flex;

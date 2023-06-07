@@ -14,15 +14,12 @@
 }
 
 .mentor-menu-sideBar {
-  width: 15svw;
-  height: 85svh;
-  background-color: var(--lightItem);
   max-width: 200px;
   flex-shrink: 0;
-  bottom: 1rem;
+  /* bottom: 1rem; */
+  top: 30%;
+  transform: translateY(-50%);
   overflow-y: scroll;
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
 }
 
 .overAll-statistic-container {
@@ -54,20 +51,96 @@
 }
 
 .list-course-by-Mentor {
-  background-color: blueviolet;
+  background-color: var(--lightItem);
   position: fixed;
   bottom: 1rem;
   right: 0;
   width: 19svw;
   height: 45svh;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 2rem;
+}
+
+.list-course-by-Mentor ul {
+  margin: 1rem;
+}
+
+.list-course-by-Mentor li {
+  background-color: var(--light);
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 1rem;
+}
+
+.list-course-by-Mentor li:hover {
+  transform: translateY(-5%);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .course-statistic-container {
-  background-color: ;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 1rem;
   background-color: var(--lightItem);
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* top: 50%; */
+  bottom: 1rem;
+  right: 20%;
+  width: 65svw;
+  height: 70svh;
+  /* transform: translate(-50%, -50%); */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  /* opacity: 0.9; */
+}
+
+.course-statistic-container.active {
+}
+
+.course-statistic-container::after {
+  position: absolute;
+  content: "X";
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  color: var(--item);
+  background-color: var(--light);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.course-statistic-container::before {
+  position: absolute;
+  content: "TEn bang";
+  color: var(--item);
+  top: -2.5rem;
+  left: 0;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.bar-chart-course-content,
+.pie-chart-course-content {
+  width: 50%;
+}
+
+.mentor-manageNav img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.mentor-manageNav li {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.mentor-manageNav span {
+  color: var(--dark);
+  font-weight: bold;
+  font-size: 1.5rem;
 }
