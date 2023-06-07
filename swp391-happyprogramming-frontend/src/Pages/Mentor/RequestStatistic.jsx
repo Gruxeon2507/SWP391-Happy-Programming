@@ -11,6 +11,18 @@ import manageIcon from "../../Assets/208-2081675_link-to-manage-travel-ttc-line-
 import statisticIcon from "../../Assets/1466735.png"
 const RequestStatistic = () => {
 
+
+    const [selectedCourse, setSelectedCourse] = useState(null);
+
+    const selectCourse = (courseId) => {
+        setSelectedCourse(courseId);
+    };
+
+    const isCourseActive = (courseId) => {
+        return selectedCourse === courseId;
+    };
+
+    // ==================
     const [teachCourses, setTeachCourses] = useState([]);
     const getCoursesOfMentor = () => {
         CourseServices.getCoursesOfMentor()
@@ -143,11 +155,15 @@ const RequestStatistic = () => {
         });
     }, [dataOne]);
 
-    const handleCourseChange = (courseId) => {
-        // const courseId = e.target.value;
-        getCourseStatusCountsByCourseIdOne(courseId);
-        console.log(courseId);
 
+    const handleCourseChange = (courseId) => {
+        if (selectedCourse === courseId) {
+            setSelectedCourse(null);
+        } else {
+            setSelectedCourse(courseId);
+            getCourseStatusCountsByCourseIdOne(courseId);
+            console.log(courseId);
+        }
     };
 
 
@@ -169,30 +185,48 @@ const RequestStatistic = () => {
                 </nav>
                 {/* All courses of mentor   */}
                 <div className="overAll-statistic-container">
-                    <div className="mentor-all-course-barChart">
-                        <BarChart chartData={userData} />
+                    <div className="overAll-stat">
+                        <div className="stat-item">
+                            thong tin j do 1
+                        </div>
+                        <div className="stat-item">
+                            thong tin j do 1
+                        </div>
+                        <div className="stat-item">
+                            thong tin j do 1
+                        </div>
                     </div>
-                    <div className="mentor-all-course-lineChart">
-                        <LineChart chartData={userData} />
+                    <div className="chart-container">
+                        <div className="mentor-all-course-barChart">
+                            <BarChart chartData={userData} />
+                        </div>
+                        <div className="mentor-all-course-lineChart">
+                            <LineChart chartData={userData} />
+                        </div>
                     </div>
                 </div>
                 <div className="list-course-by-Mentor">
-                    <ul>
-                        {teachCourses.map((course) => (
-                            <li key={course.id} value={course.courseId} onClick={() => handleCourseChange(course.courseId)}>
-                                {course.courseName}
-                            </li>
-                        ))}
-                    </ul>
-                    {/* One course by courseId */}
-                    {/* <div className="course-statistic-container"> */}
-                    <div className="course-statistic-container active">
-                        <div className="bar-chart-course-content" >
+                    <div className={`course-statistic-container ${selectedCourse ? 'active' : ''}`}>
+                        <div className="bar-chart-course-content">
                             <BarChart chartData={userDataOne} />
                         </div>
                         <div className="pie-chart-course-content">
                             <PieChart chartData={userDataOne} />
                         </div>
+                    </div>
+                    <div className="list-course-nav">
+                        <ul>
+                            {teachCourses.map((course) => (
+                                <li
+                                    key={course.id}
+                                    value={course.courseId}
+                                    onClick={() => handleCourseChange(course.courseId)}
+                                    className={isCourseActive(course.courseId) ? 'active' : ''}
+                                >
+                                    {course.courseName}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
 
