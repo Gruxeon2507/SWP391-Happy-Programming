@@ -30,7 +30,7 @@ function CourseFeed() {
 
   useEffect(() => {
     fetchData();
-  }, [courseId, posts]);
+  }, [courseId]);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -40,6 +40,7 @@ function CourseFeed() {
     const ok = confirm("Yah sure bro?");
     if (ok) {
       PostServices.deletePost(postId);
+      window.location.reload();
     }
   };
 
