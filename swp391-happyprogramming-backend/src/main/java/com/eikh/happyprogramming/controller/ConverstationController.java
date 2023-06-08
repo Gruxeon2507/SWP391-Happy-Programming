@@ -8,10 +8,12 @@ import com.eikh.happyprogramming.chatModel.Message;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Conversation;
 import com.eikh.happyprogramming.model.User;
+import com.eikh.happyprogramming.model.User_Conversation;
 import com.eikh.happyprogramming.modelkey.MessageKey;
 import com.eikh.happyprogramming.repository.ConversationRepository;
 import com.eikh.happyprogramming.repository.MessageRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
+import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 
 import java.sql.Timestamp;
@@ -46,6 +48,9 @@ public class ConverstationController {
 
     @Autowired
     MessageRepository messageRepository;
+
+    @Autowired
+    User_ConversationRepository userConversationRepository;
     @GetMapping()
     public List<Message> getUserConversation(HttpServletRequest request){
         String token = jwtTokenFilter.getJwtFromRequest(request);
@@ -90,5 +95,21 @@ public class ConverstationController {
 
         }
 
+    }
+
+    @GetMapping("/message/{conversationId}")
+    public ResponseEntity<?> getCurrentConversationMessage(HttpServletRequest request,@PathVariable int conversationId){
+        try{
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            User_Conversation uc = userConversationRepository.getUserConversationByUsernameAndConversationId(username,conversationId);
+            if(uc!=null){
+                return ResponseEntity.ok(messageRepository.getUserConversationMessage(conversationId));
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

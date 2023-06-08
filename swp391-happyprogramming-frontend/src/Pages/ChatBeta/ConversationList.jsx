@@ -9,16 +9,14 @@ import Conversation from '../Chat/Conversation';
 import NavBar from '../../Components/Navbar/NavBar';
 import MessageTo from '../Chat/MessageTo';
 import MessageFrom from '../Chat/MessageFrom';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 var stompClient = null
-const PrivateChatRoom = () => {
-    const { conversationId } = useParams();
+const ConversationList = () => {
     const [conversations, setConversation] = useState([]);
     const [conversationMessages, setConversationMessages] = useState(new Map());
     const [publicChats, setPublicChats] = useState([]);
     const [tab, setTab] = useState();
-    const [currentConversationMessage,setCurrentConversationMessage] = useState([]);
     const [userData, setUserData] = useState({
         username: '',
         receivername: '',
@@ -66,6 +64,9 @@ const PrivateChatRoom = () => {
         const getUserConversation = async () => {
             //conversation
             const result = await api.get("/api/conversation/user-conversation");
+
+
+
             setConversation(result.data)
         };
         fetchUsername();
@@ -82,17 +83,6 @@ const PrivateChatRoom = () => {
         setConversationMessages(map);
     }, [conversations])
 
-    //fetch current conversation message
-    useEffect(() =>{
-        try{
-            api.get("/api/conversation/message/"+conversationId).then((result)=>{
-                setCurrentConversationMessage(result.data)
-            })
-        }catch{
-            
-        }
-    },[conversationId])
-
     useEffect(() => {
         if (userData.username !== '') {
             connect();
@@ -108,17 +98,8 @@ const PrivateChatRoom = () => {
 
     //change chat room
     const handleTabChange = (conversationId) => {
-        if (stompClient) {
-            if (tab) {
-                stompClient.unsubscribe(`/chatroom/${tab}`);
-            }
-            stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
-        }
-
-        setTab(conversationId);
-        setPublicChats([]);
-        setUserData({ ...userData, conversationId: conversationId });
-        setConversationMessages(new Map(conversationMessages)); // Update the state with a new instance of the Map
+        const Navigate = useNavigate();
+        Navigate("/chat/"+conversationId)
     };
 
 
@@ -126,22 +107,22 @@ const PrivateChatRoom = () => {
     const onMessageReceived = (payload) => {
         const payloadData = JSON.parse(payload.body);
         console.log(payloadData);
-
+      
         setConversationMessages((prevConversationMessages) => {
-            const updatedConversationMessages = new Map(prevConversationMessages);
-            const conversationId = payloadData.conversationId;
-
-            if (updatedConversationMessages.has(conversationId)) {
-                const messages = updatedConversationMessages.get(conversationId);
-                updatedConversationMessages.set(conversationId, [...messages, payloadData]);
-            } else {
-                updatedConversationMessages.set(conversationId, [payloadData]);
-            }
-
-            return updatedConversationMessages;
+          const updatedConversationMessages = new Map(prevConversationMessages);
+          const conversationId = payloadData.conversationId;
+      
+          if (updatedConversationMessages.has(conversationId)) {
+            const messages = updatedConversationMessages.get(conversationId);
+            updatedConversationMessages.set(conversationId, [...messages, payloadData]);
+          } else {
+            updatedConversationMessages.set(conversationId, [payloadData]);
+          }
+      
+          return updatedConversationMessages;
         });
-    };
-
+      };
+      
 
     //send message
     const handleMessage = (event) => {
@@ -150,19 +131,19 @@ const PrivateChatRoom = () => {
     };
 
     const sendValue = () => {
-        var chatMessage = {
-            senderName: userData.username,
-            message: userData.message,
-            status: "MESSAGE",
-            conversationId: tab
-        };
-        console.log(chatMessage);
-        console.log("tab ne: " + tab);
-        stompClient.send("/chatroom/" + tab, {}, JSON.stringify(chatMessage));
-        api.post("/api/conversation/sentmessage", chatMessage);
-        setUserData({ ...userData, message: "" });
+            var chatMessage = {
+                senderName: userData.username,
+                message: userData.message,
+                status: "MESSAGE",
+                conversationId: tab
+            };
+            console.log(chatMessage);
+            console.log("tab ne: " + tab);
+            stompClient.send("/chatroom/" + tab, {}, JSON.stringify(chatMessage));
+            api.post("/api/conversation/sentmessage",chatMessage);
+            setUserData({ ...userData, message: "" });
     };
-    console.log(currentConversationMessage)
+    console.log(conversationMessages)
     // console.log(conversations);
     return (
         <div>
@@ -176,52 +157,18 @@ const PrivateChatRoom = () => {
                     </div>
                     {conversations.map((conversation) => (
                         <li key={conversation.conversation.conversationId}>
-                            <Link to={"/chat/" + conversation.conversation.conversationId}>{conversation.conversation.conversationName}</Link>
-                        </li>
+                        <Link to={"/chat/"+conversation.conversation.conversationId}>{conversation.conversation.conversationName}</Link>
+                      </li>
                     ))}
                 </div>
                 <div className="Message-List">
 
-                    <div className="messages">
+                    
 
-                            <>
-                                {currentConversationMessage.map((chat) => (
-                                    <li
-                                        className={`message ${chat.messageKey.sentBy === userData.username && "self"}`}
-                                        
-                                    >
-                                        {chat.messageKey.sentBy !== userData.username && (
-                                            <div>
-                                                <div className="avatar">{chat.messageKey.sentBy}</div>
-                                                <MessageTo message={chat.msgContent} />
-                                            </div>
-
-                                        )}
-                                        {chat.messageKey.sentBy === userData.username && (
-                                            <div>
-                                                <div className="avatar">{chat.messageKey.sentBy}</div>
-                                                <MessageFrom message={chat.msgContent} />
-
-                                            </div>
-                                        )}
-                                    </li>
-                                ))}
-                            </>
-                    </div>
-
-                    <div className="input-message">
-                        <button>
-                            <ion-icon name="add-circle-outline"></ion-icon>
-                        </button>
-                        <input type="text" placeholder="Type a message" value={userData.message} onChange={handleMessage}></input>
-                        <button>
-                            <ion-icon name="send" onClick={sendValue}></ion-icon>
-                        </button>
-                    </div>
                 </div>
             </div>
 
         </div>
     )
 }
-export default PrivateChatRoom;
+export default ConversationList;

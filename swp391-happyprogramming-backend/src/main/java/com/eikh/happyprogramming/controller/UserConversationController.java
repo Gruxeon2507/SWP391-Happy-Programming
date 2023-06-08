@@ -40,9 +40,13 @@ public class UserConversationController {
         
     @GetMapping("/user-conversation")
     public List<User_Conversation> getLoginUserConversation(HttpServletRequest request){
-        String token = jwtTokenFilter.getJwtFromRequest(request);
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        
-        return user_ConversationRepository.getLoginUserConversation(username);
+        try{
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            return user_ConversationRepository.getLoginUserConversation(username);
+        }catch(Exception e){
+            return null;
+        }
+
     }
 }

@@ -1,3 +1,5 @@
+USE FU_SWP391_HappyProgramming;
+
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('1', 'course 1');
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('2', 'course 2');
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('3', 'course 3');
@@ -15,4 +17,9 @@ INSERT INTO User_Conversation (conversationId, username) VALUES ('1', 'huyenment
 INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'anmentor');
 
 
-select * from Course
+INSERT INTO Message(conversationId,sentBy,sentAt,msgContent) value (1,"duckm",null,"hello");
+INSERT INTO Message(conversationId,sentBy,sentAt,msgContent) value (1,"huyenmentor",null,"hi");
+
+SELECT * FROM Message m join Conversation c on m.conversationId = c.conversationId WHERE conversationId=1 ORDER BY sentAt
+
+select * from Message

@@ -32,6 +32,7 @@ import "./global/global.css";
 import CreatePost from "./Components/CreatePost/CreatePost";
 import CourseFeed from "./Pages/CourseFeed/CourseFeed";
 import PrivateChatRoom from "./Pages/ChatBeta/ChatAlpha";
+import ConversationList from "./Pages/ChatBeta/ConversationList";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -52,7 +53,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/landing"></Navigate>}></Route>
       <Route path="/landing" element={<Home />} />
-      <Route path="/chat" element={<ChatRoom />} />
+      <Route path="/chat" element={<ConversationList />} />
       <Route path="/courses" element={<Homepage />} />
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
       <Route path="/cdt" element={<CourseDetails />} />
@@ -74,7 +75,7 @@ function App() {
       
       <Route path="/createPost" element={<CreatePost></CreatePost>}></Route>
       <Route path="/courses/feed/:courseId" element={<CourseFeed></CourseFeed>}></Route>
-      <Route path="/chat2" element={<PrivateChatRoom></PrivateChatRoom>}></Route>
+      <Route path="/chat/:conversationId" element={<PrivateChatRoom></PrivateChatRoom>}></Route>
       {features &&
         features.map((feature) => {
           if (feature.url === "/home") {
