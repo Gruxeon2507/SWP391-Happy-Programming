@@ -1,6 +1,6 @@
+
 import React, { useState, useEffect } from "react";
 import CourseServices from "../../services/CourseServices";
-import UserServices from "../../services/UserServices";
 import RequestService from "../../services/RequestService";
 import convertDateFormat from "../../util/DateConvert";
 import { Pagination } from "antd";
@@ -14,7 +14,8 @@ const RequestManage = () => {
     const [sortOrder, setSortOrder] = useState("desc");
     const [selectedCourseId, setSelectedCourseId] = useState("");
     const [checkedRequest, setCheckedRequest] = useState([]);
-    const [selectedValue, setSelectedValue] = useState('1');
+    const [selectedValue, setSelectedValue] = useState(1);
+    const [responses, setResponses] = useState([])
     const sizePerPage = 10;
 
     const getCoursesOfMentor = () => {
@@ -39,27 +40,35 @@ const RequestManage = () => {
                 console.log("loi lay ra members" + error);
             });
     }
-    const updateAndInsert = (courseId, statusId, username) => {
-        RequestService.updateParticipadeInsertRequest(courseId, statusId, username)
+
+    const getAccessRejectOfCourse = () => {
+        RequestService.getAccessRejectRequestOfCourse(selectedCourseId)
             .then((response) => {
                 console.log(response.data);
+                setResponses(response.data);
             })
             .catch((error) => {
-                console.log("loi update and insert" + error);
+                console.log("loi lay ra reponses" + error);
             });
     }
+
     useEffect(() => {
         getCoursesOfMentor();
+        getAccessRejectOfCourse()
 
     }, []);
+    useEffect(() => {
+        getAccessRejectOfCourse()
+    }, [users]);
     const handleCheckChange = (e) => {
         const { name, checked } = e.target;
         if (name === "allSelect") {
             let tempUser = users.map(user => { return { ...user, isChecked: checked } })
             setUsers(tempUser)
+            setCheckedRequest(users.map(user => { return [user.requestKey.username].join(',') }));
         }
         else {
-            console.log("in cho nay nay", e.target.name);
+            console.log("vua click cho nay nay", e.target.name);
             let tempUser = users.map(user => user.requestKey.username === name ? { ...user, isChecked: checked } : user)
             setUsers(tempUser)
             console.log(checked);
@@ -84,27 +93,54 @@ const RequestManage = () => {
         getPendingUserOfCourse(courseId, 0, sizePerPage, sortField, sortOrder);
     }
 
+    const handleSelectChange = (event) => {
+        const value = event.target.value;
+        setSelectedValue(value);
+    };
+
     const handlePageChange = (current) => {
         setCurrentPage(current);
         getPendingUserOfCourse(selectedCourseId, current - 1, sizePerPage, sortField, sortOrder);
     };
 
-    const handleSelectChange = (event) => {
-        const value = event.target.value;
-        setSelectedValue(value);
-    };
-    
+    const handleSubmitOne = (statusId, username) => {
+        const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject this mentee") : false;
+        if (confirmed || statusId === 1) {
+            RequestService.updateParticipadeInsertRequest(selectedCourseId, statusId, [username])
+                .then((response) => {
+                    console.log(response.data);
+                    setCheckedRequest([])
+                    getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
 
-    const handleSubmitOne = async (statusId, username) => {
-        await updateAndInsert(selectedCourseId, statusId, [username]);
-        getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
+                })
+                .catch((error) => {
+                    console.log("loi update and insert" + error);
+                });
+        }
     };
-    const handleSubmitMany = async () => {
-        await updateAndInsert(selectedCourseId, selectedValue, checkedRequest);
-        getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
+    const handleSubmitMany = () => {
+        var statusId = Number(selectedValue);
+        const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject these mentees") : false;
+        if (confirmed || statusId === 1) {
+            RequestService.updateParticipadeInsertRequest(selectedCourseId, selectedValue, checkedRequest)
+                .then((response) => {
+                    console.log(response.data);
+                    setCheckedRequest([])
+                    getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
+                })
+                .catch((error) => {
+                    console.log("loi update and insert" + error);
+                });
+        }
     };
+    useEffect(() => {
+        getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder)
+    }, [sortField, sortOrder]);
 
-
+    const handleSortChange = (e) => {
+        setSortOrder(sortOrder == "asc" ? "desc" : "asc");
+        setSortField(e.target.id);
+    }
     return (
         <div>
 
@@ -115,7 +151,7 @@ const RequestManage = () => {
                         checked={users.filter(user => user?.isChecked !== true).length < 1}
                         onChange={(e) => handleCheckChange(e)}
                     />
-                    <label class="form-check-label" for="checkbox-all">
+                    <label class="form-check-label" htmlFor="checkbox-all">
                         Check All
                     </label>
                 </div>
@@ -125,7 +161,7 @@ const RequestManage = () => {
                     <option value="" >-- Courses --</option>
                     {teachCourses.map((course) => (
                         <option value={course.courseId} key={course.id} >
-                            <span>{course.courseName}</span>
+                            {course.courseName}
                         </option>
                     ))}
 
@@ -143,10 +179,23 @@ const RequestManage = () => {
 
             <table >
                 <thead>
-                    <th>#</th>
-                    <th>Mentee<ion-icon name="filter-outline"></ion-icon></th>
-                    <th>Request Time<ion-icon name="filter-outline"></ion-icon></th>
-                    <th>Action</th>
+                    <tr>
+
+                        <th>#</th>
+                        <th>Mentee
+                            <span onClick={handleSortChange}>
+                                {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
+                                <ion-icon id="username" name="list-outline"></ion-icon>
+                            </span>
+                        </th>
+                        <th>Request Time
+                            <span onClick={handleSortChange}>
+                                {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
+                                <ion-icon id="requestTime" name="list-outline"></ion-icon>
+                            </span>
+                        </th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {users.map((user) => {
@@ -161,22 +210,26 @@ const RequestManage = () => {
                                     />
                                 </td>
                                 <td>
-                                    <label class="form-check-label" for={user.requestKey.username}>
+                                    <label class="form-check-label" htmlFor={user.requestKey.username}>
                                         {user.requestKey.username}
                                     </label>
                                 </td>
 
-                                <td>{convertDateFormat(user.requestKey.requestTime)}
+                                <td>
+                                    <label class="form-check-label" htmlFor={user.requestKey.username}>
+                                        {convertDateFormat(user.requestKey.requestTime)}
+                                    </label>
+
                                 </td>
 
                                 <td>
-                                    <button 
-                                    onClick={() => handleSubmitOne(1, user.requestKey.username)}
-                                    disabled={checkedRequest.length > 1}
+                                    <button
+                                        onClick={() => handleSubmitOne(1, user.requestKey.username)}
+                                        disabled={checkedRequest.length > 1}
                                     >Access </button>
-                                    <button 
-                                    onClick={() => handleSubmitOne(-1, user.requestKey.username)}
-                                    disabled={checkedRequest.length > 1}
+                                    <button
+                                        onClick={() => handleSubmitOne(-1, user.requestKey.username)}
+                                        disabled={checkedRequest.length > 1}
                                     >Reject</button>
                                 </td>
                             </tr>
@@ -197,9 +250,30 @@ const RequestManage = () => {
                     }}
                 />
             </div>
+
+            <p>Your Recent Respond</p>
+            <table >
+                <thead>
+                    <tr>
+                        <th>Mentee</th>
+                        <th>Respond At</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {responses.map((user) => {
+                        return (
+                            <tr key={user.requestKey.username}>
+                                <td> {user.requestKey.username}</td>
+                                <td>{convertDateFormat(user.requestKey.requestTime)}</td>
+                                <td>{user.status.statusName}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+
         </div>
-
-
     );
 };
 

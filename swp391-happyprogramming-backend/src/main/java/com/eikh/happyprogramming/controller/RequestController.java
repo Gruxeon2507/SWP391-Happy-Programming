@@ -11,6 +11,7 @@ import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.RequestRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.RoleUtils;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author ADMIN
+ * @author emiukhoahoc 
  */
 @CrossOrigin("*")
 @RestController
@@ -68,56 +71,14 @@ public class RequestController {
         }
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        Page<Request> pageUsers = requestRepository.getRequestsUserOfCourse(pageable, courseId);
+        Page<Request> pageUsers = requestRepository.getRendingRequestOfCourse(pageable, courseId);
         System.out.println();
         return new ResponseEntity<>(pageUsers, HttpStatus.OK);
     }
 
-//    //@maiphuonghoang 
-//    @Transactional
-//    @PostMapping("/status")
-//    public String updateParticipateInsertRequest(
-//            HttpServletRequest request,
-//            @RequestParam(name = "courseId") Integer courseId,
-//            @RequestParam(name = "username") String username,
-//            @RequestParam(name = "statusId") Integer statusId
-//    ) {
-//        if (!roleUtils.hasRoleFromToken(request, 2)) {
-//            return null;
-//        }
-//        try {
-//            transactionTemplate.execute(status -> {
-//                try {
-//                    Request r = new Request();
-//                    java.util.Date today = new java.util.Date();
-//                    java.sql.Date sqlToday = new java.sql.Date(today.getTime());
-//                    Status s = new Status();
-//                    RequestKey key = new RequestKey();
-//                    key.setUsername(username);
-//                    key.setCourseId(courseId);
-//                    key.setRequestTime(sqlToday);
-//                    s.setStatusId(statusId);
-//                    r.setStatus(s);
-//                    r.setRequestKey(key);
-//                    requestRepository.save(r);
-////                    System.out.println(1/0);
-//                    participateRepository.updateStatus(statusId, courseId, username);
-//                    System.out.println("Request save and update success");
-//                } catch (Exception ex) {
-//                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-//                    status.setRollbackOnly();
-//                }
-//                return null;
-//            });
-//        } catch (Exception ex) {
-//            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//
-//    }
-
+    //@maiphuonghoang 
     @Transactional
-    @PostMapping("/status-many")
+    @PostMapping("/status")
     public String updateParticipateInsertRequests(
             HttpServletRequest request,
             @RequestParam(name = "courseId") Integer courseId,
@@ -159,5 +120,15 @@ public class RequestController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    //@maiphuonghoang 
+    @GetMapping("/access-reject/{courseId}")
+    public List<Request> getAccessRejectRequestOfCourse(HttpServletRequest request,
+            @PathVariable Integer courseId){
+         if (!roleUtils.hasRoleFromToken(request, 2)) {
+            return null;
+        }
+         return requestRepository.getAccessRejectRequest(courseId);
     }
 }

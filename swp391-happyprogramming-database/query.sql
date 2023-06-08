@@ -112,4 +112,30 @@ WHERE p.statusId = 0 AND re.requestStatus = 0
   );
   
 UPDATE Participate p SET p.statusId = 0 WHERE p.username = 'phucdl' AND p.courseId = 2;
-select * from Participate p where p.username = 'phucdl' and p.courseId = 2                 
+select * from Participate p where p.username = 'phucdl' and p.courseId = 2;
+select * from Participate p where p.courseId = 2;            
+SELECT * FROM Request order by requestTime desc
+
+SELECT * FROM `User` u
+JOIN Participate p ON u.username = p.username
+JOIN Course c ON p.courseId = c.courseId
+JOIN Request re ON re.username = p.username
+WHERE p.statusId = 0 AND re.requestStatus = 0
+  AND re.courseId = p.courseId AND re.courseId = 2
+  AND (re.username, re.requestTime) IN (
+    SELECT username, MAX(requestTime)
+    FROM Request WHERE courseId = 2 AND requestStatus = 0
+    GROUP BY username
+  );
+  
+SELECT * FROM Request re 
+JOIN Participate p ON re.username = p.username
+JOIN Course c ON p.courseId = c.courseId
+ JOIN `User` u ON u.username = p.username
+WHERE p.statusId IN ( 1, -1) AND re.requestStatus IN ( 1, -1)
+  AND re.courseId = p.courseId AND re.courseId = 2
+  AND (re.username, re.requestTime) IN (
+    SELECT username, MAX(requestTime)
+    FROM Request WHERE courseId = 2 AND requestStatus IN ( 1, -1)
+    GROUP BY username
+  ) ORDER BY re.requestTime desc LIMIT 10 

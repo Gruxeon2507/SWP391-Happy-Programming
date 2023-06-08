@@ -20,7 +20,11 @@ class RequestService {
       formData.append("courseId", courseId);
       formData.append("statusId", statusId);
       formData.append("usernames", usernames);
-      return api.post("/api/requests/status-many", formData);
+      return api.post("/api/requests/status", formData);
+    }
+
+    getAccessRejectRequestOfCourse(courseId) {
+      return api.get(`/api/requests/access-reject/${courseId}`);
     }
 
 }
