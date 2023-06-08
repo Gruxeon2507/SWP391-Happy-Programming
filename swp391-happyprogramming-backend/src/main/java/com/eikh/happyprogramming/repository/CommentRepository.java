@@ -6,11 +6,19 @@ package com.eikh.happyprogramming.repository;
 
 import com.eikh.happyprogramming.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import javax.transaction.Transactional;
 
 /**
  *
  * @author huyen
  */
 public interface CommentRepository extends JpaRepository<Comment, Integer>{
-    
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Comment SET commentContent = ?2 WHERE commentId = ?1", nativeQuery = true)
+    void updateComment(int commentId, String commentContent);
 }
