@@ -1,5 +1,11 @@
 USE FU_SWP391_HappyProgramming;
 
+-- select * from Comment;
+-- select * from `Post`;
+insert into `Post` value (1, null, 'hello cac ems', 1, 'huyenmentor');
+insert into `Comment`(commentId, commentContent, parentId, postId, commentedBy) values (1, "hello", null, 1, 'phuonghm');
+insert into `Comment`(commentId, commentContent, parentId, postId, commentedBy) values (2, "hi", '1', 1, 'duckm');
+insert into `Comment`(commentId, commentContent, parentId, postId, commentedBy) values (3, "whatsup", 2, 1, 'giangpt');
 
 -- Insert into `User`
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', '', '', 1);
