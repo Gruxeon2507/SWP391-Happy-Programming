@@ -57,7 +57,6 @@ function App() {
       <Route path="/chat" element={<Chat />} />
       <Route path="/courses" element={<Homepage />} />
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
-      <Route path="/cdt" element={<CourseDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/admin" element={<AdminManage />} />

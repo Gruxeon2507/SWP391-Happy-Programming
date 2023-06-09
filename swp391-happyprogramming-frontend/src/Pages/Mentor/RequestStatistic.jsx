@@ -188,12 +188,15 @@ const RequestStatistic = () => {
                     <div className="overAll-stat">
                         <div className="stat-item">
                             thong tin j do 1
+                            tong so thanh vien?
                         </div>
                         <div className="stat-item">
-                            thong tin j do 1
+                            thong tin j do 2
+                            tong so jj do
                         </div>
                         <div className="stat-item">
-                            thong tin j do 1
+                            thong tin j do 3
+                            request?
                         </div>
                     </div>
                     <div className="chart-container">

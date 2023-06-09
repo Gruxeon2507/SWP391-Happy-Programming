@@ -2,7 +2,6 @@
 .mentor-statistic-container {
   display: flex;
   flex-direction: row;
-
   height: 100svh;
   box-sizing: border-box;
   position: relative;
@@ -12,6 +11,10 @@
   position: relative;
   top: 25%;
   height: min-content;
+}
+
+.mentor-menu-sideBar ul {
+  overflow-y: scroll;
 }
 
 .mentor-manageNav img {
@@ -84,6 +87,18 @@
   width: calc(100% / 3);
   border: 1px solid var(--darkItem3);
   box-sizing: border-box;
+  margin: 2rem;
+  border-radius: 1rem;
+}
+
+.stat-item:nth-child(1) {
+  background-color: var(--item);
+}
+.stat-item:nth-child(2) {
+  background-color: var(--item2);
+}
+.stat-item:nth-child(3) {
+  background-color: #00ffaa;
 }
 
 .chart-container {
@@ -137,7 +152,8 @@
   color: var(--item);
   font-size: 1.5rem;
   background-color: var(--lightItem);
-  margin-left: 0;
+  margin-left: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .list-course-nav li:hover {
@@ -152,13 +168,17 @@
   display: flex;
   flex-direction: row;
   background-color: var(--lightItem);
-  border-right: 2px solid var(--darkItem3);
   margin: 1rem 0;
   overflow: hidden;
 }
 
 .course-statistic-container.active {
-  width: calc(95svw - 300px);
+  width: calc(94svw - 300px);
+  border-right: 2px solid var(--darkItem3);
+}
+
+.course-statistic-container.active ~ .list-course-by-Mentor {
+  background-color: red;
 }
 
 .bar-chart-course-content,
