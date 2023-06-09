@@ -16,6 +16,7 @@ const RequestManage = () => {
     const [checkedRequest, setCheckedRequest] = useState([]);
     const [selectedValue, setSelectedValue] = useState(1);
     const [responses, setResponses] = useState([])
+    const haveData = users.length == 0 && responses.length == 0 
     const sizePerPage = 10;
 
     const getCoursesOfMentor = () => {
@@ -23,6 +24,8 @@ const RequestManage = () => {
             .then((response) => {
                 console.log(response.data);
                 setTeachCourses(response.data);
+                // setSelectedCourseId(response.data[0].courseId)
+                // getPendingUserOfCourse(response.data[0].courseId, 0, sizePerPage, sortField, sortOrder);                
             })
             .catch((error) => {
                 console.log("loi lay ra course" + error);
@@ -155,7 +158,7 @@ const RequestManage = () => {
                         Check All
                     </label>
                 </div>
-                <select class="form-control form-control-sm checkbox-select-all" name="action"
+                <select className="form-control form-control-sm checkbox-select-all" name="action"
                     onChange={(e) => handleCourseChange(e)}
                 >
                     <option value="" >-- Courses --</option>
@@ -177,102 +180,107 @@ const RequestManage = () => {
             </div>
 
 
-            <table >
-                <thead>
-                    <tr>
+            <div style={{ display: !haveData ? "inline" : "none" }} className="show-info">
 
-                        <th>#</th>
-                        <th>Mentee
-                            <span onClick={handleSortChange}>
-                                {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
-                                <ion-icon id="username" name="list-outline"></ion-icon>
-                            </span>
-                        </th>
-                        <th>Request Time
-                            <span onClick={handleSortChange}>
-                                {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
-                                <ion-icon id="requestTime" name="list-outline"></ion-icon>
-                            </span>
-                        </th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user) => {
-                        return (
-                            <tr key={user.requestKey.username}>
+                <table >
+                    <thead>
+                        <tr>
 
-                                <td>
+                            <th>#</th>
+                            <th>Mentee
+                                <span onClick={handleSortChange}>
+                                    {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
+                                    <ion-icon id="username" name="list-outline"></ion-icon>
+                                </span>
+                            </th>
+                            <th>Request Time
+                                <span onClick={handleSortChange}>
+                                    {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
+                                    <ion-icon id="requestTime" name="list-outline"></ion-icon>
+                                </span>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => {
+                            return (
+                                <tr key={user.requestKey.username}>
 
-                                    <input class="form-check-input" type="checkbox" name={user.requestKey.username} value="" id={user.requestKey.username}
-                                        checked={user?.isChecked || false}
-                                        onChange={(e) => { handleCheckChange(e) }}
-                                    />
-                                </td>
-                                <td>
-                                    <label class="form-check-label" htmlFor={user.requestKey.username}>
-                                        {user.requestKey.username}
-                                    </label>
-                                </td>
+                                    <td>
 
-                                <td>
-                                    <label class="form-check-label" htmlFor={user.requestKey.username}>
-                                        {convertDateFormat(user.requestKey.requestTime)}
-                                    </label>
+                                        <input class="form-check-input" type="checkbox" name={user.requestKey.username} value="" id={user.requestKey.username}
+                                            checked={user?.isChecked || false}
+                                            onChange={(e) => { handleCheckChange(e) }}
+                                        />
+                                    </td>
+                                    <td>
+                                        <label class="form-check-label" htmlFor={user.requestKey.username}>
+                                            {user.requestKey.username}
+                                        </label>
+                                    </td>
 
-                                </td>
+                                    <td>
+                                        <label class="form-check-label" htmlFor={user.requestKey.username}>
+                                            {convertDateFormat(user.requestKey.requestTime)}
+                                        </label>
 
-                                <td>
-                                    <button
-                                        onClick={() => handleSubmitOne(1, user.requestKey.username)}
-                                        disabled={checkedRequest.length > 1}
-                                    >Access </button>
-                                    <button
-                                        onClick={() => handleSubmitOne(-1, user.requestKey.username)}
-                                        disabled={checkedRequest.length > 1}
-                                    >Reject</button>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            <div className="Pagination-Container">
-                <Pagination
-                    total={totalItems}
-                    defaultPageSize={sizePerPage}
-                    showTotal={(total, range) =>
-                        `${range[0]}-${range[1]} of ${total} mentees`
-                    }
-                    current={currentPage}
-                    onChange={(current) => {
-                        handlePageChange(current);
-                    }}
-                />
+                                    </td>
+
+                                    <td>
+                                        <button
+                                            onClick={() => handleSubmitOne(1, user.requestKey.username)}
+                                            disabled={checkedRequest.length > 1}
+                                        >Access </button>
+                                        <button
+                                            onClick={() => handleSubmitOne(-1, user.requestKey.username)}
+                                            disabled={checkedRequest.length > 1}
+                                        >Reject</button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+                <div className="Pagination-Container">
+                    <Pagination
+                        total={totalItems}
+                        defaultPageSize={sizePerPage}
+                        showTotal={(total, range) =>
+                            `${range[0]}-${range[1]} of ${total} mentees`
+                        }
+                        current={currentPage}
+                        onChange={(current) => {
+                            handlePageChange(current);
+                        }}
+                    />
+                </div>
+
+                <p>Your Recent Respond</p>
+                <table >
+                    <thead>
+                        <tr>
+                            <th>Mentee</th>
+                            <th>Respond At</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {responses.map((user) => {
+                            return (
+                                <tr key={user.requestKey.username}>
+                                    <td> {user.requestKey.username}</td>
+                                    <td>{convertDateFormat(user.requestKey.requestTime)}</td>
+                                    <td>{user.status.statusName}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
-
-            <p>Your Recent Respond</p>
-            <table >
-                <thead>
-                    <tr>
-                        <th>Mentee</th>
-                        <th>Respond At</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {responses.map((user) => {
-                        return (
-                            <tr key={user.requestKey.username}>
-                                <td> {user.requestKey.username}</td>
-                                <td>{convertDateFormat(user.requestKey.requestTime)}</td>
-                                <td>{user.status.statusName}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-
+            <div style={{ display: haveData? "inline" : "none" }} className="not-show-info">
+                <p>Choose a course to view request</p>
+            </div>
         </div>
     );
 };
