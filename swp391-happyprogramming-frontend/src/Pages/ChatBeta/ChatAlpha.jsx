@@ -15,7 +15,8 @@ var stompClient = null
 const PrivateChatRoom = () => {
     const { conversationId } = useParams();
     const [conversations, setConversation] = useState([]);
-    const [conversationMessages, setConversationMessages] = useState(new Map());
+    const [conversationMessages, setConversationMessages] = useState();
+    const [newConversationMessage,setNewConversationMessage] = useState([]);
     const [publicChats, setPublicChats] = useState([]);
     const [tab, setTab] = useState();
     const [currentConversationMessage,setCurrentConversationMessage] = useState([]);
@@ -38,7 +39,7 @@ const PrivateChatRoom = () => {
     }
     const onConnected = () => {
         setUserData({ ...userData, connected: true });
-        // stompClient.subscribe(`/chatroom/${tab.toLowerCase()}`, onMessageReceived);
+        stompClient.subscribe(`/chatroom/${tab}`, onMessageReceived);
         // stompClient.subscribe(`/user/${userData.username}/private`, onPrivateMessage);
         userJoin();
     };
@@ -70,7 +71,7 @@ const PrivateChatRoom = () => {
         };
         fetchUsername();
         getUserConversation();
-    }, []);
+    }, [conversationId]);
 
     useEffect(() => {
         let map = new Map(conversationMessages);
@@ -85,9 +86,11 @@ const PrivateChatRoom = () => {
     //fetch current conversation message
     useEffect(() =>{
         try{
+            handleTabChange(tab);
             api.get("/api/conversation/message/"+conversationId).then((result)=>{
                 setCurrentConversationMessage(result.data)
             })
+            setTab(conversationId);
         }catch{
             
         }
@@ -98,49 +101,28 @@ const PrivateChatRoom = () => {
             connect();
         }
 
-        return () => {
-            if (stompClient) {
-                stompClient.disconnect();
-            }
-        };
     }, [userData.username]);
     // console.log(conversations)
 
     //change chat room
-    const handleTabChange = (conversationId) => {
+    const handleTabChange =  async (tab) => {
         if (stompClient) {
-            if (tab) {
-                stompClient.unsubscribe(`/chatroom/${tab}`);
-            }
+            stompClient.unsubscribe(`/chatroom/${tab}`);
+            setNewConversationMessage(new Array());
             stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
-        }
 
-        setTab(conversationId);
-        setPublicChats([]);
-        setUserData({ ...userData, conversationId: conversationId });
-        setConversationMessages(new Map(conversationMessages)); // Update the state with a new instance of the Map
+            
+        }
     };
 
 
     //when new message arrive
     const onMessageReceived = (payload) => {
         const payloadData = JSON.parse(payload.body);
-        console.log(payloadData);
-
-        setConversationMessages((prevConversationMessages) => {
-            const updatedConversationMessages = new Map(prevConversationMessages);
-            const conversationId = payloadData.conversationId;
-
-            if (updatedConversationMessages.has(conversationId)) {
-                const messages = updatedConversationMessages.get(conversationId);
-                updatedConversationMessages.set(conversationId, [...messages, payloadData]);
-            } else {
-                updatedConversationMessages.set(conversationId, [payloadData]);
-            }
-
-            return updatedConversationMessages;
-        });
-    };
+        console.log("set tin nhan");
+        setNewConversationMessage((prevMessages) => [...prevMessages, payloadData]);
+      };
+      
 
 
     //send message
@@ -154,15 +136,15 @@ const PrivateChatRoom = () => {
             senderName: userData.username,
             message: userData.message,
             status: "MESSAGE",
-            conversationId: tab
+            conversationId: conversationId
         };
         console.log(chatMessage);
         console.log("tab ne: " + tab);
-        stompClient.send("/chatroom/" + tab, {}, JSON.stringify(chatMessage));
+        stompClient.send("/chatroom/" + conversationId, {}, JSON.stringify(chatMessage));
         api.post("/api/conversation/sentmessage", chatMessage);
         setUserData({ ...userData, message: "" });
     };
-    console.log(currentConversationMessage)
+    console.log(newConversationMessage)
     // console.log(conversations);
     return (
         <div>
@@ -183,8 +165,6 @@ const PrivateChatRoom = () => {
                 <div className="Message-List">
 
                     <div className="messages">
-
-                            <>
                                 {currentConversationMessage.map((chat) => (
                                     <li
                                         className={`message ${chat.messageKey.sentBy === userData.username && "self"}`}
@@ -206,7 +186,30 @@ const PrivateChatRoom = () => {
                                         )}
                                     </li>
                                 ))}
-                            </>
+                                {
+                                    newConversationMessage.map((chat)=>(
+                                        <li
+                                        className={`message ${chat.senderName === userData.username && "self"}`}
+                                        
+                                    >
+                                        {chat.senderName !== userData.username && (
+                                            <div>
+                                                <div className="avatar">{chat.senderName}</div>
+                                                <MessageTo message={chat.message} />
+                                            </div>
+
+                                        )}
+                                        {chat.senderName === userData.username && (
+                                            <div>
+                                                <div className="avatar">{chat.senderName}</div>
+                                                <MessageFrom message={chat.message} />
+
+                                            </div>
+                                        )}
+                                    </li>
+                                    ))
+                                }
+                            
                     </div>
 
                     <div className="input-message">

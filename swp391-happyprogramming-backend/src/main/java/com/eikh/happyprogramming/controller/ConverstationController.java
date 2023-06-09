@@ -73,7 +73,6 @@ public class ConverstationController {
             String username = jwtTokenUtil.getUsernameFromToken(token);
             if(username.equals(message.getSenderName())){
                 com.eikh.happyprogramming.model.Message m = new com.eikh.happyprogramming.model.Message();
-
                 MessageKey mk = new MessageKey();
                 mk.setConversationId(message.getConversationId());
                 mk.setSentBy(message.getSenderName());
