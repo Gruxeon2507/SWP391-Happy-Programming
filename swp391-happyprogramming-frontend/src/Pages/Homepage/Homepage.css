@@ -258,6 +258,7 @@ option {
 }
 
 .course:nth-child(1) .couse-card-view span,
+.course:nth-child(2) .couse-card-view span,
 .course:nth-child(3) .couse-card-view span,
 .course:nth-child(9) .couse-card-view span,
 .course:nth-child(11) .couse-card-view span,

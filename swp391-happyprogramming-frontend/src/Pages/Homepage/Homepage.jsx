@@ -24,12 +24,13 @@ import c12 from "../../Assets/courseBG/c12.png";
 import c13 from "../../Assets/courseBG/c13.png";
 import c14 from "../../Assets/courseBG/c14.png";
 import c15 from "../../Assets/courseBG/c15.png";
+import c21 from "../../Assets/courseBG/c21.png";
 
 function Homepage() {
   const navigate = useNavigate();
 
   const courseBackgrounds = [
-    c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15
+    c1, c21, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15
   ];
 
   const [categories, setCategories] = useState([]);
