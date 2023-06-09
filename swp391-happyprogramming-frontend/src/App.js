@@ -16,6 +16,7 @@ import Setting from "./Pages/Setting/Setting";
 import userProfile from "./Pages/UserProfile/userProfile";
 import Homepage from "./Pages/Homepage/Homepage";
 import MyCourse from "./Pages/MyCourse/MyCourse";
+import ChatRoom from "./Pages/ChatBeta/ChatRoom";
 
 import CourseDetails from "./Pages/Course/CourseDetails";
 import MentorManagement from "./Pages/Admin/MentorManagement";
@@ -31,6 +32,8 @@ import RequestManage from "./Pages/Mentor/RequestManage";
 import "./global/global.css";
 import CreatePost from "./Components/CreatePost/CreatePost";
 import CourseFeed from "./Pages/CourseFeed/CourseFeed";
+import PrivateChatRoom from "./Pages/ChatBeta/ChatAlpha";
+import ConversationList from "./Pages/ChatBeta/ConversationList";
 import RequestStatistic from "./Pages/Mentor/RequestStatistic";
 
 import PostDetail from "./Pages/PostDetail/PostDetail";
@@ -54,7 +57,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/landing"></Navigate>}></Route>
       <Route path="/landing" element={<Home />} />
-      <Route path="/chat" element={<Chat />} />
+      <Route path="/chat" element={<ConversationList />} />
       <Route path="/courses" element={<Homepage />} />
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
       <Route path="/login" element={<Login />} />
@@ -78,6 +81,7 @@ function App() {
 
       <Route path="/createPost" element={<CreatePost></CreatePost>}></Route>
       <Route path="/courses/feed/:courseId" element={<CourseFeed></CourseFeed>}></Route>
+      <Route path="/chat/:conversationId" element={<PrivateChatRoom></PrivateChatRoom>}></Route>
       <Route path="/post/view/:postId" element={<PostDetail></PostDetail>}></Route>
       {features &&
         features.map((feature) => {

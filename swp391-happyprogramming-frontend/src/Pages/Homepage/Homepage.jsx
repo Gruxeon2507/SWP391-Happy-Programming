@@ -66,7 +66,6 @@ function Homepage() {
     });
   };
   console.log(checked);
-
   const getAllCategories = async () => {
     await CategoryServices.getAllCategories()
       .then((response) => {
@@ -219,6 +218,19 @@ function Homepage() {
       {/* ====================end region filter==================== */}
 
       {/* ====================region List of Course==================== */}
+      {/* <div className="list-Courses">
+        {pageCourses.map((course) => (
+          <div className="course" key={course.courseId}>
+            <span>
+              {course.courseId}:{course.courseName}
+            </span>
+            <span>{course.createdAt}</span>
+            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+            <span>View details</span>
+            <hr />
+          </div>
+        ))}
+      </div> */}
       <div className="list-Courses">
         {pageCourses.map((course, index) => (
           <div

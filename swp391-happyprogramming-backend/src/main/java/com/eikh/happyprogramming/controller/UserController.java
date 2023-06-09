@@ -262,14 +262,24 @@ public class UserController {
                 .body(inputStreamResource);
     }
 
-//    @GetMapping("/mentors")
-//    public List<User> getAllMentors() {
-//        return userRepository.getAllMentors();
-//    }
+    //Date: 23/05/2023
+    //Function: return username of login user
+    //Writen By:DucKM
+    @GetMapping("/login")
+    public ResponseEntity<?> getLoginUserUsername(HttpServletRequest request) {
+        try {
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            return ResponseEntity.ok(username);
+        }catch (Exception e){
+            System.out.println("Non Valid Token");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-    // Date: 24/05/2023
-    // Function: Check role admin from JWT
-    // author: maiphuonghoang
+    }
+    //Date: 24/05/2023
+    //Function: Check role admin from JWT
+    //author: maiphuonghoang 
     public boolean isRoleAdminFromToken(HttpServletRequest request) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);

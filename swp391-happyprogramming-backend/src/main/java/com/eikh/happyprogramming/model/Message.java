@@ -44,4 +44,6 @@ public class Message implements Serializable {
     @JsonIgnore
     private Conversation conversation;
 
+//    private com.eikh.happyprogramming.chatModel.Status status;
+
 }

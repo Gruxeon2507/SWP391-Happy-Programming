@@ -6,6 +6,7 @@ package com.eikh.happyprogramming.modelkey;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 import javax.persistence.Embeddable;
 import lombok.*;
 
@@ -21,5 +22,5 @@ import lombok.*;
 public class MessageKey implements Serializable{
     private int conversationId;
     private String sentBy;
-    private Date sentAt;
+    private Timestamp sentAt;
 }
