@@ -8,12 +8,16 @@
   --darkItem2: #1c1a26;
   --darkItem3: #ececec;
   --darkItem4: #aba9a9;
+  --darkItem5: #3a5a62;
 
   --item: #fe7062;
   --itemActive: #f44545;
   --item2: #565fec;
   --item2Active: #17aaff;
   --item3: #3e3f75;
+
+  --grd1: #ffe3e0;
+  --grd2: #7fbaff;
 }
 
 .dark-theme {
@@ -21,4 +25,5 @@
   --darkItem: #2d2b3c;
   --darkItem2: #1c1a26;
   --darkItem3: #ececec;
+  --darkItem4: #cbcbcb4f;
 }

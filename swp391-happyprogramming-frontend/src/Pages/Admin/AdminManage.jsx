@@ -11,7 +11,7 @@ import NavBar from "../../Components/Navbar/NavBar";
 
 function AdminManage(props) {
 
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
 
   const setActiveMode = (active) => (
     setActive(active)
@@ -24,23 +24,18 @@ function AdminManage(props) {
         <NavBar mode={1}></NavBar>
         <div className="ad-nav-list">
           <ul>
-            <li
-              className={active === 0 ? "active" : ""}
-              onClick={() => setActiveMode(0)}
-            >
-              Create Course
-            </li>
+            <button id="admin-add-btn"><span> + </span>New</button>
             <li
               className={active === 1 ? "active" : ""}
               onClick={() => setActiveMode(1)}
             >
-              Mentor Management
+              Create Course
             </li>
             <li
               className={active === 2 ? "active" : ""}
               onClick={() => setActiveMode(2)}
             >
-              Create Course
+              Mentor Management
             </li>
             <li
               className={active === 3 ? "active" : ""}
@@ -60,16 +55,23 @@ function AdminManage(props) {
             >
               Create Course
             </li>
+            <li
+              className={active === 5 ? "active" : ""}
+              onClick={() => setActiveMode(5)}
+            >
+              Create Course
+            </li>
           </ul>
         </div>
       </div>
       <div className="main-content">
-        {active === 0 ? <CreateCourse /> : <></>}
-        {active === 1 ? <MentorManagement></MentorManagement> : <></>}
-        {active === 2 ? <CreateCourse /> : <></>}
+        {active === 0 ? <></> : <></>}
+        {active === 1 ? <CreateCourse /> : <></>}
+        {active === 2 ? <MentorManagement></MentorManagement> : <></>}
         {active === 3 ? <CreateCourse /> : <></>}
         {active === 4 ? <CreateCourse /> : <></>}
         {active === 5 ? <CreateCourse /> : <></>}
+        {active === 6 ? <CreateCourse /> : <></>}
 
       </div>
     </div>

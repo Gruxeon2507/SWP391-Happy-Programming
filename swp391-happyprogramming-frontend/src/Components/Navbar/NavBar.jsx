@@ -40,7 +40,7 @@ function NavBar(props) {
           <img src={logo} alt="logo" />
           <p className="logo">
             <span>H</span>
-            PYPRO{props.mode}
+            PYPRO
           </p>
         </div>
         {(props.mode === 0 || props.mode === 1) && <>
@@ -48,12 +48,14 @@ function NavBar(props) {
             <li className="nav-item">
               <NavLink to="/courses">Courses</NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink to="/mycourse">My Course</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/login">Login</NavLink>
-            </li>
+            {localStorage.getItem("token") ?
+              <><li className="nav-item">
+                <NavLink to="/mycourse">My Course</NavLink>
+              </li></>
+              :/*Dung xoa dau ":" nay nhe*/
+              <><li className="nav-item">
+                <NavLink to="/login">Login</NavLink>
+              </li></>}
             <li className="nav-item">
               <NavLink to="/chat">Chat</NavLink>
             </li>

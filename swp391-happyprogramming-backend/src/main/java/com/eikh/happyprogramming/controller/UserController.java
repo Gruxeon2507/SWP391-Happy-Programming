@@ -2,7 +2,9 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Role;
+import com.eikh.happyprogramming.model.Skill;
 import com.eikh.happyprogramming.model.User;
+import com.eikh.happyprogramming.repository.SkillRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.DateUtils;
@@ -13,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -32,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +52,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author giangpt
  */
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = { "*" })
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -56,22 +61,56 @@ public class UserController {
     UserRepository userRepository;
 
     @Autowired
+    SkillRepository skillRepository;
+
+    @Autowired
     JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     JwtTokenFilter jwtTokenFilter;
 
     @PostMapping("/profile/update")
-    public User updateProfile(@RequestHeader("Authorization") String token, @RequestBody User user) {
-        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
-        if (user.getUsername().equals(username)) {
-            User updateUser = userRepository.findByUsername(username);
-            updateUser.setDisplayName(user.getDisplayName());
-            updateUser.setDob(user.getDob());
-            return userRepository.save(updateUser);
-        } else {
-            return null;
+    public User updateProfile(
+            @RequestParam("displayName") String displayName,
+            @RequestParam("dob") String dob,
+            HttpServletRequest request) throws ParseException {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        User updateUser = userRepository.findByUsername(username);
+        updateUser.setDisplayName(displayName);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate = format.parse(dob);
+        java.sql.Date dob_convert = new java.sql.Date(utilDate.getTime());
+        updateUser.setDob(dob_convert);
+        return userRepository.save(updateUser);
+    }
+
+    @PostMapping("/profile/skill/delete")
+    public boolean deleteSkillOfMentor(
+            @RequestParam("username") String username,
+            @RequestParam("skillId") String skillId,
+            HttpServletRequest request) {
+        String username_Token = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if (username_Token.equals(username)) {
+            skillRepository.deleteById(Integer.valueOf(skillId));
+            return true;
         }
+        return false;
+    }
+
+    @PostMapping("/profile/skill/create")
+    public Skill createSkillOfMentor(
+            @RequestParam("username") String username,
+            @RequestParam("skillName") String skillName,
+            HttpServletRequest request) {
+        String username_token = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if (username_token.equals(username)) {
+            User user = userRepository.findByUsername(username);
+            Skill skill = new Skill();
+            skill.setSkillName(skillName);
+            skill.setUser(user);
+            return skillRepository.save(skill);
+        }
+        return null;
     }
 
     /**
@@ -103,10 +142,12 @@ public class UserController {
     }
 
     @PostMapping("/profile/changepassword")
-    public User changePassword(@RequestHeader("Authorization") String token, @RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword) {
+    public User changePassword(@RequestHeader("Authorization") String token,
+            @RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword) {
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         User user = userRepository.findByUsername(username);
-        if (user.getPassword().equals(oldPassword) || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())) {
+        if (user.getPassword().equals(oldPassword)
+                || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())) {
             user.setPassword(AuthenticationUtils.hashPassword(newPassword));
             return user;
         } else {
@@ -126,30 +167,62 @@ public class UserController {
         }
     }
 
-//    @Scheduled(fixedRate = 3600000) // Run every hour
-//    public void cleanUserNotVerified() {
-//        List<User> users = userRepository.findByIsVerified(false);
-//
-//        for (User user : users) {
-//            if (user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())) {
-//                userRepository.delete(user);
-//            }
-//        }
-//    }
+    @Scheduled(fixedRate = 3600000) // Run every hour
+    public void cleanUserNotVerified() {
+        List<User> users = userRepository.findByIsVerified(false);
+        for (User user : users) {
+            if (user.getCreatedDate() != null && DateUtils.isExpired(user.getCreatedDate())) {
+                userRepository.delete(user);
+            }
+        }
+    }
 
     private final String AVT_UPLOAD_DIR = "/avatar/";
+    private final String PDF_UPLOAD_DIR = "/pdf/";
 
-    //Date: 22/05/2023
-    //Function: Upload Avatar
-    //Writen By:DucKM
-    @PostMapping("/avatar/upload")
-    public void uploadFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+    @PostMapping("/pdf/upload")
+    public void uploadCvFile(@RequestParam("pdfFile") MultipartFile file,
+            @RequestHeader("Authorization") String token) {
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(username + ".pdf");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    // @Scheduled(fixedRate = 3600000) // Run every hour
+    // public void cleanUserNotVerified() {
+    // List<User> users = userRepository.findByIsVerified(false);
+    //
+    // for (User user : users) {
+    // if (user.getCreatedDate() != null &&
+    // DateUtils.isExpired(user.getCreatedDate())) {
+    // userRepository.delete(user);
+    // }
+    // }
+    // }
+
+    // private final String AVT_UPLOAD_DIR = "/avatar/";
+
+    // Date: 22/05/2023
+    // Function: Upload Avatar
+    // Writen By:DucKM
+    @PostMapping("/avatar/upload")
+    public void uploadAvatarFile(@RequestParam("avatarFile") MultipartFile file,
+            @RequestHeader("Authorization") String token) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".jpg");
             try {
                 // Save the file to the uploads directory
-
                 String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
                 file.transferTo(new File(uploadDir + fileName));
             } catch (IOException e) {
@@ -159,9 +232,9 @@ public class UserController {
 
     }
 
-    //Date: 22/05/2023
-    //Function: Get Input File Extension
-    //Writen By:DucKM
+    // Date: 22/05/2023
+    // Function: Get Input File Extension
+    // Writen By:DucKM
     private static String getFileExtension(String fileName) {
         String extension = "";
         int dotIndex = fileName.lastIndexOf('.');
@@ -172,9 +245,9 @@ public class UserController {
         return extension;
     }
 
-    //Date: 22/05/2023
-    //Function: return user data by userId
-    //Writen By:DucKM
+    // Date: 22/05/2023
+    // Function: return user data by userId
+    // Writen By:DucKM
     @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
         String filePath = "avatar/" + fileId + ".jpg";
@@ -222,9 +295,9 @@ public class UserController {
         return isAdmin;
     }
 
-    //Date: 22/05/2023
-    //Function: List mentor for only admin 
-    //author: maiphuonghoang 
+    // Date: 22/05/2023
+    // Function: List mentor for only admin
+    // author: maiphuonghoang
     @GetMapping("/mentors")
     public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
         if (!isRoleAdminFromToken(request)) {
@@ -234,9 +307,9 @@ public class UserController {
 
     }
 
-    //Date: 24/05/2023
-    //Function: Insert Mentor into database and their role to user_role
-    //author: maiphuonghoang 
+    // Date: 24/05/2023
+    // Function: Insert Mentor into database and their role to user_role
+    // author: maiphuonghoang
     @PostMapping("/mentor-account")
     public User createMentor(HttpServletRequest request, @RequestBody User mentor) throws EmailException {
 
@@ -252,7 +325,8 @@ public class UserController {
         mentor.setDisplayName(mentor.getMail());
         String password = PasswordUtils.generatePassword();
         String subject = "HAPPY ONLINE PROGRAMMING - MENTOR ACCOUNT";
-        String body = "Here is your mentor account <br> Username:" + mentor.getUsername() + "<br>" + "Password " + password;
+        String body = "Here is your mentor account <br> Username:" + mentor.getUsername() + "<br>" + "Password "
+                + password;
         System.out.println(body);
 
         try {
@@ -273,11 +347,12 @@ public class UserController {
         return null;
     }
 
-    //Date: 24/05/2023
-    //Function: Update mentor set activeStatus to Ban mentor 
-    //author: maiphuonghoang 
+    // Date: 24/05/2023
+    // Function: Update mentor set activeStatus to Ban mentor
+    // author: maiphuonghoang
     @PutMapping("/mentors/status/{username}")
-    ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username, @RequestParam Integer status) {
+    ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username,
+            @RequestParam Integer status) {
         if (!isRoleAdminFromToken(request)) {
             return null;
         }

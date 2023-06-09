@@ -2,12 +2,12 @@
 
 .NavBar {
   position: fixed;
-  top: 0;
+  top: 0.5rem;
   left: 50vw;
   transform: translateX(-50%);
   width: calc(98vw - (100vw - 100%));
-  border: 2px solid var(--light);
-  border-radius: 1.5rem;
+  border: 4px solid var(--light);
+  border-radius: 2rem;
   background-color: var(--light);
   z-index: 100;
   display: flex;
@@ -46,13 +46,14 @@
 .logo {
   margin: auto 1rem auto 0rem;
   font-size: 1.8rem !important;
-  font-weight: bold;
+  font-family: "Oswald", sans-serif;
   text-decoration: none;
   color: var(--dark);
 }
 
 .logo span {
   color: var(--item2);
+  font-family: "Oswald", sans-serif;
 }
 
 :where(.NavBar p, .NavBar a) {
@@ -68,21 +69,36 @@
 }
 
 .nav-item {
-  border-radius: 8px;
-  padding: 4px 8px;
   text-align: center;
   margin: 0 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
-.nav-menu .nav-item:hover {
-  border-radius: 8px;
-  background-color: var(--lightItem);
+
+.nav-item a {
   padding: 4px 8px;
-  text-align: center;
-  margin: 0 0.5rem;
+  border-radius: 8px;
+}
+.nav-menu .nav-item a:hover {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
+}
+
+.nav-menu .nav-item a.active {
+  color: var(--item2);
+}
+
+.nav-menu .nav-item a.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 4px solid var(--item2);
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  opacity: 0.2;
 }
 
 .nav-menu .NavBar.active .nav-item:hover {
@@ -133,7 +149,7 @@
 }
 
 .pf-dropdown.active {
-  border: 4px solid var(--item2Active);
+  border: 4px solid var(--grd2);
 }
 
 .avatar img {
@@ -153,7 +169,6 @@
   background-color: var(--lightItem);
   border-radius: 1rem;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   overflow: hidden;
 }
 
@@ -161,7 +176,8 @@
   height: auto;
   width: auto;
   min-width: 200px;
-  transition: 0.5s all ease;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 4px;
+  border: 4px solid var(--light);
 }
 
 .Setting-Bar ul {

@@ -4,11 +4,79 @@ body {
   background-color: var(--lightItem);
 }
 
+.scroll-snap-container {
+  height: 100svh;
+  overflow: hidden;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-snap-item {
+  scroll-snap-align: center;
+  height: 100svh;
+  position: relative;
+}
+
+.hapi-pro-gb {
+  /* background-image: url("../../Assets/eikh-bg.png"); */
+  background-image: url("../../Assets/hapi-pro-gb.jpg");
+  position: relative;
+  /* top: -20px; */
+  width: 100%;
+  height: 100svh;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: bottom center;
+}
+
+.hapi-pro-cover {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* .hapi-pro-cover h1 {
+  color: var(--light);
+  position: relative;
+  top: 70%;
+  left: 20%;
+  transform: translate(-50%, -100%);
+  font-size: 12rem;
+  text-align: center;
+} */
+
+.hapi-pro-cover q {
+  color: var(--dark);
+  position: relative;
+  display: block;
+  text-align: right;
+  padding-right: 3rem;
+  top: 90%;
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--darkItem);
+}
+
+.hapi-pro-cover span:nth-child(1) {
+  color: var(--item);
+}
+.hapi-pro-cover span:nth-child(2) {
+  color: var(--item2);
+}
+.hapi-pro-cover span:nth-child(3) {
+  color: var(--item3);
+}
+
 :where(.banner-1, .banner-2) {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
+  top: 55%;
+  transform: translateY(-50%);
   margin: 10% 0;
 }
 

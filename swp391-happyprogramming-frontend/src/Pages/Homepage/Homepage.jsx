@@ -8,9 +8,30 @@ import "../Homepage/Homepage.css";
 import convertDateFormat from "../../util/DateConvert";
 import { useNavigate } from "react-router-dom";
 
+// import backgound
+import c1 from "../../Assets/courseBG/c12.png";
+import c2 from "../../Assets/courseBG/c2.png";
+import c3 from "../../Assets/courseBG/c3.png";
+import c4 from "../../Assets/courseBG/c4.png";
+import c5 from "../../Assets/courseBG/c5.png";
+import c6 from "../../Assets/courseBG/c6.png";
+import c7 from "../../Assets/courseBG/c7.png";
+import c8 from "../../Assets/courseBG/c1.png";
+import c9 from "../../Assets/courseBG/c9.png";
+import c10 from "../../Assets/courseBG/c10.png";
+import c11 from "../../Assets/courseBG/c11.png";
+import c12 from "../../Assets/courseBG/c12.png";
+import c13 from "../../Assets/courseBG/c13.png";
+import c14 from "../../Assets/courseBG/c14.png";
+import c15 from "../../Assets/courseBG/c15.png";
+import c21 from "../../Assets/courseBG/c21.png";
+
 function Homepage() {
   const navigate = useNavigate();
 
+  const courseBackgrounds = [
+    c1, c21, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15
+  ];
 
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -211,13 +232,21 @@ function Homepage() {
         ))}
       </div> */}
       <div className="list-Courses">
-        {pageCourses.map((course) => (
-          <div className="course" key={course.courseId}
-            onClick={() => handleCourseNavigate(course.courseId)}>
-            <div className="couse-card-view">
-              <span>
-                {course.courseName}
-              </span>
+        {pageCourses.map((course, index) => (
+          <div
+            className="course"
+            key={course.courseId}
+            onClick={() => handleCourseNavigate(course.courseId)}
+          >
+            <div
+              className="couse-card-view"
+              style={{
+                backgroundImage: `url(${courseBackgrounds[index]})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <span>{course.courseName}</span>
             </div>
             <div className="course-desc">
               <span>Mentor: {mentorOfCourses[course.courseId]}</span>

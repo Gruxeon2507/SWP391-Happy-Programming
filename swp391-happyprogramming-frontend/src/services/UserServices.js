@@ -1,7 +1,6 @@
 import axios from "axios";
 import api from "./BaseAuthenticationService.js";
-
-const USER_BASE_REST_API_URL = "http://localhost:1111/api/users"
+const USER_BASE_REST_API_URL = "http://localhost:1111/api/users/"
 
 class UserServices {
   getMentorList() {
@@ -24,6 +23,13 @@ class UserServices {
   getLoginUsername(){
     return api.get("/api/users/login");
 }
+
+  //@maiphuonghoang
+  getUserOfCourse(courseId, statusId){
+    console.log(`http://localhost:1111/api/courses/find-user/${courseId}?statusId=${statusId}`);
+    return api.get(`/api/courses/find-user/${courseId}?statusId=${statusId}`);
+  }  
+ 
 }
 
 export default new UserServices();

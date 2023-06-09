@@ -57,9 +57,9 @@
 }
 .ad-nav-list li.active {
   background-color: var(--lightItem);
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-  border: 1px solid var(--item2);
+  /* box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; */
+  /* border: 1px solid var(--item2); */
 }
 
 .main-content {
@@ -71,4 +71,25 @@
   overflow-y: scroll;
   background-color: var(--lightItem);
   margin-right: 4rem;
+}
+
+#admin-add-btn {
+  background-color: var(--lightItem);
+  border: 4px solid var(--lightItem);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+#admin-add-btn:hover {
+  background-color: var(--light);
+}
+
+#admin-add-btn span {
+  color: var(--item2);
+  font-weight: 800;
+  font-size: 1.5rem;
 }

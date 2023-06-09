@@ -16,10 +16,19 @@ CREATE TABLE `User`
     activeStatus bit,
     isVerified bit default 1,
     verification_code varchar(255) default "",
-
-	
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
+
+CREATE TABLE Skill
+(
+	skillId int NOT NULL AUTO_INCREMENT,
+    skillName varchar(255),
+    username varchar(255) NOT NULL,
+    CONSTRAINT PK_Skill PRIMARY KEY (skillId, username)
+);
+
+ALTER TABLE Skill ADD CONSTRAINT PK_Skill FOREIGN KEY(username)
+REFERENCES `User` (username);
 
 
 CREATE TABLE `Role`
@@ -62,18 +71,6 @@ REFERENCES `Role`(roleId);
 ALTER TABLE Role_Feature ADD CONSTRAINT FK_RoleFeature_Feature FOREIGN KEY(featureId)
 REFERENCES Feature(featureId);
 
-CREATE TABLE Rating 
-(
-	ratedFromUser varchar(255),
-    ratedToUser varchar(255),
-    noStar int,
-    ratingComment longtext,
-    CONSTRAINT PK_Rating PRIMARY KEY(ratedFromUser, ratedToUser)
-);
-ALTER TABLE Rating ADD CONSTRAINT FK_RatingFrom_User FOREIGN KEY(ratedFromUser)
-REFERENCES `User`(username);
-ALTER TABLE Rating ADD CONSTRAINT FK_RatingTo_User FOREIGN KEY(ratedToUser)
-REFERENCES `User`(username);
 
 CREATE TABLE Conversation
 (
@@ -139,7 +136,6 @@ CREATE TABLE `Status`
 (
 	statusId int NOT NULL, 
     statusName varchar(50),
-    statusComment longtext,
     CONSTRAINT PK_Status PRIMARY KEY (statusId)
 );
 
@@ -169,6 +165,35 @@ REFERENCES ParticipateRole (participateRole);
 ALTER TABLE Participate ADD CONSTRAINT FK_Participate_Status FOREIGN KEY(statusId)
 REFERENCES `Status` (statusId);
 
+CREATE TABLE Rating 
+(
+	ratedFromUser varchar(255),
+    ratedToUser varchar(255),
+    noStar int,
+    courseId int,
+    ratingComment longtext,
+    CONSTRAINT PK_Rating PRIMARY KEY(ratedFromUser, ratedToUser,courseId)
+);
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingFrom_User FOREIGN KEY(ratedFromUser)
+REFERENCES `User`(username);
+ALTER TABLE Rating ADD CONSTRAINT FK_RatingTo_User FOREIGN KEY(ratedToUser)
+REFERENCES `User`(username);
+ALTER TABLE Rating ADD CONSTRAINT FK_courseId_Course FOREIGN KEY(courseId)
+REFERENCES Course(courseId);
+CREATE TABLE Request
+(
+	courseId int,
+	username varchar(255),
+    requestTime datetime DEFAULT CURRENT_TIMESTAMP,
+    requestStatus int,
+    CONSTRAINT PK_Request PRIMARY KEY (courseId, username, requestTime)
+);
+ALTER TABLE Request ADD CONSTRAINT FK_Request_UserParticipate FOREIGN KEY(username)
+REFERENCES Participate(username);
+ALTER TABLE Request  ADD CONSTRAINT FK_Request_CourseParticipate FOREIGN KEY(courseId)
+REFERENCES Participate(courseId);
+ALTER TABLE Request ADD CONSTRAINT FK_Request_Participate FOREIGN KEY(requestStatus)
+REFERENCES `Status` (statusId);
 
 CREATE TABLE Post 
 (
@@ -222,9 +247,12 @@ SELECT * FROM Attachment
 SELECT * FROM Course
 SELECT * FROM Course_Category
 SELECT * FROM Course
+SELECT * FROM Request
 */
 
+-- SELECT * FROM Participate where courseId = 26;-- 
 SELECT * FROM Participate where courseId = 26;
 UPDATE `User` set activeStatus = 1 WHERE username != '';
 
 select * from User_Role where username = 'eikh';
+
