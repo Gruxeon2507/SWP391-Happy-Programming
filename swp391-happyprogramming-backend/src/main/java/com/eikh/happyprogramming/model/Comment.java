@@ -45,7 +45,7 @@ public class Comment implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "commentedBy", referencedColumnName = "username")
-    @JsonIgnore
+//    @JsonIgnore
     private User user;
     
     @OneToMany(mappedBy = "parent")
