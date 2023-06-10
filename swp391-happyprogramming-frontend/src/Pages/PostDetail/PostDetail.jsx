@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import PostServices from "../../services/PostServices";
 import CreatePost from "../../Components/CreatePost/CreatePost";
 import Comment from "../../Components/Comment/Comment";
+import CommentServices from "../../services/CommentServices";
 
 function PostDetail() {
   const myComments = [
@@ -127,15 +128,15 @@ function PostDetail() {
       replies: [],
     },
   ];
-  const { postId } = useParams();
+  const { postId } = useParams("postId");
   const [post, setPost] = useState({});
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
   const [comments, setComments] = useState(myComments);
   const [input, setInput] = useState("");
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
+  // const handleCheckboxChange = () => {
+  //   setIsChecked(!isChecked);
+  // };
 
   useEffect(() => {
     PostServices.getPostById(postId)
@@ -147,6 +148,25 @@ function PostDetail() {
       });
   }, []);
 
+  useEffect(() => {
+    CommentServices.getTopLevelCommentsByPost(postId)
+      .then((res) => setComments(res.data))
+      .catch((error) => {
+        console.log("error fetching comments by postId: " + error);
+      });
+  }, []);
+
+  const addComment = () => {
+    console.log("add comment ...");
+    const comment = {
+      commentContent: input,
+      post: {
+        postId: postId,
+      },
+    };
+    CommentServices.addComment(comment);
+  };
+
   useEffect(() => {}, []);
 
   return (
@@ -157,7 +177,7 @@ function PostDetail() {
       </div>
 
       <hr></hr>
-      <div id={"comment-section"}>
+      <div id={"comment-section"} style={{ paddingLeft: "50px" }}>
         <input
           type="text"
           style={{ width: "25vw" }}
@@ -167,9 +187,15 @@ function PostDetail() {
           onChange={(e) => setInput(e.target.value)}
         />
         <div>{input}</div>
-        <button>Comment</button>
+        <button onClick={addComment}>Comment</button>
         {comments.map((comment) => (
-          <Comment content={comment.commentContent}></Comment>
+          <>
+            <Comment
+              comment={comment}
+              key={comment.commentId}
+            ></Comment>
+
+          </>
         ))}
       </div>
     </>
