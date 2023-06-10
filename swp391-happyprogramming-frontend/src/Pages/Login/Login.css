@@ -70,7 +70,7 @@
 } */
 
 .login-frag .user-input input {
-  width: calc(100% - 16px);
+  width: 100%;
   background-color: var(--light);
   opacity: 0.5;
   border: none;

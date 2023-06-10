@@ -1,0 +1,9 @@
+.changesetting-main-content {
+  background-color: aqua;
+  width: 90svw;
+  height: 80svh;
+  position: fixed;
+  top: calc(50% + 40px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

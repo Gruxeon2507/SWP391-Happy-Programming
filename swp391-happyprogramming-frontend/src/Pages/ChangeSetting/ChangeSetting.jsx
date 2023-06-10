@@ -2,6 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../../Components/Navbar/NavBar.css";
 import axios from "axios";
+import "./ChangeSetting.css"
 
 function ChangeSetting(props) {
   const [id, setId] = useState("");
@@ -190,7 +191,7 @@ function ChangeSetting(props) {
       });
 
     // const avatar = require(`../../../../swp391-happyprogramming-backend/avatar/${user.avatarPath}`);
-    // setAvatar(avatar);
+    setAvatar(avatar);
   }, [id]);
 
   useEffect(() => {
@@ -208,79 +209,81 @@ function ChangeSetting(props) {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={handleSubmitAvatar}>
-        <div>
-          <label>Avatar</label>
+    <>
+      <NavBar mode={1} />
+      <main className="changesetting-main-content">
+        <form onSubmit={handleSubmitAvatar}>
           <div>
-            <img src={avatar} alt="User Avatar" />
-          </div>
-        </div>
-        <div>
-          <lable>Upload Avatar</lable>
-          <input
-            type="file"
-            name="avatarPath"
-            onChange={onChangeAvatarPath}
-            required
-          />
-        </div>
-        {showErrorAvatar ? (
-          <>
-            <div className="w-message" style={{ color: "black" }}>
-              {errorAvatar}
+            <label>Avatar</label>
+            <div>
+              <img src={avatar} alt="User Avatar" />
             </div>
-          </>
-        ) : null}
-        <button>Update avatar</button>
-      </form>
-      <form onSubmit={handleSubmit}>
-        <div>
+          </div>
           <div>
-            <label>Displayname</label>
+            <lable>Upload Avatar</lable>
             <input
-              type="text"
-              value={user.displayName}
-              onChange={onChangeDisplayName}
+              type="file"
+              name="avatarPath"
+              onChange={onChangeAvatarPath}
+              required
             />
           </div>
+          {showErrorAvatar ? (
+            <>
+              <div className="w-message" style={{ color: "black" }}>
+                {errorAvatar}
+              </div>
+            </>
+          ) : null}
+          <button>Update avatar</button>
+        </form>
+        <form onSubmit={handleSubmit}>
           <div>
-            <label>Date of birth</label>
-            <input type="date" value={user.dob} onChange={onChangeDob} />
-          </div>
-          <div></div>
-        </div>
-
-        <button>Update</button>
-      </form>
-      {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
-        <>
-          <form onSubmit={handleSubmitPdf}>
             <div>
-              <label>Pdf</label>
-              <div></div>
-            </div>
-            <div>
-              <lable>Upload Pdf</lable>
+              <label>Displayname</label>
               <input
-                type="file"
-                name="pdfPath"
-                onChange={onChangePdfPath}
-                required
+                type="text"
+                value={user.displayName}
+                onChange={onChangeDisplayName}
               />
             </div>
-            {showErrorPdf ? (
-              <>
-                <div className="w-message" style={{ color: "black" }}>
-                  {errorPdf}
-                </div>
-              </>
-            ) : null}
-            <button>Update Pdf</button>
-          </form>
-        </>
-      ) : null}
-      {/* <form onSubmit={handleSubmitPdf}>
+            <div>
+              <label>Date of birth</label>
+              <input type="date" value={user.dob} onChange={onChangeDob} />
+            </div>
+            <div></div>
+          </div>
+
+          <button>Update</button>
+        </form>
+        {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
+          <>
+            <form onSubmit={handleSubmitPdf}>
+              <div>
+                <label>Pdf</label>
+                <div></div>
+              </div>
+              <div>
+                <lable>Upload Pdf</lable>
+                <input
+                  type="file"
+                  name="pdfPath"
+                  onChange={onChangePdfPath}
+                  required
+                />
+              </div>
+              {showErrorPdf ? (
+                <>
+                  <div className="w-message" style={{ color: "black" }}>
+                    {errorPdf}
+                  </div>
+                </>
+              ) : null}
+              <button>Update Pdf</button>
+            </form>
+          </>
+        ) : null}
+        {/* <form onSubmit={handleSubmitPdf}>
         <div>
           <label>Pdf</label>
           <div></div>
@@ -303,7 +306,8 @@ function ChangeSetting(props) {
         ) : null}
         <button>Update Pdf</button>
       </form> */}
-    </div>
+      </main>
+    </>
   );
 }
 

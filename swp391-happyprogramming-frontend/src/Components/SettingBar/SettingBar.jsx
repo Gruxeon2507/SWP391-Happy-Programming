@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import "../Navbar/NavBar.css";
 import basicAvatar from "../../Assets/base_user_img.png";
 
-function SettingBar() {
+function SettingBar(props) {
     const [navSettingOpen, setNavSettingOpen] = useState(false);
 
 
@@ -15,7 +15,9 @@ function SettingBar() {
         <div className="SettingBar">
             <div className={navSettingClass} onClick={() => setNavSettingOpen(!navSettingOpen)}>
                 <div className="avatar">
-                    <img src={basicAvatar} alt="avatar"></img>
+                    {/* <img src={basicAvatar} alt="avatar"></img> */}
+                    {/* <img src={"http://localhost:1111/api/users/avatar/" + "anmentor"} alt="avatar"></img> */}
+                    <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                 </div>
             </div>
             <div className="Setting-Bar">
@@ -33,7 +35,7 @@ function SettingBar() {
                         </div>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/setting">setting</NavLink>
+                        <NavLink to="/changesetting">setting</NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/changepassword">changepassword</NavLink>

@@ -9,7 +9,7 @@
 .card-wraper {
   padding: 20px;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 1rem;
   background-color: var(--lightItem);
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
@@ -44,10 +44,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: repeat(auto, 1fr);
 
-  grid-template-rows: repeat(1, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
   gap: 16px;
-  background-color: aqua;
   overflow: hidden;
 }
 
