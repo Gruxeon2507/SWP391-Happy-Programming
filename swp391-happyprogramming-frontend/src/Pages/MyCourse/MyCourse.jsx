@@ -13,6 +13,8 @@ const MyCourse = () => {
   const [rejectCourses, setRejectCourses] = useState([]);
   const [mentorOfCourses, setMentorOfCourses] = useState({});
 
+  const [showAllCourses, setShowAllCourses] = useState(false);
+
   const handleCourseNavigate = (courseId) => {
     navigate(`/courses/feed/${courseId}`);
   };
@@ -70,7 +72,6 @@ const MyCourse = () => {
         handleCourseNavigate(course.courseId);
       }}>
         <div className="card-title"><span>{course.courseName}</span></div>
-        {/* <span>CreatedAt: {convertDateFormat(course.createdAt)}</span> */}
         <span>Mentor: {mentorOfCourses[course.courseId]}</span>
       </div>
     ));
@@ -86,6 +87,7 @@ const MyCourse = () => {
         </div>
         <h1>Pending Course</h1>
         <div className="PendingCourse">
+          {renderCourseList(pendingCourses)}
           {renderCourseList(pendingCourses)}
         </div>
 

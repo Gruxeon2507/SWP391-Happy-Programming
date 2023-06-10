@@ -116,9 +116,11 @@ CREATE TABLE Course
     courseName nvarchar(255),
     courseDescription longtext,
     createdAt datetime, 
+    conversationId int,
     CONSTRAINT PK_Course PRIMARY KEY (courseId)
 );
-
+Alter table Course ADD CONSTRAINT FK_Course_Conversation FOREIGN KEY(conversationId) 
+REFERENCES Conversation(conversationId);
 CREATE TABLE Course_Category 
 (
     categoryId int,
@@ -214,12 +216,15 @@ CREATE TABLE `Comment`
     commentContent longtext,
     postId int,
     commentedBy varchar(255),
+    parentId int,
     CONSTRAINT PK_Comment PRIMARY KEY (commentId)
 );
 ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_Post FOREIGN KEY(postId)
 REFERENCES Post(postId);
 ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_User FOREIGN KEY(commentedBy)
 REFERENCES `User`(username);
+ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_Comment FOREIGN KEY(parentId)
+REFERENCES Comment(commentId);
 
 CREATE TABLE Attachment
 ( 

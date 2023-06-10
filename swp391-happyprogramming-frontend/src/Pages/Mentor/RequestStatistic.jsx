@@ -7,8 +7,22 @@ import StatisticServices from "../../services/StatisticServices";
 import CourseServices from "../../services/CourseServices";
 import "./RequestStatistic.css"
 import NavBar from "../../Components/Navbar/NavBar";
+import manageIcon from "../../Assets/208-2081675_link-to-manage-travel-ttc-line-5.png"
+import statisticIcon from "../../Assets/1466735.png"
 const RequestStatistic = () => {
 
+
+    const [selectedCourse, setSelectedCourse] = useState(null);
+
+    const selectCourse = (courseId) => {
+        setSelectedCourse(courseId);
+    };
+
+    const isCourseActive = (courseId) => {
+        return selectedCourse === courseId;
+    };
+
+    // ==================
     const [teachCourses, setTeachCourses] = useState([]);
     const getCoursesOfMentor = () => {
         CourseServices.getCoursesOfMentor()
@@ -141,11 +155,15 @@ const RequestStatistic = () => {
         });
     }, [dataOne]);
 
-    const handleCourseChange = (courseId) => {
-        // const courseId = e.target.value;
-        getCourseStatusCountsByCourseIdOne(courseId);
-        console.log(courseId);
 
+    const handleCourseChange = (courseId) => {
+        if (selectedCourse === courseId) {
+            setSelectedCourse(null);
+        } else {
+            setSelectedCourse(courseId);
+            getCourseStatusCountsByCourseIdOne(courseId);
+            console.log(courseId);
+        }
     };
 
 
@@ -153,35 +171,69 @@ const RequestStatistic = () => {
         <>
             <NavBar mode={1} />
             <div className="mentor-statistic-container">
-                <div className="mentor-menu-sideBar">
-                    some item here
-                </div>
+                <nav className="mentor-menu-sideBar">
+                    <ul className="mentor-manageNav">
+                        <li>
+                            <img src={manageIcon}></img>
+                            <span>Manage</span>
+                        </li>
+                        <li>
+                            <img src={statisticIcon}></img>
+                            <span>Statistic</span>
+                        </li>
+                    </ul>
+                </nav>
                 {/* All courses of mentor   */}
                 <div className="overAll-statistic-container">
-                    <div className="mentor-all-course-barChart">
-                        <BarChart chartData={userData} />
+                    <div className="overAll-stat">
+                        <div className="stat-item">
+                            thong tin j do 1
+                            tong so thanh vien?
+                        </div>
+                        <div className="stat-item">
+                            thong tin j do 2
+                            tong so jj do
+                        </div>
+                        <div className="stat-item">
+                            thong tin j do 3
+                            request?
+                        </div>
                     </div>
-                    <div className="mentor-all-course-lineChart">
-                        <LineChart chartData={userData} />
+                    <div className="chart-container">
+                        <div className="mentor-all-course-barChart">
+                            <BarChart chartData={userData} />
+                        </div>
+                        <div className="mentor-all-course-lineChart">
+                            <LineChart chartData={userData} />
+                        </div>
                     </div>
                 </div>
                 <div className="list-course-by-Mentor">
-                    {teachCourses.map((course) => (
-                        <div key={course.id} value={course.courseId} onClick={() => handleCourseChange(course.courseId)}>
-                            {course.courseName}
+                    <div className={`course-statistic-container ${selectedCourse ? 'active' : ''}`}>
+                        <div className="bar-chart-course-content">
+                            <BarChart chartData={userDataOne} />
                         </div>
-                    ))}
-                </div>
-                {/* One course by courseId */}
-                <div className="course-statistic-container">
-                    <div className="" style={{ width: 350 }} >
-                        <BarChart chartData={userDataOne} />
+                        <div className="pie-chart-course-content">
+                            <PieChart chartData={userDataOne} />
+                        </div>
                     </div>
-                    <div className="" style={{ width: 200 }}>
-                        <PieChart chartData={userDataOne} />
+                    <div className="list-course-nav">
+                        <ul>
+                            {teachCourses.map((course) => (
+                                <li
+                                    key={course.id}
+                                    value={course.courseId}
+                                    onClick={() => handleCourseChange(course.courseId)}
+                                    className={isCourseActive(course.courseId) ? 'active' : ''}
+                                >
+                                    {course.courseName}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
-            </div>
+
+            </div >
         </>
     )
 }

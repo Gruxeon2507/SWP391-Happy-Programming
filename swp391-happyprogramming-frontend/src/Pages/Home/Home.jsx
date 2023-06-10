@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 // import "../Home";
 import NavBar from "../../Components/Navbar/NavBar";
 import "./Home.css";
@@ -7,6 +7,20 @@ import { NavLink } from "react-router-dom";
 import gmt from "../../Assets/giangmentor.png";
 
 function Home(props) {
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Add your logic here for the scroll event
+      // This function will be called when the user scrolls
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       {/* {props.url} */}
@@ -15,13 +29,13 @@ function Home(props) {
         <div className="scroll-snap-item">
           <div className="hapi-pro-gb">
             <div className="hapi-pro-cover">
-              <p>"Unlock Your Code Potential"</p>
+              <q>Unlock Your Code Potential</q>
             </div>
           </div>
         </div>
         <div className="scroll-snap-item">
           <div className="banner-1">
-            <img src={bg} alt="background" />
+            <img src={bg} alt="background" loading="lazy" />
             <div className="quotes">
               <h1>Học đi các bạn ơi!!</h1>
               <p>
@@ -44,10 +58,10 @@ function Home(props) {
                 Mentor siu tín
               </h1>
               <p>
-                Dàn mentor dày dặn kinh nghiệm, là các giáo sư có tiếng trong ngành với hơn 20 năm giảng dạy
+                Đội ngũ mentor uy tín, là các giáo sư có tiếng trong ngành, tâm huyết với nghề, dày dặn kinh nghiệm với hơn 20 năm giảng dạy tại cái trường đại học có tiếng trong và ngoài nước.
               </p>
             </div>
-            <img src={gmt} alt="background" />
+            <img src={gmt} alt="background" loading="lazy" />
           </div>
         </div>
       </div>

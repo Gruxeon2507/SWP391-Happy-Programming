@@ -1,5 +1,14 @@
 USE FU_SWP391_HappyProgramming;
 
+-- select * from Comment;
+-- select * from `Post`;
+-- insert into `Post` value (1, null, 'hello cac ems', 1, 'huyenmentor');
+-- insert into `Comment`(commentId, commentContent, parentId, postId, commentedBy) values (1, "hello", null, 1, 'phuonghm');
+-- insert into `Comment`(commentId, commentContent, parentId, postId, commentedBy) values (2, "hi", '1', 1, 'duckm');
+-- insert into `Comment`(commentId, commentContent, parentId, postId, commentedBy) values (3, "whatsup", 2, 1, 'giangpt');
+-- UPDATE Comment SET commentContent = "confirm btvn edited" WHERE commentId = 5
+-- SELECT * FROM `Comment` WHERE postId = 1 AND parentId IS NOT NULL
+
 
 
 
