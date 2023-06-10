@@ -16,7 +16,7 @@
 
 /* sb X */
 ::-webkit-scrollbar-thumb {
-  background-color: var(--item2);
+  background-color: var(--darkItem4);
   border-radius: 8px;
 }
 
@@ -30,5 +30,6 @@ body {
 
 * {
   transition: 0.3s all ease;
-  /* border: 1px solid red; */
+  /* border: 1px solid red !important; */
+  box-sizing: border-box;
 }

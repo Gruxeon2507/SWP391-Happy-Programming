@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import "../Course/CourseDetails.css";
-import CourseServices from "../../services/CourseServices";
 import PublicService from "../../services/PublicService";
 import ParticipateServices from "../../services/ParticipateServices";
 import NavBar from "../../Components/Navbar/NavBar";
@@ -74,7 +73,6 @@ const CourseDetails = (props) => {
   }, []);
 
   const handleRequest = () => {
-    console.log("pressed");
     const token = localStorage.getItem("token");
     if (localStorage.getItem("token")) {
       ParticipateServices.saveParticipate("", courseID, 3, 0);
@@ -132,7 +130,7 @@ const CourseDetails = (props) => {
             </div>
           ) : (
             <div>
-              <button id="requestBttn">Requested</button>
+              <button id="requestBttn" style={{ border: "4px solid var(--item2)", color: "var(--item2)" }}>Requested</button>
             </div>
           )}
         </div>

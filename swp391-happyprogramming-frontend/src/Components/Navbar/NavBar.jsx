@@ -48,12 +48,14 @@ function NavBar(props) {
             <li className="nav-item">
               <NavLink to="/courses">Courses</NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink to="/mycourse">My Course</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/login">Login</NavLink>
-            </li>
+            {localStorage.getItem("token") ?
+              <><li className="nav-item">
+                <NavLink to="/mycourse">My Course</NavLink>
+              </li></>
+              :/*Dung xoa dau ":" nay nhe*/
+              <><li className="nav-item">
+                <NavLink to="/login">Login</NavLink>
+              </li></>}
             <li className="nav-item">
               <NavLink to="/chat">Chat</NavLink>
             </li>
