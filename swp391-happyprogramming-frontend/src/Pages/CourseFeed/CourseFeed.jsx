@@ -32,7 +32,7 @@ function CourseFeed() {
 
   useEffect(() => {
     fetchData();
-  }, [courseId, posts]);
+  }, [courseId]);
 
   const handleCheckboxChange = () => {
     setIsEditorActive(!isEditorActive);
@@ -42,6 +42,7 @@ function CourseFeed() {
     const ok = confirm("Yah sure bro?");
     if (ok) {
       PostServices.deletePost(postId);
+      window.location.reload();
     }
   };
 

@@ -216,12 +216,15 @@ CREATE TABLE `Comment`
     commentContent longtext,
     postId int,
     commentedBy varchar(255),
+    parentId int,
     CONSTRAINT PK_Comment PRIMARY KEY (commentId)
 );
 ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_Post FOREIGN KEY(postId)
 REFERENCES Post(postId);
 ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_User FOREIGN KEY(commentedBy)
 REFERENCES `User`(username);
+ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_Comment FOREIGN KEY(parentId)
+REFERENCES Comment(commentId);
 
 CREATE TABLE Attachment
 ( 

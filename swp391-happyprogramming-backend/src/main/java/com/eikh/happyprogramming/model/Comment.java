@@ -4,16 +4,21 @@
  */
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 /**
@@ -31,7 +36,7 @@ public class Comment implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentId;
     
-    private Date commentedAt;
+    private Timestamp commentedAt;
     private String commentContent;
     
     @ManyToOne
@@ -40,7 +45,16 @@ public class Comment implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "commentedBy", referencedColumnName = "username")
-    @JsonIgnore
+//    @JsonIgnore
     private User user;
     
+    @OneToMany(mappedBy = "parent")
+    private List<Comment> replies;
+    
+    @ManyToOne
+    @JoinColumn(name = "parentId", referencedColumnName = "commentId")
+    @JsonIgnore
+    private Comment parent;
+
+
 }
