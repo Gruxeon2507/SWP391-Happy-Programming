@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  *
@@ -21,4 +22,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>{
     @Transactional
     @Query(value = "UPDATE Comment SET commentContent = ?2 WHERE commentId = ?1", nativeQuery = true)
     void updateComment(int commentId, String commentContent);
+
+    @Query(value = "SELECT * FROM `Comment` WHERE postId = ?1 AND parentId IS NULL", nativeQuery = true)
+    List<Comment> getTopLevelCommentByPost(int postId);
 }
