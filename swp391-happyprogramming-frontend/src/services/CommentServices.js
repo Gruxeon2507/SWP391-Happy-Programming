@@ -8,8 +8,8 @@ class CommentServices {
     console.log("comment: " + JSON.stringify(comment));
     if (parentId) {
       // add reply
-      console.log(`api/comments/${parentId}`);
-      api.post(`api/comments/${parentId}`, comment);
+      console.log(`/api/comments/add/reply/${parentId}`);
+      api.post(`/api/comments/add/reply/${parentId}`, comment);
     } else {
       // add top level comment
       console.log(`api/comments/add/top`);
@@ -28,11 +28,11 @@ class CommentServices {
       commentContent: content,
       commentId: commentId,
     };
-    api.post(`/api/comments/edit${commentId}`, comment);
+    api.post(`/api/comments/edit/${commentId}`, comment);
   }
 
   deleteComment(commentId) {
-    api.delete(`/api/comments/delete${commentId}`);
+    api.delete(`/api/comments/delete/${commentId}`);
   }
 }
 

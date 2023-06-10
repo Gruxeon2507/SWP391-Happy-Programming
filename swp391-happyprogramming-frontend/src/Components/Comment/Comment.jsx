@@ -32,7 +32,7 @@ const Comment = ({ comment }) => {
     const reply = {
       commentContent: input,
       post: {
-        postId: comment.commentId,
+        postId: comment.post.postId,
       },
     };
     try {
