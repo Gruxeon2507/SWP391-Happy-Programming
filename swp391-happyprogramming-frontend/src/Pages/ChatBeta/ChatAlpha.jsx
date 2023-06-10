@@ -42,7 +42,7 @@ const PrivateChatRoom = () => {
   };
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
-    stompClient.subscribe(`/chatroom/${tab}`, onMessageReceived);
+    stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
     // stompClient.subscribe(`/user/${userData.username}/private`, onPrivateMessage);
     userJoin();
   };
