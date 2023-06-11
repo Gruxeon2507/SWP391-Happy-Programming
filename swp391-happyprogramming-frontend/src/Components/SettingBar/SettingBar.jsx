@@ -54,6 +54,7 @@ function SettingBar(props) {
                             onClick={() => {
                                 alert("Are you sure you want to logout?");
                                 window.localStorage.removeItem("token");
+                                window.localStorage.removeItem("role");
                             }}
                         >
                             logout <ion-icon name="log-out-outline"></ion-icon>

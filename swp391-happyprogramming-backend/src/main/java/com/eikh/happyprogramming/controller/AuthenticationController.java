@@ -10,6 +10,9 @@ import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,7 +58,7 @@ public class AuthenticationController {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User credentials, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = UserRepository.findByUsername(credentials.getUsername());
         System.out.println(credentials.getPassword());
         System.out.println(user.getPassword());
@@ -69,8 +72,12 @@ public class AuthenticationController {
             session.setAttribute("user", user);
 
             String token = jwtTokenProvider.generateToken(credentials);
-            request.setAttribute("token", token);
-            return ResponseEntity.ok(token);
+            String role = user.getRoles().get(0).getRoleName();
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("role", role);
+
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
