@@ -144,7 +144,7 @@ public class UserController {
     @PostMapping("/profile/changepassword")
     public User changePassword(@RequestHeader("Authorization") String token,
             @RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword) {
-        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(6));
         User user = userRepository.findByUsername(username);
         if (user.getPassword().equals(oldPassword)
                 || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())) {

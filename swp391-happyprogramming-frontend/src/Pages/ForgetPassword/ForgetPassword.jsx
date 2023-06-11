@@ -50,6 +50,7 @@ function ForgetPassword(props) {
         alert(error);
       });
 
+    setMessageVerify("Please verify mail your account");
   };
   return (
     <>
@@ -58,23 +59,26 @@ function ForgetPassword(props) {
         <form onSubmit={handleSubmit} className="forgetpassword-form">
           <h1>Forgot Password</h1>
 
-          {screenState ? <>
-            <span>Enter your Username</span>
-            <div className="user-input">
-              <input
-                type="text"
-                name="username"
-                required
-                onChange={onChangeUsername}
-              ></input>
-              <button>Confirm</button>
-            </div>
-          </> : <>
-            <div className="cm-noti">
-              <p>Please Check your Email</p>
-            </div>
-          </>}
-
+          {screenState ? (
+            <>
+              <span>Enter your Username</span>
+              <div className="user-input">
+                <input
+                  type="text"
+                  name="username"
+                  required
+                  onChange={onChangeUsername}
+                ></input>
+                <button>Confirm</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="cm-noti">
+                <p>Please Check your Email</p>
+              </div>
+            </>
+          )}
 
           {showErrorUsername ? (
             <>

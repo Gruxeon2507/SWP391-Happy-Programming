@@ -25,8 +25,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO User_Role (username, roleId) VALUES (:username, '3');",nativeQuery = true)
-    public boolean insertRole(String username);
+    @Query(value = "INSERT INTO User_Role (username, roleId) VALUES (:username, 3);",nativeQuery = true)
+    public void insertRole(String username);
 
     public User findByMail(String mail);
 

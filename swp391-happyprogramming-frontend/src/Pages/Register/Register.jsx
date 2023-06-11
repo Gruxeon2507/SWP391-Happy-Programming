@@ -222,7 +222,7 @@ function Register(props) {
     }
 
     axios
-      .post("http://localhost:1111/api/auth/users/mentor-account", user)
+      .post("http://localhost:1111/api/auth/register", user)
       .then((res) => {
         console.log(res.data);
       })
@@ -238,7 +238,7 @@ function Register(props) {
       <NavBar mode={3} />
 
       {messageVerify ? (
-        <VerifyDialog email={user.mail} />
+        <VerifyDialog email={user.mail} username={user.username} />
       ) : (
         <div className="regis-frag">
           <div className="regis-form">
@@ -247,7 +247,12 @@ function Register(props) {
                 <h1>Registration form</h1>
               </div>
               <div className="user-input">
-                <input type="text" id="userName" required onChange={onChangeUsername}></input>
+                <input
+                  type="text"
+                  id="userName"
+                  required
+                  onChange={onChangeUsername}
+                ></input>
                 <span>UserName</span>
               </div>
               {showErrorUsername ? (
