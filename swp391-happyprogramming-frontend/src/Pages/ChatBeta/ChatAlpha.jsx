@@ -152,7 +152,8 @@ const PrivateChatRoom = () => {
     console.log(newConversationMessage);
   }, [newConversationMessage]);
   return (
-    <div>
+    <>
+      <NavBar mode={1}></NavBar>
       <div className="Chat-container">
         <div className="Conversation-List">
           <div className="seach-chat">
@@ -229,7 +230,7 @@ const PrivateChatRoom = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default PrivateChatRoom;
