@@ -10,7 +10,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
+import javax.transaction.Transactional;
 
 /**
  *
@@ -42,4 +45,9 @@ public interface RequestRepository extends JpaRepository<Request, RequestKey> {
             + "    GROUP BY username\n"
             + "  ) ORDER BY re.requestTime desc LIMIT 10 \n", nativeQuery = true)
     public List<Request> getAccessRejectRequest(Integer courseId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM Request WHERE username = :username AND courseId = :courseId", nativeQuery = true)
+    public void deleteAllRequests(String username, int courseId);
 }

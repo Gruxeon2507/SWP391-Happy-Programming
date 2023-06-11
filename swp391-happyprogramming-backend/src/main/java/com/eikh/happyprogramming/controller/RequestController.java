@@ -4,12 +4,14 @@
 // */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Request;
 import com.eikh.happyprogramming.model.Status;
 import com.eikh.happyprogramming.modelkey.RequestKey;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.RequestRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
+import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import com.eikh.happyprogramming.utils.RoleUtils;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,13 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -40,6 +36,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/requests")
 public class RequestController {
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
     @Autowired
     private RequestRepository requestRepository;
@@ -130,5 +131,14 @@ public class RequestController {
             return null;
         }
          return requestRepository.getAccessRejectRequest(courseId);
+    }
+
+    @DeleteMapping("/delete/{courseId}")
+    public void deleteParticipateDeleteRequest(@PathVariable("courseId") int courseId, HttpServletRequest request){
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        requestRepository.deleteAllRequests(username, courseId);
+        System.out.println("DELETE FROM REQUEST OK.");
+        participateRepository.deleteParticipate(username, courseId);
+        System.out.println("DELETE FROM PARTICIPATE OK.");
     }
 }
