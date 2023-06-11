@@ -188,11 +188,13 @@ CREATE TABLE Request
     requestStatus int,
     CONSTRAINT PK_Request PRIMARY KEY (courseId, username, requestTime)
 );
-ALTER TABLE Request ADD CONSTRAINT FK_Request_UserParticipate FOREIGN KEY(username)
-REFERENCES Participate(username);
-ALTER TABLE Request  ADD CONSTRAINT FK_Request_CourseParticipate FOREIGN KEY(courseId)
-REFERENCES Participate(courseId);
-ALTER TABLE Request ADD CONSTRAINT FK_Request_Participate FOREIGN KEY(requestStatus)
+ALTER TABLE Request ADD CONSTRAINT FK_Request_Participate FOREIGN KEY(username, courseId)
+REFERENCES Participate(username, courseId);
+-- ALTER TABLE Request ADD CONSTRAINT FK_Request_UserParticipate FOREIGN KEY(username)
+-- REFERENCES Participate(username);
+-- ALTER TABLE Request  ADD CONSTRAINT FK_Request_CourseParticipate FOREIGN KEY(courseId)
+-- REFERENCES Participate(courseId);
+ALTER TABLE Request ADD CONSTRAINT FK_Request_Status FOREIGN KEY(requestStatus)
 REFERENCES `Status` (statusId);
 
 CREATE TABLE Post 
