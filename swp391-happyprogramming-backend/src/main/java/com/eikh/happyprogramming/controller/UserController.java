@@ -275,12 +275,12 @@ public class UserController {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
             return ResponseEntity.ok(username);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Non Valid Token");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
 
+    }
     // Date: 22/05/2023
     // Function: List mentor for only admin
     // author: maiphuonghoang
@@ -349,4 +349,5 @@ public class UserController {
         }
         return null;
     }
+
 }
