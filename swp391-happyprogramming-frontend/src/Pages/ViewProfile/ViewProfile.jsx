@@ -135,11 +135,11 @@ function ViewProfile(props) {
         headers: requestHeadersFormdata,
       })
       .then((res) => {
-        console.log("Rate ok");
+        // console.log("Rate ok");
       })
       .catch((error) => {
-        console.log(error);
-        console.log("Rate failed");
+        // console.log(error);
+        // console.log("Rate failed");
       });
     window.location.href = "";
   };
@@ -164,10 +164,10 @@ function ViewProfile(props) {
         headers: requestHeadersFormdata,
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
     window.location.href = "";
   };
@@ -451,6 +451,7 @@ function ViewProfile(props) {
             {/* <label>Avatar</label> */}
             <div className="upf-avt">
               {/* <img src={avatar} alt="User Avatar" /> */}
+              {/* <img src={"http://localhost:1111/api/users/avatar/" + user.username} alt="User Avatar" /> */}
               <img src={"http://localhost:1111/api/users/avatar/" + id} alt="User Avatar" />
             </div>
           </div>

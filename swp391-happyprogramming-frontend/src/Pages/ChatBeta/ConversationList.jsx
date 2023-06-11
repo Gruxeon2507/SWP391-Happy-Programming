@@ -99,7 +99,7 @@ const ConversationList = () => {
     //change chat room
     const handleTabChange = (conversationId) => {
         const Navigate = useNavigate();
-        Navigate("/chat/"+conversationId)
+        Navigate("/chat/" + conversationId)
     };
 
 
@@ -107,22 +107,22 @@ const ConversationList = () => {
     const onMessageReceived = (payload) => {
         const payloadData = JSON.parse(payload.body);
         console.log(payloadData);
-      
+
         setConversationMessages((prevConversationMessages) => {
-          const updatedConversationMessages = new Map(prevConversationMessages);
-          const conversationId = payloadData.conversationId;
-      
-          if (updatedConversationMessages.has(conversationId)) {
-            const messages = updatedConversationMessages.get(conversationId);
-            updatedConversationMessages.set(conversationId, [...messages, payloadData]);
-          } else {
-            updatedConversationMessages.set(conversationId, [payloadData]);
-          }
-      
-          return updatedConversationMessages;
+            const updatedConversationMessages = new Map(prevConversationMessages);
+            const conversationId = payloadData.conversationId;
+
+            if (updatedConversationMessages.has(conversationId)) {
+                const messages = updatedConversationMessages.get(conversationId);
+                updatedConversationMessages.set(conversationId, [...messages, payloadData]);
+            } else {
+                updatedConversationMessages.set(conversationId, [payloadData]);
+            }
+
+            return updatedConversationMessages;
         });
-      };
-      
+    };
+
 
     //send message
     const handleMessage = (event) => {
@@ -131,17 +131,17 @@ const ConversationList = () => {
     };
 
     const sendValue = () => {
-            var chatMessage = {
-                senderName: userData.username,
-                message: userData.message,
-                status: "MESSAGE",
-                conversationId: tab
-            };
-            console.log(chatMessage);
-            console.log("tab ne: " + tab);
-            stompClient.send("/chatroom/" + tab, {}, JSON.stringify(chatMessage));
-            api.post("/api/conversation/sentmessage",chatMessage);
-            setUserData({ ...userData, message: "" });
+        var chatMessage = {
+            senderName: userData.username,
+            message: userData.message,
+            status: "MESSAGE",
+            conversationId: tab
+        };
+        console.log(chatMessage);
+        console.log("tab ne: " + tab);
+        stompClient.send("/chatroom/" + tab, {}, JSON.stringify(chatMessage));
+        api.post("/api/conversation/sentmessage", chatMessage);
+        setUserData({ ...userData, message: "" });
     };
     console.log(conversationMessages)
     // console.log(conversations);
@@ -157,13 +157,13 @@ const ConversationList = () => {
                     </div>
                     {conversations.map((conversation) => (
                         <li key={conversation.conversation.conversationId}>
-                        <Link to={"/chat/"+conversation.conversation.conversationId}>{conversation.conversation.conversationName}</Link>
-                      </li>
+                            <Link to={"/chat/" + conversation.conversation.conversationId}>{conversation.conversation.conversationName}</Link>
+                        </li>
                     ))}
                 </div>
                 <div className="Message-List">
 
-                    
+                    <h1>asldkjasd</h1>
 
                 </div>
             </div>

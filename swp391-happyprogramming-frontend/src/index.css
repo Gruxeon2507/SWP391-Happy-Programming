@@ -65,7 +65,7 @@ code {
   display: flex;
   flex-direction: row;
 } */
-
+/* 
 .member-list {
   width: 20%;
 }
@@ -119,7 +119,7 @@ ul {
 }
 
 .Chat-container .avatar {
-  /* .Chat-container .avatar span { */
+  .Chat-container .avatar span {
   background-color: cornflowerblue;
   padding: 3px 5px;
   border-radius: 5px;
@@ -134,7 +134,7 @@ ul {
   width: auto;
   display: flex;
   flex-direction: row;
-  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
   margin: 5px 10px;
 }
 .message-data {
@@ -142,4 +142,4 @@ ul {
 }
 .message.self {
   justify-content: end;
-}
+} */
