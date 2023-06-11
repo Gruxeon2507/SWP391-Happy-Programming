@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 import ActionButton from "../ActionButton/ActionButton";
 import CommentServices from "../../services/CommentServices";
+import UserServices from "../../services/UserServices";
 
 const Comment = ({ comment }) => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [expand, setExpand] = useState(false);
+  const [nestCount, setNestCount] = useState(0);
   const inputRef = useRef(null);
+  const [loginUsername, setLoginUsername] = useState("");
+
+  useEffect(() => {
+    UserServices.getLoginUsername()
+      .then((res) => setLoginUsername(res.data))
+      .catch((error) => {
+        console.log("ERROR GET LOGIN USERNAME" + error);
+      });
+  }, []);
+
+  console.log("USER LOGIN: " + loginUsername);
 
   const deleteComment = () => {
     console.log("DELETE COMMENT CALLED: " + comment.commentId);
@@ -51,18 +64,22 @@ const Comment = ({ comment }) => {
     <>
       <div style={{ marginBottom: "-10px" }}>Input: {input}</div>
       <h1 style={{ marginBottom: "0px" }}>
-        {`${comment.user && comment.user.displayName
+        {`${
+          comment.user && comment.user.displayName
             ? comment.user.displayName
             : "Username failed to load"
-          } (ID: ${comment.commentId})`}
+        } (ID: ${comment.commentId})`}
       </h1>
+      {/* <div className="pcw-content" dangerouslySetInnerHTML={{ __html: post.postContent }} */}
+
       <h1
         contentEditable={editMode}
         suppressContentEditableWarning={editMode}
         style={{ marginTop: "0" }}
         ref={inputRef}
+        dangerouslySetInnerHTML={{ __html: comment.commentContent }}
       >
-        {comment.commentContent}
+        {/* {comment.commentContent} */}
       </h1>
       <div style={{ display: "flex" }}>
         {editMode ? (
@@ -84,7 +101,7 @@ const Comment = ({ comment }) => {
               className="reply comment"
               type={
                 <>
-                  {expand ? (
+                  {expand && nestCount < 4 ? (
                     <AiOutlineCaretUp
                       width="10px"
                       height="10px"
@@ -100,16 +117,22 @@ const Comment = ({ comment }) => {
               }
               handleClick={handleNewComment}
             ></ActionButton>
-            <ActionButton
-              className="comment"
-              type="EDIT"
-              handleClick={() => setEditMode(true)}
-            ></ActionButton>
-            <ActionButton
-              className="reply comment"
-              type="DELETE"
-              handleClick={deleteComment}
-            ></ActionButton>
+            {comment.user.username == loginUsername ? (
+              <>
+                <ActionButton
+                  className="comment"
+                  type="EDIT"
+                  handleClick={() => setEditMode(true)}
+                ></ActionButton>
+                <ActionButton
+                  className="reply comment"
+                  type="DELETE"
+                  handleClick={deleteComment}
+                ></ActionButton>
+              </>
+            ) : (
+              <></>
+            )}
           </>
         )}
       </div>

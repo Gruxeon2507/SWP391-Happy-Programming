@@ -6,137 +6,12 @@ import Comment from "../../Components/Comment/Comment";
 import CommentServices from "../../services/CommentServices";
 
 function PostDetail() {
-  // const myComments = [
-  //   {
-  //     commentId: 1,
-  //     commentedAt: null,
-  //     commentContent: "hello",
-  //     post: {
-  //       postId: 1,
-  //       postedAt: null,
-  //       postContent:
-  //         '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //       attachments: [],
-  //     },
-  //     replies: [
-  //       {
-  //         commentId: 2,
-  //         commentedAt: null,
-  //         commentContent: "hi",
-  //         post: {
-  //           postId: 1,
-  //           postedAt: null,
-  //           postContent:
-  //             '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //           attachments: [],
-  //         },
-  //         replies: [
-  //           {
-  //             commentId: 3,
-  //             commentedAt: null,
-  //             commentContent: "whatsup",
-  //             post: {
-  //               postId: 1,
-  //               postedAt: null,
-  //               postContent:
-  //                 '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //               attachments: [],
-  //             },
-  //             replies: [],
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     commentId: 2,
-  //     commentedAt: null,
-  //     commentContent: "hi",
-  //     post: {
-  //       postId: 1,
-  //       postedAt: null,
-  //       postContent:
-  //         '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //       attachments: [],
-  //     },
-  //     replies: [
-  //       {
-  //         commentId: 3,
-  //         commentedAt: null,
-  //         commentContent: "whatsup",
-  //         post: {
-  //           postId: 1,
-  //           postedAt: null,
-  //           postContent:
-  //             '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //           attachments: [],
-  //         },
-  //         replies: [],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     commentId: 3,
-  //     commentedAt: null,
-  //     commentContent: "whatsup",
-  //     post: {
-  //       postId: 1,
-  //       postedAt: null,
-  //       postContent:
-  //         '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //       attachments: [],
-  //     },
-  //     replies: [],
-  //   },
-  //   {
-  //     commentId: 4,
-  //     commentedAt: "2023-06-08",
-  //     commentContent: null,
-  //     post: {
-  //       postId: 1,
-  //       postedAt: null,
-  //       postContent:
-  //         '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //       attachments: [],
-  //     },
-  //     replies: [],
-  //   },
-  //   {
-  //     commentId: 5,
-  //     commentedAt: "2023-06-08",
-  //     commentContent: "confirm btvn",
-  //     post: {
-  //       postId: 1,
-  //       postedAt: null,
-  //       postContent:
-  //         '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //       attachments: [],
-  //     },
-  //     replies: [],
-  //   },
-  //   {
-  //     commentId: 6,
-  //     commentedAt: "2023-06-08",
-  //     commentContent: "confirm btvn 1",
-  //     post: {
-  //       postId: 1,
-  //       postedAt: null,
-  //       postContent:
-  //         '<ul>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n<li style="text-align: center;"><a href="https://www.facebook.com/">BTVN</a></li>\n</ul>\n<p style="text-align: center;">&nbsp;</p>',
-  //       attachments: [],
-  //     },
-  //     replies: [],
-  //   },
-  // ];
+
   const { postId } = useParams("postId");
   const [post, setPost] = useState({});
-  // const [isChecked, setIsChecked] = useState(false);
   const [comments, setComments] = useState([]);
   const [input, setInput] = useState("");
 
-  // const handleCheckboxChange = () => {
-  //   setIsChecked(!isChecked);
-  // };
 
   useEffect(() => {
     PostServices.getPostById(postId)
@@ -165,6 +40,7 @@ function PostDetail() {
       },
     };
     CommentServices.addComment(comment);
+    
   };
 
   useEffect(() => {}, []);
