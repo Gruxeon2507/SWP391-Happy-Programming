@@ -5,6 +5,7 @@ import axios from "axios";
 import "./ChangeSetting.css"
 
 function ChangeSetting(props) {
+  const [onBtnSubmit, setOnBtnSubmit] = useState(false);
   const [id, setId] = useState("");
   const [user, setUser] = useState({
     username: "",
@@ -27,6 +28,7 @@ function ChangeSetting(props) {
   const [checkMentorRole, setCheckMentorRole] = useState(false);
 
   const [avatar, setAvatar] = useState(null);
+  const [avatarSource, setAvatarSource] = useState("http://localhost:1111/api/users/avatar/" + user.username);
 
   const [avatarFile, setAvatarFile] = useState(null);
   const [showErrorAvatar, setShowErrorAvatar] = useState(false);
@@ -138,9 +140,11 @@ function ChangeSetting(props) {
       })
       .then((res) => {
         console.log(res.data);
+        window.location.reload();
       })
       .catch((error) => {
         console.log("Error when update avatar user" + error);
+        alert("Error when update avatar");
       });
   };
 
@@ -169,8 +173,7 @@ function ChangeSetting(props) {
   };
 
   useEffect(() => {
-    // console.log(token);
-
+    setOnBtnSubmit(false);
     axios
       .get(`http://localhost:1111/api/auth/profile/${id}`)
       .then((res) => {
@@ -191,8 +194,14 @@ function ChangeSetting(props) {
       });
 
     // const avatar = require(`../../../../swp391-happyprogramming-backend/avatar/${user.avatarPath}`);
-    setAvatar(avatar);
-  }, [id]);
+    // setAvatar(avatar);
+  }, [id], [onBtnSubmit]);
+
+  // const handleBtnClick = () => {
+  //   setOnBtnSubmit(true);
+  //   // setAvatarSource("http://localhost:1111/api/users/avatar/" + user.username);
+  //   handleSubmitAvatar();
+  // };
 
   useEffect(() => {
     axios
@@ -212,14 +221,11 @@ function ChangeSetting(props) {
     <>
       <NavBar mode={1} />
       <main className="changesetting-main-content">
-        <form onSubmit={handleSubmitAvatar}>
-          <div>
-            <label>Avatar</label>
-            <div>
-              <img src={avatar} alt="User Avatar" />
+        <section className="u-s-avt">
+          <form onSubmit={handleSubmitAvatar}>
+            <div className="u-pf-avt">
+              <img src={"http://localhost:1111/api/users/avatar/" + user.username} alt="User Avatar" />
             </div>
-          </div>
-          <div>
             <lable>Upload Avatar</lable>
             <input
               type="file"
@@ -227,41 +233,43 @@ function ChangeSetting(props) {
               onChange={onChangeAvatarPath}
               required
             />
-          </div>
-          {showErrorAvatar ? (
-            <>
-              <div className="w-message" style={{ color: "black" }}>
-                {errorAvatar}
-              </div>
-            </>
-          ) : null}
-          <button>Update avatar</button>
-        </form>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <div>
-              <label>Displayname</label>
-              <input
-                type="text"
-                value={user.displayName}
-                onChange={onChangeDisplayName}
-              />
-            </div>
-            <div>
-              <label>Date of birth</label>
-              <input type="date" value={user.dob} onChange={onChangeDob} />
-            </div>
-            <div></div>
-          </div>
 
-          <button>Update</button>
-        </form>
+            <button>Update avatar</button>
+            {showErrorAvatar ? (
+              <>
+                <div className="w-message" style={{ color: "black" }}>
+                  {errorAvatar}
+                </div>
+              </>
+            ) : null}
+          </form>
+        </section>
+        <section className="u-s-display-inf">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <div>
+                <label>Displayname</label>
+                <input
+                  type="text"
+                  value={user.displayName}
+                  onChange={onChangeDisplayName}
+                />
+              </div>
+              <div>
+                <label>Date of birth</label>
+                <input type="date" value={user.dob} onChange={onChangeDob} />
+              </div>
+              <div></div>
+            </div>
+
+            <button>Update</button>
+          </form>
+        </section>
         {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
-          <>
+          <section className="u-s-mentor-cv">
             <form onSubmit={handleSubmitPdf}>
               <div>
-                <label>Pdf</label>
-                <div></div>
+                <label>Pdf file</label>
               </div>
               <div>
                 <lable>Upload Pdf</lable>
@@ -281,8 +289,11 @@ function ChangeSetting(props) {
               ) : null}
               <button>Update Pdf</button>
             </form>
-          </>
+          </section>
         ) : null}
+
+
+
         {/* <form onSubmit={handleSubmitPdf}>
         <div>
           <label>Pdf</label>

@@ -11,20 +11,20 @@
 
 .res-bg {
   height: 100svh;
-  width: 40%;
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding-top: 2rem;
+  padding-top: 64px;
 }
 .res-bg img {
   width: 100%;
 }
 
 .regis-form {
-  width: 60%;
+  width: 50%;
   height: calc(100svh - 100px);
   position: absolute;
   right: 0;

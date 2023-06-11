@@ -77,6 +77,19 @@
   position: relative;
 }
 
+.nav-item img {
+  width: 64px;
+  height: 64px;
+  margin-right: 1rem;
+  border-radius: 50%;
+  border: 4px solid var(--darkItem3);
+}
+
+.nav-item ion-icon {
+  transform: translateY(15%);
+  font-size: 1.2rem;
+}
+
 .nav-item a {
   padding: 4px 8px;
   border-radius: 8px;

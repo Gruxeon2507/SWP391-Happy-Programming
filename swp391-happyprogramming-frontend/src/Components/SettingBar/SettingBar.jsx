@@ -23,9 +23,13 @@ function SettingBar(props) {
             <div className="Setting-Bar">
                 <ul>
                     <li className="nav-item">
-                        <NavLink to="/admin">admin</NavLink>
+                        <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
+                        <NavLink to={`/profile/${props.user}`}>{props.user}</NavLink>
                     </li>
                     <li className="nav-item">
+                        <NavLink to="/admin">admin</NavLink>
+                    </li>
+                    {/* <li className="nav-item">
                         <p>Setting</p>
                         <div className="themeSwitch">
                             <label>
@@ -33,24 +37,16 @@ function SettingBar(props) {
                                 <span className="slider"></span>
                             </label>
                         </div>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/changesetting">setting</NavLink>
-                    </li>
+                    </li> */}
+
                     <li className="nav-item">
                         <NavLink to="/changepassword">changepassword</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/changesetting">changesetting</NavLink>
+                        <NavLink to="/request/statistic">Statisic <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/request/statistic">Statisic</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/request/manage">manage</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/forgetpassword">forgetpassword</NavLink>
+                        <NavLink to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink
@@ -60,7 +56,7 @@ function SettingBar(props) {
                                 window.localStorage.removeItem("token");
                             }}
                         >
-                            logout
+                            logout <ion-icon name="log-out-outline"></ion-icon>
                         </NavLink>
                     </li>
                 </ul>

@@ -245,7 +245,7 @@ function Register(props) {
           <div className="res-bg">
             <h1 style={{ color: "var(--item)", fontWeight: "bold", fontSize: "2.6rem" }}>Sign up to HPYPRO</h1>
             <img src={resBG} alt="resbg"></img>
-            <q style={{ color: "var(--item2)", fontSize: "1.3rem" }}>Embrace yourself on the path of knowledge.</q>
+            {/* <q style={{ color: "var(--item2)", fontSize: "1.3rem" }}>Embrace yourself on the path of knowledge.</q> */}
           </div>
           <div className="regis-form">
             <form onSubmit={handleSubmit} className="regis-form-input">

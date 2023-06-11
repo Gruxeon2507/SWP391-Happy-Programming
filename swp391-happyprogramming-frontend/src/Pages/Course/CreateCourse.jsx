@@ -102,16 +102,6 @@ function CreateCourse() {
             </tr>
             <tr>
               <td>
-                <label>Input </label>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={2} style={{ textAlign: "center" }}>
-                {course.courseDescription}
-              </td>
-            </tr>
-            <tr>
-              <td>
                 <label>Course Name: </label>
               </td>
               <td>
@@ -149,7 +139,6 @@ function CreateCourse() {
                 <label>Categories:</label>
               </td>
               <td>
-                {/* <Select options={options} isMulti onChange={}/> */}
                 <Select
                   options={categories.map((category) => ({
                     value: category.categoryId,
@@ -159,33 +148,11 @@ function CreateCourse() {
                   isSearchable
                   value={temp}
                   onChange={(values) => {
-                    // setSelectedCategories(values);
                     setTemp(values);
                   }}
                 />
               </td>
             </tr>
-            {/* <tr>
-              <td colSpan={2}>
-                <div className="cate-list">
-                  {categories.map((category) => (
-                    <div key={category.categoryId} className="cate">
-                      <input
-                        type="checkbox"
-                        name="categories"
-                        id={category.categoryId}
-                        value={category.categoryId}
-                        onChange={() => selectCategories(category.categoryId)}
-                      ></input>
-
-                      <label htmlFor={category.categoryId}>
-                        {category.categoryName}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </td>
-            </tr> */}
             <tr>
               <td>
                 <label>Mentor:</label>
