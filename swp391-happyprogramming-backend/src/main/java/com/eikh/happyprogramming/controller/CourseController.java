@@ -16,6 +16,7 @@ import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.PostRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+import com.eikh.happyprogramming.utils.RoleUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -223,19 +224,13 @@ public class CourseController {
      * Get Mentor and Mentee of course
      */
     @GetMapping("/find-user/{courseId}")
-    List<User> getUserOfCourse(@PathVariable Integer courseId,
+    List<User> getUserOfCourse( @PathVariable Integer courseId,
             @RequestParam(defaultValue = "1") Integer statusId
     ) {
         return userRepository.getUserOfCourseByStatusId(courseId, statusId);
     }
 
-    //test
-    @GetMapping("/find-users/{courseId}")
-    List<User> getUserOfCourse(@PathVariable Integer courseId
-    ) {
-        return userRepository.getUserOfCourse(courseId);
-    }
-
+   
     /**
      * @author maiphuonghoang
      *
@@ -244,7 +239,6 @@ public class CourseController {
     @GetMapping("/find-mentor/{courseId}")
     User getMentorOfCourse(@PathVariable Integer courseId) {
         User user = userRepository.getMentorOfCourse(courseId);
-//        System.out.println(user.getDisplayName());
         List<Participate> p = participateRepository.findByUsername(user.getUsername());
         System.out.println(p.get(0).getCourse().getCourseName());
         return userRepository.getMentorOfCourse(courseId);

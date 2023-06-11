@@ -65,7 +65,7 @@ function ViewProfile(props) {
   const [errorCreateSkill, setErrorCreateSkill] = useState("");
   const [showErrorCreateSkill, setShowErrorCreateSkill] = useState(false);
   const [createSkillName, setCreateSkillName] = useState("");
-  const viewCVOfMentor = (event) => {};
+  const viewCVOfMentor = (event) => { };
 
   //rating course
   const [comment, setComment] = useState("");
@@ -204,6 +204,7 @@ function ViewProfile(props) {
   const handleEditAvatarPath = () => {
     setEditAvatar(!editAvatar);
   };
+
   const handleSubmitAvatar = (event) => {
     event.preventDefault();
 
@@ -215,9 +216,11 @@ function ViewProfile(props) {
       })
       .then((res) => {
         console.log(res.data);
+        window.location.reload();
       })
       .catch((error) => {
         console.log("Error when update avatar user" + error);
+        alert("Error when update avatar");
       });
   };
   // Upload CV File
@@ -275,9 +278,11 @@ function ViewProfile(props) {
       })
       .then((res) => {
         console.log(res.data);
+        window.location.reload();
       })
       .catch((error) => {
         console.log("Error when update profile" + error);
+        alert("Error when update avatar");
       });
   };
 
@@ -438,186 +443,357 @@ function ViewProfile(props) {
   // }, [id]);
 
   return (
-    <div>
-      <div>
-        <label>Avatar</label>
-        <div>
-          <img src={avatar} alt="User Avatar" />
-        </div>
-        {username === id ? (
-          <>
-            <div>
-              <button onClick={handleEditAvatarPath}>Change Avatar</button>
+    <>
+      <NavBar mode={1}></NavBar>
+      <main className="upf-main">
+        <section className="upf-section">
+          <div className="upf-info">
+            {/* <label>Avatar</label> */}
+            <div className="upf-avt">
+              {/* <img src={avatar} alt="User Avatar" /> */}
+              <img src={"http://localhost:1111/api/users/avatar/" + user.username} alt="User Avatar" />
             </div>
-            {editAvatar ? (
-              <>
-                <div>
-                  <form>
-                    <div>
-                      <lable>Upload Avatar</lable>
-                      <input
-                        type="file"
-                        name="avatarPath"
-                        onChange={onChangeAvatarPath}
-                        required
-                      />
-                    </div>
-                    <button onSubmit={handleSubmitAvatar}>Update avatar</button>
-                  </form>
-                </div>
-                {showErrorAvatar ? (
+          </div>
+          {username === id ? (
+            <>
+              <div className="upf-edit-section">
+                {editAvatar ? (
                   <>
-                    <div className="w-message" style={{ color: "black" }}>
-                      {errorAvatar}
+                    <form onSubmit={handleSubmitAvatar}>
+                      <div>
+                        <lable>Upload Avatar</lable>
+                        <input
+                          type="file"
+                          name="avatarPath"
+                          onChange={onChangeAvatarPath}
+                          required
+                        />
+                      </div>
+                      <button>Update avatar</button>
+                      {showErrorAvatar ? (
+                        <>
+                          <div className="w-message" style={{ color: "black" }}>
+                            {errorAvatar}
+                          </div>
+                        </>
+                      ) : null}
+                    </form>
+                  </>
+                ) : null}
+              </div>
+              <div className="upf-edt-btn">
+                <button onClick={handleEditAvatarPath}>Change Avatar</button>
+              </div>
+            </>
+          ) : null}
+        </section>
+        <section className="upf-section">
+          <div className="upf-info">
+            <label>Username: </label>
+            <h1>{user.username}</h1>
+          </div>
+        </section>
+        <section className="upf-section">
+          {username === id ? (
+            <>
+              <div className="upf-info">
+                <label>Displayname</label>
+                <h3 style={{ display: editDisplayName ? "none" : "block" }}>
+                  {user.displayName}
+                </h3>
+              </div>
+              <div className="upf-edit-section">
+                {editDisplayName ? (
+                  <>
+                    <form onSubmit={handleSubmit}>
+                      <div>
+                        <input
+                          type="text"
+                          value={user.displayName}
+                          onChange={onChangeDisplayName}
+                        />
+                        <button>Update DisplayName</button>
+                      </div>
+                    </form>
+                    {showErrorDisplayname ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorDisplayname}
+                        </div>
+                      </>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    {/* <div>
+                <label>Displayname</label>
+                <h3 style={{ display: editDisplayName ? "none" : "block" }}>
+                {user.displayName}
+                </h3>
+              </div> */}
+                  </>
+                )}
+              </div>
+              <div className="upf-edt-btn">
+                <button onClick={handleEditDisplayName}>Change DisplayName</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="upf-info">
+                <label>Display Name</label>
+                <h2>{user.displayName}</h2>
+              </div>
+            </>
+          )}
+        </section>
+        <section className="upf-section">
+          <div className="upf-info">
+            <div style={{ margin: "1rem 0" }}>
+              <label>Member since: </label>
+              <span>{new Date(user.createdDate).toLocaleDateString(`en-GB`)}</span>
+            </div>
+          </div>
+        </section>
+        <section className="upf-section">
+          {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
+            <>
+              <div className="upf-info">
+                <label>
+                  Avg rate stars :{" "}
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <span
+                      key={value}
+                      style={{
+                        color: value <= avgRate ? "gold" : "gray",
+                      }}
+                    >
+                      &#9733;
+                    </span>
+                  ))}
+                </label>
+              </div>
+              <div className="upf-edit-section">
+                {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
+                  <>
+                    {username != "" ? (
+                      <>
+                        {" "}
+                        <button onClick={editShowPopupRating}>Rating Users</button>
+                        {showPopupRating ? (
+                          <>
+                            <div className="popup">
+                              <div className="popup-content">
+                                <span className="close" onClick={editShowPopupRating}>
+                                  &times;
+                                </span>
+                                <h2>Courses Being Taught</h2>
+                                <ul>
+                                  {courses.map((course, index) => (
+                                    <li key={index}>
+                                      {course.courseName}
+                                      <button onClick={handleEditRateInfo}>Rate</button>
+                                      {editRateInfo ? (
+                                        <>
+                                          {" "}
+                                          <form
+                                            onSubmit={(event) =>
+                                              handleRateMentor(event, course.courseId)
+                                            }
+                                          >
+                                            Vote Star:
+                                            <div>
+                                              {[1, 2, 3, 4, 5].map((value) => (
+                                                <span
+                                                  key={value}
+                                                  onClick={() => onClickNoStar(value)}
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    color:
+                                                      value <= noStar ? "gold" : "gray",
+                                                  }}
+                                                >
+                                                  &#9733;
+                                                </span>
+                                              ))}
+                                            </div>
+                                            <label>Comment:</label>
+                                            <input
+                                              type="text"
+                                              required
+                                              onChange={onChangeComment}
+                                            ></input>
+                                            {showErrorComment ? (
+                                              <>
+                                                <div
+                                                  className="w-message"
+                                                  style={{ color: "black" }}
+                                                >
+                                                  {errorComment}
+                                                </div>
+                                              </>
+                                            ) : null}
+                                            <button>Rate Mentor</button>
+                                          </form>
+                                        </>
+                                      ) : null}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </>
+                        ) : null}
+                      </>
+                    ) : null}
+                  </>
+                ) : null}
+              </div>
+              <div className="upf-edt-btn">
+                <button onClick={editShowPopupAllRating}>View All Rating</button>
+              </div>
+              <div>
+                {showPopupAllRating ? (
+                  <>
+                    <div className="popup">
+                      <div className="popup-content">
+                        <span className="close" onClick={editShowPopupAllRating}>
+                          &times;
+                        </span>
+                        {ratings.map((rating) => (
+                          <div>
+                            <div>
+                              <Link
+                                to={`/profile/${rating.ratingKey.ratedFromUser}`}
+                              >
+                                {rating.ratingKey.ratedFromUser}
+                              </Link>{" "}
+                              voted {rating.noStar} Stars
+                            </div>
+                            <div>
+                              {[1, 2, 3, 4, 5].map((value) => (
+                                <span
+                                  key={value}
+                                  style={{
+                                    color:
+                                      value <= rating.noStar ? "gold" : "gray",
+                                  }}
+                                >
+                                  &#9733;
+                                </span>
+                              ))}
+                            </div>
+                            <div>
+                              <label>Comment: </label>
+                              {rating.ratingComment}
+                            </div>
+                            About{" "}
+                            <div>
+                              <Link to={`/courses/${rating.course.courseId}`}>
+                                {rating.course.courseName}
+                              </Link>
+                            </div>
+                            -------------------------------------------
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </>
                 ) : null}
-              </>
-            ) : null}
-          </>
-        ) : null}
-      </div>
-      <div>
-        <label>Username</label>
-        <h1>{user.username}</h1>
-      </div>
-
-      {username === id ? (
-        <>
-          <div>
-            <button onClick={handleEditDisplayName}>Change DisplayName</button>
-          </div>
-          <div>
-            <label>Displayname</label>
-            <h3 style={{ display: editDisplayName ? "none" : "block" }}>
-              {user.displayName}
-            </h3>
-          </div>
-
-          {editDisplayName ? (
-            <>
-              <div>
-                <form>
-                  <div>
-                    <input
-                      type="text"
-                      value={user.displayName}
-                      onChange={onChangeDisplayName}
-                    />
-                    <button onSubmit={handleSubmit}>Update DisplayName</button>
-                  </div>
-                </form>
               </div>
-              {showErrorDisplayname ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorDisplayname}
-                  </div>
-                </>
-              ) : null}
             </>
-          ) : (
+          ) : null}
+        </section>
+        <section className="upf-section">
+          {username === id ? (
             <>
-              {/* <div>
-                <label>Displayname</label>
-                <h3 style={{ display: editDisplayName ? "none" : "block" }}>
-                  {user.displayName}
+
+              <div className="upf-info">
+                <label>Date Of Birth</label>
+                <h3 style={{ display: editDateOfBirth ? "none" : "block" }}>
+                  {new Date(user.dob).toLocaleDateString(`en-GB`)}
                 </h3>
-              </div> */}
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <div>
-            <label>Display Name</label>
-            <h2>{user.displayName}</h2>
-          </div>
-        </>
-      )}
-
-      {username === id ? (
-        <>
-          <div>
-            <button onClick={handleEditDateOfBirth}>
-              Change Date Of Birth
-            </button>
-          </div>
-          <div>
-            <label>Date Of Birth</label>
-            <h3 style={{ display: editDateOfBirth ? "none" : "block" }}>
-              {new Date(user.dob).toLocaleDateString(`en-GB`)}
-            </h3>
-          </div>
-
-          {editDateOfBirth ? (
-            <>
-              <div>
-                <form onSubmit={handleSubmit}>
-                  <div className="user-input">
-                    <input
-                      type="date"
-                      id="dob-I"
-                      value={user.dob}
-                      required
-                      onChange={onChangeDob}
-                    ></input>
-                    <button>Update Date Of Birth</button>
-                  </div>
-                </form>
               </div>
-              {showErrorDisplayname ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorDisplayname}
-                  </div>
-                </>
-              ) : null}
-            </>
-          ) : (
-            <>
-              {/* <div>
-                <label>Displayname</label>
-                <h3 style={{ display: editDisplayName ? "none" : "block" }}>
-                  {user.displayName}
-                </h3>
-              </div> */}
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <div>
-            <label>Display Name</label>
-            <h2>{user.displayName}</h2>
-          </div>
-        </>
-      )}
-      <div>
-        <label>Created Date</label>
-        <p>{new Date(user.createdDate).toLocaleDateString(`en-GB`)}</p>
-      </div>
-      {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
-        <>
-          <div>
-            <div>
-              <h3>Skills: </h3>
-              <ul>
-                {user.skills.map((skill) => (
-                  <li>
-                    <form
-                      onSubmit={(event) =>
-                        handleDeleteSkill(event, skill.skillId)
-                      }
-                    >
-                      {skill.skillName}
-                      <button>Delete Skill</button>
+
+              <div className="upf-edit-section">
+                {editDateOfBirth ? (
+                  <>
+                    <form onSubmit={handleSubmit}>
+                      <div className="user-input">
+                        <input
+                          type="date"
+                          id="dob-I"
+                          value={user.dob}
+                          required
+                          onChange={onChangeDob}
+                        ></input>
+                        <button>Update Date Of Birth</button>
+                      </div>
                     </form>
+
+                    {showErrorDisplayname ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorDisplayname}
+                        </div>
+                      </>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    {/* <div>
+                <label>Displayname</label>
+                <h3 style={{ display: editDisplayName ? "none" : "block" }}>
+                  {user.displayName}
+                </h3>
+              </div> */}
+                  </>
+                )}
+              </div>
+              <div className="upf-edt-btn">
+                <button onClick={handleEditDateOfBirth}>
+                  Change Date Of Birth
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="upf-info">
+                <label>Date Of Birth</label>
+                <h3 style={{ display: editDateOfBirth ? "none" : "block" }}>
+                  {new Date(user.dob).toLocaleDateString(`en-GB`)}
+                </h3>
+              </div>
+            </>
+          )}
+        </section>
+
+        {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
+          <>
+            <section className="upf-section">
+              <div className="upf-info">
+
+                <ul>
+                  <li>
+                    <span>Skills: </span>
                   </li>
-                ))}
-              </ul>
-              <div>
-                <button onClick={handleEditCreateSkill}>Create a skill</button>
+                  {user.skills.map((skill) => (
+                    <li>
+                      <form
+                        onSubmit={(event) =>
+                          handleDeleteSkill(event, skill.skillId)
+                        }
+                      >
+                        <div className="i-c">
+                          <span>{skill.skillName}</span>
+                          <button><ion-icon name="remove-circle-outline"></ion-icon></button>
+                        </div>
+                      </form>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="upf-edit-section">
                 {editCreateSkill ? (
                   <>
                     <form onSubmit={handleCreateSkill}>
@@ -634,245 +810,60 @@ function ViewProfile(props) {
                   </>
                 ) : null}
               </div>
-            </div>
-          </div>
-          <div>
-            <button>
-              <Link
-                to={"http://localhost:1111/api/public/pdf/" + id}
-                target="_blank"
-                x
-              >
-                View CV
-              </Link>
-            </button>
-            {username === id ? (
-              <>
-                <div>
-                  <button onClick={handleEditCVPath}>Change CV</button>
-                </div>
-                {editPdf ? (
+              <div className="upf-edt-btn">
+                <button onClick={handleEditCreateSkill}>Create a skill</button>
+              </div>
+            </section>
+
+            <section className="upf-section">
+              <div className="upf-info">
+                <button id="viewCV-Bttn">
+                  <Link
+                    to={"http://localhost:1111/api/public/pdf/" + id}
+                    target="_blank"
+                  >
+                    View CV
+                  </Link>
+                </button>
+              </div>
+              <div className="upf-edit-section">
+                {username === id ? (
                   <>
-                    <div>
-                      <label>Pdf</label>
-                      <div></div>
-                    </div>
-                    <form>
-                      <div>
-                        <lable>Upload Pdf</lable>
-                        <input
-                          type="file"
-                          name="pdfPath"
-                          onChange={onChangePdfPath}
-                          required
-                        />
-                      </div>
-                      <button onSubmit={handleSubmitPdf}>Update Pdf</button>
-                    </form>
-                    {showErrorPdf ? (
+                    {editPdf ? (
                       <>
-                        <div className="w-message" style={{ color: "black" }}>
-                          {errorPdf}
-                        </div>
+                        <form onSubmit={handleSubmitPdf}>
+                          <div>
+                            <lable>Upload Pdf</lable>
+                            <input
+                              type="file"
+                              name="pdfPath"
+                              onChange={onChangePdfPath}
+                              required
+                            />
+                          </div>
+                          <button>Update Pdf</button>
+                        </form>
+                        {showErrorPdf ? (
+                          <>
+                            <div className="w-message" style={{ color: "black" }}>
+                              {errorPdf}
+                            </div>
+                          </>
+                        ) : null}
                       </>
                     ) : null}
                   </>
                 ) : null}
-              </>
-            ) : null}
-          </div>
-        </>
-      ) : null}
-
-      <div>
-        {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
-          <>
-            {username != "" ? (
-              <>
-                {" "}
-                <button onClick={editShowPopupRating}>Rating Users</button>
-                {showPopupRating ? (
-                  <>
-                    <div className="popup">
-                      <div className="popup-content">
-                        <span className="close" onClick={editShowPopupRating}>
-                          &times;
-                        </span>
-                        <h2>Courses Being Taught</h2>
-                        <ul>
-                          {courses.map((course, index) => (
-                            <li key={index}>
-                              {course.courseName}
-                              <button onClick={handleEditRateInfo}>Rate</button>
-                              {editRateInfo ? (
-                                <>
-                                  {" "}
-                                  <form
-                                    onSubmit={(event) =>
-                                      handleRateMentor(event, course.courseId)
-                                    }
-                                  >
-                                    Vote Star:
-                                    {/* <input
-                                  type="radio"
-                                  name="noStart"
-                                  value="1"
-                                  checked={noStar === "1"}
-                                  onChange={handleNoStar}
-                                />{" "}
-                                1 |
-                                <input
-                                  type="radio"
-                                  name="noStart"
-                                  value="2"
-                                  checked={noStar === "2"}
-                                  onChange={handleNoStar}
-                                />{" "}
-                                2 |
-                                <input
-                                  type="radio"
-                                  name="noStart"
-                                  value="3"
-                                  checked={noStar === "3"}
-                                  onChange={handleNoStar}
-                                />{" "}
-                                3 |
-                                <input
-                                  type="radio"
-                                  name="noStart"
-                                  value="4"
-                                  checked={noStar === "4"}
-                                  onChange={handleNoStar}
-                                />{" "}
-                                4 |
-                                <input
-                                  type="radio"
-                                  name="noStart"
-                                  value="5"
-                                  checked={noStar === "5"}
-                                  onChange={handleNoStar}
-                                />{" "}
-                                5 |<br></br> */}
-                                    <div>
-                                      {[1, 2, 3, 4, 5].map((value) => (
-                                        <span
-                                          key={value}
-                                          onClick={() => onClickNoStar(value)}
-                                          style={{
-                                            cursor: "pointer",
-                                            color:
-                                              value <= noStar ? "gold" : "gray",
-                                          }}
-                                        >
-                                          &#9733;
-                                        </span>
-                                      ))}
-                                    </div>
-                                    <label>Comment:</label>
-                                    <input
-                                      type="text"
-                                      required
-                                      onChange={onChangeComment}
-                                    ></input>
-                                    {showErrorComment ? (
-                                      <>
-                                        <div
-                                          className="w-message"
-                                          style={{ color: "black" }}
-                                        >
-                                          {errorComment}
-                                        </div>
-                                      </>
-                                    ) : null}
-                                    <button>Rate Mentor</button>
-                                  </form>
-                                </>
-                              ) : null}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </>
-                ) : null}
-              </>
-            ) : null}
+              </div>
+              <div className="upf-edt-btn">
+                <button onClick={handleEditCVPath}>Change CV</button>
+              </div>
+            </section>
           </>
         ) : null}
-      </div>
 
-      <div>
-        {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
-          <>
-            <div>
-              <label>
-                Avg rate stars :{" "}
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <span
-                    key={value}
-                    style={{
-                      color: value <= avgRate ? "gold" : "gray",
-                    }}
-                  >
-                    &#9733;
-                  </span>
-                ))}
-              </label>
-            </div>
-            <button onClick={editShowPopupAllRating}>View All Rating</button>
-            <div>
-              {showPopupAllRating ? (
-                <>
-                  <div className="popup">
-                    <div className="popup-content">
-                      <span className="close" onClick={editShowPopupAllRating}>
-                        &times;
-                      </span>
-                      {ratings.map((rating) => (
-                        <div>
-                          <div>
-                            <Link
-                              to={`/profile/${rating.ratingKey.ratedFromUser}`}
-                            >
-                              {rating.ratingKey.ratedFromUser}
-                            </Link>{" "}
-                            voted {rating.noStar} Stars
-                          </div>
-                          <div>
-                            {[1, 2, 3, 4, 5].map((value) => (
-                              <span
-                                key={value}
-                                style={{
-                                  color:
-                                    value <= rating.noStar ? "gold" : "gray",
-                                }}
-                              >
-                                &#9733;
-                              </span>
-                            ))}
-                          </div>
-                          <div>
-                            <label>Comment: </label>
-                            {rating.ratingComment}
-                          </div>
-                          About{" "}
-                          <div>
-                            <Link to={`/courses/${rating.course.courseId}`}>
-                              {rating.course.courseName}
-                            </Link>
-                          </div>
-                          -------------------------------------------
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              ) : null}
-            </div>
-          </>
-        ) : null}
-      </div>
-    </div>
+      </main>
+    </>
   );
 }
 

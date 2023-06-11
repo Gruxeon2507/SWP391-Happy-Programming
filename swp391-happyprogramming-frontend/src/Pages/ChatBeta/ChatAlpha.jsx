@@ -19,7 +19,7 @@ const PrivateChatRoom = () => {
   const [newConversationMessage, setNewConversationMessage] = useState([]);
   const [publicChats, setPublicChats] = useState([]);
   const [tab, setTab] = useState();
-  const [count,setCount]=useState(0);
+  const [count, setCount] = useState(0);
   const [currentConversationMessage, setCurrentConversationMessage] = useState(
     []
   );
@@ -42,7 +42,7 @@ const PrivateChatRoom = () => {
   };
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
-    stompClient.subscribe(`/chatroom/${tab}`, onMessageReceived);
+    stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
     // stompClient.subscribe(`/user/${userData.username}/private`, onPrivateMessage);
     userJoin();
   };
@@ -107,21 +107,20 @@ const PrivateChatRoom = () => {
     if (stompClient) {
       // Unsubscribe from previous chatroom topic
       stompClient.unsubscribe(`sub-${count}`);
-      const temp = count+1
+      const temp = count + 1
       setCount(temp);
       // Subscribe to the new chatroom topic
       stompClient.subscribe(`/chatroom/${newTab}`, onMessageReceived);
-  
+
       setNewConversationMessage([]);
       setTab(newTab);
     }
   };
-  
+
 
   //when new message arrive
   const onMessageReceived = (payload) => {
     const payloadData = JSON.parse(payload.body);
-    console.log("set tin nhan");
     setNewConversationMessage((prevMessages) => [...prevMessages, payloadData]);
   };
 
@@ -153,7 +152,8 @@ const PrivateChatRoom = () => {
     console.log(newConversationMessage);
   }, [newConversationMessage]);
   return (
-    <div>
+    <>
+      <NavBar mode={1}></NavBar>
       <div className="Chat-container">
         <div className="Conversation-List">
           <div className="seach-chat">
@@ -174,19 +174,20 @@ const PrivateChatRoom = () => {
           <div className="messages">
             {currentConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.messageKey.sentBy === userData.username && "self"
-                }`}
+                className={`message ${chat.messageKey.sentBy === userData.username && "self"
+                  }`}
               >
                 {chat.messageKey.sentBy !== userData.username && (
                   <div>
-                    <div className="avatar">{chat.messageKey.sentBy}</div>
+                    <div className="avatar">
+                      <span>{chat.messageKey.sentBy}</span>
+                    </div>
                     <MessageTo message={chat.msgContent} />
                   </div>
                 )}
                 {chat.messageKey.sentBy === userData.username && (
                   <div>
-                    <div className="avatar">{chat.messageKey.sentBy}</div>
+                    <div className="avatar"><span>{chat.messageKey.sentBy}</span></div>
                     <MessageFrom message={chat.msgContent} />
                   </div>
                 )}
@@ -194,19 +195,18 @@ const PrivateChatRoom = () => {
             ))}
             {newConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.senderName === userData.username && "self"
-                }`}
+                className={`message ${chat.senderName === userData.username && "self"
+                  }`}
               >
                 {chat.senderName !== userData.username && (
                   <div>
-                    <div className="avatar">{chat.senderName}</div>
+                    <div className="avatar"><span>{chat.senderName}</span></div>
                     <MessageTo message={chat.message} />
                   </div>
                 )}
                 {chat.senderName === userData.username && (
                   <div>
-                    <div className="avatar">{chat.senderName}</div>
+                    <div className="avatar"><span>{chat.senderName}</span></div>
                     <MessageFrom message={chat.message} />
                   </div>
                 )}
@@ -230,7 +230,7 @@ const PrivateChatRoom = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default PrivateChatRoom;

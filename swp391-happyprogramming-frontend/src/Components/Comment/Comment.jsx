@@ -52,11 +52,10 @@ const Comment = ({ comment }) => {
     <>
       <div style={{ marginBottom: "-10px" }}>Input: {input}</div>
       <h1 style={{ marginBottom: "0px" }}>
-        {`${
-          comment.user && comment.user.displayName
+        {`${comment.user && comment.user.displayName
             ? comment.user.displayName
             : "Username failed to load"
-        } (ID: ${comment.commentId})`}
+          } (ID: ${comment.commentId})`}
       </h1>
       <h1
         contentEditable={editMode}

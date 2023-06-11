@@ -5,6 +5,7 @@ import "./Register.css";
 import axios from "axios";
 import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
+import resBG from "../../Assets/resBG.jpg";
 
 function Register(props) {
   const [user, setUser] = useState({
@@ -234,122 +235,171 @@ function Register(props) {
   };
 
   return (
-    <div>
+    <>
       <NavBar mode={3} />
 
       {messageVerify ? (
         <VerifyDialog email={user.mail} />
       ) : (
         <div className="regis-frag">
+          <div className="res-bg">
+            <h1 style={{ color: "var(--item)", fontWeight: "bold", fontSize: "2.6rem" }}>Sign up to HPYPRO</h1>
+            <img src={resBG} alt="resbg"></img>
+            {/* <q style={{ color: "var(--item2)", fontSize: "1.3rem" }}>Embrace yourself on the path of knowledge.</q> */}
+          </div>
           <div className="regis-form">
-            <form onSubmit={handleSubmit}>
-              <div className="form-header">
-                <h1>Registration form</h1>
-              </div>
-              <div className="user-input">
-                <input type="text" id="userName" required onChange={onChangeUsername}></input>
-                <span>UserName</span>
-              </div>
-              {showErrorUsername ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorUsername}
-                  </div>
-                </>
-              ) : null}
-              {showErrorUsernameDuplicate ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorUsernameDuplicate}
-                  </div>
-                </>
-              ) : null}
-              <div className="user-input">
-                <input
-                  type="password"
-                  id="userPassword"
-                  required
-                  onChange={onChangePassword}
-                ></input>
-                <span>Password</span>
-              </div>
-              {showErrorPassword ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorPassword}
-                  </div>
-                </>
-              ) : null}
-              <div className="user-input">
-                <input
-                  type="password"
-                  id="re-userPassword"
-                  required
-                  onChange={onChangeRePassword}
-                ></input>
-                <span>Re Enter Password</span>
-              </div>
-              {checkRePassword ? (
-                <>
-                  <div className="w-message">{MessageRePassword}</div>
-                </>
-              ) : null}
-
-              <div className="user-input">
-                <input
-                  type="text"
-                  id="displayname-I"
-                  required
-                  onChange={onChangeDisplayName}
-                ></input>
-                <span>Display Name</span>
-              </div>
-              {showErrorDisplayname ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorDisplayname}
-                  </div>
-                </>
-              ) : null}
-              <div className="user-input">
-                <input
-                  type="date"
-                  id="dob-I"
-                  value={todayDate}
-                  required
-                  onChange={onChangeDob}
-                ></input>
-                <span>Date of Birth</span>
-              </div>
-              <div className="user-input">
-                <input
-                  type="email"
-                  id="email-I"
-                  required
-                  onChange={onChangeEmail}
-                ></input>
-                <span>Email</span>
-              </div>
-              {showErrorEmail ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorEmail}
-                  </div>
-                </>
-              ) : null}
-              {showErrorEmailDuplicate ? (
-                <>
-                  <div className="w-message" style={{ color: "black" }}>
-                    {errorEmailDuplicate}
-                  </div>
-                </>
-              ) : null}
-              <button type="submit">Register</button>
+            <form onSubmit={handleSubmit} className="regis-form-input">
+              <table>
+                <tr>
+                  <td colSpan={2}>
+                    <div className="user-input">
+                      <input type="text" id="userName" required onChange={onChangeUsername}></input>
+                      <span>UserName</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    {showErrorUsername ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorUsername}
+                        </div>
+                      </>
+                    ) : null}
+                    {showErrorUsernameDuplicate ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorUsernameDuplicate}
+                        </div>
+                      </>
+                    ) : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <div className="user-input">
+                      <input
+                        type="password"
+                        id="userPassword"
+                        required
+                        onChange={onChangePassword}
+                      ></input>
+                      <span>Password</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    {showErrorPassword ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorPassword}
+                        </div>
+                      </>
+                    ) : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <div className="user-input">
+                      <input
+                        type="password"
+                        id="re-userPassword"
+                        required
+                        onChange={onChangeRePassword}
+                      ></input>
+                      <span>Re Enter Password</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    {checkRePassword ? (
+                      <>
+                        <div className="w-message">{MessageRePassword}</div>
+                      </>
+                    ) : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div className="user-input">
+                      <input
+                        type="date"
+                        id="dob-I"
+                        value={todayDate}
+                        required
+                        onChange={onChangeDob}
+                      ></input>
+                      <span>Date of Birth</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="user-input">
+                      <input
+                        type="text"
+                        id="displayname-I"
+                        required
+                        onChange={onChangeDisplayName}
+                      ></input>
+                      <span>Display Name</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    {showErrorDisplayname ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorDisplayname}
+                        </div>
+                      </>
+                    ) : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <div className="user-input">
+                      <input
+                        type="email"
+                        id="email-I"
+                        required
+                        onChange={onChangeEmail}
+                      ></input>
+                      <span>Email</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    {showErrorEmail ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorEmail}
+                        </div>
+                      </>
+                    ) : null}
+                    {showErrorEmailDuplicate ? (
+                      <>
+                        <div className="w-message" style={{ color: "black" }}>
+                          {errorEmailDuplicate}
+                        </div>
+                      </>
+                    ) : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2}>
+                    <button type="submit">Sign Up</button>
+                  </td>
+                </tr>
+              </table>
             </form>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

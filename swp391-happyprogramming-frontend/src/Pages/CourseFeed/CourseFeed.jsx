@@ -32,9 +32,13 @@ function CourseFeed() {
 
   useEffect(() => {
     fetchData();
-  }, [courseId]);
+  }, [courseId, posts]);
 
   const handleCheckboxChange = () => {
+    setIsEditorActive(!isEditorActive);
+  };
+
+  const openEditor = () => {
     setIsEditorActive(!isEditorActive);
   };
 
@@ -42,7 +46,7 @@ function CourseFeed() {
     const ok = confirm("Yah sure bro?");
     if (ok) {
       PostServices.deletePost(postId);
-      window.location.reload();
+      fetchData();
     }
   };
 
@@ -92,13 +96,14 @@ function CourseFeed() {
           </section >
           <aside className="aside-control-nav">
             <div className="sidebar-cf">
+              1 vai thong in ve course/post o day
+              <br></br>
+              <br></br>
+              chi mentor moi thay cai nut nay
+              <br></br>
+              <br></br>
               <div>
-                <input
-                  type="checkbox"
-                  style={{ width: "2rem", height: "2rem" }}
-                  checked={isEditorActive}
-                  onChange={handleCheckboxChange}
-                />add
+                <button onClick={openEditor}><ion-icon name="add-circle-outline"></ion-icon> New</button>
               </div>
             </div>
 

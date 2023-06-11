@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../Course/CourseDetails.css";
 import PublicService from "../../services/PublicService";
 import ParticipateServices from "../../services/ParticipateServices";
 import NavBar from "../../Components/Navbar/NavBar";
 import baseAVT from "../../Assets/base_user_img.png";
 
+
 function StarRating({ rating }) {
+  const navigate = useNavigate();
+
   const renderStars = () => {
     const stars = [];
 
@@ -73,9 +76,10 @@ const CourseDetails = (props) => {
   }, []);
 
   const handleRequest = () => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     if (localStorage.getItem("token")) {
       ParticipateServices.saveParticipate("", courseID, 3, 0);
+      window.location.href = `/courses/view/${courseID}`;
     } else {
       window.location.href = "/login";
     }
