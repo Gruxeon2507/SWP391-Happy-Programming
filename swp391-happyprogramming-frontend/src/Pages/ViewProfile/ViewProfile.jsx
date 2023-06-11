@@ -204,6 +204,7 @@ function ViewProfile(props) {
   const handleEditAvatarPath = () => {
     setEditAvatar(!editAvatar);
   };
+
   const handleSubmitAvatar = (event) => {
     event.preventDefault();
 
@@ -215,9 +216,11 @@ function ViewProfile(props) {
       })
       .then((res) => {
         console.log(res.data);
+        window.location.reload();
       })
       .catch((error) => {
         console.log("Error when update avatar user" + error);
+        alert("Error when update avatar");
       });
   };
   // Upload CV File
@@ -275,9 +278,11 @@ function ViewProfile(props) {
       })
       .then((res) => {
         console.log(res.data);
+        window.location.reload();
       })
       .catch((error) => {
         console.log("Error when update profile" + error);
+        alert("Error when update avatar");
       });
   };
 
@@ -454,7 +459,7 @@ function ViewProfile(props) {
               <div className="upf-edit-section">
                 {editAvatar ? (
                   <>
-                    <form>
+                    <form onSubmit={handleSubmitAvatar}>
                       <div>
                         <lable>Upload Avatar</lable>
                         <input
@@ -464,15 +469,15 @@ function ViewProfile(props) {
                           required
                         />
                       </div>
-                      <button onSubmit={handleSubmitAvatar}>Update avatar</button>
+                      <button>Update avatar</button>
+                      {showErrorAvatar ? (
+                        <>
+                          <div className="w-message" style={{ color: "black" }}>
+                            {errorAvatar}
+                          </div>
+                        </>
+                      ) : null}
                     </form>
-                    {showErrorAvatar ? (
-                      <>
-                        <div className="w-message" style={{ color: "black" }}>
-                          {errorAvatar}
-                        </div>
-                      </>
-                    ) : null}
                   </>
                 ) : null}
               </div>
@@ -500,14 +505,14 @@ function ViewProfile(props) {
               <div className="upf-edit-section">
                 {editDisplayName ? (
                   <>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                       <div>
                         <input
                           type="text"
                           value={user.displayName}
                           onChange={onChangeDisplayName}
                         />
-                        <button onSubmit={handleSubmit}>Update DisplayName</button>
+                        <button>Update DisplayName</button>
                       </div>
                     </form>
                     {showErrorDisplayname ? (
@@ -826,7 +831,7 @@ function ViewProfile(props) {
                   <>
                     {editPdf ? (
                       <>
-                        <form>
+                        <form onSubmit={handleSubmitPdf}>
                           <div>
                             <lable>Upload Pdf</lable>
                             <input
@@ -836,7 +841,7 @@ function ViewProfile(props) {
                               required
                             />
                           </div>
-                          <button onSubmit={handleSubmitPdf}>Update Pdf</button>
+                          <button>Update Pdf</button>
                         </form>
                         {showErrorPdf ? (
                           <>
