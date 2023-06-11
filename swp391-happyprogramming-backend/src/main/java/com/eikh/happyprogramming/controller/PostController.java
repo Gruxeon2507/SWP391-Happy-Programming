@@ -5,13 +5,17 @@
 package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
+import com.eikh.happyprogramming.model.Comment;
 import com.eikh.happyprogramming.model.Post;
+import com.eikh.happyprogramming.repository.CommentRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.PostRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author kmd
  */
 @CrossOrigin("*")
@@ -35,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/posts")
 public class PostController {
 
+    @Autowired
+    CommentRepository commentRepository;
     @Autowired
     UserRepository userRepository;
 
@@ -61,7 +66,7 @@ public class PostController {
             p.setPostedAt(sqlToday);
             p.setCourse(courseRepository.findMentorCourse(username, courseId));
             p.setUser(userRepository.findByUsername(username));
-            p.setPostContent(post.getPostContent()  );
+            p.setPostContent(post.getPostContent());
             postRepository.save(p);
             return ResponseEntity.ok(p);
         } else {
@@ -81,29 +86,32 @@ public class PostController {
     }
 
     /**
-     * @author Huyen
-     * @description delete the post by id if the user sending request create the
-     * post
      * @param postId
      * @param request
      * @return void
+     * @author Huyen
+     * @description delete the post by id if the user sending request create the
+     * post
      */
     @DeleteMapping("/delete/{postId}")
     public void deleteById(@PathVariable("postId") int postId, HttpServletRequest request) {
         String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        Post post = postRepository.findById(postId).get();
         if (postRepository.userHasPost(username, postId) != null) {
+            for (Comment c : post.getComments()) {
+                commentRepository.deleteById(c.getCommentId());
+            }
             postRepository.deleteById(postId);
         }
     }
 
     /**
-     *
-     * @author Huyen Nguyen
-     * @description update content of a post with given postId
      * @param postId
      * @param content
      * @param request
      * @return void
+     * @author Huyen Nguyen
+     * @description update content of a post with given postId
      */
     @PostMapping("/update/{postId}")
     public void updatePost(@PathVariable("postId") int postId, @RequestBody Post post, HttpServletRequest request) {

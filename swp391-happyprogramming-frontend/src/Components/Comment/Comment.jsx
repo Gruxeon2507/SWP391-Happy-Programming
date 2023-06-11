@@ -9,6 +9,7 @@ const Comment = ({ comment }) => {
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [expand, setExpand] = useState(false);
+  const [nestCount, setNestCount] = useState(0);
   const inputRef = useRef(null);
 
   const deleteComment = () => {
@@ -85,7 +86,7 @@ const Comment = ({ comment }) => {
               className="reply comment"
               type={
                 <>
-                  {expand ? (
+                  {(expand && nestCount < 4) ? (
                     <AiOutlineCaretUp
                       width="10px"
                       height="10px"

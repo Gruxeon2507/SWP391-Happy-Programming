@@ -253,9 +253,4 @@ SELECT * FROM Course
 SELECT * FROM Request
 */
 
--- SELECT * FROM Participate where courseId = 26;-- 
-SELECT * FROM Participate where courseId = 26;
-UPDATE `User` set activeStatus = 1 WHERE username != '';
-
-select * from User_Role where username = 'eikh';
 
