@@ -27,5 +27,9 @@ class RequestService {
       return api.get(`/api/requests/access-reject/${courseId}`);
     }
 
+    deleteParticipateDeleteRequest(courseId){
+      api.delete(`/api/requests/delete/${courseId}`);
+    }
+
 }
 export default new RequestService();
