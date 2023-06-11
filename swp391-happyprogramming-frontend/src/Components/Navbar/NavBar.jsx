@@ -7,10 +7,12 @@ import { Alert } from "bootstrap";
 import SettingDrawer from "../SettingDrawer/SettingDrawer";
 import basicAvatar from "../../Assets/base_user_img.png";
 import SettingBar from "../SettingBar/SettingBar";
+import UserServices from "../../services/UserServices";
 
 function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
   const [navMenuOpen, setNavMenuOpen] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     function handleScroll() {
@@ -25,6 +27,17 @@ function NavBar(props) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      const fetchUsername = async () => {
+        const loginuser = await UserServices.getLoginUsername();
+        setUser(loginuser.data);
+      };
+      fetchUsername();
+    }
+  }, []);
+
 
   let navBarClass = "NavBar active";
   let navMenuClass = navMenuOpen ? "nav-menu active" : "nav-menu";
@@ -65,7 +78,7 @@ function NavBar(props) {
               <ion-icon name="reorder-three-outline"></ion-icon>
             </button>
           </div>
-          {window.localStorage.getItem("token") ? <SettingBar /> : <></>}
+          {window.localStorage.getItem("token") ? <SettingBar user={user} /> : <></>}
         </>}
         {(props.mode === 2) && <>
           <div className="login-uti-text">
