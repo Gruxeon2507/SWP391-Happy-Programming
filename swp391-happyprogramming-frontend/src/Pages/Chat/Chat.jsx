@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import NavBar from "../../Components/Navbar/NavBar";
 import SettingDrawer from "../../Components/SettingDrawer/SettingDrawer";
 import "./Chat.css";
-import "../Chat/Message.css";
 import MessageTo from "./MessageTo";
 import MessageFrom from "./MessageFrom";
 import Conversation from "./Conversation";

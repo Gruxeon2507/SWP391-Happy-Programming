@@ -43,7 +43,7 @@ function SettingBar(props) {
                         <NavLink to="/changepassword">changepassword</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/request/statistic">Statisic <ion-icon name="settings-outline"></ion-icon></NavLink>
+                        <NavLink to="/request/statistic">Statisic </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>

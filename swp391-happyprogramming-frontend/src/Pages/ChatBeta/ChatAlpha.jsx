@@ -151,10 +151,17 @@ const PrivateChatRoom = () => {
   useEffect(() => {
     console.log(newConversationMessage);
   }, [newConversationMessage]);
+
+  const handleKeyPressSent = (event) => {
+    if (event.key === 'Enter') {
+      sendValue();
+    }
+  };
+
   return (
     <>
       <NavBar mode={1}></NavBar>
-      <div className="Chat-container">
+      <main className="Chat-container">
         <div className="Conversation-List">
           <div className="seach-chat">
             <input type="text" placeholder="Search"></input>
@@ -178,17 +185,27 @@ const PrivateChatRoom = () => {
                   }`}
               >
                 {chat.messageKey.sentBy !== userData.username && (
-                  <div>
+                  <div className="message-to">
                     <div className="avatar">
-                      <span>{chat.messageKey.sentBy}</span>
+                      <img src={"http://localhost:1111/api/users/avatar/" + chat.messageKey.sentBy} alt="avatar"></img>
                     </div>
-                    <MessageTo message={chat.msgContent} />
+                    <div className="msg-text">
+                      <div className="display-name-msg-to">
+                        <span>{chat.messageKey.sentBy}</span>
+                      </div>
+                      <MessageTo message={chat.msgContent} />
+                    </div>
                   </div>
                 )}
                 {chat.messageKey.sentBy === userData.username && (
-                  <div>
-                    <div className="avatar"><span>{chat.messageKey.sentBy}</span></div>
-                    <MessageFrom message={chat.msgContent} />
+                  <div className="message-from">
+                    {/* <div className="avatar">
+                      <img src={"http://localhost:1111/api/users/avatar/" + chat.messageKey.sentBy} alt="avatar"></img>
+                      <span>{chat.messageKey.sentBy}</span>
+                    </div> */}
+                    <div className="msg-text">
+                      <MessageFrom message={chat.msgContent} />
+                    </div>
                   </div>
                 )}
               </li>
@@ -199,15 +216,25 @@ const PrivateChatRoom = () => {
                   }`}
               >
                 {chat.senderName !== userData.username && (
-                  <div>
-                    <div className="avatar"><span>{chat.senderName}</span></div>
-                    <MessageTo message={chat.message} />
+                  <div className="message-to">
+                    <div className="avatar">
+                      <img src={"http://localhost:1111/api/users/avatar/" + chat.senderName} alt="avatar"></img>
+                      <span>{chat.senderName}</span>
+                    </div>
+                    <div className="msg-text">
+                      <MessageTo message={chat.message} />
+                    </div>
                   </div>
                 )}
                 {chat.senderName === userData.username && (
-                  <div>
-                    <div className="avatar"><span>{chat.senderName}</span></div>
-                    <MessageFrom message={chat.message} />
+                  <div className="message-from">
+                    {/* <div className="avatar">
+                      <img src={"http://localhost:1111/api/users/avatar/" + chat.senderName} alt="avatar"></img>
+                      <span>{chat.senderName}</span>
+                    </div> */}
+                    <div className="msg-text">
+                      <MessageFrom message={chat.message} />
+                    </div>
                   </div>
                 )}
               </li>
@@ -223,13 +250,15 @@ const PrivateChatRoom = () => {
               placeholder="Type a message"
               value={userData.message}
               onChange={handleMessage}
+              // onKeyUp={handleKeyPressSent}
+              onKeyPress={handleKeyPressSent}
             ></input>
             <button>
               <ion-icon name="send" onClick={sendValue}></ion-icon>
             </button>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 };
