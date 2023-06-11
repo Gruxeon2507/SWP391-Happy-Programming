@@ -279,7 +279,7 @@ public class UserController {
             System.out.println("Non Valid Token");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
+    }
 
     // Date: 22/05/2023
     // Function: List mentor for only admin
