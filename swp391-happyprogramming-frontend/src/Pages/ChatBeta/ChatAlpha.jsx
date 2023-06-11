@@ -121,7 +121,6 @@ const PrivateChatRoom = () => {
   //when new message arrive
   const onMessageReceived = (payload) => {
     const payloadData = JSON.parse(payload.body);
-    console.log("set tin nhan");
     setNewConversationMessage((prevMessages) => [...prevMessages, payloadData]);
   };
 
@@ -179,13 +178,15 @@ const PrivateChatRoom = () => {
               >
                 {chat.messageKey.sentBy !== userData.username && (
                   <div>
-                    <div className="avatar">{chat.messageKey.sentBy}</div>
+                    <div className="avatar">
+                      <span>{chat.messageKey.sentBy}</span>
+                    </div>
                     <MessageTo message={chat.msgContent} />
                   </div>
                 )}
                 {chat.messageKey.sentBy === userData.username && (
                   <div>
-                    <div className="avatar">{chat.messageKey.sentBy}</div>
+                    <div className="avatar"><span>{chat.messageKey.sentBy}</span></div>
                     <MessageFrom message={chat.msgContent} />
                   </div>
                 )}
@@ -198,13 +199,13 @@ const PrivateChatRoom = () => {
               >
                 {chat.senderName !== userData.username && (
                   <div>
-                    <div className="avatar">{chat.senderName}</div>
+                    <div className="avatar"><span>{chat.senderName}</span></div>
                     <MessageTo message={chat.message} />
                   </div>
                 )}
                 {chat.senderName === userData.username && (
                   <div>
-                    <div className="avatar">{chat.senderName}</div>
+                    <div className="avatar"><span>{chat.senderName}</span></div>
                     <MessageFrom message={chat.message} />
                   </div>
                 )}
