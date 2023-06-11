@@ -12,8 +12,10 @@ import com.eikh.happyprogramming.repository.CommentRepository;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import com.eikh.happyprogramming.repository.UserRepository;
+import com.eikh.happyprogramming.utils.CommentUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 @CrossOrigin("*")
 @RequestMapping("/api/comments")
 public class CommentController {
+    @Autowired
+    CommentUtils commentUtils;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -78,19 +82,26 @@ public class CommentController {
         u.setUsername(username);
         comment.setUser(u);
         commentRepository.save(comment);
+        System.out.println("ADDED COMMENT");
     }
 
-    public void deleteCommentAndReplies(int commentId) {
-        System.out.println("DELETE COMMENT API CALLED.");
-        Comment comment = commentRepository.findById(commentId).get();
-        if (comment != null) {
-            for (Comment reply : comment.getReplies()) {
-                deleteCommentAndReplies(reply.getCommentId());
-            }
-            commentRepository.deleteById(commentId);
-        }
-
-    }
+//    public void deleteCommentAndReplies(int commentId) {
+//        System.out.println("DELETE COMMENT API CALLED.");
+//        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+//        if (optionalComment != null) {
+//            Comment comment = optionalComment.get();
+//            System.out.println("NOT NUll");
+//            for (Comment reply : comment.getReplies()) {
+//
+//                deleteCommentAndReplies(reply.getCommentId());
+//            }
+//            System.out.println("DELETE REPLIES DONE");
+//            commentRepository.deleteById(commentId);
+//        } else {
+//            System.out.println("COMMENT IS NULL");
+//        }
+//
+//    }
 
     @DeleteMapping("delete/{commentId}")
     public void deleteCommentById(@PathVariable("commentId") int commentId, HttpServletRequest request) {
@@ -109,7 +120,7 @@ public class CommentController {
                             || username.equals(postOwnerUsername)
                             || adminUser != null
                     ) {
-                        deleteCommentAndReplies(commentId);
+                        commentUtils.deleteCommentAndReplies(commentId);
                     }
                 }
             }
@@ -138,7 +149,7 @@ public class CommentController {
 
     @GetMapping("/view/top/{postId}")
     public List<Comment> getTopLevelCommentsByCourse(@PathVariable("postId") int postId) {
-        List<Comment> cmts = commentRepository.getTopLevelCommentByPost(1);
+        List<Comment> cmts = commentRepository.getTopLevelCommentByPost(postId);
         System.out.println("THERE ARE " + cmts.size() + " TOP LEVEL COMMENTS IN POST " + postId);
         for (Comment c : cmts) {
             System.out.println("COMMENTID: " + c.getCommentId() + "USER: " + c.getUser().getDisplayName());

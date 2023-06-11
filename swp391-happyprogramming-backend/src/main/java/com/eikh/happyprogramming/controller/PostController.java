@@ -11,9 +11,11 @@ import com.eikh.happyprogramming.repository.CommentRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.PostRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
+import com.eikh.happyprogramming.utils.CommentUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/posts")
 public class PostController {
+    @Autowired
+    CommentUtils commentUtils;
 
     @Autowired
     CommentRepository commentRepository;
@@ -94,20 +98,31 @@ public class PostController {
      * post
      */
     @DeleteMapping("/delete/{postId}")
-    public void deleteById(@PathVariable("postId") int postId, HttpServletRequest request) {
+    public void deletePostById(@PathVariable("postId") int postId, HttpServletRequest request) {
+        System.out.println("DELETE POST API CALLED.");
         String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         Post post = postRepository.findById(postId).get();
+        CommentController commentController = new CommentController();
         if (postRepository.userHasPost(username, postId) != null) {
-            for (Comment c : post.getComments()) {
-                commentRepository.deleteById(c.getCommentId());
+            List<Comment> topLevelComments = commentRepository.getTopLevelCommentByPost(postId);
+            for (Comment c : topLevelComments) {
+                System.out.println("COMMENT ID: " + c.getCommentId());
+            }
+            for (Comment c : topLevelComments) {
+                System.out.println("COMMENT ID: " + c.getCommentId());
+
+                commentUtils.deleteCommentAndReplies(c.getCommentId());
+                System.out.println("COMMENT ID: " + c.getCommentId() + " DONE");
             }
             postRepository.deleteById(postId);
         }
     }
 
+
+
     /**
      * @param postId
-     * @param content
+     * @param post-Content
      * @param request
      * @return void
      * @author Huyen Nguyen
