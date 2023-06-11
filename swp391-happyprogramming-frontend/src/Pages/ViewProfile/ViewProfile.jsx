@@ -446,7 +446,7 @@ function ViewProfile(props) {
             {/* <label>Avatar</label> */}
             <div className="upf-avt">
               {/* <img src={avatar} alt="User Avatar" /> */}
-              <img src={"http://localhost:1111/api/users/avatar/" + user.username} alt="User Avatar" />
+              <img src={"http://localhost:1111/api/users/avatar/" + id} alt="User Avatar" />
             </div>
           </div>
           {username === id ? (

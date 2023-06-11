@@ -37,6 +37,7 @@ import ConversationList from "./Pages/ChatBeta/ConversationList";
 import RequestStatistic from "./Pages/Mentor/RequestStatistic";
 
 import PostDetail from "./Pages/PostDetail/PostDetail";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -45,9 +46,7 @@ function App() {
       setFeatures(response.data);
       // console.log(response.data);
       // console.log(features);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     fetchData();
@@ -55,43 +54,148 @@ function App() {
   // console.log(features);
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/landing"></Navigate>}></Route>
-      <Route path="/landing" element={<Home />} />
-      <Route path="/chat" element={<ConversationList />} />
+      {/* GUEST */}
+      <Route path="/" element={<Home />} />
       <Route path="/courses" element={<Homepage />} />
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/homepage" element={<Homepage />} />
-      <Route path="/admin" element={<AdminManage />} />
-
-      <Route path="/request/manage" element={<RequestManage />} />
-      <Route path="/request/statistic" element={<RequestStatistic />} />
-
-      <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/setting" element={<Setting />} />
-      <Route path="/createCourse" element={<CreateCourse></CreateCourse>} />
+      <Route path="/login" element={<Login />} />
       <Route
-        path="/changepassword"
-        element={<ChangePassword></ChangePassword>}
+        path="/forgetpassword"
+        element={<ForgetPassword></ForgetPassword>}
       />
-      <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
-      <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>} />
       <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>} />
 
-      <Route path="/createPost" element={<CreatePost></CreatePost>}></Route>
-      <Route path="/courses/feed/:courseId" element={<CourseFeed></CourseFeed>}></Route>
-      <Route path="/chat/:conversationId" element={<PrivateChatRoom></PrivateChatRoom>}></Route>
-      <Route path="/post/view/:postId" element={<PostDetail></PostDetail>}></Route>
-      {features &&
-        features.map((feature) => {
-          if (feature.url === "/home") {
-            return (
-              <Route key={feature.url} path={feature.url} element={<Home />} />
-            );
-          }
-          return null;
-        })}
+      {/* MENTEE */}
+      {/* <Route path="/chat" element={<ConversationList />} /> */}
+      {/* <Route path="/mycourse" element={<MyCourse />} /> */}
+      {/* <Route path="/setting" element={<Setting />} /> */}
+      {/* <Route
+        path="/changepassword"
+        element={<ChangePassword></ChangePassword>}
+      /> */}
+      {/* <Route
+        path="/courses/feed/:courseId"
+        element={<CourseFeed></CourseFeed>}
+      ></Route> */}
+      {/* <Route
+        path="/chat/:conversationId"
+        element={<PrivateChatRoom></PrivateChatRoom>}
+      ></Route> */}
+      {/* <Route
+        path="/post/view/:postId"
+        element={<PostDetail></PostDetail>}
+      ></Route> */}
+
+      {/* MENTOR */}
+      {/* <Route path="/request/manage" element={<RequestManage />} /> */}
+      {/* <Route path="/request/statistic" element={<RequestStatistic />} /> */}
+      {/* <Route path="/createPost" element={<CreatePost></CreatePost>}></Route> */}
+
+      {/* ADMIN */}
+      {/* <Route path="/admin" element={<AdminManage />} /> */}
+      {/* <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} /> */}
+
+      <Route
+        path="/chat"
+        element={
+          <PrivateRoute
+            component={ConversationList}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/mycourse"
+        element={
+          <PrivateRoute
+            component={MyCourse}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/setting"
+        element={
+          <PrivateRoute
+            component={Setting}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/changepassword"
+        element={
+          <PrivateRoute
+            component={ChangePassword}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/courses/feed/:courseId"
+        element={
+          <PrivateRoute
+            component={CourseFeed}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/chat/:conversationId"
+        element={
+          <PrivateRoute
+            component={PrivateChatRoom}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/post/view/:postId"
+        element={
+          <PrivateRoute
+            component={PostDetail}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/request/manage"
+        element={
+          <PrivateRoute component={RequestManage} roles={["mentor", "admin"]} />
+        }
+      />
+
+      <Route
+        path="/request/statistic"
+        element={
+          <PrivateRoute
+            component={RequestStatistic}
+            roles={["mentor", "admin"]}
+          />
+        }
+      />
+
+      <Route
+        path="/createPost"
+        element={
+          <PrivateRoute component={CreatePost} roles={["mentor", "admin"]} />
+        }
+      />
+
+      <Route
+        path="/admin"
+        element={
+          <PrivateRoute component={AdminManage} roles={["admin"]} />
+        }
+      />
       <Route path="*" Component={AccessDenied}></Route>
     </Routes>
   );
@@ -104,8 +208,7 @@ function AccessDenied() {
         <span className="forbiddenTitle">404</span> - Not Found
       </h1>
       <p>
-        This Page Is Not Found.{" "}
-        <a href="javascript:history.go(-1)">Return To Previous Page</a>
+        This Page Is Not Found. <a href="/">Return To Home Page</a>
       </p>
     </div>
   );
