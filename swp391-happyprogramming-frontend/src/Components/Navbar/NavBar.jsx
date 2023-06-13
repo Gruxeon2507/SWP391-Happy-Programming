@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "../Navbar/NavBar.css";
 import logo from "../../Assets/logo.png";
@@ -13,6 +13,7 @@ function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
   const [navMenuOpen, setNavMenuOpen] = useState(false);
   const [user, setUser] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     function handleScroll() {
@@ -29,12 +30,25 @@ function NavBar(props) {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const fetchUsername = async () => {
-        const loginuser = await UserServices.getLoginUsername();
-        setUser(loginuser.data);
-      };
-      fetchUsername();
+    try{
+
+      if (localStorage.getItem("token")) {
+        const fetchUsername = async () => {
+          const loginuser = await UserServices.getLoginUsername().catch((error)=> {
+            
+            window.localStorage.removeItem("token");
+            window.localStorage.removeItem("role");
+            navigate("/login")
+
+          });
+          setUser(loginuser.data);
+        };
+        fetchUsername();
+      }
+    }catch(e){
+      console.log(e);
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("role");
     }
   }, []);
 

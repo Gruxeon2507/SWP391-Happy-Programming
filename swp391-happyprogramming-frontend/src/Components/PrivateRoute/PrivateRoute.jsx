@@ -9,7 +9,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => {
   if (isAuthenticated && roles.includes(userRoles)) {
     return <Component {...rest} />;
   } else {
-    navigate('/login'); // Redirect to the login page
+    // navigate('/login'); // Redirect to the login page
     return <AccessDenied />; // Render a <Navigate> component to perform the redirect
   }
 };

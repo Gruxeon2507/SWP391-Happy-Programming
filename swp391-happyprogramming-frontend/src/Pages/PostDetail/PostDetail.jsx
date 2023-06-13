@@ -4,14 +4,22 @@ import PostServices from "../../services/PostServices";
 import CreatePost from "../../Components/CreatePost/CreatePost";
 import Comment from "../../Components/Comment/Comment";
 import CommentServices from "../../services/CommentServices";
+import UserServices from "../../services/UserServices";
 
 function PostDetail() {
-
   const { postId } = useParams("postId");
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [input, setInput] = useState("");
+  const [loginUsername, setLoginUsername] = useState("");
 
+  useEffect(() => {
+    UserServices.getLoginUsername()
+      .then((res) => setLoginUsername(res.data))
+      .catch((error) => {
+        console.log("ERROR GET LOGIN USERNAME" + error);
+      });
+  }, []);
 
   useEffect(() => {
     PostServices.getPostById(postId)
@@ -31,16 +39,22 @@ function PostDetail() {
       });
   }, []);
 
-  const addComment = () => {
+  const addComment = async () => {
     console.log("add comment ...");
     const comment = {
       commentContent: input,
+      user: {
+        username: loginUsername,
+      },
       post: {
         postId: postId,
       },
+      replies: [],
     };
-    CommentServices.addComment(comment);
-    
+    CommentServices.addComment(comment).then((res) => {
+      console.log("DAY LA COMMENT MOI: ", res.data);
+      setComments((prev) => [res.data, ...prev]);
+    });
   };
 
   useEffect(() => {}, []);
@@ -69,8 +83,8 @@ function PostDetail() {
             <Comment
               comment={comment}
               key={comment.commentId}
+              layer={1}
             ></Comment>
-
           </>
         ))}
       </div>

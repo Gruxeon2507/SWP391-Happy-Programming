@@ -17,7 +17,7 @@ function CourseFeed() {
   const toggleEditMenu = (postId) => {
     setActiveMenus((prevActiveMenus) => ({
       ...prevActiveMenus,
-      [postId]: !prevActiveMenus[postId]
+      [postId]: !prevActiveMenus[postId],
     }));
   };
 
@@ -60,7 +60,8 @@ function CourseFeed() {
       <main className="cf-content">
         <div className="course-bg-inf">
           Thong tin co ban cua course o day <br />
-          total mentee<br />
+          total mentee
+          <br />
           thong tin .... <br />
           thong tin .... <br />
           thong tin .... <br />
@@ -71,29 +72,42 @@ function CourseFeed() {
               <div className="post-card-wrap" key={post.postId}>
                 <div className="pcw-edit-opt">
                   <div className="pcw-edit-opt-btn">
-                    <ion-icon onClick={() => toggleEditMenu(post.postId)} name="ellipsis-vertical-outline"></ion-icon>
+                    <ion-icon
+                      onClick={() => toggleEditMenu(post.postId)}
+                      name="ellipsis-vertical-outline"
+                    ></ion-icon>
                   </div>
-                  <nav className={`pcw-edit-opt-list ${activeMenus[post.postId] ? 'active' : ''}`}>
+                  <nav
+                    className={`pcw-edit-opt-list ${
+                      activeMenus[post.postId] ? "active" : ""
+                    }`}
+                  >
                     <ul>
                       <li>only right mentor can see</li>
-                      <li onClick={() => {
-                        setIsEditorActive(true);
-                        setPostId(post.postId);
-                        toggleEditMenu(post.postId);
-                      }}>Edit</li>
+                      <li
+                        onClick={() => {
+                          setIsEditorActive(true);
+                          setPostId(post.postId);
+                          toggleEditMenu(post.postId);
+                        }}
+                      >
+                        Edit
+                      </li>
                       <li onClick={() => deletePost(post.postId)}>Delete</li>
                     </ul>
                   </nav>
                 </div>
                 <div>{post.postedAt}</div>
-                <div className="pcw-content" dangerouslySetInnerHTML={{ __html: post.postContent }}
+                <div
+                  className="pcw-content"
+                  dangerouslySetInnerHTML={{ __html: post.postContent }}
                   onClick={() => {
                     window.location.href = "../../../post/view/" + post.postId;
                   }}
                 />
               </div>
             ))}
-          </section >
+          </section>
           <aside className="aside-control-nav">
             <div className="sidebar-cf">
               1 vai thong in ve course/post o day
@@ -103,17 +117,30 @@ function CourseFeed() {
               <br></br>
               <br></br>
               <div>
-                <button onClick={openEditor}><ion-icon name="add-circle-outline"></ion-icon> New</button>
+                <button onClick={openEditor}>
+                  <ion-icon name="add-circle-outline"></ion-icon> New
+                </button>
               </div>
             </div>
-
           </aside>
         </div>
-      </main >
+      </main>
       <div className={`r-t-edit ${isEditorActive ? "active" : ""}`}>
-        <ion-icon name="close-outline" onClick={() => setIsEditorActive(false)}></ion-icon>
-        <CreatePost courseId={courseId} postId={postId} onRemoveActive={handleRemoveActive} />
+        <ion-icon
+          name="close-outline"
+          onClick={() => setIsEditorActive(false)}
+        ></ion-icon>
+        <CreatePost
+          courseId={courseId}
+          postId={postId}
+          onRemoveActive={handleRemoveActive}
+        />
       </div>
+      {/* <CreatePost
+        courseId={courseId}
+        postId={postId}
+        onRemoveActive={handleRemoveActive}
+      /> */}
     </>
   );
 }

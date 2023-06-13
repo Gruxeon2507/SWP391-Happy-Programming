@@ -21,7 +21,14 @@ class UserServices {
     return axios.get(USER_BASE_REST_API_URL + "/mentors");
   }
   getLoginUsername() {
-    return api.get("/api/users/login");
+    try{
+      return api.get("/api/users/login");
+
+    }catch(e){
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("role");
+      return null;
+    }
   }
 
   //@maiphuonghoang
@@ -30,7 +37,14 @@ class UserServices {
     return api.get(`/api/courses/find-user/${courseId}?statusId=${statusId}`);
   }
   getLoginUserDisplayname() {
-    return api.get("api/users/displayname");
+    try{
+      return api.get("api/users/displayname");
+
+    }catch(e){
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("role");
+      return null;
+    }
   }
 }
 
