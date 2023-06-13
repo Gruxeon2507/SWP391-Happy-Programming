@@ -4,11 +4,14 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.chatModel.FrontendConversation;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.User_Conversation;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +39,34 @@ public class UserConversationController {
     
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    User_ConversationRepository userConversationRepository;
     
         
     @GetMapping("/user-conversation")
-    public List<User_Conversation> getLoginUserConversation(HttpServletRequest request){
+    public List<FrontendConversation> getLoginUserConversation(HttpServletRequest request){
         try{
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
-            return user_ConversationRepository.getLoginUserConversation(username);
+            List<User_Conversation> user_conversations = user_ConversationRepository.getLoginUserConversation(username);
+            List<FrontendConversation> frontendConversations = new ArrayList<>();
+            for (User_Conversation u : user_conversations){
+                if(u.getConversation().getCourse()==null){
+                    FrontendConversation temp = new FrontendConversation();
+                    temp.setConversationId(u.getConversation().getConversationId());
+                    User_Conversation uc = userConversationRepository.getUserOtherUserUsername(u.getConversation().getConversationId(),username);
+                    temp.setConversationName(uc.getUser().getDisplayName());
+                    frontendConversations.add(temp);
+
+                }else{
+                    FrontendConversation temp = new FrontendConversation();
+                    temp.setConversationId(u.getConversation().getConversationId());
+                    temp.setConversationName(u.getConversation().getConversationName());
+                    frontendConversations.add(temp);
+                }
+            }
+            return frontendConversations;
         }catch(Exception e){
             return null;
         }
