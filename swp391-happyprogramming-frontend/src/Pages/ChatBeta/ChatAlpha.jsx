@@ -134,22 +134,24 @@ const PrivateChatRoom = () => {
   };
 
   const sendValue = () => {
-    var chatMessage = {
-      senderName: userData.username,
-      message: userData.message,
-      status: "MESSAGE",
-      conversationId: conversationId,
-    };
-    console.log(chatMessage);
-    console.log("tab ne: " + tab);
-    stompClient.send(
-      "/chatroom/" + conversationId,
-      {},
-      JSON.stringify(chatMessage)
-    );
-    api.post("/api/conversation/sentmessage", chatMessage);
-    setUserData({ ...userData, message: "" });
-    scrollToBottom();
+    if (userData.message !== "") {
+      var chatMessage = {
+        senderName: userData.username,
+        message: userData.message,
+        status: "MESSAGE",
+        conversationId: conversationId,
+      };
+      console.log(chatMessage);
+      console.log("tab ne: " + tab);
+      stompClient.send(
+        "/chatroom/" + conversationId,
+        {},
+        JSON.stringify(chatMessage)
+      );
+      api.post("/api/conversation/sentmessage", chatMessage);
+      setUserData({ ...userData, message: "" });
+      scrollToBottom();
+    }
   };
 
   useEffect(() => {
@@ -158,11 +160,9 @@ const PrivateChatRoom = () => {
   }, [newConversationMessage]);
 
   const handleKeyPressSent = (event) => {
-    if (event.key === 'Enter') {
-      if (userData.message && userData.message.trim() !== '') {
-        sendValue();
-        scrollToBottom();
-      }
+    if (event.key === "Enter") {
+      sendValue();
+      scrollToBottom();
     }
   };
 
@@ -184,7 +184,10 @@ const PrivateChatRoom = () => {
           </div>
           <ul>
             {conversations.map((conversation) => (
-              <NavLink to={"/chat/" + conversation.conversation.conversationId} key={conversation.conversation.conversationId}>
+              <NavLink
+                to={"/chat/" + conversation.conversation.conversationId}
+                key={conversation.conversation.conversationId}
+              >
                 {conversation.conversation.conversationName}
               </NavLink>
             ))}
@@ -239,7 +242,13 @@ const PrivateChatRoom = () => {
                 {chat.senderName !== userData.username && (
                   <div className="message-to">
                     <div className="avatar">
-                      <img src={"http://localhost:1111/api/users/avatar/" + chat.senderName} alt="avatar"></img>
+                      <img
+                        src={
+                          "http://localhost:1111/api/users/avatar/" +
+                          chat.senderName
+                        }
+                        alt="avatar"
+                      ></img>
                     </div>
                     <div className="msg-text">
                       <div className="display-name-msg-to">
