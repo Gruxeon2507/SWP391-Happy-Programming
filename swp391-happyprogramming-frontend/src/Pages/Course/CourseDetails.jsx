@@ -86,7 +86,7 @@ const CourseDetails = (props) => {
       });
   }, []);
 
-  const cancelRequest = (courseId) => {
+  const cancelRequest = () => {
     RequestService.deleteParticipateDeleteRequest(courseID);
     window.location.reload();
   };
@@ -95,6 +95,7 @@ const CourseDetails = (props) => {
     // const token = localStorage.getItem("token");
     if (localStorage.getItem("token")) {
       ParticipateServices.saveParticipate("", courseID, 3, 0);
+      RequestService.insertIntoRequest(courseID, 0);
       window.location.href = `/courses/view/${courseID}`;
     } else {
       window.location.href = "/login";
