@@ -6,12 +6,10 @@ import Comment from "../../Components/Comment/Comment";
 import CommentServices from "../../services/CommentServices";
 
 function PostDetail() {
-
   const { postId } = useParams("postId");
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [input, setInput] = useState("");
-
 
   useEffect(() => {
     PostServices.getPostById(postId)
@@ -39,8 +37,15 @@ function PostDetail() {
         postId: postId,
       },
     };
-    CommentServices.addComment(comment);
-    
+    CommentServices.addComment(comment)
+      .then((res) => {
+        setComments((prev) => [...prev, res.data]);
+        setInput("");
+      })
+      .catch((error) => {
+        console.log("error adding comment " + error);
+      });
+    // setComments((prev) => [...prev, comment]);
   };
 
   useEffect(() => {}, []);
@@ -66,11 +71,7 @@ function PostDetail() {
         <button onClick={addComment}>Comment</button>
         {comments.map((comment) => (
           <>
-            <Comment
-              comment={comment}
-              key={comment.commentId}
-            ></Comment>
-
+            <Comment comment={comment} key={comment.commentId}></Comment>
           </>
         ))}
       </div>

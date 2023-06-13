@@ -1,4 +1,5 @@
 USE FU_SWP391_HappyProgramming;
+select * from User where username = 'duckm' and courseId = ''
 
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('1', 'course 1');
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('2', 'course 2');

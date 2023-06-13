@@ -10,7 +10,7 @@ const Comment = ({ comment }) => {
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [expand, setExpand] = useState(false);
-  const [nestCount, setNestCount] = useState(0);
+  // const [nestCount, setNestCount] = useState(0);
   const inputRef = useRef(null);
   const [loginUsername, setLoginUsername] = useState("");
 
