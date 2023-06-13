@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { Navigate, useNavigate } from "react-router-dom";
 
 VerifyDialog.propTypes = {
   email: PropTypes.string.isRequired,
@@ -25,7 +26,7 @@ function VerifyDialog(props) {
       .then((res) => {
         console.log(res.data);
         alert("Verify Succesffully. Now you will return to home page.");
-        window.location.href = "";
+        window.location.href = "../";
       })
       .catch((error) => {
         console.log("Fail when verify");

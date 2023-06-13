@@ -42,6 +42,8 @@ function Register(props) {
   const [showErrorUsernameDuplicate, setShowUsernameDuplicate] =
     useState(false);
 
+  const [errorDob, setErrorDob] = useState("");
+  const [showErrorDob, setShowErrorDob] = useState(false);
   const [todayDate, setTodayDate] = useState(
     new Date().toISOString().substr(0, 10)
   );
@@ -170,6 +172,17 @@ function Register(props) {
 
   const onChangeDob = (event) => {
     const inputDob = event.target.value;
+
+    const today = new Date();
+    const selectedDate = new Date(inputDob);
+    const ageDifference = today.getFullYear() - selectedDate.getFullYear();
+    if (ageDifference < 18) {
+      setShowErrorDob(true);
+      setErrorDob("You must be at least 18 years old.");
+      return;
+    }
+    setShowErrorDob(false);
+    setErrorDob("");
     setUser({
       ...user,
       dob: inputDob,
@@ -186,7 +199,8 @@ function Register(props) {
       showErrorDisplayname ||
       showErrorEmail ||
       showErrorUsernameDuplicate ||
-      showErrorEmailDuplicate
+      showErrorEmailDuplicate ||
+      showErrorDob
     ) {
       let alertMessage = "";
       if (checkRePassword) {
@@ -216,6 +230,9 @@ function Register(props) {
 
       if (showErrorEmailDuplicate) {
         alertMessage = alertMessage + "Email" + errorEmailDuplicate + "\n";
+      }
+      if (showErrorDob) {
+        alertMessage = alertMessage + "Date of birth" + errorDob + "\n";
       }
       alert(alertMessage);
       return;
@@ -325,6 +342,13 @@ function Register(props) {
                   onChange={onChangeDob}
                 ></input>
                 <span>Date of Birth</span>
+                {showErrorDob ? (
+                  <>
+                    <div className="w-message" style={{ color: "black" }}>
+                      {errorDob}
+                    </div>
+                  </>
+                ) : null}
               </div>
               <div className="user-input">
                 <input

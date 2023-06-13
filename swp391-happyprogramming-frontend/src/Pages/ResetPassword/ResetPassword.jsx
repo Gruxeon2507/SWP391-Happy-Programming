@@ -4,11 +4,12 @@ import "../../Components/Navbar/NavBar.css";
 import axios from "axios";
 import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
+import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 
 function ResetPassword(props) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const username = urlParams.get("username");
-  const code = urlParams.get("code");
+  const { username } = useParams();
+  const [code, setCode] = useState("");
 
   const [newPassword, setNewPassword] = useState("");
   const [reNewPassword, setReNewPassword] = useState("");
@@ -32,6 +33,11 @@ function ResetPassword(props) {
     }
   };
 
+  const onChangeOtpCode = (event) => {
+    const inputOtpCode = event.target.value;
+    setCode(inputOtpCode);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -43,23 +49,39 @@ function ResetPassword(props) {
       },
     };
 
+    if (checkRePassword) {
+      alert("Re Password do not match");
+      return;
+    }
+
     formData.append("username", username);
     formData.append("code", code);
     formData.append("password", newPassword);
 
     axios
-      .get(`http://localhost:1111/api/auth/resetpassword`, formData, config)
+      .post(`http://localhost:1111/api/auth/resetpassword`, formData, config)
       .then((res) => {
         console.log(res.data);
+        if (res.data === true) {
+          alert("wrong code");
+        } else {
+          alert("change successfully");
+          window.location.href = "../login";
+        }
       })
       .catch((error) => {
         console.log(error);
       });
+    console.log();
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label>OTP Code</label>
+          <input type="text" name="code" required onChange={onChangeOtpCode} />
+        </div>
         <div>
           <label>New password</label>
           <input

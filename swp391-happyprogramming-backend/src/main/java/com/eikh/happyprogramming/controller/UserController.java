@@ -149,7 +149,7 @@ public class UserController {
         if (user.getPassword().equals(oldPassword)
                 || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())) {
             user.setPassword(AuthenticationUtils.hashPassword(newPassword));
-            return user;
+            return userRepository.save(user);
         } else {
             return null;
         }

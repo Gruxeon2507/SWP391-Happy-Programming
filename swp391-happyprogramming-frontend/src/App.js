@@ -34,6 +34,7 @@ import CourseFeed from "./Pages/CourseFeed/CourseFeed";
 import RequestStatistic from "./Pages/Mentor/RequestStatistic";
 
 import PostDetail from "./Pages/PostDetail/PostDetail";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -64,6 +65,7 @@ function App() {
       <Route path="/request/manage" element={<RequestManage />} />
       <Route path="/request/statistic" element={<RequestStatistic />} />
 
+
       <Route path="/mycourse" element={<MyCourse />} />
       <Route path="/register" element={<Register />} />
       <Route path="/setting" element={<Setting />} />
@@ -72,6 +74,7 @@ function App() {
         path="/changepassword"
         element={<ChangePassword></ChangePassword>}
       />
+      <Route path="/resetpassword/:username" element={<ResetPassword></ResetPassword>} />
       <Route path="/changesetting" element={<ChangeSetting></ChangeSetting>} />
       <Route path="/forgetpassword" element={<ForgetPassword></ForgetPassword>} />
       <Route path="/profile/:id" element={<ViewProfile> </ViewProfile>} />
