@@ -169,7 +169,6 @@ const PrivateChatRoom = () => {
   const scrollToBottom = () => {
     if (messagesRef.current) {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-      // messagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
   return (
@@ -225,10 +224,6 @@ const PrivateChatRoom = () => {
                 )}
                 {chat.messageKey.sentBy === userData.username && (
                   <div className="message-from">
-                    {/* <div className="avatar">
-                      <img src={"http://localhost:1111/api/users/avatar/" + chat.messageKey.sentBy} alt="avatar"></img>
-                      <span>{chat.messageKey.sentBy}</span>
-                    </div> */}
                     <div className="msg-text">
                       <MessageFrom message={chat.msgContent} />
                     </div>
@@ -262,10 +257,6 @@ const PrivateChatRoom = () => {
                 )}
                 {chat.senderName === userData.username && (
                   <div className="message-from">
-                    {/* <div className="avatar">
-                      <img src={"http://localhost:1111/api/users/avatar/" + chat.senderName} alt="avatar"></img>
-                      <span>{chat.senderName}</span>
-                    </div> */}
                     <div className="msg-text">
                       <MessageFrom message={chat.message} />
                     </div>
@@ -284,7 +275,6 @@ const PrivateChatRoom = () => {
               placeholder="Type a message"
               value={userData.message}
               onChange={handleMessage}
-              // onKeyUp={handleKeyPressSent}
               onKeyPress={handleKeyPressSent}
             ></input>
             <button>
