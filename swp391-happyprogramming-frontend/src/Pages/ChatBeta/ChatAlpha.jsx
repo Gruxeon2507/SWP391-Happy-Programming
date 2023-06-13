@@ -187,7 +187,8 @@ const PrivateChatRoom = () => {
                 to={"/chat/" + conversation.conversationId}
                 key={conversation.conversationId}
               >
-                {conversation.conversationName}
+                {conversation.conversationName}<br></br>
+                {conversation.username}
               </NavLink>
             ))}
           </ul>

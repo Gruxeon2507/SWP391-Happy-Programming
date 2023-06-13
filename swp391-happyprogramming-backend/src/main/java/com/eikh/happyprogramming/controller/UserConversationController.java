@@ -57,12 +57,14 @@ public class UserConversationController {
                     temp.setConversationId(u.getConversation().getConversationId());
                     User_Conversation uc = userConversationRepository.getUserOtherUserUsername(u.getConversation().getConversationId(),username);
                     temp.setConversationName(uc.getUser().getDisplayName());
+                    temp.setUsername(uc.getUser().getUsername());
                     frontendConversations.add(temp);
 
                 }else{
                     FrontendConversation temp = new FrontendConversation();
                     temp.setConversationId(u.getConversation().getConversationId());
                     temp.setConversationName(u.getConversation().getConversationName());
+                    temp.setUsername("");
                     frontendConversations.add(temp);
                 }
             }
