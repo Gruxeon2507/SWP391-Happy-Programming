@@ -8,6 +8,11 @@ INSERT INTO Conversation (conversationId, conversationName) VALUES ('5', 'phuong
 INSERT INTO Conversation (conversationId, conversationName) VALUES ('6', 'ducmentor');
 
 INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'duckm');
+INSERT INTO User_Conversation (conversationId, username) VALUES ('4', 'duckm');
+INSERT INTO User_Conversation (conversationId, username) VALUES ('3', 'duckm');
+INSERT INTO User_Conversation (conversationId, username) VALUES ('5', 'duckm');
+
+
 INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'giangpt');
 INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'huyenntk');
 INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'phuonghm');
