@@ -6,6 +6,7 @@ import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
+import "./ResetPassword.css"
 
 function ResetPassword(props) {
   const { username } = useParams();
@@ -76,40 +77,43 @@ function ResetPassword(props) {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>OTP Code</label>
-          <input type="text" name="code" required onChange={onChangeOtpCode} />
-        </div>
-        <div>
-          <label>New password</label>
-          <input
-            type="text"
-            name="newPassword"
-            required
-            onChange={onChangeNewPassword}
-          />
-        </div>
-        <div>
-          <label>Re new password</label>
-          <input
-            type="text"
-            name="reNewPassword"
-            required
-            onChange={onChangeReNewPassword}
-          />
-        </div>
-        {checkRePassword ? (
-          <>
-            <div className="w-message" style={{ color: "black" }}>
-              {messageRePassowrd}
-            </div>
-          </>
-        ) : null}
-        <button>Reset Password</button>
-      </form>
-    </div>
+    <>
+      <NavBar mode={3} />
+      <main className="reset-pw-container">
+        <form onSubmit={handleSubmit}>
+          <div className="user-input">
+            <input type="text" name="code" required onChange={onChangeOtpCode} />
+            <span>OTP Code</span>
+          </div>
+          <div className="user-input">
+            <input
+              type="text"
+              name="newPassword"
+              required
+              onChange={onChangeNewPassword}
+            />
+            <span>New password</span>
+          </div>
+          <div className="user-input">
+            <input
+              type="text"
+              name="reNewPassword"
+              required
+              onChange={onChangeReNewPassword}
+            />
+            <span>Re new password</span>
+          </div>
+          {checkRePassword ? (
+            <>
+              <div className="w-message" style={{ color: "black" }}>
+                {messageRePassowrd}
+              </div>
+            </>
+          ) : null}
+          <button>Reset Password</button>
+        </form>
+      </main>
+    </>
   );
 }
 
