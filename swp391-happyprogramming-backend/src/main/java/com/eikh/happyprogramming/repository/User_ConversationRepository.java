@@ -22,4 +22,8 @@ public interface User_ConversationRepository extends JpaRepository<User_Conversa
 
     @Query(value = "SELECT * FROM User_Conversation WHERE username=?1 and conversationId=?2",nativeQuery = true)
     public User_Conversation getUserConversationByUsernameAndConversationId(String username,int conversationId);
+
+    @Query(value = "SELECT * FROM User_Conversation WHERE conversationId =?1 AND username != ?2",nativeQuery = true)
+    public User_Conversation getUserOtherUserUsername(int conversationId, String username);
+
 }

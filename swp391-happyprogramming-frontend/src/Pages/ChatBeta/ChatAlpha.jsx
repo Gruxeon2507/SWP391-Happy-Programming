@@ -82,7 +82,7 @@ const PrivateChatRoom = () => {
     let map = new Map(conversationMessages);
     let list = [];
     conversations.map((conversation) =>
-      map.set(conversation.conversation.conversationId, list)
+      map.set(conversation.conversationId, list)
     );
     setConversationMessages(map);
     scrollToBottom();
@@ -172,7 +172,6 @@ const PrivateChatRoom = () => {
       // messagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
   return (
     <>
       <NavBar mode={1}></NavBar>
@@ -185,10 +184,10 @@ const PrivateChatRoom = () => {
           <ul>
             {conversations.map((conversation) => (
               <NavLink
-                to={"/chat/" + conversation.conversation.conversationId}
-                key={conversation.conversation.conversationId}
+                to={"/chat/" + conversation.conversationId}
+                key={conversation.conversationId}
               >
-                {conversation.conversation.conversationName}
+                {conversation.conversationName}
               </NavLink>
             ))}
           </ul>

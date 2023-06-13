@@ -6,12 +6,8 @@ package com.eikh.happyprogramming.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.*;
 
 /**
@@ -35,5 +31,9 @@ public class Conversation {
     private List<User_Conversation> user_conversations;
     
     @OneToMany(mappedBy = "conversation")
-    private List<Message> messages;    
+    private List<Message> messages;
+
+    @OneToOne
+    @JoinColumn(name="courseId")
+    private Course course;
 }

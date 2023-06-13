@@ -79,7 +79,7 @@ const ConversationList = () => {
         let list = [];
         conversations.map((conversation) => (
 
-            map.set(conversation.conversation.conversationId, list)
+            map.set(conversation.conversationId, list)
         ))
         setConversationMessages(map);
     }, [conversations])
@@ -157,8 +157,8 @@ const ConversationList = () => {
                     </div>
                     <ul>
                         {conversations.map((conversation) => (
-                            <Link to={"/chat/" + conversation.conversation.conversationId} key={conversation.conversation.conversationId}>
-                                {conversation.conversation.conversationName}
+                            <Link to={"/chat/" + conversation.conversationId} key={conversation.conversationId}>
+                                {conversation.conversationName}
                             </Link>
                         ))}
                     </ul>
