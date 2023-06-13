@@ -194,12 +194,15 @@ const PrivateChatRoom = () => {
           </ul>
         </nav>
         <div className="Message-List">
+          <div className="conversation-head">
+            <img src={null} alt="placeholder"></img>
+            <span>{conversationId}</span>
+          </div>
           <div className="messages" ref={messagesRef}>
             {currentConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.messageKey.sentBy === userData.username && "self"
-                }`}
+                className={`message ${chat.messageKey.sentBy === userData.username && "self"
+                  }`}
               >
                 {chat.messageKey.sentBy !== userData.username && (
                   <div className="message-to">
@@ -235,9 +238,8 @@ const PrivateChatRoom = () => {
             ))}
             {newConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.senderName === userData.username && "self"
-                }`}
+                className={`message ${chat.senderName === userData.username && "self"
+                  }`}
               >
                 {chat.senderName !== userData.username && (
                   <div className="message-to">
