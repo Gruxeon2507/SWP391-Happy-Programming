@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import "../Navbar/NavBar.css";
 import basicAvatar from "../../Assets/base_user_img.png";
 
-function SettingBar() {
+function SettingBar(props) {
     const [navSettingOpen, setNavSettingOpen] = useState(false);
 
 
@@ -15,18 +15,21 @@ function SettingBar() {
         <div className="SettingBar">
             <div className={navSettingClass} onClick={() => setNavSettingOpen(!navSettingOpen)}>
                 <div className="avatar">
-                    <img src={basicAvatar} alt="avatar"></img>
+                    {/* <img src={basicAvatar} alt="avatar"></img> */}
+                    {/* <img src={"http://localhost:1111/api/users/avatar/" + "anmentor"} alt="avatar"></img> */}
+                    <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                 </div>
             </div>
             <div className="Setting-Bar">
                 <ul>
                     <li className="nav-item">
-                        <NavLink to="/admin">admin</NavLink>
+                        <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
+                        <NavLink to={`/profile/${props.user}`}>{props.user}</NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/admin">admin</NavLink>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <p>Setting</p>
                         <div className="themeSwitch">
                             <label>
@@ -34,21 +37,16 @@ function SettingBar() {
                                 <span className="slider"></span>
                             </label>
                         </div>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/admin1">admin1</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/setting">setting</NavLink>
-                    </li>
+                    </li> */}
+
                     <li className="nav-item">
                         <NavLink to="/changepassword">changepassword</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/changesetting">changesetting</NavLink>
+                        <NavLink to="/request/statistic">Statisic </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/forgetpassword">forgetpassword</NavLink>
+                        <NavLink to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink
@@ -56,9 +54,10 @@ function SettingBar() {
                             onClick={() => {
                                 alert("Are you sure you want to logout?");
                                 window.localStorage.removeItem("token");
+                                window.localStorage.removeItem("role");
                             }}
                         >
-                            logout
+                            logout <ion-icon name="log-out-outline"></ion-icon>
                         </NavLink>
                     </li>
                 </ul>

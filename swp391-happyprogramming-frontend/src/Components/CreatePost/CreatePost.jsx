@@ -10,15 +10,26 @@ function CreatePost(props) {
   const [content, setContent] = useState("");
   const string = `nhap cai gi do vao day di`;
   const log = () => {
+    closeEditor();
     if (postId) {
       setContent(editorRef.current.getContent());
     } else {
       if (editorRef.current) {
         console.log(editorRef.current.getContent());
+        // setContent(editorRef.current.getContent());
         setContent(editorRef.current.getContent());
       }
     }
   };
+  const closeEditor = () => {
+    console.log("remove")
+    const elements = document.querySelectorAll('.r-t-edit');
+    elements.forEach(element => {
+      element.classList.remove('active');
+      // element.classList.add('active');
+    });
+  };
+
   useEffect(() => {
     if (postId) {
       PostServices.getPostById(postId).then((res) => {
@@ -97,9 +108,9 @@ function CreatePost(props) {
       <button onClick={log} id="postConfirm">
         Public
       </button>
-      <div>
+      {/* <div>
         {content ? <div dangerouslySetInnerHTML={{ __html: content }} /> : null}
-      </div>
+      </div> */}
     </>
   );
 }

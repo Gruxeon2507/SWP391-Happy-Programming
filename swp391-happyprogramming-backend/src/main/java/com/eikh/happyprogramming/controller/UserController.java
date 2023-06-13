@@ -11,6 +11,7 @@ import com.eikh.happyprogramming.utils.DateUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import com.eikh.happyprogramming.utils.PasswordUtils;
+import com.eikh.happyprogramming.utils.RoleUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -68,6 +69,9 @@ public class UserController {
 
     @Autowired
     JwtTokenFilter jwtTokenFilter;
+    
+    @Autowired
+    private RoleUtils roleUtils;
 
     @PostMapping("/profile/update")
     public User updateProfile(
@@ -262,35 +266,27 @@ public class UserController {
                 .body(inputStreamResource);
     }
 
-//    @GetMapping("/mentors")
-//    public List<User> getAllMentors() {
-//        return userRepository.getAllMentors();
-//    }
-
-    // Date: 24/05/2023
-    // Function: Check role admin from JWT
-    // author: maiphuonghoang
-    public boolean isRoleAdminFromToken(HttpServletRequest request) {
-        String token = jwtTokenFilter.getJwtFromRequest(request);
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        User user = userRepository.findByUsername(username);
-        System.out.println(user.getUsername());
-        System.out.println(user.getRoles());
-        boolean isAdmin = false;
-        for (Role role : user.getRoles()) {
-            if (role.getRoleId() == 1) {
-                isAdmin = true;
-            }
+    //Date: 23/05/2023
+    //Function: return username of login user
+    //Writen By:DucKM
+    @GetMapping("/login")
+    public ResponseEntity<?> getLoginUserUsername(HttpServletRequest request) {
+        try {
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            return ResponseEntity.ok(username);
+        } catch (Exception e) {
+            System.out.println("Non Valid Token");
         }
-        return isAdmin;
-    }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
+    }
     // Date: 22/05/2023
     // Function: List mentor for only admin
     // author: maiphuonghoang
     @GetMapping("/mentors")
     public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
-        if (!isRoleAdminFromToken(request)) {
+        if (!roleUtils.hasRoleFromToken(request, 1)){
             return null;
         }
         return userRepository.findByRoleId(2);
@@ -303,7 +299,7 @@ public class UserController {
     @PostMapping("/mentor-account")
     public User createMentor(HttpServletRequest request, @RequestBody User mentor) throws EmailException {
 
-        if (!isRoleAdminFromToken(request)) {
+        if (!roleUtils.hasRoleFromToken(request, 1)){
             return null;
         }
 
@@ -343,7 +339,7 @@ public class UserController {
     @PutMapping("/mentors/status/{username}")
     ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username,
             @RequestParam Integer status) {
-        if (!isRoleAdminFromToken(request)) {
+        if (!roleUtils.hasRoleFromToken(request, 1)){
             return null;
         }
         boolean exists = userRepository.existsByUsername(username);
@@ -353,4 +349,5 @@ public class UserController {
         }
         return null;
     }
+
 }

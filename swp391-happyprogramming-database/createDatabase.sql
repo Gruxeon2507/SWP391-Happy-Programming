@@ -116,9 +116,11 @@ CREATE TABLE Course
     courseName nvarchar(255),
     courseDescription longtext,
     createdAt datetime, 
+    conversationId int,
     CONSTRAINT PK_Course PRIMARY KEY (courseId)
 );
-
+Alter table Course ADD CONSTRAINT FK_Course_Conversation FOREIGN KEY(conversationId) 
+REFERENCES Conversation(conversationId);
 CREATE TABLE Course_Category 
 (
     categoryId int,
@@ -186,11 +188,13 @@ CREATE TABLE Request
     requestStatus int,
     CONSTRAINT PK_Request PRIMARY KEY (courseId, username, requestTime)
 );
-ALTER TABLE Request ADD CONSTRAINT FK_Request_UserParticipate FOREIGN KEY(username)
-REFERENCES Participate(username);
-ALTER TABLE Request  ADD CONSTRAINT FK_Request_CourseParticipate FOREIGN KEY(courseId)
-REFERENCES Participate(courseId);
-ALTER TABLE Request ADD CONSTRAINT FK_Request_Participate FOREIGN KEY(requestStatus)
+ALTER TABLE Request ADD CONSTRAINT FK_Request_Participate FOREIGN KEY(username, courseId)
+REFERENCES Participate(username, courseId);
+-- ALTER TABLE Request ADD CONSTRAINT FK_Request_UserParticipate FOREIGN KEY(username)
+-- REFERENCES Participate(username);
+-- ALTER TABLE Request  ADD CONSTRAINT FK_Request_CourseParticipate FOREIGN KEY(courseId)
+-- REFERENCES Participate(courseId);
+ALTER TABLE Request ADD CONSTRAINT FK_Request_Status FOREIGN KEY(requestStatus)
 REFERENCES `Status` (statusId);
 
 CREATE TABLE Post 
@@ -214,12 +218,15 @@ CREATE TABLE `Comment`
     commentContent longtext,
     postId int,
     commentedBy varchar(255),
+    parentId int,
     CONSTRAINT PK_Comment PRIMARY KEY (commentId)
 );
 ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_Post FOREIGN KEY(postId)
 REFERENCES Post(postId);
 ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_User FOREIGN KEY(commentedBy)
 REFERENCES `User`(username);
+ALTER TABLE `Comment` ADD CONSTRAINT FK_Comment_Comment FOREIGN KEY(parentId)
+REFERENCES Comment(commentId);
 
 CREATE TABLE Attachment
 ( 
@@ -245,12 +252,8 @@ SELECT * FROM Attachment
 SELECT * FROM Course
 SELECT * FROM Course_Category
 SELECT * FROM Course
+SELECT * FROM Rating
 SELECT * FROM Request
 */
 
--- SELECT * FROM Participate where courseId = 26;-- 
-SELECT * FROM Participate where courseId = 26;
-UPDATE `User` set activeStatus = 1 WHERE username != '';
-
-select * from User_Role where username = 'eikh';
 

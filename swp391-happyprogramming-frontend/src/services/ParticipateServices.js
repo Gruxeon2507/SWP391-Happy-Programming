@@ -15,6 +15,10 @@ class ParticipateServices {
   getParticipateByUser(courseId) {
     return api.get(PARTICIPATE_BASE_REST_API_URL + "/by-user/" + courseId);
   }
+
+  // deleteParticipate(courseId){
+  //   api.delete("")
+  // }
 }
 
 export default new ParticipateServices();

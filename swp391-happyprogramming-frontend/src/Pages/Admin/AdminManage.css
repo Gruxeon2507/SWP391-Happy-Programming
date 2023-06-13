@@ -82,6 +82,7 @@
   font-size: 1.2rem;
   cursor: pointer;
   margin-bottom: 1rem;
+  color: var(--item2);
 }
 
 #admin-add-btn:hover {

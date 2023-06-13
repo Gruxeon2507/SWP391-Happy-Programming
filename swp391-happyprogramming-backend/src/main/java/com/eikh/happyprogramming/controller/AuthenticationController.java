@@ -11,6 +11,8 @@ import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author kmd
  */
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = { "*" })
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -57,12 +59,13 @@ public class AuthenticationController {
     private JwtTokenFilter jwtTokenFilter;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User credentials, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = UserRepository.findByUsername(credentials.getUsername());
         System.out.println(credentials.getPassword());
         System.out.println(user.getPassword());
         System.out.println(AuthenticationUtils.hashPassword(credentials.getPassword()));
-        if (user != null && ((user.getPassword().equals(credentials.getPassword())) || AuthenticationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
+        if (user != null && ((user.getPassword().equals(credentials.getPassword()))
+                || AuthenticationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
             HttpSession session = request.getSession();
             user.setPassword("");
             String sessionId = UUID.randomUUID().toString();
@@ -71,8 +74,12 @@ public class AuthenticationController {
             session.setAttribute("user", user);
 
             String token = jwtTokenProvider.generateToken(credentials);
-            request.setAttribute("token", token);
-            return ResponseEntity.ok(token);
+            String role = user.getRoles().get(0).getRoleName();
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("role", role);
+
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -98,8 +105,10 @@ public class AuthenticationController {
         UserRepository.save(user);
         userRepository.insertRole(user.getUsername());
         String subject = "HAPPY PROGRAMMING - Verify your email address";
-//        String body = "Please click the following link to verify your email address: "
-//                + "http://localhost:1111/api/auth/verify?code=" + verificationCode + "&username=" + user.getUsername();
+        // String body = "Please click the following link to verify your email address:
+        // "
+        // + "http://localhost:1111/api/auth/verify?code=" + verificationCode +
+        // "&username=" + user.getUsername();
         String body = "It is your OTP code: " + verificationCode;
         try {
             EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
@@ -131,8 +140,9 @@ public class AuthenticationController {
             user.setVerification_code(verificationCode);
             userRepository.save(user);
             String subject = "HAPPY PROGRAMMING - Reset your password";
-//            String body = "Please click the following link to reset your password: "
-//                    + "http://localhost:3000/resetpassword?code=" + verificationCode + "&username=" + user.getUsername();
+            // String body = "Please click the following link to reset your password: "
+            // + "http://localhost:3000/resetpassword?code=" + verificationCode +
+            // "&username=" + user.getUsername();
             String body = "It is your OTP code: " + verificationCode;
             try {
                 EmailUtils.sendVerifyEmail(user.getMail(), subject, body);
@@ -146,8 +156,8 @@ public class AuthenticationController {
 
     @PostMapping(value = "resetpassword")
     public boolean resetPassword(@RequestParam("username") String username,
-                                 @RequestParam("code") String code,
-                                 @RequestParam("password") String password) {
+            @RequestParam("code") String code,
+            @RequestParam("password") String password) {
         User user = userRepository.findByUsername(username);
         if (user.getVerification_code().equals(code)) {
             password = AuthenticationUtils.hashPassword(password);
@@ -189,15 +199,16 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> authenticateUser(@RequestBody User loginRequest) {
-//        Authentication authentication = authenticationManager.authenticate(
-//            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-//        );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String jwt = jwtTokenProvider.generateToken(authentication);
-//
-//        return ResponseEntity.ok(jwt);
-//    }
+    // @PostMapping("/login")
+    // public ResponseEntity<?> authenticateUser(@RequestBody User loginRequest) {
+    // Authentication authentication = authenticationManager.authenticate(
+    // new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+    // loginRequest.getPassword())
+    // );
+    //
+    // SecurityContextHolder.getContext().setAuthentication(authentication);
+    // String jwt = jwtTokenProvider.generateToken(authentication);
+    //
+    // return ResponseEntity.ok(jwt);
+    // }
 }

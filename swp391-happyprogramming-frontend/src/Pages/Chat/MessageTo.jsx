@@ -5,7 +5,7 @@ MessageTo.propTypes = { message: PropTypes.string.isRequired };
 
 function MessageTo(props) {
   return (
-    <div className="message-from">
+    <div className="msg-text-c">
       <span>{props.message}</span>
     </div>
   );
