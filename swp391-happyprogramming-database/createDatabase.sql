@@ -106,7 +106,7 @@ CREATE TABLE Message
 (	
 	conversationId int,
     sentBy varchar(255),
-    sentAt datetime,
+    sentAt datetime(6),
     msgContent longtext,
     CONSTRAINT PK_Message PRIMARY KEY (conversationId, sentBy, sentAt)
 );
