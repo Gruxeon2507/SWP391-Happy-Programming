@@ -46,7 +46,7 @@ function App() {
       setFeatures(response.data);
       // console.log(response.data);
       // console.log(features);
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     fetchData();
