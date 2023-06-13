@@ -1,30 +1,26 @@
-USE FU_SWP391_HappyProgramming;
-
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('1', 'course 1');
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('2', 'course 2');
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('3', 'course 3');
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('4', 'huyenmentor');
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('5', 'phuongmentor');
-INSERT INTO Conversation (conversationId, conversationName) VALUES ('6', 'ducmentor');
-
-INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'duckm');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('4', 'duckm');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('3', 'duckm');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('5', 'duckm');
-
-
-INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'giangpt');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'huyenntk');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'phuonghm');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'antt');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('1', 'duckm');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('1', 'huyenmentor');
-INSERT INTO User_Conversation (conversationId, username) VALUES ('2', 'anmentor');
-
-
-INSERT INTO Message(conversationId,sentBy,sentAt,msgContent) value (1,"duckm",null,"hello");
-INSERT INTO Message(conversationId,sentBy,sentAt,msgContent) value (1,"huyenmentor",null,"hi");
-
-SELECT * FROM Message m join Conversation c on m.conversationId = c.conversationId WHERE conversationId=1 ORDER BY sentAt
-
-select * from Message
+INSERT INTO Course (conversationName, courseId) VALUES ('Object Oriented Programming in Java', '1');
+INSERT INTO Course (conversationName, courseId) VALUES ('Java Programming: Arrays, Lists, and Structured Data', '2');
+INSERT INTO Course (conversationName, courseId) VALUES ('JavaScript for Beginners', '3');
+INSERT INTO Course (conversationName, courseId) VALUES ('Modern JavaScript: ES6 Basics', '4');
+INSERT INTO Course (conversationName, courseId) VALUES ('Introduction to Data Science in Python', '5');
+INSERT INTO Course (conversationName, courseId) VALUES ('Python Data Structures', '6');
+INSERT INTO Course (conversationName, courseId) VALUES ('HTML, CSS', '7');
+INSERT INTO Course (conversationName, courseId) VALUES ('HTML and CSS: Building a Single-Page Website', '8');
+INSERT INTO Course (conversationName, courseId) VALUES ('Coding for Everyone: C and C++', '9');
+INSERT INTO Course (conversationName, courseId) VALUES ('Object-Oriented Data Structures in C++', '10');
+INSERT INTO Course (conversationName, courseId) VALUES ('The Strategy of Content Marketing', '11');
+INSERT INTO Course (conversationName, courseId) VALUES ('Google Digital Marketing & E-commerce', '12');
+INSERT INTO Course (conversationName, courseId) VALUES ('Financial Markets', '13');
+INSERT INTO Course (conversationName, courseId) VALUES ('Trading Basics', '14');
+INSERT INTO Course (conversationName, courseId) VALUES ('Japanese', '15');
+INSERT INTO Course (conversationName, courseId) VALUES ('Teaching Tips for Tricky English Grammar', '16');
+INSERT INTO Course (conversationName, courseId) VALUES ('Conversational English Skills', '17');
+INSERT INTO Course (conversationName, courseId) VALUES ('A Bridge to the World: Korean Language for Intermediate1', '18');
+INSERT INTO Course (conversationName, courseId) VALUES ('Chinese for HSK 1', '19');
+INSERT INTO Course (conversationName, courseId) VALUES ('Learn Mandarin Chinese', '20');
+INSERT INTO Course (conversationName) VALUES ('huyenmentor');
+INSERT INTO Course (conversationName) VALUES ('phuongmentor');
+INSERT INTO Course (conversationName) VALUES ('ducmentor');
+INSERT INTO Course (conversationName) VALUES ('giangmentor');
+INSERT INTO Course (conversationName) VALUES ('anmentor');
+INSERT INTO Course (conversationName) VALUES ('phuongmentor');
