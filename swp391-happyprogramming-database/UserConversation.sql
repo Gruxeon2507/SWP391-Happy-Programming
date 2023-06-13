@@ -1,4 +1,4 @@
-
+USE FU_SWP391_HappyProgramming;
 -- course chat
 INSERT INTO Conversation (conversationName, courseId) VALUES ('Object Oriented Programming in Java', '1');
 INSERT INTO Conversation (conversationName, courseId) VALUES ('Java Programming: Arrays, Lists, and Structured Data', '2');
@@ -43,11 +43,11 @@ INSERT INTO User_Conversation (username, conversationId) VALUES ('giangpt', '2')
 INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '2');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenntk', '2');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuonghm', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '2');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('giangpt', '3');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '3');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenntk', '3');
