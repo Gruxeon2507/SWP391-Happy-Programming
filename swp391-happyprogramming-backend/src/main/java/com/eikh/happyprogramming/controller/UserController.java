@@ -53,7 +53,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author giangpt
  */
-@CrossOrigin(origins = { "*" })
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -69,7 +69,7 @@ public class UserController {
 
     @Autowired
     JwtTokenFilter jwtTokenFilter;
-    
+
     @Autowired
     private RoleUtils roleUtils;
 
@@ -148,12 +148,12 @@ public class UserController {
     @PostMapping("/profile/changepassword")
     public User changePassword(@RequestHeader("Authorization") String token,
             @RequestParam("newPassword") String newPassword, @RequestParam("oldPassword") String oldPassword) {
-        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(6));
         User user = userRepository.findByUsername(username);
         if (user.getPassword().equals(oldPassword)
                 || AuthenticationUtils.checkPassword(oldPassword, user.getPassword())) {
             user.setPassword(AuthenticationUtils.hashPassword(newPassword));
-            return user;
+            return userRepository.save(user);
         } else {
             return null;
         }
@@ -214,7 +214,6 @@ public class UserController {
     // }
 
     // private final String AVT_UPLOAD_DIR = "/avatar/";
-
     // Date: 22/05/2023
     // Function: Upload Avatar
     // Writen By:DucKM
@@ -281,12 +280,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     }
+
     // Date: 22/05/2023
     // Function: List mentor for only admin
     // author: maiphuonghoang
     @GetMapping("/mentors")
     public List<User> getAllMentors(HttpServletRequest request, Integer roleId) {
-        if (!roleUtils.hasRoleFromToken(request, 1)){
+        if (!roleUtils.hasRoleFromToken(request, 1)) {
             return null;
         }
         return userRepository.findByRoleId(2);
@@ -299,7 +299,7 @@ public class UserController {
     @PostMapping("/mentor-account")
     public User createMentor(HttpServletRequest request, @RequestBody User mentor) throws EmailException {
 
-        if (!roleUtils.hasRoleFromToken(request, 1)){
+        if (!roleUtils.hasRoleFromToken(request, 1)) {
             return null;
         }
 
@@ -339,7 +339,7 @@ public class UserController {
     @PutMapping("/mentors/status/{username}")
     ResponseEntity<User> updateActiveStatusMentor(HttpServletRequest request, @PathVariable String username,
             @RequestParam Integer status) {
-        if (!roleUtils.hasRoleFromToken(request, 1)){
+        if (!roleUtils.hasRoleFromToken(request, 1)) {
             return null;
         }
         boolean exists = userRepository.existsByUsername(username);
@@ -348,6 +348,22 @@ public class UserController {
             userRepository.updateActiveStatus(status, username);
         }
         return null;
+    }
+
+    @GetMapping("/displayname")
+    ResponseEntity<?> getLoginUserDisplayName(HttpServletRequest request) {
+        try {
+            String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+            User user = userRepository.findByUsername(username);
+            if (user != null) {
+                return ResponseEntity.ok(user.getDisplayName());
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        }
     }
 
 }

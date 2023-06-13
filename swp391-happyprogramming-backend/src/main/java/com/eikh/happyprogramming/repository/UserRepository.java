@@ -27,12 +27,12 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO User_Role (username, roleId) VALUES (:username, '3');", nativeQuery = true)
-    public boolean insertRole(String username);
+    @Query(value = "INSERT INTO User_Role (username, roleId) VALUES (:username, 3);", nativeQuery = true)
+    public void insertRole(String username);
 
     public User findByMail(String mail);
 
-    //@maiphuonghoang
+    // @maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
@@ -40,8 +40,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             + "                  WHERE c.courseId = :courseId AND p.statusId = :statusId  AND p.participateRole IN (2,3)", nativeQuery = true)
     public List<User> getUserOfCourseByStatusId(Integer courseId, Integer statusId);
 
-
-    //@maiphuonghoang
+    // @maiphuonghoang
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
@@ -76,7 +75,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE u.username = ?1 AND p.participateRole = '2' AND p.courseId = ?2 ", nativeQuery = true)
     public User findCourseMentor(String username, int courseId);
 
-    //duckm
+    // duckm
     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE u.username = ?1 AND p.courseId = ?2 AND p.statusId= 1", nativeQuery = true)
     public User findEnrolledUserInCourse(String username, int courseId);
 }

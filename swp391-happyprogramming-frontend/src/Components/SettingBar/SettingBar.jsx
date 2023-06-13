@@ -4,10 +4,21 @@ import { NavLink } from "react-router-dom";
 
 import "../Navbar/NavBar.css";
 import basicAvatar from "../../Assets/base_user_img.png";
+import UserServices from "../../services/UserServices";
 
 function SettingBar(props) {
     const [navSettingOpen, setNavSettingOpen] = useState(false);
+    const [userDisplayName, setUserDisplayName] = useState();
 
+    useEffect(() => {
+        // const udn = UserServices.getLoginUserDisplayname();
+        // console.log(userDisplayName);
+        const fetchUserDisplayName = async () => {
+            const udn = await UserServices.getLoginUserDisplayname();
+            setUserDisplayName(udn.data);
+        };
+        fetchUserDisplayName();
+    }, []);
 
     const navSettingClass = navSettingOpen ? "pf-dropdown active" : "pf-dropdown";
 
@@ -24,7 +35,8 @@ function SettingBar(props) {
                 <ul>
                     <li className="nav-item">
                         <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
-                        <NavLink to={`/profile/${props.user}`}>{props.user}</NavLink>
+                        <NavLink to={`/profile/${props.user}`}>{userDisplayName}</NavLink>
+                        {/* <NavLink to={`/profile/${props.user}`}>{props.user}</NavLink> */}
                     </li>
                     <li className="nav-item">
                         <NavLink to="/admin">admin</NavLink>
@@ -43,7 +55,7 @@ function SettingBar(props) {
                         <NavLink to="/changepassword">changepassword</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/request/statistic">Statisic </NavLink>
+                        <NavLink to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>

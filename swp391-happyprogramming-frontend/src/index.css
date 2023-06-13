@@ -25,6 +25,11 @@ code {
     monospace;
 }
 
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
 /* input {
   padding: 10px;
   font-size: 1.2em;
@@ -91,10 +96,7 @@ code {
   border-radius: 50px;
 }
 
-ul {
-  padding: 0;
-  list-style-type: none;
-}
+
 .send-button {
   width: 10%;
   border-radius: 50px;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import BarChart from "../../Components/Graph/BarChart";
 import LineChart from "../../Components/Graph/LineChart";
 import PieChart from "../../Components/Graph/PieChart";
@@ -13,6 +14,7 @@ const RequestStatistic = () => {
 
 
     const [selectedCourse, setSelectedCourse] = useState(null);
+    const [workState, setWorkState] = useState(0);
 
     const selectCourse = (courseId) => {
         setSelectedCourse(courseId);
@@ -22,7 +24,6 @@ const RequestStatistic = () => {
         return selectedCourse === courseId;
     };
 
-    // ==================
     const [teachCourses, setTeachCourses] = useState([]);
     const getCoursesOfMentor = () => {
         CourseServices.getCoursesOfMentor()
@@ -174,12 +175,16 @@ const RequestStatistic = () => {
                 <nav className="mentor-menu-sideBar">
                     <ul className="mentor-manageNav">
                         <li>
-                            <img src={manageIcon}></img>
-                            <span>Manage</span>
+                            <NavLink to="/request/manage" className="request-index">
+                                <img src={manageIcon}></img>
+                                <span>Manage</span>
+                            </NavLink>
                         </li>
                         <li>
-                            <img src={statisticIcon}></img>
-                            <span>Statistic</span>
+                            <NavLink to="/request/statistic" className="request-index">
+                                <img src={statisticIcon}></img>
+                                <span>Statistic</span>
+                            </NavLink>
                         </li>
                     </ul>
                 </nav>
