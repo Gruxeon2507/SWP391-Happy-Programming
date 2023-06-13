@@ -7,6 +7,7 @@ package com.eikh.happyprogramming.controller;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Request;
 import com.eikh.happyprogramming.model.Status;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.modelkey.RequestKey;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.RequestRepository;
@@ -122,6 +123,42 @@ public class RequestController {
         }
         return null;
     }
+
+    @PostMapping("/insert")
+    public void handleRequestIntoCourse(
+            @RequestParam(name = "courseId") int courseId,
+            @RequestParam(name = "statusId") int statusId,
+            HttpServletRequest httpServletRequest
+    ){
+        String username = "";
+        try {
+            username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(httpServletRequest));
+        } catch (Exception e){
+            System.out.println("Error getting username from request.");
+            return;
+        }
+        User u = userRepository.findByUsername(username);
+        if (u != null){
+            Request request = new Request();
+            //insert into Request table: courseId, username, requestTime, requestStatus
+            // request key: courseId, username
+            RequestKey key = new RequestKey();
+            java.util.Date today = new java.util.Date();
+            java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+            key.setCourseId(courseId);
+            key.setUsername(username);
+            key.setRequestTime(sqlToday);
+
+            Status status = new Status();
+            status.setStatusId(0);
+            request.setStatus(status);
+            request.setRequestKey(key);
+            requestRepository.save(request);
+        } else {
+            System.out.println("User is null, notification from /insert");
+        }
+    }
+
     
     //@maiphuonghoang 
     @GetMapping("/access-reject/{courseId}")

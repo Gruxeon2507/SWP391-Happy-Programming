@@ -89,6 +89,7 @@ public class PublicController {
 
     @GetMapping("/mentor/rating/{username}")
     int getAvgRatingByMentor(@PathVariable String username) {
-        return ratingRepository.getAvgRatingByMentor(username);
+//        return ratingRepository.getAvgRatingByMentor(username);
+        return 0;
     }
 }
