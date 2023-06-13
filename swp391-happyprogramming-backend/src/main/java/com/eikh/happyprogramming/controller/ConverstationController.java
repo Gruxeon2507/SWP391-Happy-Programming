@@ -111,4 +111,9 @@ public class ConverstationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+//    @GetMapping("/name/{conversationId}")
+//    public ResponseEntity<?> getCurrentConversationName(HttpServletRequest request,@PathVariable int conversationId){
+//
+//    }
 }

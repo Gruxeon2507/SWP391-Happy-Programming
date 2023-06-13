@@ -10,4 +10,5 @@ import lombok.*;
 public class FrontendConversation {
     private int conversationId;
     private String conversationName;
+    private String username;
 }
