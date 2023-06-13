@@ -6,9 +6,10 @@ import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import "./ForogetPassword.css";
 import { Nav } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function ForgetPassword(props) {
+  const Navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [showErrorUsername, setShowErrorUsername] = useState(false);
   const [errorUsername, setErrorUsername] = useState("");
@@ -34,24 +35,24 @@ function ForgetPassword(props) {
   };
 
   const handleSubmit = (event) => {
-    setScreenState(false);
     event.preventDefault();
     if (showErrorUsername) {
       alert("Username: " + errorUsername);
       return;
     }
+    setScreenState(false);
 
     axios
       .post(`http://localhost:1111/api/auth/forgetpassword/${username}`)
       .then((res) => {
         console.log(res.data);
-        window.location.href = `../resetpassword/${username}`;
+        // window.location.href = `../resetpassword/${username}`;
       })
       .catch((error) => {
         console.log(error);
         alert(error);
       });
-    window.location.href = `../resetpassword/${username}`;
+    // window.location.href = `../resetpassword/${username}`;
   };
   return (
     <>
@@ -61,7 +62,7 @@ function ForgetPassword(props) {
           <h1>Forgot Password</h1>
 
           {screenState ? (
-            <>
+            <div className="state-input">
               <span>Enter your Username</span>
               <div className="user-input">
                 <input
@@ -72,11 +73,12 @@ function ForgetPassword(props) {
                 ></input>
                 <button>Confirm</button>
               </div>
-            </>
+            </div>
           ) : (
             <>
               <div className="cm-noti">
                 <p>Please Check your Email</p>
+                <button id="verify-nav-btn" onClick={() => Navigate(`../resetpassword/${username}`)}>To verify</button>
               </div>
             </>
           )}

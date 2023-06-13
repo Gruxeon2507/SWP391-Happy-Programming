@@ -10,6 +10,7 @@ import NavBar from '../../Components/Navbar/NavBar';
 import MessageTo from '../Chat/MessageTo';
 import MessageFrom from '../Chat/MessageFrom';
 import { Link, useNavigate } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 var stompClient = null
 const ConversationList = () => {
@@ -148,19 +149,19 @@ const ConversationList = () => {
     return (
         <div>
             <div className="Chat-container">
-                <div className="Conversation-List">
+                <nav className="Conversation-List">
                     <div className="seach-chat">
                         <input type="text" placeholder="Search"></input>
-                        <button>
-                            <ion-icon name="search-circle-outline"></ion-icon>
-                        </button>
+                        <ion-icon name="search-circle-outline"></ion-icon>
                     </div>
-                    {conversations.map((conversation) => (
-                        <li key={conversation.conversation.conversationId}>
-                            <Link to={"/chat/" + conversation.conversation.conversationId}>{conversation.conversation.conversationName}</Link>
-                        </li>
-                    ))}
-                </div>
+                    <ul>
+                        {conversations.map((conversation) => (
+                            <Link to={"/chat/" + conversation.conversation.conversationId} key={conversation.conversation.conversationId}>
+                                {conversation.conversation.conversationName}
+                            </Link>
+                        ))}
+                    </ul>
+                </nav>
                 <div className="Message-List">
                     <h1>asldkjasd</h1>
                 </div>
