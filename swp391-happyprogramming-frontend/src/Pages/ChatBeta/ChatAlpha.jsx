@@ -107,7 +107,7 @@ const PrivateChatRoom = () => {
     if (stompClient) {
       // Unsubscribe from previous chatroom topic
       stompClient.unsubscribe(`sub-${count}`);
-      const temp = count + 1
+      const temp = count + 1;
       setCount(temp);
       // Subscribe to the new chatroom topic
       stompClient.subscribe(`/chatroom/${newTab}`, onMessageReceived);
@@ -116,7 +116,6 @@ const PrivateChatRoom = () => {
       setTab(newTab);
     }
   };
-
 
   //when new message arrive
   const onMessageReceived = (payload) => {
@@ -131,21 +130,23 @@ const PrivateChatRoom = () => {
   };
 
   const sendValue = () => {
-    var chatMessage = {
-      senderName: userData.username,
-      message: userData.message,
-      status: "MESSAGE",
-      conversationId: conversationId,
-    };
-    console.log(chatMessage);
-    console.log("tab ne: " + tab);
-    stompClient.send(
-      "/chatroom/" + conversationId,
-      {},
-      JSON.stringify(chatMessage)
-    );
-    api.post("/api/conversation/sentmessage", chatMessage);
-    setUserData({ ...userData, message: "" });
+    if (userData.message !== "") {
+      var chatMessage = {
+        senderName: userData.username,
+        message: userData.message,
+        status: "MESSAGE",
+        conversationId: conversationId,
+      };
+      console.log(chatMessage);
+      console.log("tab ne: " + tab);
+      stompClient.send(
+        "/chatroom/" + conversationId,
+        {},
+        JSON.stringify(chatMessage)
+      );
+      api.post("/api/conversation/sentmessage", chatMessage);
+      setUserData({ ...userData, message: "" });
+    }
   };
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const PrivateChatRoom = () => {
   }, [newConversationMessage]);
 
   const handleKeyPressSent = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       sendValue();
     }
   };
@@ -181,13 +182,20 @@ const PrivateChatRoom = () => {
           <div className="messages">
             {currentConversationMessage.map((chat) => (
               <li
-                className={`message ${chat.messageKey.sentBy === userData.username && "self"
-                  }`}
+                className={`message ${
+                  chat.messageKey.sentBy === userData.username && "self"
+                }`}
               >
                 {chat.messageKey.sentBy !== userData.username && (
                   <div className="message-to">
                     <div className="avatar">
-                      <img src={"http://localhost:1111/api/users/avatar/" + chat.messageKey.sentBy} alt="avatar"></img>
+                      <img
+                        src={
+                          "http://localhost:1111/api/users/avatar/" +
+                          chat.messageKey.sentBy
+                        }
+                        alt="avatar"
+                      ></img>
                     </div>
                     <div className="msg-text">
                       <div className="display-name-msg-to">
@@ -212,13 +220,20 @@ const PrivateChatRoom = () => {
             ))}
             {newConversationMessage.map((chat) => (
               <li
-                className={`message ${chat.senderName === userData.username && "self"
-                  }`}
+                className={`message ${
+                  chat.senderName === userData.username && "self"
+                }`}
               >
                 {chat.senderName !== userData.username && (
                   <div className="message-to">
                     <div className="avatar">
-                      <img src={"http://localhost:1111/api/users/avatar/" + chat.senderName} alt="avatar"></img>
+                      <img
+                        src={
+                          "http://localhost:1111/api/users/avatar/" +
+                          chat.senderName
+                        }
+                        alt="avatar"
+                      ></img>
                       <span>{chat.senderName}</span>
                     </div>
                     <div className="msg-text">
