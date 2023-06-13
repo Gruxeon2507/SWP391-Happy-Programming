@@ -38,6 +38,7 @@ import RequestStatistic from "./Pages/Mentor/RequestStatistic";
 
 import PostDetail from "./Pages/PostDetail/PostDetail";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 function App() {
   const [features, setFeatures] = useState(null);
   const fetchData = async () => {
@@ -189,6 +190,7 @@ function App() {
           <PrivateRoute component={CreatePost} roles={["mentor", "admin"]} />
         }
       />
+      <Route path="/resetpassword/:username" element={<ResetPassword></ResetPassword>} />
 
       <Route
         path="/admin"

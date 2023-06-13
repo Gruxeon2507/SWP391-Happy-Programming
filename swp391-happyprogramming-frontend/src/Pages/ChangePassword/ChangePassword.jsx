@@ -61,6 +61,10 @@ function ChangePassword(props) {
     const requestHeaders = {
       Authorization: `Bearer ${token}`,
     };
+    if (checkRePassword) {
+      alert("Re Password is not match");
+      return;
+    }
 
     axios
       .post(
@@ -70,9 +74,16 @@ function ChangePassword(props) {
       )
       .then((res) => {
         console.log(res.data);
-        const confirmed = window.confirm("Password changed successfully. Do you want to log in again?");
-        if (confirmed) {
-          navigate("/login");
+        if (res.data === "") {
+          alert("Old password is not match");
+          return;
+        } else {
+          const confirmed = window.confirm(
+            "Password changed successfully. Do you want to log in again?"
+          );
+          if (confirmed) {
+            navigate("/login");
+          }
         }
       })
       .catch((error) => {
@@ -86,7 +97,9 @@ function ChangePassword(props) {
       <NavBar mode={1} />
       <div className="chgpwd-container">
         <form onSubmit={handleSubmit} className="chgpwd-form">
-          <div className="title"><h1>CHANGE PASSWORD</h1></div>
+          <div className="title">
+            <h1>CHANGE PASSWORD</h1>
+          </div>
           <div className="user-input">
             <input type="password" onChange={onChangeOldPassword} required />
             <span>Old password</span>

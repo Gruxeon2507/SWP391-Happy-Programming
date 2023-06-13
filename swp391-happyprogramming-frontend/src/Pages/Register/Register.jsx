@@ -43,6 +43,8 @@ function Register(props) {
   const [showErrorUsernameDuplicate, setShowUsernameDuplicate] =
     useState(false);
 
+  const [errorDob, setErrorDob] = useState("");
+  const [showErrorDob, setShowErrorDob] = useState(false);
   const [todayDate, setTodayDate] = useState(
     new Date().toISOString().substr(0, 10)
   );
@@ -171,6 +173,17 @@ function Register(props) {
 
   const onChangeDob = (event) => {
     const inputDob = event.target.value;
+
+    const today = new Date();
+    const selectedDate = new Date(inputDob);
+    const ageDifference = today.getFullYear() - selectedDate.getFullYear();
+    if (ageDifference < 18) {
+      setShowErrorDob(true);
+      setErrorDob("You must be at least 18 years old.");
+      return;
+    }
+    setShowErrorDob(false);
+    setErrorDob("");
     setUser({
       ...user,
       dob: inputDob,
@@ -187,7 +200,8 @@ function Register(props) {
       showErrorDisplayname ||
       showErrorEmail ||
       showErrorUsernameDuplicate ||
-      showErrorEmailDuplicate
+      showErrorEmailDuplicate ||
+      showErrorDob
     ) {
       let alertMessage = "";
       if (checkRePassword) {
@@ -218,12 +232,15 @@ function Register(props) {
       if (showErrorEmailDuplicate) {
         alertMessage = alertMessage + "Email" + errorEmailDuplicate + "\n";
       }
+      if (showErrorDob) {
+        alertMessage = alertMessage + "Date of birth" + errorDob + "\n";
+      }
       alert(alertMessage);
       return;
     }
 
     axios
-      .post("http://localhost:1111/api/auth/users/mentor-account", user)
+      .post("http://localhost:1111/api/auth/register", user)
       .then((res) => {
         console.log(res.data);
       })
@@ -239,11 +256,19 @@ function Register(props) {
       <NavBar mode={3} />
 
       {messageVerify ? (
-        <VerifyDialog email={user.mail} />
+        <VerifyDialog email={user.mail} username={user.username} />
       ) : (
         <div className="regis-frag">
           <div className="res-bg">
-            <h1 style={{ color: "var(--item)", fontWeight: "bold", fontSize: "2.6rem" }}>Sign up to HPYPRO</h1>
+            <h1
+              style={{
+                color: "var(--item)",
+                fontWeight: "bold",
+                fontSize: "2.6rem",
+              }}
+            >
+              Sign up to HPYPRO
+            </h1>
             <img src={resBG} alt="resbg"></img>
             {/* <q style={{ color: "var(--item2)", fontSize: "1.3rem" }}>Embrace yourself on the path of knowledge.</q> */}
           </div>
@@ -253,7 +278,12 @@ function Register(props) {
                 <tr>
                   <td colSpan={2}>
                     <div className="user-input">
-                      <input type="text" id="userName" required onChange={onChangeUsername}></input>
+                      <input
+                        type="text"
+                        id="userName"
+                        required
+                        onChange={onChangeUsername}
+                      ></input>
                       <span>UserName</span>
                     </div>
                   </td>

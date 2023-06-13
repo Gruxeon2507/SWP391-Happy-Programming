@@ -6,6 +6,7 @@ import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import "./ForogetPassword.css";
 import { Nav } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
 
 function ForgetPassword(props) {
   const [username, setUsername] = useState("");
@@ -44,37 +45,41 @@ function ForgetPassword(props) {
       .post(`http://localhost:1111/api/auth/forgetpassword/${username}`)
       .then((res) => {
         console.log(res.data);
+        window.location.href = `../resetpassword/${username}`;
       })
       .catch((error) => {
         console.log(error);
         alert(error);
       });
-
+    window.location.href = `../resetpassword/${username}`;
   };
   return (
     <>
-      <NavBar mode={2} />
+      <NavBar mode={2} />{" "}
       <div className="forgetpassword-container">
         <form onSubmit={handleSubmit} className="forgetpassword-form">
           <h1>Forgot Password</h1>
 
-          {screenState ? <>
-            <span>Enter your Username</span>
-            <div className="user-input">
-              <input
-                type="text"
-                name="username"
-                required
-                onChange={onChangeUsername}
-              ></input>
-              <button>Confirm</button>
-            </div>
-          </> : <>
-            <div className="cm-noti">
-              <p>Please Check your Email</p>
-            </div>
-          </>}
-
+          {screenState ? (
+            <>
+              <span>Enter your Username</span>
+              <div className="user-input">
+                <input
+                  type="text"
+                  name="username"
+                  required
+                  onChange={onChangeUsername}
+                ></input>
+                <button>Confirm</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="cm-noti">
+                <p>Please Check your Email</p>
+              </div>
+            </>
+          )}
 
           {showErrorUsername ? (
             <>
