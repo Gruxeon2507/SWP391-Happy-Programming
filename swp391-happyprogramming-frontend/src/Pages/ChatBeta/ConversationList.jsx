@@ -147,7 +147,8 @@ const ConversationList = () => {
     console.log(conversationMessages)
     // console.log(conversations);
     return (
-        <div>
+        <>
+            <NavBar mode={1} />
             <div className="Chat-container">
                 <nav className="Conversation-List">
                     <div className="seach-chat">
@@ -167,7 +168,7 @@ const ConversationList = () => {
                 </div>
             </div>
 
-        </div>
+        </>
     )
 }
 export default ConversationList;
