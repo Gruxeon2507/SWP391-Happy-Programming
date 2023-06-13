@@ -4,6 +4,11 @@ import CourseServices from "../../services/CourseServices";
 import RequestService from "../../services/RequestService";
 import convertDateFormat from "../../util/DateConvert";
 import { Pagination } from "antd";
+import { NavLink } from "react-router-dom";
+import manageIcon from "../../Assets/208-2081675_link-to-manage-travel-ttc-line-5.png"
+import statisticIcon from "../../Assets/1466735.png"
+import "./RequestManage.css"
+import NavBar from "../../Components/Navbar/NavBar";
 
 const RequestManage = () => {
     const [teachCourses, setTeachCourses] = useState([]);
@@ -16,7 +21,7 @@ const RequestManage = () => {
     const [checkedRequest, setCheckedRequest] = useState([]);
     const [selectedValue, setSelectedValue] = useState(1);
     const [responses, setResponses] = useState([])
-    const haveData = users.length == 0 && responses.length == 0 
+    const haveData = users.length == 0 && responses.length == 0
     const sizePerPage = 10;
 
     const getCoursesOfMentor = () => {
@@ -145,143 +150,161 @@ const RequestManage = () => {
         setSortField(e.target.id);
     }
     return (
-        <div>
+        <>
+            <NavBar mode={1}></NavBar>
+            <main className="request-manage-main">
+                <nav className="mentor-menu-sideBar">
+                    <ul className="mentor-manageNav">
+                        <li>
+                            <NavLink to="/request/manage" className="request-index">
+                                <img src={manageIcon}></img>
+                                <span>Manage</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/request/statistic" className="request-index">
+                                <img src={statisticIcon}></img>
+                                <span>Statistic</span>
+                            </NavLink>
+                        </li>
+                    </ul>
+                </nav>
+                <section className="manage-section">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkbox-all"
+                            name="allSelect"
+                            checked={users.filter(user => user?.isChecked !== true).length < 1}
+                            onChange={(e) => handleCheckChange(e)}
+                        />
+                        <label class="form-check-label" htmlFor="checkbox-all">
+                            Check All
+                        </label>
+                    </div>
+                    <select className="form-control form-control-sm checkbox-select-all" name="action"
+                        onChange={(e) => handleCourseChange(e)}
+                    >
+                        <option value="" >-- Courses --</option>
+                        {teachCourses.map((course) => (
+                            <option value={course.courseId} key={course.id} >
+                                {course.courseName}
+                            </option>
+                        ))}
 
-            <div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="checkbox-all"
-                        name="allSelect"
-                        checked={users.filter(user => user?.isChecked !== true).length < 1}
-                        onChange={(e) => handleCheckChange(e)}
-                    />
-                    <label class="form-check-label" htmlFor="checkbox-all">
-                        Check All
-                    </label>
-                </div>
-                <select className="form-control form-control-sm checkbox-select-all" name="action"
-                    onChange={(e) => handleCourseChange(e)}
-                >
-                    <option value="" >-- Courses --</option>
-                    {teachCourses.map((course) => (
-                        <option value={course.courseId} key={course.id} >
-                            {course.courseName}
-                        </option>
-                    ))}
-
-                </select>
-                <select class="form-control form-control-sm checkbox-select-all" name="action"
-                    disabled={checkedRequest.length <= 1}
-                    onChange={handleSelectChange} >
-                    <option disabled>-- Action --</option>
-                    <option value="1" >Access</option>
-                    <option value="-1" >Reject</option>
-                </select>
-                <button disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Thực hiện</button>
-            </div>
+                    </select>
+                    <select class="form-control form-control-sm checkbox-select-all" name="action"
+                        disabled={checkedRequest.length <= 1}
+                        onChange={handleSelectChange} >
+                        <option disabled>-- Action --</option>
+                        <option value="1" >Access</option>
+                        <option value="-1" >Reject</option>
+                    </select>
+                    <button disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Thực hiện</button>
 
 
-            <div style={{ display: !haveData ? "inline" : "none" }} className="show-info">
+                    <div style={{ display: !haveData ? "inline" : "none" }} className="show-info">
 
-                <table >
-                    <thead>
-                        <tr>
+                        <table >
+                            <thead>
+                                <tr>
 
-                            <th>#</th>
-                            <th>Mentee
-                                <span onClick={handleSortChange}>
-                                    {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
-                                    <ion-icon id="username" name="list-outline"></ion-icon>
-                                </span>
-                            </th>
-                            <th>Request Time
-                                <span onClick={handleSortChange}>
-                                    {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
-                                    <ion-icon id="requestTime" name="list-outline"></ion-icon>
-                                </span>
-                            </th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => {
-                            return (
-                                <tr key={user.requestKey.username}>
-
-                                    <td>
-
-                                        <input class="form-check-input" type="checkbox" name={user.requestKey.username} value="" id={user.requestKey.username}
-                                            checked={user?.isChecked || false}
-                                            onChange={(e) => { handleCheckChange(e) }}
-                                        />
-                                    </td>
-                                    <td>
-                                        <label class="form-check-label" htmlFor={user.requestKey.username}>
-                                            {user.requestKey.username}
-                                        </label>
-                                    </td>
-
-                                    <td>
-                                        <label class="form-check-label" htmlFor={user.requestKey.username}>
-                                            {convertDateFormat(user.requestKey.requestTime)}
-                                        </label>
-
-                                    </td>
-
-                                    <td>
-                                        <button
-                                            onClick={() => handleSubmitOne(1, user.requestKey.username)}
-                                            disabled={checkedRequest.length > 1}
-                                        >Access </button>
-                                        <button
-                                            onClick={() => handleSubmitOne(-1, user.requestKey.username)}
-                                            disabled={checkedRequest.length > 1}
-                                        >Reject</button>
-                                    </td>
+                                    <th>#</th>
+                                    <th>Mentee
+                                        <span onClick={handleSortChange}>
+                                            {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
+                                            <ion-icon id="username" name="list-outline"></ion-icon>
+                                        </span>
+                                    </th>
+                                    <th>Request Time
+                                        <span onClick={handleSortChange}>
+                                            {/* đổi icon nhưng giữ lại id cho tôi nhé ân*/}
+                                            <ion-icon id="requestTime" name="list-outline"></ion-icon>
+                                        </span>
+                                    </th>
+                                    <th>Action</th>
                                 </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-                <div className="Pagination-Container">
-                    <Pagination
-                        total={totalItems}
-                        defaultPageSize={sizePerPage}
-                        showTotal={(total, range) =>
-                            `${range[0]}-${range[1]} of ${total} mentees`
-                        }
-                        current={currentPage}
-                        onChange={(current) => {
-                            handlePageChange(current);
-                        }}
-                    />
-                </div>
+                            </thead>
+                            <tbody>
+                                {users.map((user) => {
+                                    return (
+                                        <tr key={user.requestKey.username}>
 
-                <p>Your Recent Respond</p>
-                <table >
-                    <thead>
-                        <tr>
-                            <th>Mentee</th>
-                            <th>Respond At</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {responses.map((user) => {
-                            return (
-                                <tr key={user.requestKey.username}>
-                                    <td> {user.requestKey.username}</td>
-                                    <td>{convertDateFormat(user.requestKey.requestTime)}</td>
-                                    <td>{user.status.statusName}</td>
+                                            <td>
+
+                                                <input class="form-check-input" type="checkbox" name={user.requestKey.username} value="" id={user.requestKey.username}
+                                                    checked={user?.isChecked || false}
+                                                    onChange={(e) => { handleCheckChange(e) }}
+                                                />
+                                            </td>
+                                            <td>
+                                                <label class="form-check-label" htmlFor={user.requestKey.username}>
+                                                    {user.requestKey.username}
+                                                </label>
+                                            </td>
+
+                                            <td>
+                                                <label class="form-check-label" htmlFor={user.requestKey.username}>
+                                                    {convertDateFormat(user.requestKey.requestTime)}
+                                                </label>
+
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    onClick={() => handleSubmitOne(1, user.requestKey.username)}
+                                                    disabled={checkedRequest.length > 1}
+                                                >Access </button>
+                                                <button
+                                                    onClick={() => handleSubmitOne(-1, user.requestKey.username)}
+                                                    disabled={checkedRequest.length > 1}
+                                                >Reject</button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                        <div className="Pagination-Container">
+                            <Pagination
+                                total={totalItems}
+                                defaultPageSize={sizePerPage}
+                                showTotal={(total, range) =>
+                                    `${range[0]}-${range[1]} of ${total} mentees`
+                                }
+                                current={currentPage}
+                                onChange={(current) => {
+                                    handlePageChange(current);
+                                }}
+                            />
+                        </div>
+
+                        <p>Your Recent Respond</p>
+                        <table className="Recent-Respond-table">
+                            <thead>
+                                <tr>
+                                    <th>Mentee</th>
+                                    <th>Respond At</th>
+                                    <th>Status</th>
                                 </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
-            <div style={{ display: haveData? "inline" : "none" }} className="not-show-info">
-                <p>Choose a course to view request</p>
-            </div>
-        </div>
+                            </thead>
+                            <tbody>
+                                {responses.map((user) => {
+                                    return (
+                                        <tr key={user.requestKey.username}>
+                                            <td> {user.requestKey.username}</td>
+                                            <td>{convertDateFormat(user.requestKey.requestTime)}</td>
+                                            <td>{user.status.statusName}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style={{ display: haveData ? "inline" : "none" }} className="not-show-info">
+                        <p>Choose a course to view request</p>
+                    </div>
+                </section>
+            </main>
+        </>
     );
 };
 

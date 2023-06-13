@@ -20,16 +20,18 @@ class UserServices {
   getAlllMentors() {
     return axios.get(USER_BASE_REST_API_URL + "/mentors");
   }
-  getLoginUsername(){
+  getLoginUsername() {
     return api.get("/api/users/login");
-}
+  }
 
   //@maiphuonghoang
-  getUserOfCourse(courseId, statusId){
+  getUserOfCourse(courseId, statusId) {
     console.log(`http://localhost:1111/api/courses/find-user/${courseId}?statusId=${statusId}`);
     return api.get(`/api/courses/find-user/${courseId}?statusId=${statusId}`);
-  }  
-
+  }
+  getLoginUserDisplayname() {
+    return api.get("api/users/displayname");
+  }
 }
 
 export default new UserServices();

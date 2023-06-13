@@ -107,6 +107,11 @@
   background-color: var(--light);
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
     rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  /* background-color: red; */
+}
+
+.input-message input:focus {
+  outline: 4px solid var(--item2);
 }
 
 .input-message ion-icon {
