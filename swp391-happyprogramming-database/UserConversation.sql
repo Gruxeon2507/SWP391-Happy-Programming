@@ -106,3 +106,6 @@ INSERT INTO User_Conversation (username, conversationId) VALUES ('phuonghm', '5'
 INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '5');
+
+-- chat with mentor
+INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '21');

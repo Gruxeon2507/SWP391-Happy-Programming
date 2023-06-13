@@ -82,7 +82,7 @@ const PrivateChatRoom = () => {
     let map = new Map(conversationMessages);
     let list = [];
     conversations.map((conversation) =>
-      map.set(conversation.conversation.conversationId, list)
+      map.set(conversation.conversationId, list)
     );
     setConversationMessages(map);
     scrollToBottom();
@@ -134,22 +134,24 @@ const PrivateChatRoom = () => {
   };
 
   const sendValue = () => {
-    var chatMessage = {
-      senderName: userData.username,
-      message: userData.message,
-      status: "MESSAGE",
-      conversationId: conversationId,
-    };
-    console.log(chatMessage);
-    console.log("tab ne: " + tab);
-    stompClient.send(
-      "/chatroom/" + conversationId,
-      {},
-      JSON.stringify(chatMessage)
-    );
-    api.post("/api/conversation/sentmessage", chatMessage);
-    setUserData({ ...userData, message: "" });
-    scrollToBottom();
+    if (userData.message !== "") {
+      var chatMessage = {
+        senderName: userData.username,
+        message: userData.message,
+        status: "MESSAGE",
+        conversationId: conversationId,
+      };
+      console.log(chatMessage);
+      console.log("tab ne: " + tab);
+      stompClient.send(
+        "/chatroom/" + conversationId,
+        {},
+        JSON.stringify(chatMessage)
+      );
+      api.post("/api/conversation/sentmessage", chatMessage);
+      setUserData({ ...userData, message: "" });
+      scrollToBottom();
+    }
   };
 
   useEffect(() => {
@@ -158,11 +160,9 @@ const PrivateChatRoom = () => {
   }, [newConversationMessage]);
 
   const handleKeyPressSent = (event) => {
-    if (event.key === 'Enter') {
-      if (userData.message && userData.message.trim() !== '') {
-        sendValue();
-        scrollToBottom();
-      }
+    if (event.key === "Enter") {
+      sendValue();
+      scrollToBottom();
     }
   };
 
@@ -172,7 +172,6 @@ const PrivateChatRoom = () => {
       // messagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
   return (
     <>
       <NavBar mode={1}></NavBar>
@@ -184,19 +183,26 @@ const PrivateChatRoom = () => {
           </div>
           <ul>
             {conversations.map((conversation) => (
-              <NavLink to={"/chat/" + conversation.conversation.conversationId} key={conversation.conversation.conversationId}>
-                {conversation.conversation.conversationName}
+              <NavLink
+                to={"/chat/" + conversation.conversationId}
+                key={conversation.conversationId}
+              >
+                {conversation.conversationName}<br></br>
+                {conversation.username}
               </NavLink>
             ))}
           </ul>
         </nav>
         <div className="Message-List">
+          <div className="conversation-head">
+            <img src={null} alt="placeholder"></img>
+            <span>{conversationId}</span>
+          </div>
           <div className="messages" ref={messagesRef}>
             {currentConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.messageKey.sentBy === userData.username && "self"
-                }`}
+                className={`message ${chat.messageKey.sentBy === userData.username && "self"
+                  }`}
               >
                 {chat.messageKey.sentBy !== userData.username && (
                   <div className="message-to">
@@ -232,14 +238,19 @@ const PrivateChatRoom = () => {
             ))}
             {newConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.senderName === userData.username && "self"
-                }`}
+                className={`message ${chat.senderName === userData.username && "self"
+                  }`}
               >
                 {chat.senderName !== userData.username && (
                   <div className="message-to">
                     <div className="avatar">
-                      <img src={"http://localhost:1111/api/users/avatar/" + chat.senderName} alt="avatar"></img>
+                      <img
+                        src={
+                          "http://localhost:1111/api/users/avatar/" +
+                          chat.senderName
+                        }
+                        alt="avatar"
+                      ></img>
                     </div>
                     <div className="msg-text">
                       <div className="display-name-msg-to">
