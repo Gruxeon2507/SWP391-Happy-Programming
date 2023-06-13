@@ -9,12 +9,12 @@ class CommentServices {
     if (parentId) {
       // add reply
       console.log(`/api/comments/add/reply/${parentId}`);
-      api.post(`/api/comments/add/reply/${parentId}`, comment);
+      return api.post(`/api/comments/add/reply/${parentId}`, comment);
     } else {
       // add top level comment
       console.log(`api/comments/add/top`);
       console.log(JSON.stringify(comment));
-      api.post("/api/comments/add/top", comment);
+      return api.post("/api/comments/add/top", comment);
     }
   }
 

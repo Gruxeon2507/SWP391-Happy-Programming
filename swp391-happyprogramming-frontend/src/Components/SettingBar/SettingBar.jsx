@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "../Navbar/NavBar.css";
 import basicAvatar from "../../Assets/base_user_img.png";
@@ -9,15 +9,27 @@ import UserServices from "../../services/UserServices";
 function SettingBar(props) {
     const [navSettingOpen, setNavSettingOpen] = useState(false);
     const [userDisplayName, setUserDisplayName] = useState();
-
+    const navigate = useNavigate();
     useEffect(() => {
         // const udn = UserServices.getLoginUserDisplayname();
         // console.log(userDisplayName);
-        const fetchUserDisplayName = async () => {
-            const udn = await UserServices.getLoginUserDisplayname();
-            setUserDisplayName(udn.data);
-        };
-        fetchUserDisplayName();
+        try{
+            const fetchUserDisplayName = async () => {
+                const udn = await UserServices.getLoginUserDisplayname().catch((error)=> {
+                    console.log(error);
+                    window.localStorage.removeItem("token");
+                    window.localStorage.removeItem("role");
+                    window.location.reload();
+                    navigate("/login")
+                  });
+                setUserDisplayName(udn.data);
+            };
+            fetchUserDisplayName();
+        }
+        catch (e){
+            window.localStorage.removeItem("token");
+            window.localStorage.removeItem("role");
+        }
     }, []);
 
     const navSettingClass = navSettingOpen ? "pf-dropdown active" : "pf-dropdown";

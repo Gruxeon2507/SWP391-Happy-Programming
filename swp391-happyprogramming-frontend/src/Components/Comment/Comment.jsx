@@ -5,14 +5,17 @@ import ActionButton from "../ActionButton/ActionButton";
 import CommentServices from "../../services/CommentServices";
 import UserServices from "../../services/UserServices";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, layer }) => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [expand, setExpand] = useState(false);
+  const [loginUsername, setLoginUsername] = useState("");
   // const [nestCount, setNestCount] = useState(0);
   const inputRef = useRef(null);
-  const [loginUsername, setLoginUsername] = useState("");
+  const [replies, setReplies] = useState([]);
+
+  useEffect(() => {}, [replies]);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -20,6 +23,7 @@ const Comment = ({ comment }) => {
       .catch((error) => {
         console.log("ERROR GET LOGIN USERNAME" + error);
       });
+    setReplies(comment.replies);
   }, []);
 
   console.log("USER LOGIN: " + loginUsername);
@@ -47,9 +51,12 @@ const Comment = ({ comment }) => {
       post: {
         postId: comment.post.postId,
       },
+      replies: [],
     };
     try {
-      CommentServices.addComment(reply, comment.commentId);
+      CommentServices.addComment(reply, comment.commentId).then((res) => {
+        setReplies([...replies, res.data]);
+      });
     } catch (e) {
       console.log("error adding reply: " + e);
     }
@@ -97,26 +104,28 @@ const Comment = ({ comment }) => {
           </>
         ) : (
           <>
-            <ActionButton
-              className="reply comment"
-              type={
-                <>
-                  {expand && nestCount < 4 ? (
-                    <AiOutlineCaretUp
-                      width="10px"
-                      height="10px"
-                    ></AiOutlineCaretUp>
-                  ) : (
-                    <AiOutlineCaretDown
-                      width="10px"
-                      height="10px"
-                    ></AiOutlineCaretDown>
-                  )}{" "}
-                  REPLY
-                </>
-              }
-              handleClick={handleNewComment}
-            ></ActionButton>
+            {layer < 3 && (
+              <ActionButton
+                className="reply comment"
+                type={
+                  <>
+                    {expand ? (
+                      <AiOutlineCaretUp
+                        width="10px"
+                        height="10px"
+                      ></AiOutlineCaretUp>
+                    ) : (
+                      <AiOutlineCaretDown
+                        width="10px"
+                        height="10px"
+                      ></AiOutlineCaretDown>
+                    )}{" "}
+                    REPLY
+                  </>
+                }
+                handleClick={() => handleNewComment()}
+              ></ActionButton>
+            )}
             {comment.user.username == loginUsername ? (
               <>
                 <ActionButton
@@ -127,7 +136,7 @@ const Comment = ({ comment }) => {
                 <ActionButton
                   className="reply comment"
                   type="DELETE"
-                  handleClick={deleteComment}
+                  handleClick={() => deleteComment()}
                 ></ActionButton>
               </>
             ) : (
@@ -159,9 +168,13 @@ const Comment = ({ comment }) => {
             ></ActionButton>
           </div>
         )}
-        {comment.replies.map((reply) => (
+        {replies.map((reply) => (
           <>
-            <Comment comment={reply} key={reply.commentId}></Comment>
+            <Comment
+              comment={reply}
+              key={reply.commentId}
+              layer={layer + 1}
+            ></Comment>
           </>
         ))}
       </div>

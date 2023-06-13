@@ -102,7 +102,6 @@ public class PostController {
         System.out.println("DELETE POST API CALLED.");
         String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         Post post = postRepository.findById(postId).get();
-        CommentController commentController = new CommentController();
         if (postRepository.userHasPost(username, postId) != null) {
             List<Comment> topLevelComments = commentRepository.getTopLevelCommentByPost(postId);
             for (Comment c : topLevelComments) {

@@ -18,6 +18,7 @@ import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.CommentUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +48,7 @@ public class CommentController {
     }
 
     @PostMapping("/add/reply/{parentId}")
-    public void addReply(@RequestBody Comment comment, @PathVariable("parentId") int parentId, HttpServletRequest request) {
+    public ResponseEntity<?> addReply(@RequestBody Comment comment, @PathVariable("parentId") int parentId, HttpServletRequest request) {
         System.out.println("API ADD REPLY CALLED AT " + new Date() + ".");
         /**
          * comment received has the following attributes: content, post, parent
@@ -56,8 +57,7 @@ public class CommentController {
         java.util.Date now = new java.util.Date();
         comment.setCommentedAt(new Timestamp(System.currentTimeMillis()));
         String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-        User u = new User();
-        u.setUsername(username);
+        User u = userRepository.findByUsername(username);
         comment.setUser(u);
         Comment parent = new Comment();
         parent.setCommentId(parentId);
@@ -66,10 +66,11 @@ public class CommentController {
         System.out.println("POSTID: " + comment.getPost().getPostId());
         System.out.println("PARENTID: " + comment.getParent().getCommentId());
         commentRepository.save(comment);
+        return ResponseEntity.ok(comment);
     }
 
     @PostMapping("add/top")
-    public void addTopLevelComment(@RequestBody Comment comment, HttpServletRequest request) {
+    public ResponseEntity<?> addTopLevelComment(@RequestBody Comment comment, HttpServletRequest request) {
         System.out.println("API ADD TOP LEVEL COMMENT CALLED AT " + new Date() + ".");
         /**
          * comment received has the following attributes: content, post, parent
@@ -78,11 +79,11 @@ public class CommentController {
         java.util.Date now = new java.util.Date();
         comment.setCommentedAt(new Timestamp(System.currentTimeMillis()));
         String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-        User u = new User();
-        u.setUsername(username);
+        User u = userRepository.findByUsername(username);
         comment.setUser(u);
         commentRepository.save(comment);
         System.out.println("ADDED COMMENT");
+        return ResponseEntity.ok(comment);
     }
 
 //    public void deleteCommentAndReplies(int commentId) {

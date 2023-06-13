@@ -40,18 +40,7 @@ import PostDetail from "./Pages/PostDetail/PostDetail";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 function App() {
-  const [features, setFeatures] = useState(null);
-  const fetchData = async () => {
-    try {
-      const response = await api.get("api/feature/all");
-      setFeatures(response.data);
-      // console.log(response.data);
-      // console.log(features);
-    } catch (error) { }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  
   // console.log(features);
   return (
     <Routes>
