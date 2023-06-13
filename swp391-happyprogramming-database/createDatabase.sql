@@ -72,12 +72,24 @@ ALTER TABLE Role_Feature ADD CONSTRAINT FK_RoleFeature_Feature FOREIGN KEY(featu
 REFERENCES Feature(featureId);
 
 
+CREATE TABLE Course 
+(
+	courseId int NOT NULL AUTO_INCREMENT,
+    courseName nvarchar(255),
+    courseDescription longtext,
+    createdAt datetime, 
+    CONSTRAINT PK_Course PRIMARY KEY (courseId)
+);
+
 CREATE TABLE Conversation
 (
 	conversationId int NOT NULL AUTO_INCREMENT,
     conversationName nvarchar(255),
+	courseId int,
     CONSTRAINT PK_Conversation PRIMARY KEY (conversationId)
 );
+Alter table Conversation ADD CONSTRAINT FK_Conversation_Course FOREIGN KEY(courseId) 
+REFERENCES Course(courseId);
 
 CREATE TABLE User_Conversation
 (
@@ -110,17 +122,8 @@ CREATE TABLE Category(
 );
 
 
-CREATE TABLE Course 
-(
-	courseId int NOT NULL AUTO_INCREMENT,
-    courseName nvarchar(255),
-    courseDescription longtext,
-    createdAt datetime, 
-    conversationId int,
-    CONSTRAINT PK_Course PRIMARY KEY (courseId)
-);
-Alter table Course ADD CONSTRAINT FK_Course_Conversation FOREIGN KEY(conversationId) 
-REFERENCES Conversation(conversationId);
+
+
 CREATE TABLE Course_Category 
 (
     categoryId int,
