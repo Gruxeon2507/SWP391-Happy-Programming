@@ -96,7 +96,7 @@
   padding: 4px 8px;
   border-radius: 8px;
 }
-.nav-menu .nav-item a:hover {
+.nav-menu .nav-item a:hover:not(.active) {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
   transform: translateY(-5%);
 }
@@ -117,7 +117,7 @@
   opacity: 0.2;
 }
 
-.nav-menu .NavBar.active .nav-item:hover {
+.nav-menu .NavBar.active .nav-item:hover:not(.active) {
   border-radius: 8px;
   background-color: var(--light);
   padding: 4px 8px;
@@ -330,7 +330,7 @@
   .nav-item a {
     color: var(--item3);
   }
-  .NavBar.active .nav-item:hover {
+  .NavBar.active .nav-item:hover:not(.active) {
     background-color: var(--light);
   }
   .navToggle {
