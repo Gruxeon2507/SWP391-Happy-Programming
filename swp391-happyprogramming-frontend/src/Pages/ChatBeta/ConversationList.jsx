@@ -157,9 +157,17 @@ const ConversationList = () => {
                     </div>
                     <ul>
                         {conversations.map((conversation) => (
-                            <Link to={"/chat/" + conversation.conversationId} key={conversation.conversationId}>
-                                {conversation.conversationName}
-                            </Link>
+                            <NavLink
+                                to={"/chat/" + conversation.conversationId}
+                                key={conversation.conversationId}
+                            >
+                                <img
+                                    src={`http://localhost:1111/api/users/avatar/${conversation.username}`}
+                                    alt="avatar"
+                                ></img>
+                                <span>{conversation.conversationName}</span>
+
+                            </NavLink>
                         ))}
                     </ul>
                 </nav>

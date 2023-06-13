@@ -78,11 +78,32 @@
   outline: 2px solid var(--item2);
 }
 
+.lst-conv {
+  overflow-y: scroll;
+  width: 100%;
+  height: calc(100% - 2rem);
+}
+
+.conv-name {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .Conversation-List ul {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.Conversation-List ul img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .Conversation-List a {
@@ -93,12 +114,33 @@
   background-color: var(--light);
   border-radius: 20px;
   color: var(--darkItem);
+
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  align-items: center;
 }
 
 .Conversation-List a {
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
+  border: 2px solid var(--darkItem3);
+  transition: 0s ease !important;
+}
+
+.Conversation-List a span {
+  margin-left: 8px;
+}
+
+.Conversation-List a:hover:not(.active) {
+  transform: translateY(-5%);
+  border: 2px solid var(--item2);
+}
+
+.Conversation-List a:hover:not(.active) {
+  transform: translateY(-5%);
+  border: 2px solid var(--item2);
 }
 
 .Conversation-List a.active {
@@ -107,6 +149,13 @@
   background-color: var(--item);
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  transition: 0s ease !important;
+}
+
+.Conversation-List a.active .conv-name {
+  display: contents;
+  white-space: normal;
+  transition: 0s ease !important;
 }
 
 .Message-List {
