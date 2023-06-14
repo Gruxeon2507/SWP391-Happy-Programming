@@ -31,5 +31,9 @@ public interface User_ConversationRepository extends JpaRepository<User_Conversa
     @Query(value = "INSERT INTO User_Conversation (username, conversationId) VALUES (:username, :conversationId)", nativeQuery = true)
     public void insertUserConversation(String username, int conversationId);
     
+    
+    @Query(value = "SELECT * FROM User_Conversation WHERE conversationId =?1 AND username != ?2",nativeQuery = true)
+    public User_Conversation getUserOtherUserUsername(int conversationId, String username);
+
 
 }
