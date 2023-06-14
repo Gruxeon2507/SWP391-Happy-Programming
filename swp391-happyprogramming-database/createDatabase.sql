@@ -254,6 +254,7 @@ SELECT * FROM `Comment`
 SELECT * FROM Attachment
 SELECT * FROM Course
 SELECT * FROM Course_Category
+SELECT * FROM Category
 SELECT * FROM Course
 SELECT * FROM Rating
 SELECT * FROM Request

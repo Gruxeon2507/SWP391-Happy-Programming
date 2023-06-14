@@ -1,4 +1,4 @@
-
+USE FU_SWP391_HappyProgramming;
 -- course chat
 INSERT INTO Conversation (conversationName, courseId) VALUES ('Object Oriented Programming in Java', '1');
 INSERT INTO Conversation (conversationName, courseId) VALUES ('Java Programming: Arrays, Lists, and Structured Data', '2');
@@ -29,49 +29,80 @@ INSERT INTO Conversation (conversationName) VALUES ('giangmentor');
 INSERT INTO Conversation (conversationName) VALUES ('anmentor');
 INSERT INTO Conversation (conversationName) VALUES ('phuongmentor');
 
--- add user into chat
+-- group course chat of mentor  
+INSERT INTO User_Conversation (username, conversationId) VALUES ('phuongmentor', '2');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('phuongmentor', '7');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('phuongmentor', '12');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('phuongmentor', '17');
+
+INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenmentor', '1');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenmentor', '6');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenmentor', '11');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenmentor', '16');
+
+INSERT INTO User_Conversation (username, conversationId) VALUES ('giangmentor', '4');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('giangmentor', '9');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('giangmentor', '14');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('giangmentor', '19');
+
+INSERT INTO User_Conversation (username, conversationId) VALUES ('anmentor', '5');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('anmentor', '10');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('anmentor', '15');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('anmentor', '20');
+
+INSERT INTO User_Conversation (username, conversationId) VALUES ('ducmentor', '3');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('ducmentor', '8');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('ducmentor', '13');
+INSERT INTO User_Conversation (username, conversationId) VALUES ('ducmentor', '18');
+
+-- add user into group chat
+-- chỉ mentee đã join vào course 
 INSERT INTO User_Conversation (username, conversationId) VALUES ('giangpt', '1');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '1');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenntk', '1');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuonghm', '1');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '1');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '1');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '1');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '1');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '1');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '1');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '1');
+
 INSERT INTO User_Conversation (username, conversationId) VALUES ('giangpt', '2');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '2');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenntk', '2');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuonghm', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '2');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '2');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '2');
+
 INSERT INTO User_Conversation (username, conversationId) VALUES ('giangpt', '3');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '3');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenntk', '3');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuonghm', '3');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '3');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '3');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '3');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '3');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '3');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '3');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '3');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '3');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '3');
+
 INSERT INTO User_Conversation (username, conversationId) VALUES ('giangpt', '4');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '4');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('huyenntk', '4');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuonghm', '4');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '4');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '4');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '4');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '4');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '4');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '4');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '4');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '4');
+
 INSERT INTO User_Conversation (username, conversationId) VALUES ('giangpt', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('duckm', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('nhatvn', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuonghm', '5');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '5');
-INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '5');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('dungbt', '5');
+-- INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('hieudt', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('minhnd', '5');
 INSERT INTO User_Conversation (username, conversationId) VALUES ('antt', '5');

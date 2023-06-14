@@ -50,4 +50,7 @@ public interface RequestRepository extends JpaRepository<Request, RequestKey> {
     @Transactional
     @Query(value = "DELETE FROM Request WHERE username = :username AND courseId = :courseId", nativeQuery = true)
     public void deleteAllRequests(String username, int courseId);
+    
+    
+
 }

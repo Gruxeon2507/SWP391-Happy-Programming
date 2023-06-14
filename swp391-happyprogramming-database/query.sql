@@ -138,4 +138,10 @@ WHERE p.statusId IN ( 1, -1) AND re.requestStatus IN ( 1, -1)
     SELECT username, MAX(requestTime)
     FROM Request WHERE courseId = 2 AND requestStatus IN ( 1, -1)
     GROUP BY username
-  ) ORDER BY re.requestTime desc LIMIT 10 
+  ) ORDER BY re.requestTime desc LIMIT 10 ;
+  
+SELECT * FROM Conversation c WHERE c.courseId = 2
+SELECT * FROM User_Conversation WHERE username = 'phucdl'
+INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', 2)
+DELETE FROM User_Conversation WHERE username = 'phucdl' AND conversationId = 2
+INSERT INTO User_Conversation (username, conversationId) VALUES ('phuongmentorphucdl', 2)
