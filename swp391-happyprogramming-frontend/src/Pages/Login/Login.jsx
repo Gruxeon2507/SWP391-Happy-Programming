@@ -66,9 +66,9 @@ function Login() {
                 id="userName"
                 required
                 onChange={(event) => setUsername(event.target.value)}
-                placeholder="username"
+              // placeholder="username"
               ></input>
-              {/* <span>UserName</span> */}
+              <span>UserName</span>
             </div>
             <div className="user-input">
               <input
@@ -76,9 +76,9 @@ function Login() {
                 id="userPassword"
                 required
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="password"
+              // placeholder="password"
               ></input>
-              {/* <span>Password</span> */}
+              <span>Password</span>
             </div>
             <div className="login-msg">
               <span>
