@@ -37,18 +37,20 @@ body {
   position: relative;
   margin: 2rem 0;
   width: 100%;
+  z-index: 20;
 }
 
 .user-input input {
   width: 100%;
-  background-color: var(--light);
+  /* background-color: var(--light); */
+  background-color: var(--lightItem);
   /* opacity: 0.5; */
   border: none;
   border-radius: 0.5rem;
   padding: 1rem 8px;
   color: var(--dark);
   font-size: 1.2em;
-  border: 2px solid var(--primary);
+  /* border: 2px solid var(--primary); */
   outline: none;
 }
 .user-input span {
@@ -57,12 +59,14 @@ body {
   transform: translateY(-50%);
   left: 8px;
   text-transform: uppercase;
-  background-color: var(--light);
-  color: var(--primary) !important;
+  /* background-color: var(--light); */
+  background-color: var(--lightItem);
+  /* color: var(--primary) !important; */
+  color: var(--dark) !important;
   pointer-events: none;
   padding: 0 4px !important;
-  border-left: 1px solid var(--primary) !important;
-  border-right: 1px solid var(--primary) !important;
+  /* border-left: 1px solid var(--primary) !important;
+  border-right: 1px solid var(--primary) !important; */
 }
 
 /* .login-frag .user-input input:valid ~ span,
