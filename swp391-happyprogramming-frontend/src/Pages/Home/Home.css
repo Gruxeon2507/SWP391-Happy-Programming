@@ -27,7 +27,6 @@ body {
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: bottom center;
-  /* filter: grayscale(1); */
 }
 
 .hapi-pro-cover {
@@ -46,7 +45,7 @@ body {
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 12rem;
+  font-size: 32rem;
   text-align: center;
   font-weight: 800;
 }

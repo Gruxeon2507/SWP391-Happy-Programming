@@ -81,19 +81,35 @@ const MyCourse = () => {
     <>
       <NavBar mode={1} />
       <div className="myCourse-body">
-        <h1>Access Course</h1>
-        <div className="AccessCourse">
-          {renderCourseList(accessCourses)}
+        <div className="course-card">
+          <div className="c-c-head">
+            <h1>Access Course</h1>
+            <ion-icon name="caret-down-circle-outline"></ion-icon>
+          </div>
+          <div className="AccessCourse">
+            {renderCourseList(accessCourses)}
+          </div>
         </div>
-        <h1>Pending Course</h1>
-        <div className="PendingCourse">
-          {renderCourseList(pendingCourses)}
-          {renderCourseList(pendingCourses)}
-        </div>
+        <div className="course-card">
+          <div className="c-c-head">
+            <h1>Pending Course</h1>
+            <ion-icon name="caret-down-circle-outline"></ion-icon>
+          </div>
 
-        <h1>Reject Course</h1>
-        <div className="RejectCourse">
-          {renderCourseList(rejectCourses)}
+          <div className="PendingCourse">
+            {renderCourseList(pendingCourses)}
+            {renderCourseList(pendingCourses)}
+          </div>
+        </div>
+        <div className="course-card">
+          <div className="c-c-head">
+            <h1>Reject Course</h1>
+            <ion-icon name="caret-down-circle-outline"></ion-icon>
+          </div>
+
+          <div className="RejectCourse">
+            {renderCourseList(rejectCourses)}
+          </div>
         </div>
       </div>
     </>
