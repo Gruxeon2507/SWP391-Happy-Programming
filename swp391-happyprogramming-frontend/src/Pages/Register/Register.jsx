@@ -20,7 +20,7 @@ function Register(props) {
   // Validate input
   const [checkUsernameDuplicate, setcheckUsernameDuplicate] = useState(true);
 
-  const [checkRePassword, setCheckRePassword] = useState(true);
+  const [checkRePassword, setCheckRePassword] = useState(false);
   const [MessageRePassword, setMessageRePassword] = useState("");
   const [messageVerify, setMessageVerify] = useState("");
 
@@ -89,7 +89,7 @@ function Register(props) {
   const onChangePassword = (event) => {
     const inputPassword = event.target.value;
 
-    if (inputPassword.length < 6 || inputPassword < 60) {
+    if (inputPassword.length > 0 && (inputPassword.length < 6 || inputPassword < 60)) {
       setShowErrorPassword(true);
       setErrorPassword(
         `Please input password that contains 6 to 60 characters`
@@ -107,7 +107,7 @@ function Register(props) {
 
   const onChangeRePassword = (event) => {
     const inputRePassword = event.target.value;
-    if (inputRePassword != user.password) {
+    if (inputRePassword.length > 0 && inputRePassword != user.password) {
       setCheckRePassword(true);
       setMessageRePassword("Re Password not match");
     } else {
@@ -151,9 +151,11 @@ function Register(props) {
     const regex =
       /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
     if (
-      !regex.test(inputDisplayName) ||
-      inputDisplayName.length < 6 ||
-      inputDisplayName.length > 150
+      inputDisplayName.length > 0 && (
+        !regex.test(inputDisplayName) ||
+        inputDisplayName.length < 6 ||
+        inputDisplayName.length > 150
+      )
     ) {
       setShowErrorDisplayname(true);
       setErrorDisplayname(
@@ -260,13 +262,7 @@ function Register(props) {
       ) : (
         <div className="regis-frag">
           <div className="res-bg">
-            <h1
-              style={{
-                color: "var(--item)",
-                fontWeight: "bold",
-                fontSize: "2.6rem",
-              }}
-            >
+            <h1>
               Sign up to HPYPRO
             </h1>
             <img src={resBG} alt="resbg"></img>
@@ -277,7 +273,7 @@ function Register(props) {
               <table>
                 <tr>
                   <td colSpan={2}>
-                    <div className="user-input">
+                    <div className={`user-input ${showErrorUsername ? "fault" : ""}`}>
                       <input
                         type="text"
                         id="userName"
@@ -286,29 +282,20 @@ function Register(props) {
                       ></input>
                       <span>UserName</span>
                     </div>
+                    <div className={`input-tooltip ${showErrorUsername ? "fault" : ""}`}>
+                      <div className="err-msg">
+                        <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
+                        {/* <span>{errorUsername}</span> */}
+                      </div>
+                      <ion-icon name="help-circle-outline"></ion-icon>
+                    </div>
+                    <div>
+                    </div>
                   </td>
                 </tr>
                 <tr>
                   <td colSpan={2}>
-                    {showErrorUsername ? (
-                      <>
-                        <div className="w-message" style={{ color: "black" }}>
-                          {errorUsername}
-                        </div>
-                      </>
-                    ) : null}
-                    {showErrorUsernameDuplicate ? (
-                      <>
-                        <div className="w-message" style={{ color: "black" }}>
-                          {errorUsernameDuplicate}
-                        </div>
-                      </>
-                    ) : null}
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2}>
-                    <div className="user-input">
+                    <div className={`user-input ${showErrorPassword ? "fault" : ""}`}>
                       <input
                         type="password"
                         id="userPassword"
@@ -317,9 +304,15 @@ function Register(props) {
                       ></input>
                       <span>Password</span>
                     </div>
+                    <div className={`input-tooltip ${showErrorPassword ? "fault" : ""}`}>
+                      <div className="err-msg">
+                        <span>something of password</span>
+                      </div>
+                      <ion-icon name="help-circle-outline"></ion-icon>
+                    </div>
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td colSpan={2}>
                     {showErrorPassword ? (
                       <>
@@ -329,31 +322,28 @@ function Register(props) {
                       </>
                     ) : null}
                   </td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td colSpan={2}>
-                    <div className="user-input">
+                    <div className={`user-input ${checkRePassword ? "fault" : ""}`}>
                       <input
                         type="password"
                         id="re-userPassword"
                         required
                         onChange={onChangeRePassword}
                       ></input>
-                      <span>Re Enter Password</span>
+                      <span >Re Enter Password</span>
+                    </div>
+                    <div className={`input-tooltip ${checkRePassword ? "fault" : ""}`}>
+                      <div className="err-msg">
+                        <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
+                      </div>
+                      <ion-icon name="help-circle-outline"></ion-icon>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td colSpan={2}>
-                    {checkRePassword ? (
-                      <>
-                        <div className="w-message">{MessageRePassword}</div>
-                      </>
-                    ) : null}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
+                  <td colSpan={1} style={{ width: "50%" }}>
                     <div className="user-input">
                       <input
                         type="date"
@@ -365,8 +355,8 @@ function Register(props) {
                       <span>Date of Birth</span>
                     </div>
                   </td>
-                  <td>
-                    <div className="user-input">
+                  <td colSpan={1}>
+                    <div className={`user-input ${showErrorDisplayname ? "fault" : ""}`}>
                       <input
                         type="text"
                         id="displayname-I"
@@ -375,17 +365,12 @@ function Register(props) {
                       ></input>
                       <span>Display Name</span>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2}>
-                    {showErrorDisplayname ? (
-                      <>
-                        <div className="w-message" style={{ color: "black" }}>
-                          {errorDisplayname}
-                        </div>
-                      </>
-                    ) : null}
+                    <div className={`input-tooltip ${showErrorDisplayname ? "fault" : ""}`}>
+                      <div className="err-msg">
+                        <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
+                      </div>
+                      <ion-icon name="help-circle-outline"></ion-icon>
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -399,24 +384,12 @@ function Register(props) {
                       ></input>
                       <span>Email</span>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2}>
-                    {showErrorEmail ? (
-                      <>
-                        <div className="w-message" style={{ color: "black" }}>
-                          {errorEmail}
-                        </div>
-                      </>
-                    ) : null}
-                    {showErrorEmailDuplicate ? (
-                      <>
-                        <div className="w-message" style={{ color: "black" }}>
-                          {errorEmailDuplicate}
-                        </div>
-                      </>
-                    ) : null}
+                    <div className={`input-tooltip ${showErrorEmail ? "fault" : ""}`}>
+                      <div className="err-msg">
+                        <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
+                      </div>
+                      <ion-icon name="help-circle-outline"></ion-icon>
+                    </div>
                   </td>
                 </tr>
                 <tr>

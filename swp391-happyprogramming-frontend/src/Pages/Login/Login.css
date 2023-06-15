@@ -2,105 +2,121 @@
 
 .login-frag {
   width: 74vw;
-  background-color: var(--light);
-  margin: auto;
-  margin-top: 7rem;
-  padding: 1rem 0px;
-  border-radius: 1rem;
-  overflow: hidden;
+
+  position: fixed;
+  top: calc(50% + 45px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  border-radius: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
   display: flex;
   flex-direction: row;
-  box-shadow: rgba(50, 50, 93, 0) 0px 10px 30px -12px inset,
-    rgba(0, 0, 0, 0.452) 0px 18px 36px -18px inset;
+  overflow: hidden;
+
+  padding: 0.8rem;
+  background-color: var(--light);
+  z-index: 1000;
+}
+
+.addition-color {
+  position: relative;
+  height: calc(100svh - 100px);
+  width: 100%;
+  z-index: 1;
+  filter: blur(150px);
+}
+.addition-color .color {
+  position: absolute;
+  width: 500px;
+  height: 400px;
+  top: 40%;
+  transform: translateY(-50%);
+  background-color: var(--grd1);
+  opacity: 0.1;
+  left: 0;
+  z-index: 2;
+}
+.addition-color .color:nth-child(1) {
+  top: 60%;
+  background-color: var(--grd2);
+  left: 0;
+}
+.addition-color .color:nth-child(2) {
+  background-color: var(--grd1);
+  top: 50%;
+  left: 100%;
+  opacity: 1;
 }
 
 .login-frag .login-form form {
   width: 100%;
+  height: fit-content;
   padding: 0px;
 }
 
 .login-frag .login-form h1 {
-  color: var(--item);
+  color: var(--primary);
   margin-bottom: 3rem;
   text-align: center;
-  font-size: 3em;
+  font-size: 4rem;
   margin-top: 0px;
 }
 
-/* .login-frag * {
-  border: 1px solid black;
-} */
-
 .login-frag .login-bg {
   width: 50%;
-  margin-left: 1rem;
+  border-top-left-radius: 1.8rem;
+  border-bottom-left-radius: 1.8rem;
+  background-color: var(--lightItem);
+  display: flex;
+  overflow: hidden;
+  /* filter: saturate(1); */
 }
 
 .login-frag .login-bg img {
   width: 100%;
-  margin: auto 2rem auto auto;
+  margin: auto;
   display: block;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.2) 8px 16px 30px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
 }
 
 .login-frag .login-form {
-  width: 45%;
-  margin: auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-wrap: wrap;
+  width: 50%;
   padding: 2rem;
-  border-radius: 1rem;
+
+  display: flex;
   justify-content: center;
+  align-items: center;
+  border-top-right-radius: 1.8rem;
+  border-bottom-right-radius: 1.8rem;
+
   background-color: var(--lightItem);
-  background-image: url("../../Assets//layered-waves-haikei-login.png");
-  background-size: cover;
-  box-shadow: rgba(0, 0, 0, 0.2) 8px 16px 30px, rgba(0, 0, 0, 0.105) 0px 6px 6px;
-}
-
-.login-frag .user-input {
   position: relative;
-  margin: 1.1rem 0;
 }
 
-/* .login-frag .input-container {
-  border: 2px solid blue;
-} */
-
-.login-frag .user-input input {
-  width: 100%;
-  background-color: var(--light);
-  opacity: 0.5;
-  border: none;
-  border-radius: 0.6rem;
-  padding: 1rem 8px;
-  color: var(--dark);
-  font-size: 1.2em;
-  border: 2px solid var(--item);
-  outline: none;
+.login-form.backcolor {
+  position: absolute;
+  width: 400;
+  height: 500;
+  background-color: var(--primary);
+  z-index: 100000;
 }
 
 .login-frag .login-form button {
   cursor: pointer;
-  color: var(--item);
+  color: var(--lightItem);
   font-weight: bold;
-  width: calc(100% - 8rem);
-  font-size: 1.2rem;
-  /* background: linear-gradient(
-    90deg,
-    rgba(243, 114, 84, 1) 0%,
-    rgba(247, 119, 77, 1) 36%,
-    rgba(253, 191, 68, 1) 100%
-  ); */
-  background-color: var(--light);
-  opacity: 0.6;
+  /* width: calc(100% - 8rem); */
+  width: calc(100%);
+  font-size: 1.4rem;
+  opacity: 0.7;
   border: none;
   padding: 1rem 2rem;
-  border-radius: 1rem;
-  margin: 2rem 4rem;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 6px, rgba(0, 0, 0, 0.1) 0px 3px 16px;
+  border-radius: 0.5rem;
+  /* margin: 2rem 4rem; */
+  margin: 2rem 0;
+  background-color: var(--primary);
 }
 
 .login-frag .login-form button:hover {
@@ -108,18 +124,11 @@
 }
 
 .login-frag .sign-in a {
-  color: var(--item2);
+  color: var(--primary);
 }
 
-.login-frag .user-input span {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 8px;
-  text-transform: uppercase;
-  color: var(--item);
-  pointer-events: none;
-  padding: 0 4px !important;
+.login-form .user-input:nth-child(3) {
+  margin-bottom: 8px;
 }
 
 .login-frag .user-input input:valid ~ span,
@@ -127,24 +136,37 @@
   transform: translateX(0px) translateY(-2.5rem);
   font-size: 0.7rem;
   padding: 0 10px;
-  border-left: 1px solid var(--item);
-  border-right: 1px solid var(--item);
+  border-left: 1px solid var(--primary) !important;
+  border-right: 1px solid var(--primary) !important;
   border-radius: 4px;
   background-color: var(--light);
 }
 
-.login-frag .user-input input:valid ~ input,
-.login-frag .user-input input:focus ~ input {
-  border: 2px solid var(--light);
+.login-frag .user-input input:focus ~ span {
+  font-size: 1.2rem;
 }
 
-.loginFailed {
-  color: red;
+.login-msg {
+  text-align: right;
   font-size: 1.1rem;
-  font-weight: 600;
 }
-.loginFailed::after {
-  content: "!";
+.login-msg span {
+  display: block;
+  color: var(--item);
+}
+
+.login-msg a {
+  color: var(--item2);
+  /* margin: 1rem; */
+  text-decoration: none;
+}
+.login-msg a:hover {
+  text-decoration: underline;
+}
+
+.login-msg span:nth-child(2) {
+  text-align: left;
+  margin: 8px 1rem;
 }
 
 @media (max-width: 991px) {
