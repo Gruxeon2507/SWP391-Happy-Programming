@@ -14,7 +14,7 @@ function Login() {
   );
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
-  const [messageLoginFailed, setMessageLoginFailed] = useState("Login Failed");
+  const [messageLoginFailed, setMessageLoginFailed] = useState("");
 
   // Add an event listener to the form
 
@@ -35,7 +35,7 @@ function Login() {
       // Store the token in localStorage or a state management solution
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-      
+
       window.location.href = "/";
     } catch (error) {
       console.log("login failed");
@@ -46,13 +46,18 @@ function Login() {
   };
 
   return (
-    <div>
+    <>
       <NavBar mode={2} />
+      <section className="addition-color">
+        <div className="color"></div>
+        <div className="color"></div>
+      </section>
       <div className="login-frag">
-        <div className="login-bg">
+        <section className="login-bg">
           <img src={loginBG} alt="loginBG"></img>
-        </div>
-        <div className="login-form" onSubmit={handleSubmit}>
+        </section>
+        <main className="login-form" onSubmit={handleSubmit}>
+          <div className="backcolor"></div>
           <form>
             <h1>Login</h1>
             <div className="user-input">
@@ -73,21 +78,19 @@ function Login() {
               ></input>
               <span>Password</span>
             </div>
-            {loginFailed ? (
-              <>
-                <div className="loginFailed">{messageLoginFailed}</div>
-                <span>
-                  <NavLink to="/forgetpassword"> Forget your password ? </NavLink>
-                </span>
-              </>
-            ) : null}
+            <div className="login-msg">
+              <span>
+                <NavLink to="/forgetpassword"> Forget your password ? </NavLink>
+              </span>
+              {loginFailed ? <span>login failed</span> : <span>&nbsp;</span>}
+            </div>
             <button className="btn btn--form" type="submit" value="Login">
               LOGIN
             </button>
           </form>
-        </div>
+        </main>
       </div>
-    </div>
+    </>
   );
 }
 export default Login;

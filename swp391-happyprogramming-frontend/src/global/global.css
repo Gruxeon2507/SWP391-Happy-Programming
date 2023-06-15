@@ -30,6 +30,103 @@ body {
 
 * {
   transition: 0.3s all ease;
-  /* border: 1px solid red !important; */
+  /* border: 1px solid black !important; */
   box-sizing: border-box;
+}
+.user-input {
+  position: relative;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.user-input input {
+  width: 100%;
+  background-color: var(--light);
+  /* opacity: 0.5; */
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem 8px;
+  color: var(--dark);
+  font-size: 1.2em;
+  border: 2px solid var(--primary);
+  outline: none;
+}
+.user-input span {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 8px;
+  text-transform: uppercase;
+  background-color: var(--light);
+  color: var(--primary) !important;
+  pointer-events: none;
+  padding: 0 4px !important;
+  border-left: 1px solid var(--primary) !important;
+  border-right: 1px solid var(--primary) !important;
+}
+
+/* .login-frag .user-input input:valid ~ span,
+.login-frag .user-input input:focus ~ span {
+  transform: translateX(0px) translateY(-2.5rem);
+  font-size: 0.7rem;
+  padding: 0 10px;
+  border-left: 1px solid var(--primary) !important;
+  border-right: 1px solid var(--primary) !important;
+  border-radius: 4px;
+  background-color: var(--light);
+} */
+
+/* .user-input input:valid ~ input,
+.user-input input:focus ~ input {
+  border: 2px solid var(--light);
+} */
+
+.input-tooltip ion-icon {
+  font-size: 2rem;
+  color: var(--primary);
+  margin: 0.5rem;
+  position: relative;
+}
+.input-tooltip.fault ion-icon {
+  color: red;
+}
+.err-msg {
+  position: absolute;
+  top: 0;
+  right: 3rem;
+  background-color: var(--lightItem);
+  padding: 1rem;
+  z-index: 100;
+  border: 4px solid var(--light);
+  border-radius: 1rem;
+  /* box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; */
+  display: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.input-tooltip.fault .err-msg {
+  border: 4px solid var(--item);
+  color: red;
+}
+
+.input-tooltip:hover .err-msg {
+  display: block;
+}
+
+/* .input-tooltip.fault ion-icon:hover::before {
+  content: "test content";
+  position: absolute;
+  top: 0;
+  z-index: 100000;
+} */
+
+.user-input.fault input {
+  background-color: var(--item--low);
+  border: 2px solid red;
+}
+.user-input.fault span {
+  background-color: var(--item--low);
+  color: red !important;
+  border-left: 1px solid red !important;
+  border-right: 1px solid red !important;
 }
