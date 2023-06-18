@@ -61,10 +61,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = UserRepository.findByUsername(credentials.getUsername());
-        System.out.println(credentials.getPassword());
-        System.out.println(user.getPassword());
-        System.out.println(AuthenticationUtils.hashPassword(credentials.getPassword()));
-        if (user != null && ((user.getPassword().equals(credentials.getPassword()))
+        if (user != null && user.isVerified() &&  ((user.getPassword().equals(credentials.getPassword()))
                 || AuthenticationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
             HttpSession session = request.getSession();
             user.setPassword("");
@@ -80,7 +77,11 @@ public class AuthenticationController {
             response.put("role", role);
 
             return ResponseEntity.ok(response);
-        } else {
+        }else if(user!=null &&  ((user.getPassword().equals(credentials.getPassword()))
+                || AuthenticationUtils.checkPassword(credentials.getPassword(), user.getPassword()))){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
