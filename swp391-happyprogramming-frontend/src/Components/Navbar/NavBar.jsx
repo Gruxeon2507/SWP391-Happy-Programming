@@ -30,12 +30,12 @@ function NavBar(props) {
   }, []);
 
   useEffect(() => {
-    try{
+    try {
 
       if (localStorage.getItem("token")) {
         const fetchUsername = async () => {
-          const loginuser = await UserServices.getLoginUsername().catch((error)=> {
-            
+          const loginuser = await UserServices.getLoginUsername().catch((error) => {
+
             window.localStorage.removeItem("token");
             window.localStorage.removeItem("role");
             navigate("/login")
@@ -45,7 +45,7 @@ function NavBar(props) {
         };
         fetchUsername();
       }
-    }catch(e){
+    } catch (e) {
       console.log(e);
       window.localStorage.removeItem("token");
       window.localStorage.removeItem("role");
@@ -59,6 +59,14 @@ function NavBar(props) {
   if (props.mode !== 0) {
     navBarClass = isNavBarActive ? "NavBar active" : "NavBar";
   }
+
+  function removeActiveClass() {
+    const elements = document.querySelectorAll('.active');
+    elements.forEach((element) => {
+      element.classList.remove('active');
+    });
+  }
+
 
   return (
     <div>

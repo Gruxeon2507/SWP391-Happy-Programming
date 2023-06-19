@@ -9,28 +9,41 @@ import convertDateFormat from "../../util/DateConvert";
 import { useNavigate } from "react-router-dom";
 
 // import backgound
-import c1 from "../../Assets/courseBG/c12.png";
-import c2 from "../../Assets/courseBG/c2.png";
-import c3 from "../../Assets/courseBG/c3.png";
-import c4 from "../../Assets/courseBG/c4.png";
-import c5 from "../../Assets/courseBG/c5.png";
-import c6 from "../../Assets/courseBG/c6.png";
-import c7 from "../../Assets/courseBG/c7.png";
-import c8 from "../../Assets/courseBG/c1.png";
-import c9 from "../../Assets/courseBG/c9.png";
-import c10 from "../../Assets/courseBG/c10.png";
-import c11 from "../../Assets/courseBG/c11.png";
-import c12 from "../../Assets/courseBG/c12.png";
-import c13 from "../../Assets/courseBG/c13.png";
-import c14 from "../../Assets/courseBG/c14.png";
-import c15 from "../../Assets/courseBG/c15.png";
-import c21 from "../../Assets/courseBG/c21.png";
+// import c1 from "../../Assets/courseBG/c12.png";
+// import c2 from "../../Assets/courseBG/c2.png";
+// import c3 from "../../Assets/courseBG/c3.png";
+// import c4 from "../../Assets/courseBG/c4.png";
+// import c5 from "../../Assets/courseBG/c5.png";
+// import c6 from "../../Assets/courseBG/c6.png";
+// import c7 from "../../Assets/courseBG/c7.png";
+// import c8 from "../../Assets/courseBG/c1.png";
+// import c9 from "../../Assets/courseBG/c9.png";
+// import c10 from "../../Assets/courseBG/c10.png";
+// import c11 from "../../Assets/courseBG/c11.png";
+// import c12 from "../../Assets/courseBG/c12.png";
+// import c13 from "../../Assets/courseBG/c13.png";
+// import c14 from "../../Assets/courseBG/c14.png";
+// import c15 from "../../Assets/courseBG/c15.png";
+// import c21 from "../../Assets/courseBG/c21.png";
+import c1 from "../../Assets/hpyproBG-blue/b-bg-1.png";
+import c6 from "../../Assets/hpyproBG-blue/b-bg-2.png";
+import c3 from "../../Assets/hpyproBG-blue/b-bg-3.png";
+import c7 from "../../Assets/hpyproBG-blue/b-bg-3.png";
+import c5 from "../../Assets/hpyproBG-blue/b-bg-11.png";
+import c2 from "../../Assets/hpyproBG-blue/b-bg-6.png";
+import c4 from "../../Assets/hpyproBG-blue/b-bg-7.png";
+import c12 from "../../Assets/hpyproBG-blue/b-bg-8.png";
+import c9 from "../../Assets/hpyproBG-blue/b-bg-9.png";
+import c10 from "../../Assets/hpyproBG-blue/b-bg-10.png";
+import c11 from "../../Assets/hpyproBG-blue/b-bg-11.png";
+import c8 from "../../Assets/hpyproBG-blue/b-bg-12.png";
+import c13 from "../../Assets/hpyproBG-blue/b-bg-13.png";
 
 function Homepage() {
   const navigate = useNavigate();
 
   const courseBackgrounds = [
-    c1, c21, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15
+    c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13
   ];
 
   const [categories, setCategories] = useState([]);
@@ -154,15 +167,18 @@ function Homepage() {
 
   return (
     <div className="container home-page">
+      <section className="course-bg-inf">
+        <h1> Our courses </h1>
+      </section>
       <NavBar mode={1}></NavBar>
       {/* ====================region filter==================== */}
       <div className="filter-container">
         <div className="filter-1">
-          <div className="cate-filter-head">
+          {/* <div className="cate-filter-head">
             <button onClick={toggleActiveCateFilter}>
               <ion-icon name="list-outline"></ion-icon>
             </button>
-          </div>
+          </div> */}
           <div className="search-border">
             <input
               type="text"
@@ -173,9 +189,9 @@ function Homepage() {
                 setCondition(e.target.value);
               }}
             />
-            <button onClick={() => handleSearchCheckAndFilter('searchButton')}>
-              <ion-icon name="search-circle-outline"></ion-icon>
-            </button>
+            {/* <button onClick={() => handleSearchCheckAndFilter('searchButton')}> */}
+            <ion-icon onClick={() => handleSearchCheckAndFilter('searchButton')} name="search-circle-outline"></ion-icon>
+            {/* </button> */}
           </div>
           <select
             name="filter"
@@ -194,31 +210,32 @@ function Homepage() {
           </div>
         </div>
       </div>
-
-      <div className="cate-filter">
-        <div className={`select-list ${isActiveCateFilter ? "active" : ""}`}>
-          {categories.map((category) => (
-            <div className="select" key={category.categoryId}>
-              <label>
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  checked={checked.includes(category.categoryId)}
-                  onChange={() => handleCheck(category.categoryId)}
-                />
-                {category.categoryName}
-              </label>
+      <main className="courses-list-main">
+        <aside className="cate-filter">
+          {/* <div className={`select-list ${isActiveCateFilter ? "active" : ""}`}> */}
+          <div className="select-list">
+            {categories.map((category) => (
+              <div className="select" key={category.categoryId}>
+                <label>
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    checked={checked.includes(category.categoryId)}
+                    onChange={() => handleCheck(category.categoryId)}
+                  />
+                  {category.categoryName}
+                </label>
+              </div>
+            ))}
+            <div className="findByCate">
+              <button onClick={() => handleSearchCheckAndFilter('findButton')}>Find</button>
             </div>
-          ))}
-          <div className="findByCate">
-            <button onClick={() => handleSearchCheckAndFilter('findButton')}>Find</button>
           </div>
-        </div>
-      </div>
-      {/* ====================end region filter==================== */}
+        </aside>
+        {/* ====================end region filter==================== */}
 
-      {/* ====================region List of Course==================== */}
-      {/* <div className="list-Courses">
+        {/* ====================region List of Course==================== */}
+        {/* <div className="list-Courses">
         {pageCourses.map((course) => (
           <div className="course" key={course.courseId}>
             <span>
@@ -231,47 +248,51 @@ function Homepage() {
           </div>
         ))}
       </div> */}
-      <div className="list-Courses">
-        {pageCourses.map((course, index) => (
-          <div
-            className="course"
-            key={course.courseId}
-            onClick={() => handleCourseNavigate(course.courseId)}
-          >
-            <div
-              className="couse-card-view"
-              style={{
-                backgroundImage: `url(${courseBackgrounds[index]})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
-              <span>{course.courseName}</span>
-            </div>
-            <div className="course-desc">
-              <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-            </div>
+        <section className="courses-section">
+          <div className="list-Courses">
+            {pageCourses.map((course, index) => (
+              <div
+                className="course"
+                key={course.courseId}
+                onClick={() => handleCourseNavigate(course.courseId)}
+              >
+                <div
+                  className="couse-card-view"
+                  style={{
+                    backgroundImage: `url(${courseBackgrounds[index]})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <span>{course.courseName}</span>
+                </div>
+                <div className="course-desc">
+                  <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      {/* ====================end region List of Course==================== */}
+          {/* ====================end region List of Course==================== */}
 
-      {/* ====================region Pagination==================== */}
-      <div className="Pagination-Container">
-        <Pagination
-          total={totalItems}
-          defaultPageSize={sizePerPage}
-          showTotal={(total, range) =>
-            `${range[0]}-${range[1]} of ${total} items`
-          }
-          current={currentPage}
-          onChange={(current) => {
-            handlePageChange(current);
-          }}
-        />
-      </div>
+          {/* ====================region Pagination==================== */}
+          <div className="Pagination-Container">
+            <Pagination
+              total={totalItems}
+              defaultPageSize={sizePerPage}
+              showTotal={(total, range) =>
+                `${range[0]}-${range[1]} of ${total} items`
+              }
+              current={currentPage}
+              onChange={(current) => {
+                handlePageChange(current);
+              }}
+            />
+          </div>
+        </section>
+      </main>
       {/* ====================End region Pagination==================== */}
     </div>
+
   );
 }
 

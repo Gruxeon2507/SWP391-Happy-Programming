@@ -319,7 +319,7 @@
       rgba(0, 0, 0, 0.105) 0px 6px 6px;
   }
   .SettingBar {
-    display: none;
+    /* display: none; */
   }
 
   .nav-menu.active {

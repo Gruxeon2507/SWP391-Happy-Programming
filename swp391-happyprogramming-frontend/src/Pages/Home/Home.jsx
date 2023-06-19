@@ -26,14 +26,7 @@ function Home(props) {
       {/* {props.url} */}
       <NavBar mode={1} />
       <div className="scroll-snap-container">
-        <div className="scroll-snap-item">
-          <div className="hapi-pro-gb">
-            <div className="hapi-pro-cover">
-              <h1>EIKH.</h1>
-              <q>Unlock Your Code Potential</q>
-            </div>
-          </div>
-        </div>
+
         <div className="scroll-snap-item">
           <div className="banner-1">
             <img src={bg} alt="background" loading="lazy" />
@@ -52,6 +45,16 @@ function Home(props) {
             </div>
           </div>
         </div>
+
+        <div className="scroll-snap-item">
+          <div className="hapi-pro-gb">
+            <div className="hapi-pro-cover">
+              <h1>EIKH.</h1>
+              <q>Unlock Your Code Potential</q>
+            </div>
+          </div>
+        </div>
+
         <div className="scroll-snap-item">
           <div className="banner-2">
             <div className="quotes">

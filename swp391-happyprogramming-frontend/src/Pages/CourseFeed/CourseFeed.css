@@ -2,11 +2,11 @@
 
 .course-bg-inf {
   box-sizing: border-box;
-  background: rgb(255, 227, 224);
+  background: var(--grd2);
   background: linear-gradient(
-    57deg,
-    rgba(255, 227, 224, 1) 20%,
-    rgba(127, 186, 255, 1) 100%
+    60deg,
+    rgba(127, 186, 255, 1) 20%,
+    rgba(255, 227, 224, 1) 100%
   );
   height: 200px;
   border-radius: 1rem;
