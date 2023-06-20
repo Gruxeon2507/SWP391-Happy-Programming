@@ -53,11 +53,11 @@ function NavBar(props) {
   }, []);
 
 
-  let navBarClass = "NavBar active";
+  let navBarClass = "NavBar show";
   let navMenuClass = navMenuOpen ? "nav-menu active" : "nav-menu";
 
   if (props.mode !== 0) {
-    navBarClass = isNavBarActive ? "NavBar active" : "NavBar";
+    navBarClass = isNavBarActive ? "NavBar show" : "NavBar";
   }
 
   function removeActiveClass() {

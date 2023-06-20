@@ -6,8 +6,10 @@ import axios from "axios";
 import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import resBG from "../../Assets/resBG.jpg";
+import { useNavigate } from "react-router-dom";
 
 function Register(props) {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -17,6 +19,12 @@ function Register(props) {
   });
   const [rePassword, setRePassword] = useState("");
 
+  useEffect(() => {
+    setUser({
+      ...user,
+      dob: todayDate
+    })
+  }, [])
   // Validate input
   const [checkUsernameDuplicate, setcheckUsernameDuplicate] = useState(true);
 
@@ -45,9 +53,12 @@ function Register(props) {
 
   const [errorDob, setErrorDob] = useState("");
   const [showErrorDob, setShowErrorDob] = useState(false);
-  const [todayDate, setTodayDate] = useState(
-    new Date().toISOString().substr(0, 10)
-  );
+  const [todayDate, setTodayDate] = useState(() => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear() - 19;
+    currentDate.setFullYear(year);
+    return currentDate.toISOString().substr(0, 10);
+  })
 
   const onChangeUsername = async (event) => {
     const inputUsername = event.target.value;
@@ -139,6 +150,9 @@ function Register(props) {
       if (resp.data === true) {
         setShowEmailDuplicate(true);
         setErrorEmailDuplicate(`This email is taken`);
+      } else {
+        setShowEmailDuplicate(false);
+        setShowEmailDuplicate(``);
       }
     } catch (error) {
       console.log(error);
@@ -186,13 +200,13 @@ function Register(props) {
     const today = new Date();
     const selectedDate = new Date(inputDob);
     const ageDifference = today.getFullYear() - selectedDate.getFullYear();
-    if (ageDifference < 18) {
+    if (ageDifference < 12) {
       setShowErrorDob(true);
-      setErrorDob("You must be at least 18 years old.");
-      return;
+      setErrorDob("You must be at least 12 years old.");
+    } else {
+      setShowErrorDob(false);
+      setErrorDob("");
     }
-    setShowErrorDob(false);
-    setErrorDob("");
     setUser({
       ...user,
       dob: inputDob,
@@ -251,10 +265,13 @@ function Register(props) {
     axios
       .post("http://localhost:1111/api/auth/register", user)
       .then((res) => {
+
+        navigate(`/verify/${user.username}`);
         console.log(res.data);
       })
       .catch((err) => {
         console.error(err);
+        alert("bump")
       });
 
     setMessageVerify("Please verify mail your account");
@@ -264,65 +281,63 @@ function Register(props) {
     <>
       <NavBar mode={3} />
 
-      {messageVerify ? (
-        <VerifyDialog email={user.mail} username={user.username} />
-      ) : (
-        <div className="regis-frag">
-          <div className="res-bg">
-            <h1>
-              Sign up to HPYPRO
-            </h1>
-            <img src={resBG} alt="resbg"></img>
-            {/* <q style={{ color: "var(--item2)", fontSize: "1.3rem" }}>Embrace yourself on the path of knowledge.</q> */}
-          </div>
-          <div className="regis-form">
-            <form onSubmit={handleSubmit} className="regis-form-input">
-              <table>
-                <tr>
-                  <td colSpan={2}>
-                    <div className={`user-input ${showErrorUsername ? "fault" : ""}`}>
-                      <input
-                        type="text"
-                        id="userName"
-                        required
-                        onChange={onChangeUsername}
-                      ></input>
-                      <span>UserName</span>
-                    </div>
-                    {/* <div className={`input-tooltip ${showErrorUsername ? "fault" : ""}`}>
+
+      <div className="regis-frag">
+        <div className="res-bg">
+          <h1>
+            Sign up to HPYPRO
+          </h1>
+          <img src={resBG} alt="resbg"></img>
+          {/* <q style={{ color: "var(--item2)", fontSize: "1.3rem" }}>Embrace yourself on the path of knowledge.</q> */}
+        </div>
+        <div className="regis-form">
+          <form onSubmit={handleSubmit} className="regis-form-input">
+            <table>
+              <tr>
+                <td colSpan={2}>
+                  <div className={`user-input ${showErrorUsername ? "fault" : ""}`}>
+                    <input
+                      type="text"
+                      id="userName"
+                      required
+                      onChange={onChangeUsername}
+                    ></input>
+                    <span>UserName</span>
+                  </div>
+                  {/* <div className={`input-tooltip ${showErrorUsername ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
                     </div> */}
-                    <div className={`--err--msg ${(showErrorUsername || showErrorUsernameDuplicate) ? "fault" : ""}`}>
-                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2}>
-                    <div className={`user-input ${showErrorPassword ? "fault" : ""}`}>
-                      <input
-                        type="password"
-                        id="userPassword"
-                        required
-                        onChange={onChangePassword}
-                      ></input>
-                      <span>Password</span>
-                    </div>
-                    {/* <div className={`input-tooltip ${showErrorPassword ? "fault" : ""}`}>
+                  <div className={`--err--msg ${(showErrorUsername || showErrorUsernameDuplicate) ? "fault" : ""}`}>
+                    <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                  <div className={`user-input ${showErrorPassword ? "fault" : ""}`}>
+                    <input
+                      type="password"
+                      id="userPassword"
+                      required
+                      onChange={onChangePassword}
+                    ></input>
+                    <span>Password</span>
+                  </div>
+                  {/* <div className={`input-tooltip ${showErrorPassword ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>something of password</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
                     </div> */}
-                    <div className={`--err--msg ${showErrorPassword ? "fault" : ""}`}>
-                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
-                    </div>
-                  </td>
-                </tr>
-                {/* <tr>
+                  <div className={`--err--msg ${showErrorPassword ? "fault" : ""}`}>
+                    <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
+                  </div>
+                </td>
+              </tr>
+              {/* <tr>
                   <td colSpan={2}>
                     {showErrorPassword ? (
                       <>
@@ -333,94 +348,98 @@ function Register(props) {
                     ) : null}
                   </td>
                 </tr> */}
-                <tr>
-                  <td colSpan={2}>
-                    <div className={`user-input ${checkRePassword ? "fault" : ""}`}>
-                      <input
-                        type="password"
-                        id="re-userPassword"
-                        required
-                        onChange={onChangeRePassword}
-                      ></input>
-                      <span >Re Enter Password</span>
-                    </div>
-                    {/* <div className={`input-tooltip ${checkRePassword ? "fault" : ""}`}>
+              <tr>
+                <td colSpan={2}>
+                  <div className={`user-input ${checkRePassword ? "fault" : ""}`}>
+                    <input
+                      type="password"
+                      id="re-userPassword"
+                      required
+                      onChange={onChangeRePassword}
+                    ></input>
+                    <span >Re Enter Password</span>
+                  </div>
+                  {/* <div className={`input-tooltip ${checkRePassword ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
                     </div> */}
-                    <div className={`--err--msg ${checkRePassword ? "fault" : ""}`}>
-                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={1} style={{ width: "50%" }}>
-                    <div className="user-input">
-                      <input
-                        type="date"
-                        id="dob-I"
-                        value={todayDate}
-                        required
-                        onChange={onChangeDob}
-                      ></input>
-                      <span>Date of Birth</span>
-                    </div>
-                  </td>
-                  <td colSpan={1}>
-                    <div className={`user-input ${showErrorDisplayname ? "fault" : ""}`}>
-                      <input
-                        type="text"
-                        id="displayname-I"
-                        required
-                        onChange={onChangeDisplayName}
-                      ></input>
-                      <span>Display Name</span>
-                    </div>
-                    {/* <div className={`input-tooltip ${showErrorDisplayname ? "fault" : ""}`}>
+                  <div className={`--err--msg ${checkRePassword ? "fault" : ""}`}>
+                    <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={1} style={{ width: "50%" }}>
+                  <div className="user-input">
+                    <input
+                      type="date"
+                      id="dob-I"
+                      value={user.dob}
+                      required
+                      onChange={onChangeDob}
+                    ></input>
+                    <span>Date of Birth</span>
+                    {showErrorDob ? <>
+                      <div>
+                        {errorDob}
+                      </div></> : <></>}
+                  </div>
+                </td>
+                <td colSpan={1}>
+                  <div className={`user-input ${showErrorDisplayname ? "fault" : ""}`}>
+                    <input
+                      type="text"
+                      id="displayname-I"
+                      required
+                      onChange={onChangeDisplayName}
+                    ></input>
+                    <span>Display Name</span>
+                  </div>
+                  {/* <div className={`input-tooltip ${showErrorDisplayname ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
                     </div> */}
-                    <div className={`--err--msg ${showErrorDisplayname ? "fault" : ""}`}>
-                      <span> 6 to 150</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2}>
-                    <div className="user-input">
-                      <input
-                        type="email"
-                        id="email-I"
-                        required
-                        onChange={onChangeEmail}
-                      ></input>
-                      <span>Email</span>
-                    </div>
-                    {/* <div className={`input-tooltip ${showErrorEmail ? "fault" : ""}`}>
+                  <div className={`--err--msg ${showErrorDisplayname ? "fault" : ""}`}>
+                    <span> 6 to 150</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                  <div className="user-input">
+                    <input
+                      type="email"
+                      id="email-I"
+                      required
+                      onChange={onChangeEmail}
+                    ></input>
+                    <span>Email</span>
+                  </div>
+                  {/* <div className={`input-tooltip ${showErrorEmail ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
                     </div> */}
-                    <div className={`--err--msg ${showErrorEmail ? "fault" : ""}`}>
-                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2}>
-                    <button type="submit">Sign Up</button>
-                  </td>
-                </tr>
-              </table>
-            </form>
-          </div>
+                  <div className={`--err--msg ${(showErrorEmail || showErrorEmailDuplicate) ? "fault" : ""}`}>
+                    <span>Input email characters from 6 to 150 and not duplicate</span>
+                  </div>
+
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                  <button type="submit">Sign Up</button>
+                </td>
+              </tr>
+            </table>
+          </form>
         </div>
-      )}
+      </div>
     </>
   );
 }

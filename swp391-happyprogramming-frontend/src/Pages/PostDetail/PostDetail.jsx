@@ -57,7 +57,7 @@ function PostDetail() {
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <>
@@ -76,7 +76,7 @@ function PostDetail() {
           placeholder="type..."
           onChange={(e) => setInput(e.target.value)}
         />
-        <div>{input}</div>
+        {/* <div style={{ backgroundColor: "red" }}>{input}</div> */}
         <button onClick={addComment}>Comment</button>
         {comments.map((comment) => (
           <>

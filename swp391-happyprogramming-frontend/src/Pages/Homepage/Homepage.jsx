@@ -170,9 +170,9 @@ function Homepage() {
 
   return (
     <div className="container home-page">
-      <section className="course-bg-inf">
+      {/* <section className="course-bg-inf">
         <h1> Our courses </h1>
-      </section>
+      </section> */}
       <NavBar mode={1}></NavBar>
       {/* ====================region filter==================== */}
       <div className="filter-container">
@@ -182,21 +182,6 @@ function Homepage() {
               <ion-icon name="list-outline"></ion-icon>
             </button>
           </div> */}
-
-          <div className="search-border">
-            <input
-              type="text"
-              placeholder="Search course here"
-              name="search"
-              value={condition}
-              onChange={(e) => {
-                setCondition(e.target.value);
-              }}
-            />
-            {/* <button onClick={() => handleSearchCheckAndFilter('searchButton')}> */}
-            <ion-icon onClick={() => handleSearchCheckAndFilter('searchButton')} name="search-circle-outline"></ion-icon>
-            {/* </button> */}
-          </div>
           <select
             name="filter"
             id=""
@@ -209,6 +194,35 @@ function Homepage() {
             <option value="asc|courseName">A-Z Name</option>
             <option value="desc|courseName">Z-A Name</option>
           </select>
+
+          <div className="search-border">
+
+            <input
+              type="text"
+              placeholder="Search course here"
+              name="search"
+              value={condition}
+              onChange={(e) => {
+                setCondition(e.target.value);
+              }}
+            />
+
+            {/* <button onClick={() => handleSearchCheckAndFilter('searchButton')}> */}
+            <ion-icon onClick={() => handleSearchCheckAndFilter('searchButton')} name="search-circle-outline"></ion-icon>
+            {/* </button> */}
+          </div>
+          {/* <select
+            name="filter"
+            id=""
+            onChange={(e) => {
+              setSelectIndex(false);
+              handleSearchCheckAndFilter('filterButton', e.target.value);
+            }}>
+            {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
+            <option value="asc|createdAt">Oldest</option>
+            <option value="asc|courseName">A-Z Name</option>
+            <option value="desc|courseName">Z-A Name</option>
+          </select> */}
           <div id="textBttn">
             <button onClick={handleReset}><img src={resetFilterImg}></img></button>
           </div>

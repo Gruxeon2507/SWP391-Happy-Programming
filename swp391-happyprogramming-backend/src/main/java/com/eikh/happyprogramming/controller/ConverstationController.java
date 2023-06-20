@@ -33,16 +33,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/conversation")
 public class ConverstationController {
-    
+
     @Autowired
     JwtTokenFilter jwtTokenFilter;
-    
+
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-    
+
     @Autowired
     ConversationRepository conversationRepository;
-    
+
     @Autowired
     UserRepository userRepository;
 
@@ -51,27 +51,28 @@ public class ConverstationController {
 
     @Autowired
     User_ConversationRepository userConversationRepository;
+
     @GetMapping()
-    public List<Message> getUserConversation(HttpServletRequest request){
+    public List<Message> getUserConversation(HttpServletRequest request) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        List<Conversation> conversasions =  conversationRepository.getUserConversationByUsername(username);
+        List<Conversation> conversasions = conversationRepository.getUserConversationByUsername(username);
         List<Message> messages = new ArrayList<Message>();
-        for(Conversation c : conversasions){
+        for (Conversation c : conversasions) {
             Message m = new Message();
-            m.setReceiverName(c.getConversationId()+"");
+            m.setReceiverName(c.getConversationId() + "");
             messages.add(m);
         }
         return messages;
-        
+
     }
 
     @PostMapping("/sentmessage")
-    public ResponseEntity<?> sentMessage(HttpServletRequest request, @RequestBody Message message){
-        try{
+    public ResponseEntity<?> sentMessage(HttpServletRequest request, @RequestBody Message message) {
+        try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
-            if(username.equals(message.getSenderName())){
+            if (username.equals(message.getSenderName())) {
                 com.eikh.happyprogramming.model.Message m = new com.eikh.happyprogramming.model.Message();
                 MessageKey mk = new MessageKey();
                 mk.setConversationId(message.getConversationId());
@@ -89,7 +90,7 @@ public class ConverstationController {
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         }
@@ -97,17 +98,16 @@ public class ConverstationController {
     }
 
     @GetMapping("/message/{conversationId}")
-    public ResponseEntity<?> getCurrentConversationMessage(HttpServletRequest request,@PathVariable int conversationId){
-        try{
+    public ResponseEntity<?> getCurrentConversationMessage(HttpServletRequest request, @PathVariable int conversationId) {
+        try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
-            User_Conversation uc = userConversationRepository.getUserConversationByUsernameAndConversationId(username,conversationId);
-            if(uc!=null){
+            User_Conversation uc = userConversationRepository.getUserConversationByUsernameAndConversationId(username, conversationId);
+            if (uc != null) {
                 return ResponseEntity.ok(messageRepository.getUserConversationMessage(conversationId));
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
@@ -116,4 +116,5 @@ public class ConverstationController {
 //    public ResponseEntity<?> getCurrentConversationName(HttpServletRequest request,@PathVariable int conversationId){
 //
 //    }
+
 }

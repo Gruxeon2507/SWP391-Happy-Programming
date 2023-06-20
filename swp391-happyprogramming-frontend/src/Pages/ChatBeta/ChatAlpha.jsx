@@ -10,6 +10,7 @@ import NavBar from "../../Components/Navbar/NavBar";
 import MessageTo from "../Chat/MessageTo";
 import MessageFrom from "../Chat/MessageFrom";
 import { Link, NavLink, useParams } from "react-router-dom";
+import CourseServices from "../../services/CourseServices";
 
 var stompClient = null;
 const PrivateChatRoom = () => {
@@ -22,9 +23,8 @@ const PrivateChatRoom = () => {
   const [publicChats, setPublicChats] = useState([]);
   const [tab, setTab] = useState();
   const [count, setCount] = useState(0);
-  const [currentConversationMessage, setCurrentConversationMessage] = useState(
-    []
-  );
+  const [conversationName, setConversationName] = useState({});
+  const [currentConversationMessage, setCurrentConversationMessage] = useState([]);
   const [userData, setUserData] = useState({
     username: "",
     receivername: "",
@@ -60,23 +60,39 @@ const PrivateChatRoom = () => {
     stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
   };
 
+  //username
+  const fetchUsername = async () => {
+    const loginuser = await UserServices.getLoginUsername();
+    const username = loginuser.data;
+    setUserData((prevUserData) => ({ ...prevUserData, username: username }));
+  };
+  //user conversation + message
+  const getUserConversation = async () => {
+    //conversation
+    const result = await api.get("/api/conversation/user-conversation");
+    setConversation(result.data);
+  };
+  //conversation name
+  const getConversationName = async () => {
+    //conversation
+    api.get("api/conversation/conversationname/" + conversationId).then((result) => {
+      setConversationName(result.data);
+    });
+  };
+
+  useEffect(() => {
+    getUserConversation();
+    fetchUsername();
+    getConversationName();
+  }, []);
+
   //fetch login user info
   useEffect(() => {
-    //username
-    const fetchUsername = async () => {
-      const loginuser = await UserServices.getLoginUsername();
-      const username = loginuser.data;
-      setUserData((prevUserData) => ({ ...prevUserData, username: username }));
-    };
-    //user conversation + message
-    const getUserConversation = async () => {
-      //conversation
-      const result = await api.get("/api/conversation/user-conversation");
-      setConversation(result.data);
-    };
     fetchUsername();
+    getConversationName();
     getUserConversation();
   }, [conversationId]);
+
 
   useEffect(() => {
     let map = new Map(conversationMessages);
@@ -95,7 +111,10 @@ const PrivateChatRoom = () => {
       api.get("/api/conversation/message/" + conversationId).then((result) => {
         setCurrentConversationMessage(result.data);
       });
+
     }
+    getConversationName();
+
   }, [conversationId]);
 
   useEffect(() => {
@@ -193,7 +212,6 @@ const PrivateChatRoom = () => {
                   ></img>
                   <div className="conv-name">
                     <span>{conversation.conversationName}</span>
-                    {/* <span>{conversation.conversationName}</span> */}
                   </div>
                 </NavLink>
               ))}
@@ -202,8 +220,9 @@ const PrivateChatRoom = () => {
         </nav>
         <div className="Message-List">
           <div className="conversation-head">
-            <img src={null} alt="placeholder"></img>
-            <span>{conversationId}</span>
+            <img src={"http://localhost:1111/api/users/avatar/" + conversationName.username} alt="placeholder"></img>
+            <span>{conversationName.conversationName}</span>
+            {/* <span>{conversationId}</span> */}
           </div>
           <div className="messages" ref={messagesRef}>
             {currentConversationMessage.map((chat) => (

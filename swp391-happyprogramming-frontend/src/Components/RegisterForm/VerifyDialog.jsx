@@ -1,14 +1,12 @@
 import React, { Component, useEffect, useState } from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 
-VerifyDialog.propTypes = {
-  email: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-};
+
 
 function VerifyDialog(props) {
+  const { username } = useParams();
   const [codex, setCodex] = useState("");
   const onChangeCode = (event) => {
     const inputcode = event.target.value;
@@ -17,16 +15,20 @@ function VerifyDialog(props) {
 
   const onSubmitVerify = (event) => {
     event.preventDefault();
-    console.log(props.username);
     const formData = new FormData();
-    formData.append("username", props.username);
+    formData.append("username", username);
     formData.append("code", codex);
+
     axios
       .post(`http://localhost:1111/api/auth/verify`, formData)
       .then((res) => {
         console.log(res.data);
-        alert("Verify Succesffully. Now you will return to home page.");
-        window.location.href = "../";
+        if (res.data != "") {
+          alert("Verify Succesffully. Now you will return to home page.");
+          window.location.href = "../";
+        } else {
+          alert("Your OTP code is wrong please enter again");
+        }
       })
       .catch((error) => {
         console.log("Fail when verify");
@@ -43,7 +45,7 @@ function VerifyDialog(props) {
           <input type="text" required onChange={onChangeCode} />
           <button>Verify</button>
         </form>
-        <h3>{props.email}</h3>
+        <h3>{username}</h3>
       </div>
     </div>
   );
