@@ -29,6 +29,23 @@ const Comment = ({ comment, layer }) => {
 
   // console.log("USER LOGIN: " + loginUsername);
 
+  const decodeHtmlEntities = (str) => {
+    return String(str)
+      .replace(/&amp;/g, "&") // & -> &amp;
+      .replace(/&lt;/g, "<") // < -> &lt;
+      .replace(/&gt;/g, ">") // > -> &gt;
+      .replace(/&quot;/g, '"') // " -> &quot;
+      .replace(/&nbsp;/g, ""); // non-breaking space -> none
+  };
+
+  const encodeHtmlEntities = (str) => {
+    return String(str)
+      .replace(/&/g, "&amp;") // & -> &amp;
+      .replace(/</g, "&lt;") // < -> &lt;
+      .replace(/>/g, "&gt;") // > -> &gt;
+      .replace(/"/g, "&quot;"); // " -> &quot;
+  };
+
   const deleteComment = () => {
     console.log("DELETE COMMENT CALLED: " + comment.commentId);
     CommentServices.deleteComment(comment.commentId);
@@ -36,7 +53,7 @@ const Comment = ({ comment, layer }) => {
 
   const onEditComment = () => {
     if (editMode) {
-      const newContent = inputRef.current.innerHTML;
+      const newContent = inputRef.current.innerHTML.trim();
       console.log("NEW CONTENT: " + newContent);
       console.log("COMMENTID: " + comment.commentId);
       CommentServices.updateComment(newContent, comment.commentId);
@@ -49,7 +66,7 @@ const Comment = ({ comment, layer }) => {
   const addReply = (comment) => {
     if (input.trim().length !== 0) {
       const reply = {
-        commentContent: input,
+        commentContent: input.trim(),
         post: {
           postId: comment.post.postId,
         },
@@ -85,16 +102,15 @@ const Comment = ({ comment, layer }) => {
       {/* <div className="pcw-content" dangerouslySetInnerHTML={{ __html: post.postContent }} */}
 
       <h1
-
         // disabled={!editMode}
         contentEditable={editMode}
         suppressContentEditableWarning={editMode}
         style={{ marginTop: "0", resize: "none" }}
         ref={inputRef}
-        dangerouslySetInnerHTML={{ __html: comment.commentContent }}
-        value={comment.commentContent}
+        // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
+        // value={comment.commentContent}
       >
-        {/* {comment.commentContent} */}
+        {decodeHtmlEntities(comment.commentContent)}
       </h1>
       <div style={{ display: "flex" }}>
         {editMode ? (
