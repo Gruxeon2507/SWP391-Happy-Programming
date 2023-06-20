@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author huyen
  */
 public interface ParticipateRepository extends JpaRepository<Participate, ParticipateKey> {
-    @Query(value = "select * from Participate p where p.username = ?1",nativeQuery = true)
+
+    @Query(value = "select * from Participate p where p.username = ?1", nativeQuery = true)
     public List<Participate> findByUsername(String username);
 
     @Modifying
@@ -38,7 +39,7 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
     @Transactional
     @Query(value = "DELETE FROM Participate WHERE courseId = :courseId", nativeQuery = true)
     public void deleteParticipatesByCourseId(int courseId);
-    
+
     @Query(value = "SELECT * FROM Participate WHERE username = :username AND courseId = :courseId", nativeQuery = true)
     public Participate getUserParticipateFromCourse(String username, int courseId);
 
@@ -51,4 +52,7 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
     @Transactional
     @Query(value = "DELETE FROM Participate WHERE username = :username AND courseId = :courseId", nativeQuery = true)
     public void deleteParticipate(String username, int courseId);
+
+    @Query(value = "select * from Participate p where p.username = ?1 and courseId = ?2", nativeQuery = true)
+    public Participate findByUsernameCourseId(String username, int courseId);
 }

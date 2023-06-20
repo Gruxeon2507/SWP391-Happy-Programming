@@ -156,3 +156,6 @@ SELECT * FROM `User` u JOIN Participate p ON u.username = p.username
                       WHERE c.courseId = 29  AND p.participateRole = 2
 SELECT * FROM User_Conversation WHERE username = 'huyenmentor'
 SELECT * FROM Conversation where conversationId = 27
+
+SELECT * FROM Request re WHERE re.username = 'phuonghm' and courseId = 17;
+SELECT * FROM Participate WHERE username = 'phuonghm' and courseId = 17

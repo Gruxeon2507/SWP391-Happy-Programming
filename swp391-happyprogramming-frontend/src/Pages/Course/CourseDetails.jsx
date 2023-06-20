@@ -94,8 +94,9 @@ const CourseDetails = (props) => {
   const handleRequest = () => {
     // const token = localStorage.getItem("token");
     if (localStorage.getItem("token")) {
-      ParticipateServices.saveParticipate("", courseID, 3, 0);
-      RequestService.insertIntoRequest(courseID, 0);
+      // ParticipateServices.saveParticipate("", courseID, 3, 0);
+      // RequestService.insertIntoRequest(courseID);
+      RequestService.insertParticipadeInsertRequest(courseID)
       window.location.href = `/courses/view/${courseID}`;
     } else {
       window.location.href = "/login";
