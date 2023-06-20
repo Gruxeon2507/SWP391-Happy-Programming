@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import DOMPurify from "dompurify";
 import { useParams } from "react-router-dom";
 import PostServices from "../../services/PostServices";
 import CreatePost from "../../Components/CreatePost/CreatePost";
@@ -12,6 +13,7 @@ function PostDetail() {
   const [comments, setComments] = useState([]);
   const [input, setInput] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
+  const inputRef = useRef(null);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -40,21 +42,26 @@ function PostDetail() {
   }, []);
 
   const addComment = async () => {
-    console.log("add comment ...");
-    const comment = {
-      commentContent: input,
-      user: {
-        username: loginUsername,
-      },
-      post: {
-        postId: postId,
-      },
-      replies: [],
-    };
-    CommentServices.addComment(comment).then((res) => {
-      console.log("DAY LA COMMENT MOI: ", res.data);
-      setComments((prev) => [res.data, ...prev]);
-    });
+    if (input.trim().length != 0) {
+      // console.log("add comment ...");
+      const comment = {
+        commentContent: input,
+        user: {
+          username: loginUsername,
+        },
+        post: {
+          postId: postId,
+        },
+        replies: [],
+      };
+      CommentServices.addComment(comment).then((res) => {
+        if (res && res.data) {
+          // console.log("DAY LA COMMENT MOI: ", res.data);
+          setComments((prev) => [res.data, ...prev]);
+        }
+      });
+    }
+    setInput("");
   };
 
   useEffect(() => {}, []);
@@ -71,13 +78,13 @@ function PostDetail() {
         <input
           type="text"
           style={{ width: "25vw" }}
-          // autoFocus
           value={input}
           placeholder="type..."
           onChange={(e) => setInput(e.target.value)}
+          ref={inputRef}
         />
         <div>{input}</div>
-        <button onClick={addComment}>Comment</button>
+        <button onClick={() => addComment()}>Comment</button>
         {comments.map((comment) => (
           <>
             <Comment

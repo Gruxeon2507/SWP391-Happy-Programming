@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useState, useRef } from "react";
+import he from "he";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 import ActionButton from "../ActionButton/ActionButton";
 import CommentServices from "../../services/CommentServices";
@@ -11,8 +12,8 @@ const Comment = ({ comment, layer }) => {
   const [showInput, setShowInput] = useState(false);
   const [expand, setExpand] = useState(false);
   const [loginUsername, setLoginUsername] = useState("");
-  // const [nestCount, setNestCount] = useState(0);
   const inputRef = useRef(null);
+  const replyRef = useRef(null);
   const [replies, setReplies] = useState([]);
 
   useEffect(() => {}, [replies]);
@@ -26,7 +27,7 @@ const Comment = ({ comment, layer }) => {
     setReplies(comment.replies);
   }, []);
 
-  console.log("USER LOGIN: " + loginUsername);
+  // console.log("USER LOGIN: " + loginUsername);
 
   const deleteComment = () => {
     console.log("DELETE COMMENT CALLED: " + comment.commentId);
@@ -46,20 +47,24 @@ const Comment = ({ comment, layer }) => {
   };
 
   const addReply = (comment) => {
-    const reply = {
-      commentContent: input,
-      post: {
-        postId: comment.post.postId,
-      },
-      replies: [],
-    };
-    try {
-      CommentServices.addComment(reply, comment.commentId).then((res) => {
-        setReplies([...replies, res.data]);
-      });
-    } catch (e) {
-      console.log("error adding reply: " + e);
+    if (input.trim().length !== 0) {
+      const reply = {
+        commentContent: input,
+        post: {
+          postId: comment.post.postId,
+        },
+        replies: [],
+      };
+      CommentServices.addComment(reply, comment.commentId)
+        .then((res) => {
+          setReplies([...replies, res.data]);
+        })
+        .catch((error) => {
+          console.log("error adding reply");
+        });
     }
+    replyRef.current.value = "";
+    setInput("");
   };
 
   const handleNewComment = () => {
@@ -69,22 +74,25 @@ const Comment = ({ comment, layer }) => {
 
   return (
     <>
-      <div style={{ marginBottom: "-10px" }}>Input: {input}</div>
+      {/* <div style={{ marginBottom: "-10px" }}>Input: {input}</div> */}
       <h1 style={{ marginBottom: "0px" }}>
         {`${
           comment.user && comment.user.displayName
             ? comment.user.displayName
             : "Username failed to load"
-        } (ID: ${comment.commentId})`}
+        } `}
       </h1>
       {/* <div className="pcw-content" dangerouslySetInnerHTML={{ __html: post.postContent }} */}
 
       <h1
+
+        // disabled={!editMode}
         contentEditable={editMode}
         suppressContentEditableWarning={editMode}
-        style={{ marginTop: "0" }}
+        style={{ marginTop: "0", resize: "none" }}
         ref={inputRef}
         dangerouslySetInnerHTML={{ __html: comment.commentContent }}
+        value={comment.commentContent}
       >
         {/* {comment.commentContent} */}
       </h1>
@@ -155,6 +163,7 @@ const Comment = ({ comment, layer }) => {
               className="inputContainter_input"
               autoFocus
               onChange={(e) => setInput(e.target.value)}
+              ref={replyRef}
             />
             <ActionButton
               className="reply"
