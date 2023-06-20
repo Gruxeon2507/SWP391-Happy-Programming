@@ -47,6 +47,6 @@ public class Request implements Serializable {
     @JsonIgnore
     private Participate participate;
     
-    private String requestResponse;
+    private String requestReason;
 
 }

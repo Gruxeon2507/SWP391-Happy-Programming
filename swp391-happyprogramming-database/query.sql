@@ -145,3 +145,14 @@ SELECT * FROM User_Conversation WHERE username = 'phucdl'
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phucdl', 2)
 DELETE FROM User_Conversation WHERE username = 'phucdl' AND conversationId = 2
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuongmentorphucdl', 2)
+
+select * from Participate p where p.username = 'huyenmentor'
+select * from course
+
+SELECT * FROM `User` u JOIN Participate p ON u.username = p.username 
+           JOIN Course c ON p.courseId = c.courseId
+           JOIN ParticipateRole r ON r.participateRole = p.participateRole
+                     JOIN `Status` s ON s.statusId = p.statusId
+                      WHERE c.courseId = 29  AND p.participateRole = 2
+SELECT * FROM User_Conversation WHERE username = 'huyenmentor'
+SELECT * FROM Conversation where conversationId = 27

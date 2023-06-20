@@ -288,14 +288,8 @@ public class CourseController {
             for (Category c : newCourse.getCategories()) {
                 categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
             }
-//             Insert admin into participate table
+//             Insert admin into participate table          
             participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
-
-            //Tạo conversationGroup cho course mới được tạo 
-            conversationRepository.insertConversation(newCourse.getCourseName());
-            //Insert mentor vào group chat vừa tạo 
-            int conversationId = conversationRepository.findByCourseId(newCourse.getCourseId()).getConversationId();
-            user_ConversationRepository.insertUserConversation(username, conversationId);
 
             return ResponseEntity.ok(newCourse);
         }
