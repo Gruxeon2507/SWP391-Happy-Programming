@@ -81,6 +81,7 @@ function ResetPassword(props) {
       <NavBar mode={3} />
       <main className="reset-pw-container">
         <form onSubmit={handleSubmit}>
+          <h1>Reset Password</h1>
           <div className="user-input">
             <input type="text" name="code" required onChange={onChangeOtpCode} />
             <span>OTP Code</span>
@@ -101,7 +102,7 @@ function ResetPassword(props) {
               required
               onChange={onChangeReNewPassword}
             />
-            <span>Re new password</span>
+            <span>Re-new password</span>
           </div>
           {checkRePassword ? (
             <>

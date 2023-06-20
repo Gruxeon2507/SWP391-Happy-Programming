@@ -7,6 +7,7 @@ import "./CourseFeed.css";
 import NavBar from "../../Components/Navbar/NavBar";
 import PostServices from "../../services/PostServices";
 
+
 function CourseFeed() {
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
@@ -58,14 +59,14 @@ function CourseFeed() {
     <>
       <NavBar mode={1}></NavBar>
       <main className="cf-content">
-        <div className="course-bg-inf">
+        <section className="course-bg-inf">
           Thong tin co ban cua course o day <br />
           total mentee
           <br />
           thong tin .... <br />
           thong tin .... <br />
           thong tin .... <br />
-        </div>
+        </section>
         <div className="main-posts-cc">
           <section className="posts-section">
             {posts.map((post) => (
@@ -78,9 +79,8 @@ function CourseFeed() {
                     ></ion-icon>
                   </div>
                   <nav
-                    className={`pcw-edit-opt-list ${
-                      activeMenus[post.postId] ? "active" : ""
-                    }`}
+                    className={`pcw-edit-opt-list ${activeMenus[post.postId] ? "active" : ""
+                      }`}
                   >
                     <ul>
                       <li>only right mentor can see</li>

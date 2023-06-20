@@ -53,11 +53,10 @@ function Register(props) {
     const inputUsername = event.target.value;
 
     const regex = /^[a-zA-Z0-9\s]*$/;
-    if (
-      !regex.test(inputUsername) ||
+    if (inputUsername.length > 0 && (!regex.test(inputUsername) ||
       inputUsername.length < 6 ||
       inputUsername.length > 150
-    ) {
+    )) {
       setShowErrorUsername(true);
       setErrorUsername(
         `Please just input characters and numbers and not empty and size just from 6 to 150`
@@ -97,12 +96,20 @@ function Register(props) {
       return;
     }
 
+    if (inputPassword != rePassword) {
+      setCheckRePassword(true);
+      setMessageRePassword("Re Password not match");
+    } else {
+      setCheckRePassword(false);
+      setMessageRePassword(``);
+    }
     setShowErrorPassword(false);
     setErrorPassword(``);
     setUser({
       ...user,
       password: inputPassword,
     });
+
   };
 
   const onChangeRePassword = (event) => {
@@ -282,14 +289,14 @@ function Register(props) {
                       ></input>
                       <span>UserName</span>
                     </div>
-                    <div className={`input-tooltip ${showErrorUsername ? "fault" : ""}`}>
+                    {/* <div className={`input-tooltip ${showErrorUsername ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
-                        {/* <span>{errorUsername}</span> */}
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
-                    </div>
-                    <div>
+                    </div> */}
+                    <div className={`--err--msg ${(showErrorUsername || showErrorUsernameDuplicate) ? "fault" : ""}`}>
+                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                     </div>
                   </td>
                 </tr>
@@ -304,11 +311,14 @@ function Register(props) {
                       ></input>
                       <span>Password</span>
                     </div>
-                    <div className={`input-tooltip ${showErrorPassword ? "fault" : ""}`}>
+                    {/* <div className={`input-tooltip ${showErrorPassword ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>something of password</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
+                    </div> */}
+                    <div className={`--err--msg ${showErrorPassword ? "fault" : ""}`}>
+                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                     </div>
                   </td>
                 </tr>
@@ -334,11 +344,14 @@ function Register(props) {
                       ></input>
                       <span >Re Enter Password</span>
                     </div>
-                    <div className={`input-tooltip ${checkRePassword ? "fault" : ""}`}>
+                    {/* <div className={`input-tooltip ${checkRePassword ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
+                    </div> */}
+                    <div className={`--err--msg ${checkRePassword ? "fault" : ""}`}>
+                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                     </div>
                   </td>
                 </tr>
@@ -365,11 +378,14 @@ function Register(props) {
                       ></input>
                       <span>Display Name</span>
                     </div>
-                    <div className={`input-tooltip ${showErrorDisplayname ? "fault" : ""}`}>
+                    {/* <div className={`input-tooltip ${showErrorDisplayname ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
+                    </div> */}
+                    <div className={`--err--msg ${showErrorDisplayname ? "fault" : ""}`}>
+                      <span> 6 to 150</span>
                     </div>
                   </td>
                 </tr>
@@ -384,11 +400,14 @@ function Register(props) {
                       ></input>
                       <span>Email</span>
                     </div>
-                    <div className={`input-tooltip ${showErrorEmail ? "fault" : ""}`}>
+                    {/* <div className={`input-tooltip ${showErrorEmail ? "fault" : ""}`}>
                       <div className="err-msg">
                         <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                       </div>
                       <ion-icon name="help-circle-outline"></ion-icon>
+                    </div> */}
+                    <div className={`--err--msg ${showErrorEmail ? "fault" : ""}`}>
+                      <span>Please just input characters and numbers and not empty and size just from 6 to 150</span>
                     </div>
                   </td>
                 </tr>

@@ -13,30 +13,41 @@ function SettingBar(props) {
     useEffect(() => {
         // const udn = UserServices.getLoginUserDisplayname();
         // console.log(userDisplayName);
-        try{
+        try {
             const fetchUserDisplayName = async () => {
-                const udn = await UserServices.getLoginUserDisplayname().catch((error)=> {
+                const udn = await UserServices.getLoginUserDisplayname().catch((error) => {
                     console.log(error);
                     window.localStorage.removeItem("token");
                     window.localStorage.removeItem("role");
                     window.location.reload();
                     navigate("/login")
-                  });
+                });
                 setUserDisplayName(udn.data);
             };
             fetchUserDisplayName();
         }
-        catch (e){
+        catch (e) {
             window.localStorage.removeItem("token");
             window.localStorage.removeItem("role");
         }
     }, []);
 
+    function removeActiveClass() {
+        const elements = document.querySelectorAll('.active');
+        elements.forEach((element) => {
+            element.classList.remove('active');
+        });
+    }
+
+
     const navSettingClass = navSettingOpen ? "pf-dropdown active" : "pf-dropdown";
 
     return (
         <div className="SettingBar">
-            <div className={navSettingClass} onClick={() => setNavSettingOpen(!navSettingOpen)}>
+            <div className={navSettingClass} onClick={() => {
+                removeActiveClass();
+                setNavSettingOpen(!navSettingOpen);
+            }}>
                 <div className="avatar">
                     {/* <img src={basicAvatar} alt="avatar"></img> */}
                     {/* <img src={"http://localhost:1111/api/users/avatar/" + "anmentor"} alt="avatar"></img> */}

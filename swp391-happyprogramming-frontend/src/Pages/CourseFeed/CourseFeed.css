@@ -2,14 +2,27 @@
 
 .course-bg-inf {
   box-sizing: border-box;
-  background: rgb(255, 227, 224);
+  /* background: rgb(255, 227, 224); */
   background: linear-gradient(
-    57deg,
-    rgba(255, 227, 224, 1) 20%,
+    150deg,
+    rgba(255, 227, 224, 1) 11%,
     rgba(127, 186, 255, 1) 100%
   );
-  height: 200px;
+  height: 250px;
   border-radius: 1rem;
+  /* transform: rotateY(180deg); */
+}
+
+.course-bg-inf {
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.course-bg-inf h1 {
+  font-size: 2.5rem;
+  color: var(--darkItem5);
+  text-align: center;
 }
 
 .cf-content {
