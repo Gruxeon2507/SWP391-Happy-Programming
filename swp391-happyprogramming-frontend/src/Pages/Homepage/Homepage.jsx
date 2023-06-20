@@ -8,6 +8,8 @@ import "../Homepage/Homepage.css";
 import convertDateFormat from "../../util/DateConvert";
 import { useNavigate } from "react-router-dom";
 
+import resetFilterImg from "../../Assets/resetFilter.png";
+
 // import backgound
 // import c1 from "../../Assets/courseBG/c12.png";
 // import c2 from "../../Assets/courseBG/c2.png";
@@ -165,6 +167,7 @@ function Homepage() {
     }
   };
 
+
   return (
     <div className="container home-page">
       <section className="course-bg-inf">
@@ -179,6 +182,7 @@ function Homepage() {
               <ion-icon name="list-outline"></ion-icon>
             </button>
           </div> */}
+
           <div className="search-border">
             <input
               type="text"
@@ -205,8 +209,8 @@ function Homepage() {
             <option value="asc|courseName">A-Z Name</option>
             <option value="desc|courseName">Z-A Name</option>
           </select>
-          <div className="textBttn">
-            <button onClick={handleReset}>Reset</button>
+          <div id="textBttn">
+            <button onClick={handleReset}><img src={resetFilterImg}></img></button>
           </div>
         </div>
       </div>

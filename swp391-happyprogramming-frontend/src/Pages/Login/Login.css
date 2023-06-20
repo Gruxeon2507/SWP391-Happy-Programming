@@ -156,8 +156,7 @@
   margin-bottom: 8px;
   color: var(--dark);
 }
-.login-frag .user-input input {
-}
+
 .login-frag .user-input input:valid ~ span,
 .login-frag .user-input input:focus ~ span {
   transform: translateX(0px) translateY(-1.6rem);

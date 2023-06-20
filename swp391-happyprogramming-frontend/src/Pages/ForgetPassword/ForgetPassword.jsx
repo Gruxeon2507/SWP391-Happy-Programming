@@ -82,14 +82,14 @@ function ForgetPassword(props) {
               </div>
             </>
           )}
+          <div className="w-message" style={{ color: "black" }}>
+            <span>{showErrorUsername ? errorUsername : <><br /><br /></>}</span>
+          </div>
 
-          {showErrorUsername ? (
+          {/* {showErrorUsername ? (
             <>
-              <div className="w-message" style={{ color: "black" }}>
-                {errorUsername}
-              </div>
             </>
-          ) : null}
+          ) : null} */}
         </form>
       </div>
     </>
