@@ -188,6 +188,10 @@ public class UserController {
     public void uploadCvFile(@RequestParam("pdfFile") MultipartFile file,
             @RequestHeader("Authorization") String token) {
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        User user = userRepository.findByUsername(username);
+        user.setAvatarPath(username+".jpg");
+        user.setCVPath(username+".pdf");
+        userRepository.save(user);
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".pdf");
@@ -222,6 +226,10 @@ public class UserController {
             @RequestHeader("Authorization") String token) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        User user = userRepository.findByUsername(username);
+        user.setAvatarPath(username+".jpg");
+        user.setCVPath(username+".pdf");
+        userRepository.save(user);
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".jpg");
             try {
@@ -253,7 +261,8 @@ public class UserController {
     // Writen By:DucKM
     @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
-        String filePath = "avatar/" + fileId + ".jpg";
+        User user = userRepository.findByUsername(fileId);
+        String filePath = "avatar/" + user.getAvatarPath();
         File file = new File(filePath);
         InputStream inputStream = new FileInputStream(file);
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);

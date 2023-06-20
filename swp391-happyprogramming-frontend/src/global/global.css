@@ -30,7 +30,7 @@ body {
 
 * {
   transition: 0.3s all ease;
-  /* border: 1px solid black !important; */
+  border: 1px solid black !important;
   box-sizing: border-box !important;
 }
 .user-input {
@@ -55,6 +55,7 @@ body {
   border: 2px solid var(--lightItem);
   outline: none;
 }
+
 .user-input span {
   position: absolute;
   top: 50%;
