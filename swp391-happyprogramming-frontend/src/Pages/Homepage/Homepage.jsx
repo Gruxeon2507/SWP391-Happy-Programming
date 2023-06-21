@@ -33,7 +33,7 @@ import c3 from "../../Assets/hpyproBG-blue/b-bg-3.png";
 import c7 from "../../Assets/hpyproBG-blue/b-bg-3.png";
 import c5 from "../../Assets/hpyproBG-blue/b-bg-11.png";
 import c2 from "../../Assets/hpyproBG-blue/b-bg-6.png";
-import c4 from "../../Assets/hpyproBG-blue/b-bg-7.png";
+import c4 from "../../Assets/hpyproBG-blue/b-bg-8.png";
 import c12 from "../../Assets/hpyproBG-blue/b-bg-8.png";
 import c9 from "../../Assets/hpyproBG-blue/b-bg-9.png";
 import c10 from "../../Assets/hpyproBG-blue/b-bg-10.png";
