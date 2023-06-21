@@ -189,6 +189,7 @@ CREATE TABLE Request
 	username varchar(255),
     requestTime datetime DEFAULT CURRENT_TIMESTAMP,
     requestStatus int,
+    requestReason nvarchar(255),
     CONSTRAINT PK_Request PRIMARY KEY (courseId, username, requestTime)
 );
 ALTER TABLE Request ADD CONSTRAINT FK_Request_Participate FOREIGN KEY(username, courseId)

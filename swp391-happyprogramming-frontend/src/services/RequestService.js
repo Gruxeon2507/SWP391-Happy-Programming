@@ -2,6 +2,7 @@ import axios from "axios";
 import api from "./BaseAuthenticationService.js";
 
 class RequestService {
+  //phuong 
   getPendingUserOfCourse(courseId, pageNumber, pageSize, sortField, sortOrder) {
     const formData = new FormData();
     formData.append("courseId", courseId);
@@ -12,6 +13,7 @@ class RequestService {
     return api.post("/api/requests/pending", formData);
   }
 
+  //phuong 
   updateParticipadeInsertRequest(courseId, statusId, usernames) {
     const formData = new FormData();
     formData.append("courseId", courseId);
@@ -20,6 +22,7 @@ class RequestService {
     return api.post("/api/requests/status", formData);
   }
 
+  //phuong 
   getAccessRejectRequestOfCourse(courseId) {
     return api.get(`/api/requests/access-reject/${courseId}`);
   }
@@ -34,6 +37,12 @@ class RequestService {
     formData.append("courseId", courseId);
     formData.append("statusId", statusId);
     api.post(`/api/requests/insert`, formData);
+  }
+
+  //phuong 
+  insertParticipadeInsertRequest(courseId) {
+    console.log(`/api/requests/send?courseId=${courseId}`);
+    return api.post(`/api/requests/send?courseId=${courseId}`);
   }
 }
 export default new RequestService();

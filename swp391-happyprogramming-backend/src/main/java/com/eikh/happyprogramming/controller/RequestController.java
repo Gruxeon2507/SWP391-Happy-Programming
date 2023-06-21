@@ -6,6 +6,7 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Conversation;
+import com.eikh.happyprogramming.model.Participate;
 import com.eikh.happyprogramming.model.Request;
 import com.eikh.happyprogramming.model.Status;
 import com.eikh.happyprogramming.model.User;
@@ -181,5 +182,44 @@ public class RequestController {
         System.out.println("DELETE FROM REQUEST OK.");
         participateRepository.deleteParticipate(username, courseId);
         System.out.println("DELETE FROM PARTICIPATE OK.");
+    }
+
+    @Transactional
+    @PostMapping("/send")
+    public String insertParticipateInsertRequest(
+            HttpServletRequest request,
+            @RequestParam(name = "courseId") Integer courseId
+    ) {
+
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        transactionTemplate.execute(status -> {
+            try {
+                Request r = new Request();
+                java.util.Date today = new java.util.Date();
+                java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+                Status s = new Status();
+                RequestKey key = new RequestKey();
+                key.setUsername(username);
+                key.setCourseId(courseId);
+                key.setRequestTime(sqlToday);
+                s.setStatusId(0);
+                r.setStatus(s);
+                r.setRequestKey(key);
+                Participate exitParticipate = participateRepository.findByUsernameCourseId(username, courseId);
+                if (exitParticipate == null) {
+                    participateRepository.saveParticipate(username, courseId, 3, 0);
+                }
+                else
+                    participateRepository.updateStatus(0, courseId, username);
+                requestRepository.save(r);
+                return "Participate update/save and Request save success";
+            } catch (Exception ex) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                status.setRollbackOnly();
+            }
+            return null;
+
+        });
+        return null;
     }
 }
