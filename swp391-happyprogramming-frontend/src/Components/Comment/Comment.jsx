@@ -11,8 +11,8 @@ const Comment = ({ comment, layer }) => {
   const [showInput, setShowInput] = useState(false);
   const [expand, setExpand] = useState(false);
   const [loginUsername, setLoginUsername] = useState("");
-  // const [nestCount, setNestCount] = useState(0);
   const inputRef = useRef(null);
+  const replyRef = useRef(null);
   const [replies, setReplies] = useState([]);
 
   useEffect(() => { }, [replies]);
@@ -26,7 +26,24 @@ const Comment = ({ comment, layer }) => {
     setReplies(comment.replies);
   }, []);
 
-  console.log("USER LOGIN: " + loginUsername);
+  // console.log("USER LOGIN: " + loginUsername);
+
+  const decodeHtmlEntities = (str) => {
+    return String(str)
+      .replace(/&amp;/g, "&") // & -> &amp;
+      .replace(/&lt;/g, "<") // < -> &lt;
+      .replace(/&gt;/g, ">") // > -> &gt;
+      .replace(/&quot;/g, '"') // " -> &quot;
+      .replace(/&nbsp;/g, ""); // non-breaking space -> none
+  };
+
+  const encodeHtmlEntities = (str) => {
+    return String(str)
+      .replace(/&/g, "&amp;") // & -> &amp;
+      .replace(/</g, "&lt;") // < -> &lt;
+      .replace(/>/g, "&gt;") // > -> &gt;
+      .replace(/"/g, "&quot;"); // " -> &quot;
+  };
 
   const deleteComment = () => {
     console.log("DELETE COMMENT CALLED: " + comment.commentId);
@@ -35,7 +52,7 @@ const Comment = ({ comment, layer }) => {
 
   const onEditComment = () => {
     if (editMode) {
-      const newContent = inputRef.current.innerHTML;
+      const newContent = inputRef.current.innerHTML.trim();
       console.log("NEW CONTENT: " + newContent);
       console.log("COMMENTID: " + comment.commentId);
       CommentServices.updateComment(newContent, comment.commentId);
@@ -46,26 +63,31 @@ const Comment = ({ comment, layer }) => {
   };
 
   const addReply = (comment) => {
-    const reply = {
-      commentContent: input,
-      post: {
-        postId: comment.post.postId,
-      },
-      replies: [],
-    };
-    try {
-      CommentServices.addComment(reply, comment.commentId).then((res) => {
-        setReplies([...replies, res.data]);
-      });
-    } catch (e) {
-      console.log("error adding reply: " + e);
+    if (input.trim().length !== 0) {
+      const reply = {
+        commentContent: input.trim(),
+        post: {
+          postId: comment.post.postId,
+        },
+        replies: [],
+      };
+      CommentServices.addComment(reply, comment.commentId)
+        .then((res) => {
+          setReplies([...replies, res.data]);
+        })
+        .catch((error) => {
+          console.log("error adding reply");
+        });
     }
+    replyRef.current.value = "";
+    setInput("");
   };
 
   const handleNewComment = () => {
     setExpand(!expand);
     setShowInput(true);
   };
+
 
   return (
     <>
@@ -81,7 +103,7 @@ const Comment = ({ comment, layer }) => {
               {`${comment.user && comment.user.displayName
                 ? comment.user.displayName
                 : "Username failed to load"
-                } (ID: ${comment.commentId})`}
+                }`}
             </span>
           </div>
 
@@ -90,9 +112,9 @@ const Comment = ({ comment, layer }) => {
             suppressContentEditableWarning={editMode}
             style={{ marginTop: "0" }}
             ref={inputRef}
-            dangerouslySetInnerHTML={{ __html: comment.commentContent }}
+          // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
           >
-            {/* {comment.commentContent} */}
+            {decodeHtmlEntities(comment.commentContent)}
           </span>
           <div style={{ display: "flex" }}>
             {editMode ? (
@@ -188,5 +210,7 @@ const Comment = ({ comment, layer }) => {
     </>
   );
 };
+
+
 
 export default Comment;

@@ -6,15 +6,17 @@ class CommentServices {
   addComment(comment, parentId) {
     console.log("add comment at services called");
     console.log("comment: " + JSON.stringify(comment));
-    if (parentId) {
-      // add reply
-      console.log(`/api/comments/add/reply/${parentId}`);
-      return api.post(`/api/comments/add/reply/${parentId}`, comment);
-    } else {
-      // add top level comment
-      console.log(`api/comments/add/top`);
-      console.log(JSON.stringify(comment));
-      return api.post("/api/comments/add/top", comment);
+    if (comment.commentContent.trim().length != 0) {
+      if (parentId) {
+        // add reply
+        console.log(`/api/comments/add/reply/${parentId}`);
+        return api.post(`/api/comments/add/reply/${parentId}`, comment);
+      } else {
+        // add top level comment
+        console.log(`api/comments/add/top`);
+        console.log(JSON.stringify(comment));
+        return api.post("/api/comments/add/top", comment);
+      }
     }
   }
 

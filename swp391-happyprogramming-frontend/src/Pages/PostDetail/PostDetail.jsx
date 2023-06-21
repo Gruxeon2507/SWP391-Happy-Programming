@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import DOMPurify from "dompurify";
 import { useParams } from "react-router-dom";
 import PostServices from "../../services/PostServices";
 import CreatePost from "../../Components/CreatePost/CreatePost";
 import Comment from "../../Components/Comment/Comment";
 import CommentServices from "../../services/CommentServices";
 import UserServices from "../../services/UserServices";
-import "./PostDetail.css";
+import "./PostDetail.css"
 import NavBar from "../../Components/Navbar/NavBar";
-
-import sentIcon from "../../Assets/Send_Icon_039jcs.png";
 
 function PostDetail() {
   const { postId } = useParams("postId");
@@ -16,6 +15,7 @@ function PostDetail() {
   const [comments, setComments] = useState([]);
   const [input, setInput] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
+  const inputRef = useRef(null);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -44,24 +44,30 @@ function PostDetail() {
   }, []);
 
   const addComment = async () => {
-    console.log("add comment ...");
-    const comment = {
-      commentContent: input,
-      user: {
-        username: loginUsername,
-      },
-      post: {
-        postId: postId,
-      },
-      replies: [],
-    };
-    CommentServices.addComment(comment).then((res) => {
-      console.log("DAY LA COMMENT MOI: ", res.data);
-      setComments((prev) => [res.data, ...prev]);
-    });
+    if (input.trim().length != 0) {
+      // console.log("add comment ...");
+      const comment = {
+        commentContent: input,
+        user: {
+          username: loginUsername,
+        },
+        post: {
+          postId: postId,
+        },
+        replies: [],
+      };
+      CommentServices.addComment(comment).then((res) => {
+        if (res && res.data) {
+          // console.log("DAY LA COMMENT MOI: ", res.data);
+          setComments((prev) => [res.data, ...prev]);
+        }
+      });
+    }
+    setInput("");
   };
 
-  // useEffect(() => { }, []);
+  useEffect(() => { }, []);
+
 
   return (
     <>
@@ -113,5 +119,6 @@ function PostDetail() {
     </>
   );
 }
+
 
 export default PostDetail;
