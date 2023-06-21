@@ -183,6 +183,7 @@ const Comment = ({ comment, layer }) => {
                 className="inputContainter_input"
                 autoFocus
                 onChange={(e) => setInput(e.target.value)}
+                ref={replyRef}
               />
               <ActionButton
                 className="reply"
