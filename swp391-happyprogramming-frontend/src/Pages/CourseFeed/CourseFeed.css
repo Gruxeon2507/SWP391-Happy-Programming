@@ -188,7 +188,7 @@
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   background-color: var(--lightItem);
-  border: 2px solid var(--light);
+  border: 3px solid var(--light);
   color: var(--item2);
   font-size: 1.5rem;
   border-radius: 0.5rem;
@@ -198,5 +198,5 @@
 .sidebar-cf button:hover {
   color: var(--item2Active);
   background-color: var(--light);
-  border: 2px solid var(--lightItem);
+  border: 3px solid var(--lightItem);
 }

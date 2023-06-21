@@ -39,8 +39,9 @@ import RequestStatistic from "./Pages/Mentor/RequestStatistic";
 import PostDetail from "./Pages/PostDetail/PostDetail";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
+import VerifyDialog from "./Components/RegisterForm/VerifyDialog";
 function App() {
-  
+
   // console.log(features);
   return (
     <Routes>
@@ -50,6 +51,9 @@ function App() {
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/verify/:username" element={<VerifyDialog />} />
+
+      {/* <VerifyDialog email={user.mail} username={user.username} /> */}
       <Route
         path="/forgetpassword"
         element={<ForgetPassword></ForgetPassword>}

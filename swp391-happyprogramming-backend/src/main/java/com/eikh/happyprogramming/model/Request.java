@@ -46,5 +46,7 @@ public class Request implements Serializable {
     })
     @JsonIgnore
     private Participate participate;
+    
+    private String requestReason;
 
 }

@@ -10,6 +10,13 @@ import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.utils.AuthenticationUtils;
 import com.eikh.happyprogramming.utils.EmailUtils;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +39,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author kmd
@@ -57,6 +66,9 @@ public class AuthenticationController {
 
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
+    
+    private final String AVT_UPLOAD_DIR = "/avatar/";
+    private final String PDF_UPLOAD_DIR = "/pdf/";
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User credentials, HttpServletRequest request) {
@@ -94,7 +106,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/register")
-    public User registerUser(@RequestBody User user) {
+    public User registerUser(@RequestBody User user) throws FileNotFoundException {
         user.setPassword(AuthenticationUtils.hashPassword(user.getPassword()));
         java.util.Date today = new java.util.Date();
         java.sql.Date sqlToday = new java.sql.Date(today.getTime());
@@ -103,6 +115,15 @@ public class AuthenticationController {
         user.setVerification_code(verificationCode);
         user.setVerified(false);
         user.setAvatarPath("default.jpg");
+//        String fileName = StringUtils.cleanPath(user.getUsername()+ ".jpg");
+//        File file = new File(AVT_UPLOAD_DIR+"default.jpg");
+//        File desFile = new File(AVT_UPLOAD_DIR+user.getUsername()+".jpg");
+//        try {
+//            Files.copy(file.toPath(), desFile.toPath(),StandardCopyOption.REPLACE_EXISTING);
+//        } catch (Exception e) {
+//            System.out.println("Error when copy files");
+//        }
+        
         UserRepository.save(user);
         userRepository.insertRole(user.getUsername());
         String subject = "HAPPY PROGRAMMING - Verify your email address";
@@ -174,7 +195,6 @@ public class AuthenticationController {
     @GetMapping(value = "/profile/{username}")
     public User profileUser(@PathVariable("username") String username) {
         User user = userRepository.findByUsername(username);
-        user.setMail("");
         user.setPassword("");
         user.setVerification_code("");
         return user;

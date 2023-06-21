@@ -14,12 +14,14 @@
   justify-content: space-between;
 }
 
-.NavBar.active {
+.NavBar.show {
   width: calc(70vw - (100vw - 100%));
   left: 50vw;
   top: 0.5rem;
   background-color: var(--lightItem);
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
+    rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
 }
 
 .NavBar .brand {
@@ -162,6 +164,7 @@
   background-color: var(--lightItem);
   box-sizing: border-box;
   border: 3px solid var(--lightItem);
+  cursor: pointer;
 }
 .pf-dropdown:hover {
   border: 3px solid var(--darkItem3);

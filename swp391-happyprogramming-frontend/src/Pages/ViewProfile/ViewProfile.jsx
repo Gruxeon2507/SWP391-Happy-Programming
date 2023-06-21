@@ -490,8 +490,9 @@ function ViewProfile(props) {
         </section>
         <section className="upf-section">
           <div className="upf-info">
-            <label>Username: </label>
-            <h1>{user.username}</h1>
+            <label>Email: </label>
+            <h1>{user.mail}</h1>
+
           </div>
         </section>
         <section className="upf-section">
@@ -811,9 +812,9 @@ function ViewProfile(props) {
                   </>
                 ) : null}
               </div>
-              <div className="upf-edt-btn">
+              {id === username ? <> <div className="upf-edt-btn">
                 <button onClick={handleEditCreateSkill}>Create a skill</button>
-              </div>
+              </div></> : <></>}
             </section>
 
             <section className="upf-section">
@@ -856,9 +857,10 @@ function ViewProfile(props) {
                   </>
                 ) : null}
               </div>
-              <div className="upf-edt-btn">
+              {id === username ? <><div className="upf-edt-btn">
                 <button onClick={handleEditCVPath}>Change CV</button>
-              </div>
+              </div></> : <></>}
+
             </section>
           </>
         ) : null}

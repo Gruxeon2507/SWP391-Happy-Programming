@@ -6,14 +6,17 @@ import api from "../../services/BaseAuthenticationService";
 import "./CourseFeed.css";
 import NavBar from "../../Components/Navbar/NavBar";
 import PostServices from "../../services/PostServices";
+import CourseServices from "../../services/CourseServices";
 
 
 function CourseFeed() {
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
+  const [currentCourse, setCurrentCourse] = useState('');
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [postId, setPostId] = useState();
   const [activeMenus, setActiveMenus] = useState({});
+
 
   const toggleEditMenu = (postId) => {
     setActiveMenus((prevActiveMenus) => ({
@@ -34,6 +37,25 @@ function CourseFeed() {
   useEffect(() => {
     fetchData();
   }, [courseId, posts]);
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await CourseServices.getCourseById(courseId);
+
+        setCurrentCourse(response.data[0].courseName);
+
+        console.log("currentCourse");
+        console.log(currentCourse);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleCheckboxChange = () => {
     setIsEditorActive(!isEditorActive);
@@ -60,12 +82,7 @@ function CourseFeed() {
       <NavBar mode={1}></NavBar>
       <main className="cf-content">
         <section className="course-bg-inf">
-          Thong tin co ban cua course o day <br />
-          total mentee
-          <br />
-          thong tin .... <br />
-          thong tin .... <br />
-          thong tin .... <br />
+          <h1>{currentCourse}</h1>
         </section>
         <div className="main-posts-cc">
           <section className="posts-section">
@@ -110,12 +127,7 @@ function CourseFeed() {
           </section>
           <aside className="aside-control-nav">
             <div className="sidebar-cf">
-              1 vai thong in ve course/post o day
-              <br></br>
-              <br></br>
-              chi mentor moi thay cai nut nay
-              <br></br>
-              <br></br>
+
               <div>
                 <button onClick={openEditor}>
                   <ion-icon name="add-circle-outline"></ion-icon> New

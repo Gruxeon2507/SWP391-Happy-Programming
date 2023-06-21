@@ -11,10 +11,12 @@ import com.eikh.happyprogramming.model.Participate;
 import com.eikh.happyprogramming.model.Post;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CategoryRepository;
+import com.eikh.happyprogramming.repository.ConversationRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.PostRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
+import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import com.eikh.happyprogramming.utils.RoleUtils;
 import java.util.ArrayList;
@@ -54,6 +56,12 @@ public class CourseController {
 
     @Autowired
     ParticipateRepository participateRepository;
+
+    @Autowired
+    private ConversationRepository conversationRepository;
+
+    @Autowired
+    private User_ConversationRepository user_ConversationRepository;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -224,13 +232,12 @@ public class CourseController {
      * Get Mentor and Mentee of course
      */
     @GetMapping("/find-user/{courseId}")
-    List<User> getUserOfCourse( @PathVariable Integer courseId,
+    List<User> getUserOfCourse(@PathVariable Integer courseId,
             @RequestParam(defaultValue = "1") Integer statusId
     ) {
         return userRepository.getUserOfCourseByStatusId(courseId, statusId);
     }
 
-   
     /**
      * @author maiphuonghoang
      *
@@ -281,8 +288,9 @@ public class CourseController {
             for (Category c : newCourse.getCategories()) {
                 categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
             }
-//             Insert admin into participate table
+//             Insert admin into participate table          
             participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
+
             return ResponseEntity.ok(newCourse);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -317,10 +325,11 @@ public class CourseController {
 
     @GetMapping("ratingCourse/{username}")
     public ResponseEntity<?> ratingCourse(@PathVariable("username") String username,
-            HttpServletRequest request){
+            HttpServletRequest request) {
         String usernameMentee = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
         return ResponseEntity.ok(courses);
     }
+
 
 }
