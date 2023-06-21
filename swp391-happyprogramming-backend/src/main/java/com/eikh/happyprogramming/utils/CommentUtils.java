@@ -5,6 +5,7 @@ import com.eikh.happyprogramming.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class CommentUtils {
     @Autowired
@@ -22,5 +23,10 @@ public class CommentUtils {
         }
 
     }
+
+//    public String decodeHtmlEntity(String encodedString){
+//        String decodedString = StringEscapeUtils.un;
+//        return  decodedString;
+//    }
 
 }
