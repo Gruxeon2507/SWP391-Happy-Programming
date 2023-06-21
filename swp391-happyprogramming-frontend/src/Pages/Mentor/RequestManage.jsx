@@ -9,6 +9,7 @@ import manageIcon from "../../Assets/208-2081675_link-to-manage-travel-ttc-line-
 import statisticIcon from "../../Assets/1466735.png"
 import "./RequestManage.css"
 import NavBar from "../../Components/Navbar/NavBar";
+import Paging from "../../Components/Pagination/Paging";
 
 const RequestManage = () => {
     const [teachCourses, setTeachCourses] = useState([]);
@@ -264,17 +265,13 @@ const RequestManage = () => {
                             </tbody>
                         </table>
                         <div className="Pagination-Container">
-                            <Pagination
-                                total={totalItems}
-                                defaultPageSize={sizePerPage}
-                                showTotal={(total, range) =>
-                                    `${range[0]}-${range[1]} of ${total} mentees`
-                                }
-                                current={currentPage}
-                                onChange={(current) => {
-                                    handlePageChange(current);
-                                }}
-                            />
+                            <Paging {...{
+                                totalItems,
+                                sizePerPage,
+                                currentPage,
+                                handlePageChange,
+                                name: "requests"
+                            }} />
                         </div>
 
                         <p>Your Recent Respond</p>
