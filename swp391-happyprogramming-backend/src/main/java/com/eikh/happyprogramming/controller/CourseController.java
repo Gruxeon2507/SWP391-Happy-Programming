@@ -324,21 +324,25 @@ public class CourseController {
     }
 
     @PostMapping("/allmy")
-    ResponseEntity<Page<Course>> findMyCourses(
-            @RequestParam String searchText,
+    ResponseEntity<Page<Participate>> findMyCourses(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "") String searchText,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "c.courseId") String sortField,
             @RequestParam(defaultValue = "asc") String sortOrder,
-            @RequestParam String username,
-            @RequestParam("participateRoles") Integer[] participateRoles,
-            @RequestParam("statusIds") Integer[] statusIds
-            ) {
+            @RequestParam(defaultValue = "1,2,3") Integer[] participateRoles,
+            @RequestParam(defaultValue = "0,1,-1") Integer[] statusIds
+    ) {
+
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-
-        return new ResponseEntity<>(courseRepository.findAllMyCourse(pageable, username, participateRoles, statusIds, searchText), HttpStatus.OK);
+        return new ResponseEntity<>(participateRepository.findAllMyCourse(pageable, username, participateRoles, statusIds, searchText), HttpStatus.OK);
 
     }
+    
+    
 
 }

@@ -12,6 +12,8 @@ import com.eikh.happyprogramming.modelkey.ParticipateKey;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.hibernate.annotations.Parent;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -55,4 +57,13 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
 
     @Query(value = "select * from Participate p where p.username = ?1 and courseId = ?2", nativeQuery = true)
     public Participate findByUsernameCourseId(String username, int courseId);
+
+    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
+            + "           JOIN Course c ON p.courseId = c.courseId \n"
+            + "           JOIN ParticipateRole r ON r.participateRole = p.participateRole \n"
+            + "                     JOIN `Status` s ON s.statusId = p.statusId \n"
+            + "                      where u.username = :username \n"
+            + "                      AND p.participateRole IN :participateRoles AND s.statusId IN :statusIds\n"
+            + "                      AND c.courseName LIKE %:searchText% ", nativeQuery = true)
+    Page<Participate> findAllMyCourse(Pageable pageable, String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
 }

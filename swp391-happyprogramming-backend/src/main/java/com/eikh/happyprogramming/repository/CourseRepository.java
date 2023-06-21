@@ -93,13 +93,13 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     public List<Course> getCourseOfMentor(String username);
     
     
-    // @maiphuonghoang
-    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n" +
-"           JOIN Course c ON p.courseId = c.courseId \n" +
-"           JOIN ParticipateRole r ON r.participateRole = p.participateRole \n" +
-"                     JOIN `Status` s ON s.statusId = p.statusId \n" +
-"                      where u.username = :username \n" +
-"                      AND p.participateRole IN :participateRoles AND s.statusId IN :statusIds\n" +
-"                      AND c.courseName LIKE %:searchText% ", nativeQuery = true)
-    Page<Course> findAllMyCourse(Pageable pageable,String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
+//    // @maiphuonghoang
+//    @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n" +
+//"           JOIN Course c ON p.courseId = c.courseId \n" +
+//"           JOIN ParticipateRole r ON r.participateRole = p.participateRole \n" +
+//"                     JOIN `Status` s ON s.statusId = p.statusId \n" +
+//"                      where u.username = :username \n" +
+//"                      AND p.participateRole IN :participateRoles AND s.statusId IN :statusIds\n" +
+//"                      AND c.courseName LIKE %:searchText% ", nativeQuery = true)
+//    Page<Course> findAllMyCourse(Pageable pageable,String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
 }

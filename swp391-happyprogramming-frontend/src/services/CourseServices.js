@@ -54,5 +54,16 @@ class CourseServices {
     return api.get("/api/courses/by-mentor")
   }
 
+  getPageMyCourses(pageNumber, pageSize, searchText, participateRoles, statusIds){
+    const formData = new FormData();
+    formData.append("pageNumber", pageNumber);
+    formData.append("pageSize", pageSize);
+    formData.append("searchText", searchText)
+    formData.append("participateRoles", participateRoles)
+    formData.append("statusIds", statusIds)
+    console.log("dang goi api", participateRoles, statusIds);
+    return api.post("/api/courses/allmy", formData);
+  }
+
 }
 export default new CourseServices();
