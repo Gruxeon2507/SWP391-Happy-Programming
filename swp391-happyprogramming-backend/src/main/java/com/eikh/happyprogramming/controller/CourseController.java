@@ -323,13 +323,22 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @GetMapping("ratingCourse/{username}")
-    public ResponseEntity<?> ratingCourse(@PathVariable("username") String username,
-            HttpServletRequest request) {
-        String usernameMentee = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-        List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
-        return ResponseEntity.ok(courses);
-    }
+    @PostMapping("/allmy")
+    ResponseEntity<Page<Course>> findMyCourses(
+            @RequestParam String searchText,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "c.courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam String username,
+            @RequestParam("participateRoles") Integer[] participateRoles,
+            @RequestParam("statusIds") Integer[] statusIds
+            ) {
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
+        return new ResponseEntity<>(courseRepository.findAllMyCourse(pageable, username, participateRoles, statusIds, searchText), HttpStatus.OK);
+
+    }
 
 }
