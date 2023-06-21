@@ -16,7 +16,7 @@ const Comment = ({ comment, layer }) => {
   const replyRef = useRef(null);
   const [replies, setReplies] = useState([]);
 
-  useEffect(() => {}, [replies]);
+  useEffect(() => { }, [replies]);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -93,11 +93,10 @@ const Comment = ({ comment, layer }) => {
     <>
       {/* <div style={{ marginBottom: "-10px" }}>Input: {input}</div> */}
       <h1 style={{ marginBottom: "0px" }}>
-        {`${
-          comment.user && comment.user.displayName
+        {`${comment.user && comment.user.displayName
             ? comment.user.displayName
             : "Username failed to load"
-        } `}
+          } `}
       </h1>
       {/* <div className="pcw-content" dangerouslySetInnerHTML={{ __html: post.postContent }} */}
 
@@ -107,8 +106,8 @@ const Comment = ({ comment, layer }) => {
         suppressContentEditableWarning={editMode}
         style={{ marginTop: "0", resize: "none" }}
         ref={inputRef}
-        // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
-        // value={comment.commentContent}
+      // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
+      // value={comment.commentContent}
       >
         {decodeHtmlEntities(comment.commentContent)}
       </h1>
