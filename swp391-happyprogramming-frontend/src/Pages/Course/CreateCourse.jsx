@@ -24,6 +24,8 @@ function CreateCourse() {
   const [temp, setTemp] = useState([]);
 
   const handleSubmit = async (event) => {
+    alert("created successfullty");
+
     event.preventDefault();
     // insert into Course + CourseCategories + Participate admin
     const response = await CourseServices.createCourse(course);
@@ -107,6 +109,7 @@ function CreateCourse() {
               <td>
                 <input
                   type="text"
+                  required
                   placeholder="Input course name"
                   onChange={(e) =>
                     setCourse({

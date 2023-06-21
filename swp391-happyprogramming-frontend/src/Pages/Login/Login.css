@@ -27,7 +27,8 @@
   height: calc(100svh - 100px);
   width: 100%;
   z-index: 1;
-  /* filter: blur(150px); */
+  /* background-color: red; */
+  filter: blur(150px);
 }
 .addition-color .color {
   position: absolute;
