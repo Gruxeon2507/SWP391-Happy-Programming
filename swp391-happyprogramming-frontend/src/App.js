@@ -40,6 +40,7 @@ import PostDetail from "./Pages/PostDetail/PostDetail";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import VerifyDialog from "./Components/RegisterForm/VerifyDialog";
+import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 function App() {
 
   // console.log(features);
@@ -104,11 +105,12 @@ function App() {
         path="/mycourse"
         element={
           <PrivateRoute
-            component={MyCourse}
+            component={MyCourseHistory}
             roles={["mentee", "mentor", "admin"]}
           />
         }
       />
+
 
       <Route
         path="/setting"
