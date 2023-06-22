@@ -67,6 +67,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Skill> skills;
 
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
