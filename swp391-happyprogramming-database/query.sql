@@ -159,3 +159,12 @@ SELECT * FROM Conversation where conversationId = 27
 
 SELECT * FROM Request re WHERE re.username = 'phuonghm' and courseId = 17;
 SELECT * FROM Participate WHERE username = 'phuonghm' and courseId = 17
+
+
+SELECT * FROM `User` u JOIN Participate p ON u.username = p.username 
+           JOIN Course c ON p.courseId = c.courseId
+           JOIN ParticipateRole r ON r.participateRole = p.participateRole
+                     JOIN `Status` s ON s.statusId = p.statusId
+                      where u.username = "phuongmentor" 
+                      AND p.participateRole IN (1,2,3) AND p.statusId IN (0,1,-1)
+                      AND c.courseName LIKE '%%'

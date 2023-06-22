@@ -54,5 +54,37 @@ class CourseServices {
     return api.get("/api/courses/by-mentor")
   }
 
+  getPageMyCourses(pageNumber, pageSize, searchText, checked){
+    var participateRoles = [];
+    var statusIds = [];
+    if (checked.length > 0) {
+      checked.forEach((item) => {
+            if (item === 'teaching') {
+              participateRoles = [...participateRoles, 2];
+              statusIds = [...statusIds, 1];
+            }
+            else if (item === 'access') {
+              participateRoles = [...participateRoles, 3];
+              statusIds = [...statusIds, 1];
+            } else if (item === 'pending') {
+              participateRoles = [...participateRoles, 3];
+              statusIds = [...statusIds, 0];
+            }
+            else if (item === 'reject') {
+              participateRoles = [...participateRoles, 3];
+              statusIds = [...statusIds, -1];
+            }
+          })
+        }
+    const formData = new FormData();
+    formData.append("pageNumber", pageNumber);
+    formData.append("pageSize", pageSize);
+    formData.append("searchText", searchText)
+    formData.append("participateRoles", participateRoles)
+    formData.append("statusIds", statusIds)
+    console.log("dang goi api", participateRoles, statusIds);
+    return api.post("/api/courses/allmy", formData);
+  }
+
 }
 export default new CourseServices();

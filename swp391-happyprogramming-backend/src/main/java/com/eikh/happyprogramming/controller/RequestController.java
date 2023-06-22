@@ -18,6 +18,7 @@ import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import com.eikh.happyprogramming.utils.RoleUtils;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,13 +105,7 @@ public class RequestController {
         try {
             transactionTemplate.execute(status -> {
                 try {
-
-                    java.util.Date today = new java.util.Date();
-                    java.sql.Date sqlToday = new java.sql.Date(today.getTime());
                     Status s = new Status();
-                    RequestKey key = new RequestKey();
-                    key.setCourseId(courseId);
-                    key.setRequestTime(sqlToday);
                     s.setStatusId(statusId);
 
                     User mentor = userRepository.getMentorOfCourse(courseId);
@@ -118,6 +113,9 @@ public class RequestController {
 
                     for (String username : usernames) {
                         String menteeName = username;
+                        RequestKey key = new RequestKey();
+                        key.setCourseId(courseId);
+                        key.setRequestTime(new Timestamp(System.currentTimeMillis()));
                         Request r = new Request();
                         key.setUsername(username);
                         r.setStatus(s);
@@ -195,22 +193,20 @@ public class RequestController {
         transactionTemplate.execute(status -> {
             try {
                 Request r = new Request();
-                java.util.Date today = new java.util.Date();
-                java.sql.Date sqlToday = new java.sql.Date(today.getTime());
                 Status s = new Status();
                 RequestKey key = new RequestKey();
                 key.setUsername(username);
                 key.setCourseId(courseId);
-                key.setRequestTime(sqlToday);
+                key.setRequestTime(new Timestamp(System.currentTimeMillis()));
                 s.setStatusId(0);
                 r.setStatus(s);
                 r.setRequestKey(key);
                 Participate exitParticipate = participateRepository.findByUsernameCourseId(username, courseId);
                 if (exitParticipate == null) {
                     participateRepository.saveParticipate(username, courseId, 3, 0);
-                }
-                else
+                } else {
                     participateRepository.updateStatus(0, courseId, username);
+                }
                 requestRepository.save(r);
                 return "Participate update/save and Request save success";
             } catch (Exception ex) {

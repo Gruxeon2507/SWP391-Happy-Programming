@@ -6,6 +6,7 @@ package com.eikh.happyprogramming.modelkey;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 import javax.persistence.Embeddable;
 import lombok.*;
 
@@ -22,5 +23,5 @@ public class RequestKey implements Serializable{
 
     private int courseId;
     private String username;
-    private Date requestTime;
+    private Timestamp requestTime;
 }

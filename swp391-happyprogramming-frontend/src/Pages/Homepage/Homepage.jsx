@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
-import { Pagination } from "antd";
+// import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../Homepage/Homepage.css";
@@ -40,6 +40,7 @@ import c10 from "../../Assets/hpyproBG-blue/b-bg-10.png";
 import c11 from "../../Assets/hpyproBG-blue/b-bg-11.png";
 import c8 from "../../Assets/hpyproBG-blue/b-bg-12.png";
 import c13 from "../../Assets/hpyproBG-blue/b-bg-13.png";
+import Paging from "../../Components/Pagination/Paging";
 
 function Homepage() {
   const navigate = useNavigate();
@@ -294,18 +295,16 @@ function Homepage() {
 
           {/* ====================region Pagination==================== */}
           <div className="Pagination-Container">
-            <Pagination
-              total={totalItems}
-              defaultPageSize={sizePerPage}
-              showTotal={(total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`
-              }
-              current={currentPage}
-              onChange={(current) => {
-                handlePageChange(current);
-              }}
-            />
+            <Paging {...{
+              totalItems,
+              sizePerPage,
+              currentPage,
+              handlePageChange,
+              name: "courses"
+            }} />
           </div>
+
+
         </section>
       </main>
       {/* ====================End region Pagination==================== */}
