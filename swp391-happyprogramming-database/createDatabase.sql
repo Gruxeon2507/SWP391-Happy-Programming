@@ -242,6 +242,27 @@ CREATE TABLE Attachment
 ALTER TABLE Attachment ADD CONSTRAINT FK_Attachment_Post FOREIGN KEY(postId)
 REFERENCES Post(postId);
 
+CREATE TABLE Notification
+(
+	notificationId int NOT NULL AUTO_INCREMENT,
+    notificationContent longtext,
+    notificationTime Date,
+    notificationTypeId int,
+    notificationTo varchar(255),
+    CONSTRAINT PK_Notification PRIMARY KEY (notificationId)
+);
+ALTER TABLE Notification ADD CONSTRAINT FK_Notification_User FOREIGN KEY(notificationTo) 
+REFERENCES `User`(username);
+
+CREATE TABLE NotificationType
+(
+	notificationTypeId int NOT NULL AUTO_INCREMENT,
+    notificationTypeName varchar(255),
+    CONSTRAINT PK_NotificationType PRIMARY KEY(notificationTypeId)
+);
+
+ALTER TABLE Notification ADD CONSTRAINT FK_Notification_NotificationType FOREIGN KEY (notificationTypeId)
+REFERENCES NotificationType(notificationTypeId);
 /*
 SELECT * FROM Feature 
 SELECT * FROM Role 
