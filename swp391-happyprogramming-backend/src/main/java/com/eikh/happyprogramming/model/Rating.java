@@ -32,6 +32,7 @@ public class Rating implements Serializable{
     
     private int noStar;
     private String ratingComment;
+    // thoi gian
     
     @ManyToOne
     @MapsId("ratedFromUser")
