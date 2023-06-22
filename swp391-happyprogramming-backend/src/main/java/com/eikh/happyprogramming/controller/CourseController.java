@@ -253,7 +253,7 @@ public class CourseController {
     }
 
     @GetMapping("/courseDetails/{courseId}")
-    public List<Course> getCourseByID(@PathVariable Integer courseId) {
+    public Course getCourseByID(@PathVariable Integer courseId) {
         return courseRepository.findByCourseId(courseId);
     }
 

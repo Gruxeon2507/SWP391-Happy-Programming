@@ -2,10 +2,10 @@ USE FU_SWP391_HappyProgramming;
 INSERT INTO NotificationType(notificationTypeName) VALUES ('request');
 INSERT INTO NotificationType(notificationTypeName) VALUES ('ban');
 
-INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test',1,duckm,false);
-INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test2',1,duckm,false);
-INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test3',1,duckm,false);
-INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test4',1,duckm,false);
+INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test',1,'duckm',false);
+INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test2',1,'duckm',false);
+INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test3',1,'duckm',false);
+INSERT INTO Notification(notificationContent,notificationTypeId,notificationTo,isViewed) VALUES ('test4',1,'duckm',false);
 
 SELECT * from Notification
 -- CREATE TABLE Notification

@@ -44,5 +44,10 @@ class RequestService {
     console.log(`/api/requests/send?courseId=${courseId}`);
     return api.post(`/api/requests/send?courseId=${courseId}`);
   }
+
+  //phuong 
+  getMyAccessRejectRequet() {
+    return api.get(`/api/requests/my`);
+  }
 }
 export default new RequestService();

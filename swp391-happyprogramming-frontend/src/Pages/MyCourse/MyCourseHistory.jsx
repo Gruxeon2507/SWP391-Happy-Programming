@@ -89,6 +89,8 @@ const MyCourseHistory = () => {
     useEffect(() => {
         getResults();
     }, [checked]);
+
+
     return (
         <>
             <NavBar mode={1} />
@@ -139,6 +141,8 @@ const MyCourseHistory = () => {
                     </div>
                 ))}
             </div>
+
+
         </>
     );
 }

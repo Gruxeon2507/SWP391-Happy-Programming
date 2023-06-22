@@ -41,6 +41,8 @@ import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import VerifyDialog from "./Components/RegisterForm/VerifyDialog";
 import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
+import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
+
 function App() {
 
   // console.log(features);
@@ -110,7 +112,15 @@ function App() {
           />
         }
       />
-
+      <Route
+        path="/myrequest"
+        element={
+          <PrivateRoute
+            component={MyRequestHistory}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
 
       <Route
         path="/setting"

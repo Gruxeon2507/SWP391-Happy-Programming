@@ -36,7 +36,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     Page<Course> findAllSearch(Pageable pageable, String searchText);
 
     // @maiphuonghoang
-    public List<Course> findByCourseId(int courseId);
+    public Course findByCourseId(int courseId);
 
     @Query(value = "SELECT * FROM `User` u JOIN Participate p ON u.username = p.username \n"
             + "				  JOIN Course c ON p.courseId = c.courseId\n"
