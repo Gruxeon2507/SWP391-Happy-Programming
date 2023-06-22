@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import UserServices from "../../services/UserServices";
+import api from "../../services/BaseAuthenticationService";
 
 var stompClient = null;
 
 const Notification = () => {
-  const[notification,setNotification] = useState([]);
-  const[isViewed,setIsViewed] = useState(true);
+  const [notifications, setNotification] = useState([]);
+  const [newNotifications, setNewnotification] = useState([]);
+
+  const [isViewed, setIsViewed] = useState(true);
   const [userData, setUserData] = useState({
     username: "",
     receivername: "",
@@ -40,6 +43,11 @@ const Notification = () => {
       case "JOIN":
         break;
       case "MESSAGE":
+        setNewnotification((prevNotification) => [
+          payloadData,
+          ...prevNotification
+        ]);
+        setIsViewed(false);
         break;
     }
   };
@@ -53,26 +61,46 @@ const Notification = () => {
       const username = loginuser.data;
       setUserData((prevUserData) => ({ ...prevUserData, username: username }));
     };
-    const getUserNotification = async () =>{
-      const result = await api.get("");  
+    const getUserNotification = async () => {
+      const result = await api.get(
+        "http://localhost:1111/api/notification/all"
+      );
+      setNotification(result.data);
+      result.data.forEach((notification) => {
+        if (!notification.isViewed) {
+          setIsViewed(false);
+        }
+      });
     };
-
+    getUserNotification();
     fetchUsername();
   }, []);
 
   useEffect(() => {
-    if (userData.username !== '') {
+    if (userData.username !== "") {
       connect();
     }
-  
-    return () => {
-      if (stompClient) {
-        stompClient.disconnect();
-      }
-    };
+
+    // return () => {
+    //   if (stompClient) {
+    //     stompClient.disconnect();
+    //   }
+    // };
   }, [userData.username]);
-  return(
+
+  useEffect(() => {}, [notifications]);
+  console.log(newNotifications);
+  return (
     <>
+      <h1>notification</h1>
+      <ul>
+        {newNotifications.map((newNotification) => (
+          <li>{newNotification.message}</li>
+        ))}
+        {notifications.map((notification) => (
+          <li>{notification.notificationContent}</li>
+        ))}
+      </ul>
     </>
   );
 };
