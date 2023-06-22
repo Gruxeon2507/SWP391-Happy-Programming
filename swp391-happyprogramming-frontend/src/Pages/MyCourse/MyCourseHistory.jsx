@@ -31,18 +31,16 @@ const MyCourseHistory = () => {
             }));
         });
     };
-    const mapMentor = (courses) => {
-        courses.forEach((course) => {
-          getMentorOfCourses(course.courseId);
-        });
-      };
+
 
     const getPageMyCourses = (pageSize, sizePerPage, searchText, checked) => {
         ParticipateServices.getPageMyCourses(0, 10, searchText, checked)
             .then((response) => {
                 setCourses(response.data.content);
                 setTotalItems(response.data.totalElements);
-                mapMentor(response.data.content)
+                response.data.content.forEach((participate) => {
+                    getMentorOfCourses(participate.course.courseId);
+                  });
             })
             .catch((error) => {
                 console.log("loi lay ra course" + error);
@@ -94,7 +92,7 @@ const MyCourseHistory = () => {
     return (
         <>
             <NavBar mode={1} />
-
+            
             <div className="myCourse-body">
                 <div className="course-card">
                     <div className="RejectCourse">
