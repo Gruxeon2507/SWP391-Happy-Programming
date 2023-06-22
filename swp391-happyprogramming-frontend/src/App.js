@@ -105,20 +105,12 @@ function App() {
         path="/mycourse"
         element={
           <PrivateRoute
-            component={MyCourse}
-            roles={["mentee", "mentor", "admin"]}
-          />
-        }
-      />
-            <Route
-        path="/mycoursehistory"
-        element={
-          <PrivateRoute
             component={MyCourseHistory}
             roles={["mentee", "mentor", "admin"]}
           />
         }
       />
+
 
       <Route
         path="/setting"
