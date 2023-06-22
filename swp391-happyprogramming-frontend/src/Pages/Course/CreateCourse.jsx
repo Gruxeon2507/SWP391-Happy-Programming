@@ -11,39 +11,91 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 function CreateCourse() {
+  const INVALID_COURSENAME_MSG =
+    "Course name must not be empty and must not contain special";
+  const INVALID_COURSEDESC_MSG = "Course description must not be empty";
+  const EMPTY_MENTORLIST_MSG =
+    "You must choose at least 1 mentor for the course.";
+
   const [course, setCourse] = useState({
     courseName: "",
     courseDescription: "",
     categories: [],
-    mentor: "",
+    mentors: [],
   });
   const [categories, setCategories] = useState([]);
   const [mentors, setMentors] = useState([]);
-  const [selectedMentor, setSelectedMentor] = useState({});
+  const [selectedMentors, setSelectedMentors] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [temp, setTemp] = useState([]);
+  const [tempCategories, setTempCategories] = useState([]);
+  const [tempMentors, setTempMentors] = useState([]);
 
   const handleSubmit = async (event) => {
+    console.log("You clicked submit");
     event.preventDefault();
+    if (!validateCourseAtCreation(course)) {
+      return;
+    }
     // insert into Course + CourseCategories + Participate admin
     const response = await CourseServices.createCourse(course);
     const newCourse = response.data;
 
     // insert mentor into Participate table
     const courseId = newCourse.courseId;
-    const username = course.mentor;
-    ParticipateServices.saveParticipate(username, courseId, 2, 1);
+    const mentors = course.mentors.map((m) => m.username);
+    ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
+  };
+
+  const handleChangeCourseName = (e) => {
+    setCourse({
+      ...course,
+      courseName: e.target.value.trim(),
+    });
+  };
+
+  const handleChangeCourseDescription = (e) => {
+    setCourse({
+      ...course,
+      courseDescription: e.target.value.trim(),
+    });
+  };
+
+  const validateCourseName = (str) => {
+    if (str.trim().length == 0) return false;
+    var pattern = /[!@#$%^&*().?":{}|<>]/;
+    return !pattern.test(str);
+  };
+
+  const validateCourseDescription = (str) => {
+    if (str.trim().length == 0) return false;
+    return true;
+  };
+
+  const validateCourseAtCreation = (course) => {
+    if (!validateCourseName(course.courseName)) {
+      alert(INVALID_COURSENAME_MSG);
+      return false;
+    }
+    if (!validateCourseDescription(course.courseDescription)) {
+      alert("COURSE DESC: " + course.courseDescription + INVALID_COURSEDESC_MSG);
+      
+      return false;
+    }
+    if (course.mentors.length == 0) {
+      alert(EMPTY_MENTORLIST_MSG);
+      return false;
+    }
+    return true;
   };
 
   const selectMentor = (mentor) => {
-    setSelectedMentor(mentor);
+    setSelectedMentors(mentor);
     setCourse({
       ...course,
       mentor: mentor,
     });
     return mentor;
   };
-  console.log(course.mentor);
 
   const selectCategories = (categoryId) => {
     setSelectedCategories((current) => {
@@ -62,8 +114,6 @@ function CreateCourse() {
       }
     });
   };
-  console.log(selectedCategories);
-  console.log(selectedCategories.length + " categories selected");
 
   useEffect(() => {
     CategoryServices.getAllCategories().then((res) => setCategories(res.data));
@@ -71,23 +121,23 @@ function CreateCourse() {
   useEffect(() => {
     PublicService.getActiveMentors().then((res) => setMentors(res.data));
   }, []);
-  // const options = categories.map((cate) => {
-  //   return { value: cate.categoryId, label: cate.categoryName };
-  // });
 
   useEffect(() => {
     // Update the course state whenever selectedCategories change
-    setSelectedCategories(temp.map((c) => ({ categoryId: c.value })));
-
-  }, [temp]);
+    setSelectedCategories(tempCategories.map((c) => ({ categoryId: c.value })));
+  }, [tempCategories]);
 
   useEffect(() => {
     setCourse((prevCourse) => ({
       ...prevCourse,
       categories: selectedCategories,
+      mentors: selectedMentors,
     }));
-  }, [selectedCategories])
+  }, [selectedCategories, selectedMentors]);
 
+  useEffect(() => {
+    setSelectedMentors(tempMentors.map((m) => ({ username: m.value })));
+  }, [tempMentors]);
   return (
     <>
       <div className="createCourse-container">
@@ -108,12 +158,7 @@ function CreateCourse() {
                 <input
                   type="text"
                   placeholder="Input course name"
-                  onChange={(e) =>
-                    setCourse({
-                      ...course,
-                      courseName: e.target.value,
-                    })
-                  }
+                  onChange={(e) => handleChangeCourseName(e)}
                 ></input>
               </td>
             </tr>
@@ -124,13 +169,8 @@ function CreateCourse() {
               <td>
                 <textarea
                   type="text"
-                  placeholder="Input course Description:"
-                  onChange={(e) =>
-                    setCourse({
-                      ...course,
-                      courseDescription: e.target.value,
-                    })
-                  }
+                  placeholder="Input course description"
+                  onChange={(e) => handleChangeCourseDescription(e)}
                 ></textarea>
               </td>
             </tr>
@@ -146,9 +186,9 @@ function CreateCourse() {
                   }))}
                   isMulti
                   isSearchable
-                  value={temp}
+                  value={tempCategories}
                   onChange={(values) => {
-                    setTemp(values);
+                    setTempCategories(values);
                   }}
                 />
               </td>
@@ -160,7 +200,20 @@ function CreateCourse() {
             </tr>
             <tr>
               <td colSpan={2}>
-                {mentors.map((mentor) => (
+                <Select
+                  options={mentors.map((mentor) => ({
+                    value: mentor.username,
+                    label: mentor.displayName,
+                  }))}
+                  isMulti
+                  isSearchable
+                  value={tempMentors}
+                  onChange={(values) => {
+                    setTempMentors(values);
+                  }}
+                />
+
+                {/* {mentors.map((mentor) => (
                   <div key={mentor.username}>
                     <input
                       type="radio"
@@ -174,7 +227,7 @@ function CreateCourse() {
                       {mentor.displayName} ({mentor.username})
                     </label>
                   </div>
-                ))}
+                ))} */}
               </td>
             </tr>
             <tr>

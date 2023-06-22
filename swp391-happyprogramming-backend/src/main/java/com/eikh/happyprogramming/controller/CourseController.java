@@ -273,7 +273,7 @@ public class CourseController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createCourse(@RequestBody Course course, HttpServletRequest request) {
+    public ResponseEntity<?> creatcreateeCourse(@RequestBody Course course, HttpServletRequest request) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         User adminUser = userRepository.userHasRole(username, 1);

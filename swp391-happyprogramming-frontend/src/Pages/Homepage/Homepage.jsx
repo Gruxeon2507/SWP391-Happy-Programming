@@ -133,11 +133,11 @@ function Homepage() {
       }));
     });
   };
-  useEffect(() => {
-    pageCourses.forEach((course) => {
-      getMentorOfCourses(course.courseId);
-    });
-  }, [pageCourses]);
+  // useEffect(() => {
+  //   pageCourses.forEach((course) => {
+  //     getMentorOfCourses(course.courseId);
+  //   });
+  // }, [pageCourses]);
 
   var searchText = encodeURIComponent(condition).replace(/%20/g, "%20")
   useEffect(() => {
@@ -284,9 +284,9 @@ function Homepage() {
                 >
                   <span>{course.courseName}</span>
                 </div>
-                <div className="course-desc">
+                {/* <div className="course-desc">
                   <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>

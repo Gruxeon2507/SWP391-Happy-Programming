@@ -53,20 +53,23 @@ public class ParticipateController {
     CourseRepository courseRepository;
 
     @PostMapping("/save")
-    public void saveCourseParticipate(@RequestParam("username") String username, @RequestParam("courseId") int courseId, @RequestParam("participateRoleId") int participateRoleId, @RequestParam("statusId") int statusId, HttpServletRequest request) {
+    public void saveCourseParticipate(@RequestParam("mentorUsernames") List<String> mentorUsernames, @RequestParam("courseId") int courseId, @RequestParam("participateRoleId") int participateRoleId, @RequestParam("statusId") int statusId, HttpServletRequest request) {
         String usn = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         User u = userRepository.userHasRole(usn, 1);
         if (u != null) {
             //insert mentor
-            participateRepository.saveParticipate(username, courseId, 2, 1);
-            
+            for (String mentorUsername : mentorUsernames) {
+                participateRepository.saveParticipate(mentorUsername, courseId, 2, 1);
+            }
             Course course = courseRepository.ducFindByCourseId(courseId);
             //Tạo conversation cho course mới vừa tạo 
             conversationRepository.insertConversation(course.getCourseName());
             Conversation newCon = conversationRepository.findByConversationName(course.getCourseName());
             //Insert mentor vào group chat vừa tạo 
             int conversationId = newCon.getConversationId();
-            user_ConversationRepository.insertUserConversation(username, conversationId);
+            for (String mentorUsername : mentorUsernames) {
+                user_ConversationRepository.insertUserConversation(mentorUsername, conversationId);
+            }
         } else {
             User u1 = userRepository.userHasRole(usn, 3);
             if (u1 != null) {
