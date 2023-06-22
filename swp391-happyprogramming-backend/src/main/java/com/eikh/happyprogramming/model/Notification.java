@@ -1,5 +1,6 @@
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +23,10 @@ public class Notification implements Serializable {
 
     private String notificationContent;
     private Timestamp notificationTime;
-
+    private Boolean isViewed;
     @ManyToOne
     @JoinColumn(name = "notificationTo")
+    @JsonIgnore
     private User user;
 
     @ManyToOne

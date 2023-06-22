@@ -1,5 +1,6 @@
 package com.eikh.happyprogramming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class NotificationType implements Serializable {
     private String notificationTypeName;
 
     @OneToMany(mappedBy = "notificationType")
+    @JsonIgnore
     private List<Notification> notifications;
 
 }

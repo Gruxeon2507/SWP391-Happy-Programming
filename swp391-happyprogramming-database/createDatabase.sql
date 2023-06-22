@@ -249,6 +249,7 @@ CREATE TABLE Notification
     notificationTime Date,
     notificationTypeId int,
     notificationTo varchar(255),
+    isViewed bool,
     CONSTRAINT PK_Notification PRIMARY KEY (notificationId)
 );
 ALTER TABLE Notification ADD CONSTRAINT FK_Notification_User FOREIGN KEY(notificationTo) 
