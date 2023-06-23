@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "../Navbar/NavBar.css";
@@ -7,6 +7,7 @@ import basicAvatar from "../../Assets/base_user_img.png";
 import UserServices from "../../services/UserServices";
 
 function SettingBar(props) {
+    const toggleRef = useRef(null);
     const [navSettingOpen, setNavSettingOpen] = useState(false);
     const [userDisplayName, setUserDisplayName] = useState();
     const navigate = useNavigate();
@@ -36,6 +37,7 @@ function SettingBar(props) {
         const elements = document.querySelectorAll('.active');
         elements.forEach((element) => {
             element.classList.remove('active');
+
         });
     }
 
@@ -44,12 +46,28 @@ function SettingBar(props) {
 
     const navSettingClass = navSettingOpen ? "pf-dropdown active" : "pf-dropdown";
 
+    useEffect(() => {
+        let handler = (e) => {
+            try {
+                if (!toggleRef.current.contains(e.target)) {
+                    setNavSettingOpen(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+    });
+
     return (
         <div className="SettingBar">
-            <div className={navSettingClass} onClick={() => {
-                removeActiveClass();
-                setNavSettingOpen(!navSettingOpen);
-            }}>
+            <div
+                ref={toggleRef}
+                className={navSettingClass}
+                onClick={() => {
+                    removeActiveClass();
+                    setNavSettingOpen(!navSettingOpen);
+                }}>
                 <div className="avatar">
                     <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                 </div>

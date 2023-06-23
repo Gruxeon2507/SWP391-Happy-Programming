@@ -1,22 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import UserServices from "../../services/UserServices";
 import api from "../../services/BaseAuthenticationService";
+import notiIcon from "../../Assets/NotiIcon_512x512.png"
+import { NavLink } from "react-router-dom";
 
 var stompClient = null;
 
 const Notification = () => {
+  const toggleRef = useRef(null);
   const [notifications, setNotification] = useState([]);
   const [newNotifications, setNewnotification] = useState([]);
 
+  const [openNotiList, setOpenNotiList] = useState(false);
+
   const [isViewed, setIsViewed] = useState(true);
+
   const [userData, setUserData] = useState({
     username: "",
     receivername: "",
     connected: true,
     message: "",
   });
+
+
+  useEffect(() => {
+    let handler = (e) => {
+      try {
+        if (!toggleRef.current.contains(e.target)) {
+          setOpenNotiList(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+  });
+
+
   const connect = () => {
     let Sock = new SockJS("http://localhost:1111/ws");
     stompClient = over(Sock);
@@ -88,20 +110,40 @@ const Notification = () => {
     // };
   }, [userData.username]);
 
-  useEffect(() => {}, [notifications]);
+  useEffect(() => { }, [notifications]);
   console.log(newNotifications);
+
+  const notiClass = !isViewed ? "viewMark " : "viewMark view";
+
+  const notiListClass = openNotiList ? "noti-list active" : "noti-list";
+
   return (
-    <>
-      <h1>notification</h1>
-      <ul>
-        {newNotifications.map((newNotification) => (
-          <li>{newNotification.message}</li>
-        ))}
-        {notifications.map((notification) => (
-          <li>{notification.notificationContent}</li>
-        ))}
-      </ul>
-    </>
+    <div className="noti-container" ref={toggleRef} onClick={() => {
+      setOpenNotiList(!openNotiList);
+      setIsViewed(true);
+    }}>
+      {/* <span>view?{isViewed ? "t" : "f"} </span> */}
+      <div className="noti-toggle">
+        <img src={notiIcon}></img>
+      </div>
+      <div className={notiClass}></div>
+
+      <div className={notiListClass}>
+        <span>Notification</span>
+        <ul>
+          {newNotifications.map((newNotification) => (
+            <li>
+              <NavLink to={"/"}>{newNotification.message}</NavLink>
+            </li>
+          ))}
+          {notifications.map((notification) => (
+            <li>
+              <NavLink to={"/"}>{notification.notificationContent}</NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
 
