@@ -133,7 +133,12 @@ const RequestManage = () => {
                 console.log(response.data);
                 setCheckedRequest([])
                 getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
-                sendPrivateValue(username,"Your request to the course "+selectedCourseId +" has been rejected")
+                if(statusId!==1){
+                    sendPrivateValue(username,"Your request to the course "+selectedCourseId +" has been rejected")
+                }else{
+                    sendPrivateValue(username,"Your request to the course "+selectedCourseId +" has been accepted")
+
+                }
                 
                 })
                 .catch((error) => {
@@ -150,7 +155,17 @@ const RequestManage = () => {
                     console.log(response.data);
                     setCheckedRequest([])
                     getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
-                })
+                    if(statusId!==1){
+                        selectedValue.forEach(username => {
+                            alert("hihi")
+                            sendPrivateValue(username,"Your request to the course "+selectedCourseId +" has been rejected")
+                        });
+                    }else{
+                        selectedValue.forEach(username => {
+                            sendPrivateValue(username,"Your request to the course "+selectedCourseId +" has been accepted")
+                        });
+                    }
+                    })
                 .catch((error) => {
                     console.log("loi update and insert" + error);
                 });
