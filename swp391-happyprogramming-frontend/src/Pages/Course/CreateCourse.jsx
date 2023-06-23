@@ -32,8 +32,6 @@ function CreateCourse() {
   const [courseWithName, setCourseWithName] = useState([]);
 
   const handleSubmit = async (event) => {
-    alert("created successfullty");
-
     event.preventDefault();
     if (!(await validateCourseAtCreation(course))) {
       return;

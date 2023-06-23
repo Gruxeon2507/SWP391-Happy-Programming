@@ -89,3 +89,4 @@ INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportType
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'huyenntk', '2023-06-02', '', '8');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuonghm', '2023-06-02', '', '9');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuongmentor', '2023-06-02', '', '10');
+select * from Report

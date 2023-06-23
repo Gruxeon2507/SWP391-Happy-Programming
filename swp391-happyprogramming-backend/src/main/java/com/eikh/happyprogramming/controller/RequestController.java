@@ -120,6 +120,7 @@ public class RequestController {
                         for (String mentorUsername : mentorUsernames) {
                             String menteeUsername = username;
                             Request r = new Request();
+                            RequestKey key = new RequestKey();
                             key.setUsername(username);
                             r.setStatus(s);
                             r.setRequestKey(key);
