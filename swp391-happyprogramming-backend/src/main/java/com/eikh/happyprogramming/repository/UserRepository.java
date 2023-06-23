@@ -4,12 +4,10 @@
  */
 package com.eikh.happyprogramming.repository;
 
-import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
 import javax.transaction.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -46,7 +44,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             + "                  JOIN ParticipateRole r ON r.participateRole = p.participateRole\n"
             + "                  JOIN `Status` s ON s.statusId = p.statusId\n"
             + "                  WHERE c.courseId = :courseId  AND p.participateRole = 2", nativeQuery = true)
-    public User getMentorOfCourse(Integer courseId);
+    public List<User> getMentorsOfCourse(Integer courseId);
 
     @Query("select u from User u join u.roles r where r.roleId = 2")
     public List<User> getAllMentors();

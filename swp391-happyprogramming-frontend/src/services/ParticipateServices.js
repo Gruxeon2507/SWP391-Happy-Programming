@@ -3,9 +3,9 @@ import api from "./BaseAuthenticationService";
 const PARTICIPATE_BASE_REST_API_URL = "http://localhost:1111/api/participates";
 
 class ParticipateServices {
-  saveParticipate(username, courseId, participateRoleId, statusId) {
+  saveParticipate(mentorUsernames, courseId, participateRoleId, statusId) {
     const formData = new FormData();
-    formData.append("username", username);
+    formData.append("mentorUsernames", mentorUsernames);
     formData.append("courseId", courseId);
     formData.append("participateRoleId", participateRoleId);
     formData.append("statusId", statusId);

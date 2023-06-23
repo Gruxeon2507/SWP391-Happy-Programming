@@ -18,7 +18,7 @@ class CourseServices {
     return api.get(`/api/courses/by-user?statusId=${statusId}`);
   }
   //@maiphuonghoang
-  getMentorOfCourse(courseId) {
+  getMentorsOfCourse(courseId) {
     console.log(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
     return axios.get(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
   }
@@ -34,6 +34,11 @@ class CourseServices {
   getCoursesOfMentor(){
     console.log(`http://localhost:1111/api/courses/by-mentor`);
     return api.get("/api/courses/by-mentor")
+  }
+  
+  getCoursesByName(courseName){
+    console.log(`http://localhost:1111/api/courses/find/by-name/${courseName}`);
+    return api.get(`/api/courses/find/by-name/${courseName}`);
   }
 
 

@@ -5,19 +5,9 @@
 package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
-import com.eikh.happyprogramming.model.Conversation;
-import com.eikh.happyprogramming.model.Course;
-import com.eikh.happyprogramming.model.Participate;
-import com.eikh.happyprogramming.model.Request;
-import com.eikh.happyprogramming.model.Status;
-import com.eikh.happyprogramming.model.User;
+import com.eikh.happyprogramming.model.*;
 import com.eikh.happyprogramming.modelkey.RequestKey;
-import com.eikh.happyprogramming.repository.ConversationRepository;
-import com.eikh.happyprogramming.repository.CourseRepository;
-import com.eikh.happyprogramming.repository.ParticipateRepository;
-import com.eikh.happyprogramming.repository.RequestRepository;
-import com.eikh.happyprogramming.repository.UserRepository;
-import com.eikh.happyprogramming.repository.User_ConversationRepository;
+import com.eikh.happyprogramming.repository.*;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import com.eikh.happyprogramming.utils.RoleUtils;
 import java.sql.Timestamp;
@@ -38,8 +28,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
 /**
- *
  * @author emiukhoahoc
  */
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -115,44 +106,49 @@ public class RequestController {
                     Status s = new Status();
                     s.setStatusId(statusId);
 
-                    User mentor = userRepository.getMentorOfCourse(courseId);
-                    String mentorName = mentor.getUsername();
+                    List<User> mentors = userRepository.getMentorsOfCourse(courseId);
+                    List<String> mentorUsernames = mentors.stream()
+                            .map(User::getUsername)
+                            .collect(Collectors.toList());
 
                     for (String username : usernames) {
-                        String menteeName = username;
-                        RequestKey key = new RequestKey();
-                        key.setCourseId(courseId);
-                        key.setRequestTime(new Timestamp(System.currentTimeMillis()));
-                        Request r = new Request();
-                        key.setUsername(username);
-                        r.setStatus(s);
-                        r.setRequestKey(key);
+                        for (String mentorUsername : mentorUsernames) {
+                            String menteeUsername = username;
+                            Request r = new Request();
+                            RequestKey key = new RequestKey();
+                            key.setCourseId(courseId);
+                            key.setRequestTime(new Timestamp(System.currentTimeMillis()));
+                            key.setUsername(username);
+                            r.setStatus(s);
+                            r.setRequestKey(key);
 
-                        //update participate 
-                        participateRepository.updateStatus(statusId, courseId, username);
+                            //update participate
+                            participateRepository.updateStatus(statusId, courseId, username);
 
-                        //insert request 
-                        requestRepository.save(r);
-                        //System.out.println(1/0);
+                            //insert request
+                            requestRepository.save(r);
+                            //System.out.println(1/0);
 
-                        //nếu được access vào course 
-                        if (statusId == 1) {
-                            //insert group chung 
-                            int conversationGroupId = conversationRepository.findByCourseId(courseId).getConversationId();
-                            user_ConversationRepository.insertUserConversation(menteeName, conversationGroupId);
+                            //nếu được access vào course
+                            if (statusId == 1) {
+                                //insert group chung
+                                String courseName = courseRepository.ducFindByCourseId(courseId).getCourseName();
+                                int conversationGroupId = conversationRepository.findByConversationName(courseName).getConversationId();
+                                user_ConversationRepository.insertUserConversation(menteeUsername, conversationGroupId);
 
-                            String conversationName = mentorName + menteeName;
-                            Conversation exitConversation = conversationRepository.findByConversationName(conversationName);
-                            if (exitConversation == null) {
-                                //tạo group riêng 
-                                conversationRepository.insertConversation(conversationName);
+                                String conversationName = mentorUsername + menteeUsername;
+                                Conversation exitConversation = conversationRepository.findByConversationName(conversationName);
+                                if (exitConversation == null) {
+                                    //tạo chat riêng
+                                    conversationRepository.insertPrivateConversation(conversationName);
+                                }
+                                //lấy id của group riêng đã có/ vừa tạo
+                                Conversation conversationPrivate = conversationRepository.findByConversationName(conversationName);
+                                int conversationPrivateId = conversationPrivate.getConversationId();
+                                //insert group riêng cho mentor và mentee
+                                user_ConversationRepository.insertUserConversation(menteeUsername, conversationPrivateId);
+                                user_ConversationRepository.insertUserConversation(mentorUsername, conversationPrivateId);
                             }
-                            //lấy id của group riêng đã có/ vừa tạo 
-                            Conversation conversationPrivate = conversationRepository.findByConversationName(conversationName);
-                            int conversationPrivateId = conversationPrivate.getConversationId();
-                            //insert group riêng cho mentor và mentee 
-                            user_ConversationRepository.insertUserConversation(menteeName, conversationPrivateId);
-                            user_ConversationRepository.insertUserConversation(mentorName, conversationPrivateId);
                         }
 
                     }
@@ -173,7 +169,7 @@ public class RequestController {
     //@maiphuonghoang 
     @GetMapping("/access-reject/{courseId}")
     public List<Request> getAccessRejectRequestOfCourse(HttpServletRequest request,
-            @PathVariable Integer courseId) {
+                                                        @PathVariable Integer courseId) {
         if (!roleUtils.hasRoleFromToken(request, 2)) {
             return null;
         }
@@ -211,7 +207,7 @@ public class RequestController {
                 Participate exitParticipate = participateRepository.findByUsernameCourseId(username, courseId);
                 if (exitParticipate == null) {
                     participateRepository.saveParticipate(username, courseId, 3, 0);
-                } else {
+                } else{
                     participateRepository.updateStatus(0, courseId, username);
                 }
                 requestRepository.save(r);

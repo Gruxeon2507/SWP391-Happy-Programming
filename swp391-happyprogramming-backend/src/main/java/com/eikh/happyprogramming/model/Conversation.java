@@ -24,6 +24,8 @@ public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int conversationId;
+
+    @Column(unique = true)
     private String conversationName;
     
     @OneToMany(mappedBy = "conversation")
