@@ -2,9 +2,6 @@ USE FU_SWP391_HappyProgramming;
 -- SELECT * FROM `Comment` WHERE postId = 4 AND parentId IS NULL;
 -- DELETE FROM Request WHERE username = :username AND courseId = :courseId
 -- select * from Request;
-delete from Participate where username = 'hieudt' and courseId = 3;
-select * from Participate where username = 'hieudt' and courseId = 3;
-select * from Request where courseId = 3;
 
 -- Insert into `User`
 INSERT INTO `User` (username, password, displayName, dob, mail, createdDate, avatarPath, CVPath, activeStatus) VALUES ('namnh', '123', 'Nguyễn Hoàng Nam', '2003-8-6', 'namnhhe140081@fpt.edu.vn', '2023-5-12', '', '', 1);

@@ -65,9 +65,6 @@ const ConversationList = () => {
         const getUserConversation = async () => {
             //conversation
             const result = await api.get("/api/conversation/user-conversation");
-
-
-
             setConversation(result.data)
         };
         fetchUsername();

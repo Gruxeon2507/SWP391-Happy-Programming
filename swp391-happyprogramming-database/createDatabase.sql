@@ -75,7 +75,7 @@ REFERENCES Feature(featureId);
 CREATE TABLE Course 
 (
 	courseId int NOT NULL AUTO_INCREMENT,
-    courseName nvarchar(255),
+    courseName nvarchar(255) UNIQUE,
     courseDescription longtext,
     createdAt datetime, 
     CONSTRAINT PK_Course PRIMARY KEY (courseId)
@@ -84,7 +84,7 @@ CREATE TABLE Course
 CREATE TABLE Conversation
 (
 	conversationId int NOT NULL AUTO_INCREMENT,
-    conversationName nvarchar(255),
+    conversationName nvarchar(255) UNIQUE,
 	courseId int,
     CONSTRAINT PK_Conversation PRIMARY KEY (conversationId)
 );

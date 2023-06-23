@@ -126,7 +126,7 @@ function Homepage() {
     });
 
   const getMentorOfCourses = (courseId) => {
-    CourseServices.getMentorOfCourse(courseId).then((response) => {
+    CourseServices.getMentorsOfCourse(courseId).then((response) => {
       setMentorOfCourses((prevUserOfCourses) => ({
         ...prevUserOfCourses,
         [courseId]: response.data.displayName,

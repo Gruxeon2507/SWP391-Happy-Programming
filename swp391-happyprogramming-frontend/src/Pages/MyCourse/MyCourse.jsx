@@ -11,7 +11,7 @@ const MyCourse = () => {
   const [accessCourses, setAccessCourses] = useState([]);
   const [pendingCourses, setPendingCourses] = useState([]);
   const [rejectCourses, setRejectCourses] = useState([]);
-  const [mentorOfCourses, setMentorOfCourses] = useState({});
+  // const [mentorOfCourses, setMentorOfCourses] = useState({});
 
   const [showAllCourses, setShowAllCourses] = useState(false);
 
@@ -19,32 +19,32 @@ const MyCourse = () => {
     navigate(`/courses/feed/${courseId}`);
   };
 
-  const getMentorOfCourses = (courseId) => {
-    CourseServices.getMentorOfCourse(courseId).then((response) => {
-      setMentorOfCourses((prevUserOfCourses) => ({
-        ...prevUserOfCourses,
-        [courseId]: response.data.displayName,
-      }));
-    });
-  };
+  // const getMentorOfCourses = (courseId) => { 
+  //   CourseServices.getMentorOfCourse(courseId).then((response) => {
+  //     setMentorOfCourses((prevUserOfCourses) => ({
+  //       ...prevUserOfCourses,
+  //       [courseId]: response.data.displayName,
+  //     }));
+  //   });
+  // };
 
-  const mapMentor = (courses) => {
-    courses.forEach((course) => {
-      getMentorOfCourses(course.courseId);
-    });
-  };
+  // const mapMentor = (courses) => {
+  //   courses.forEach((course) => {
+  //     getMentorOfCourses(course.courseId);
+  //   });
+  // };
 
-  useEffect(() => {
-    mapMentor(accessCourses);
-  }, [accessCourses]);
+  // useEffect(() => {
+  //   mapMentor(accessCourses);
+  // }, [accessCourses]);
 
-  useEffect(() => {
-    mapMentor(pendingCourses);
-  }, [pendingCourses]);
+  // useEffect(() => {
+  //   mapMentor(pendingCourses);
+  // }, [pendingCourses]);
 
-  useEffect(() => {
-    mapMentor(rejectCourses);
-  }, [rejectCourses]);
+  // useEffect(() => {
+  //   mapMentor(rejectCourses);
+  // }, [rejectCourses]);
 
 
   const myCourses = (statusId) => {
@@ -72,7 +72,7 @@ const MyCourse = () => {
         handleCourseNavigate(course.courseId);
       }}>
         <div className="card-title"><span>{course.courseName}</span></div>
-        <span>Mentor: {mentorOfCourses[course.courseId]}</span>
+        {/* <span>Mentor: {mentorOfCourses[course.courseId]}</span> */} 
       </div>
     ));
   };

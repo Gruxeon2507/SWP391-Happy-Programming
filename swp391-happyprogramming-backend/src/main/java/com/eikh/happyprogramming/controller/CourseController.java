@@ -17,12 +17,14 @@ import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.PostRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.repository.User_ConversationRepository;
+import com.eikh.happyprogramming.services.CourseServices;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
-import com.eikh.happyprogramming.utils.RoleUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +46,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/courses")
 public class CourseController {
+    @Autowired
+    CourseServices courseServices;
 
     @Autowired
     CourseRepository courseRepository;
@@ -79,7 +83,7 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * Paging, sorting for all course in homepage
      */
     @GetMapping("/page")
@@ -97,7 +101,7 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * Paging, sorting for all course by categories in homepage
      */
     @GetMapping("/by-categories/{categoryIds}")
@@ -122,7 +126,7 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * Filter, paging, sorting for all course or by categories course
      */
     @GetMapping("/search/{searchText}")
@@ -145,7 +149,7 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * Filter, Paging, sorting for combination search text course by categories
      * in homepage
      */
@@ -192,12 +196,12 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * get Course by username, statusId and participateRole in (mentor, mentee)
      */
     @GetMapping("/by-user")
     List<Course> getCourseByUsernameAndStatus(HttpServletRequest request,
-            @RequestParam(defaultValue = "1") Integer statusId) {
+                                              @RequestParam(defaultValue = "1") Integer statusId) {
         try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -211,7 +215,7 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * get Courses of active Mentor
      */
     @GetMapping("/by-mentor")
@@ -228,27 +232,27 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * Get Mentor and Mentee of course
      */
     @GetMapping("/find-user/{courseId}")
     List<User> getUserOfCourse(@PathVariable Integer courseId,
-            @RequestParam(defaultValue = "1") Integer statusId
+                               @RequestParam(defaultValue = "1") Integer statusId
     ) {
         return userRepository.getUserOfCourseByStatusId(courseId, statusId);
     }
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * get Mentor of Course
      */
     @GetMapping("/find-mentor/{courseId}")
-    User getMentorOfCourse(@PathVariable Integer courseId) {
-        User user = userRepository.getMentorOfCourse(courseId);
-        List<Participate> p = participateRepository.findByUsername(user.getUsername());
-        System.out.println(p.get(0).getCourse().getCourseName());
-        return userRepository.getMentorOfCourse(courseId);
+    List<User> getMentorsOfCourse(@PathVariable Integer courseId) {
+//        List<User> mentors = userRepository.getMentorsOfCourse(courseId);
+//        List<Participate> p = participateRepository.findByUsername(mentors.getUsername());
+//        System.out.println(p.get(0).getCourse().getCourseName());
+        return userRepository.getMentorsOfCourse(courseId);
 //        return null;
     }
 
@@ -273,7 +277,7 @@ public class CourseController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> creatcreateeCourse(@RequestBody Course course, HttpServletRequest request) {
+    public ResponseEntity<?> createCourse(@RequestBody Course course, HttpServletRequest request) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         User adminUser = userRepository.userHasRole(username, 1);
@@ -281,17 +285,19 @@ public class CourseController {
             java.util.Date today = new java.util.Date();
             java.sql.Date createdAt = new java.sql.Date(today.getTime());
             course.setCreatedAt(createdAt);
-//        Insert into Course
-            Course newCourse = courseRepository.save(course);
-
-//         Insert into Course_Category
-            for (Category c : newCourse.getCategories()) {
-                categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
+//          Insert into Course
+            if (courseServices.isCourseNameTaken(course.getCourseName()) || course.getCourseName().trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            } else {
+                Course newCourse = courseRepository.save(course);
+//              Insert into Course_Category
+                for (Category c : newCourse.getCategories()) {
+                    categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
+                }
+//              Insert admin into participate table
+                participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
+                return ResponseEntity.ok(newCourse);
             }
-//             Insert admin into participate table          
-            participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
-
-            return ResponseEntity.ok(newCourse);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
@@ -325,10 +331,16 @@ public class CourseController {
 
     @GetMapping("ratingCourse/{username}")
     public ResponseEntity<?> ratingCourse(@PathVariable("username") String username,
-            HttpServletRequest request) {
+                                          HttpServletRequest request) {
         String usernameMentee = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
         return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("find/by-name/{courseName}")
+    public List<Course> findCourseByCourseName(@PathVariable String courseName) {
+        System.out.println("LENGTH: " + courseRepository.findByCourseName(courseName).size());
+        return courseRepository.findByCourseName(courseName);
     }
 
 

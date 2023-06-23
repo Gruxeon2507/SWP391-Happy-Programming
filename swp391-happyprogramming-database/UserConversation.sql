@@ -27,7 +27,6 @@ INSERT INTO Conversation (conversationName) VALUES ('phuongmentor');
 INSERT INTO Conversation (conversationName) VALUES ('ducmentor');
 INSERT INTO Conversation (conversationName) VALUES ('giangmentor');
 INSERT INTO Conversation (conversationName) VALUES ('anmentor');
-INSERT INTO Conversation (conversationName) VALUES ('phuongmentor');
 
 -- group course chat of mentor  
 INSERT INTO User_Conversation (username, conversationId) VALUES ('phuongmentor', '2');

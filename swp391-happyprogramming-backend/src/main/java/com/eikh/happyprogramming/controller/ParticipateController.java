@@ -12,7 +12,6 @@ import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.ConversationRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
-import com.eikh.happyprogramming.repository.RequestRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
@@ -63,7 +62,7 @@ public class ParticipateController {
             }
             Course course = courseRepository.ducFindByCourseId(courseId);
             //Tạo conversation cho course mới vừa tạo 
-            conversationRepository.insertConversation(course.getCourseName());
+            conversationRepository.insertGroupConversation(course.getCourseName(), courseId);
             Conversation newCon = conversationRepository.findByConversationName(course.getCourseName());
             //Insert mentor vào group chat vừa tạo 
             int conversationId = newCon.getConversationId();

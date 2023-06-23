@@ -91,4 +91,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             + "JOIN `Status` s ON s.statusId = p.statusId\n"
             + "where participateRole = 2 and username = :username AND p.statusId = 1", nativeQuery = true)
     public List<Course> getCourseOfMentor(String username);
+
+    public List<Course> findByCourseName(String courseName);
 }

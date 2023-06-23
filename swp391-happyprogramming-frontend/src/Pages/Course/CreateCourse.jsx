@@ -12,7 +12,7 @@ import makeAnimated from "react-select/animated";
 
 function CreateCourse() {
   const INVALID_COURSENAME_MSG =
-    "Course name must not be empty and must not contain special";
+    "Course name must be unique, non-empty and must not contain special characters.";
   const INVALID_COURSEDESC_MSG = "Course description must not be empty";
   const EMPTY_MENTORLIST_MSG =
     "You must choose at least 1 mentor for the course.";
@@ -29,11 +29,11 @@ function CreateCourse() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [tempCategories, setTempCategories] = useState([]);
   const [tempMentors, setTempMentors] = useState([]);
+  const [courseWithName, setCourseWithName] = useState([]);
 
   const handleSubmit = async (event) => {
-    console.log("You clicked submit");
     event.preventDefault();
-    if (!validateCourseAtCreation(course)) {
+    if (!(await validateCourseAtCreation(course))) {
       return;
     }
     // insert into Course + CourseCategories + Participate admin
@@ -44,6 +44,9 @@ function CreateCourse() {
     const courseId = newCourse.courseId;
     const mentors = course.mentors.map((m) => m.username);
     ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
+
+    alert("Course created successfully.");
+    window.location.href = "/";
   };
 
   const handleChangeCourseName = (e) => {
@@ -60,26 +63,34 @@ function CreateCourse() {
     });
   };
 
-  const validateCourseName = (str) => {
-    if (str.trim().length == 0) return false;
+  const validateCourseName = async () => {
+    if (course.courseName.trim().length == 0) {
+      return false;
+    }
+    // check if course name already exists
+    const response = await CourseServices.getCoursesByName(course.courseName);
+    const courses = response.data;
+    if (courses.length != 0) {
+      return false;
+    }
     var pattern = /[!@#$%^&*().?":{}|<>]/;
-    return !pattern.test(str);
+    return !pattern.test(course.courseName);
   };
 
-  const validateCourseDescription = (str) => {
-    if (str.trim().length == 0) return false;
+  const validateCourseDescription = () => {
+    if (course.courseDescription.trim().length == 0) return false;
     return true;
   };
 
-  const validateCourseAtCreation = (course) => {
-    if (!validateCourseName(course.courseName)) {
+  const validateCourseAtCreation = async () => {
+    console.log("COURSE NAME: ", course.courseName);
+    const isCourseNameValid = await validateCourseName(course.courseName)
+    if (!isCourseNameValid) {
+      console.log("COURSE NAME PROBLEM");
       alert(INVALID_COURSENAME_MSG);
       return false;
-    }
-    if (!validateCourseDescription(course.courseDescription)) {
-      alert("COURSE DESC: " + course.courseDescription + INVALID_COURSEDESC_MSG);
-      
-      return false;
+    } else {
+      console.log("OK COURSENAME");
     }
     if (course.mentors.length == 0) {
       alert(EMPTY_MENTORLIST_MSG);

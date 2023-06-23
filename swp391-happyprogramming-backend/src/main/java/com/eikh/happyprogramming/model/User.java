@@ -9,12 +9,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +37,9 @@ public class User implements UserDetails {
     private String avatarPath;
     private String CVPath;
     private boolean activeStatus;
+
+
+    @Column(nullable = true)
     private boolean isVerified;
     private String verification_code;
 
