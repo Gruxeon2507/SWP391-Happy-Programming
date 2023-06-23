@@ -322,6 +322,32 @@ public class CourseController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-    
+
+    @PostMapping("/all")
+    ResponseEntity<Page<Course>> getAllCourses(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "20") int pageSize,
+            @RequestParam(defaultValue = "") String searchText,
+            @RequestParam(defaultValue = "") Integer[] categoryIds,
+            @RequestParam(defaultValue = "courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) {
+        System.out.println(searchText + categoryIds + sortField + sortOrder);
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Course> pageCourses;
+        //by all 
+        if (categoryIds.length == 0) {
+            System.out.println("chay ham alll");
+            pageCourses = courseRepository.findAllSearch(pageable, searchText);
+        } //by categoryId
+        else {
+            System.out.println("chay ham category");
+            pageCourses = courseRepository.getConditionCourses(pageable, categoryIds, searchText);
+        }
+
+        return new ResponseEntity<>(pageCourses, HttpStatus.OK);
+
+    }
 
 }

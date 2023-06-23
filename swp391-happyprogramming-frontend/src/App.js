@@ -42,15 +42,16 @@ import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import VerifyDialog from "./Components/RegisterForm/VerifyDialog";
 import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
+import AllCourses from "./Pages/Homepage/AllCourses";
 
 function App() {
-
   // console.log(features);
   return (
     <Routes>
       {/* GUEST */}
       <Route path="/" element={<Home />} />
       <Route path="/courses" element={<Homepage />} />
+      <Route path="/courses2" element={<AllCourses />} />
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
@@ -195,13 +196,14 @@ function App() {
           <PrivateRoute component={CreatePost} roles={["mentor", "admin"]} />
         }
       />
-      <Route path="/resetpassword/:username" element={<ResetPassword></ResetPassword>} />
+      <Route
+        path="/resetpassword/:username"
+        element={<ResetPassword></ResetPassword>}
+      />
 
       <Route
         path="/admin"
-        element={
-          <PrivateRoute component={AdminManage} roles={["admin"]} />
-        }
+        element={<PrivateRoute component={AdminManage} roles={["admin"]} />}
       />
       <Route path="*" Component={AccessDenied}></Route>
     </Routes>

@@ -35,6 +35,13 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query(value = "select * from Course co where co.courseName LIKE %?1%", nativeQuery = true)
     Page<Course> findAllSearch(Pageable pageable, String searchText);
 
+//    @Query(value = "select distinct co.* from Course co join Course_Category cc ON co.courseId = cc.courseId \n"
+//            + "JOIN Category ca ON  ca.categoryId = cc.categoryId \n"
+//            + "where co.courseName LIKE %:searchText%  and \n"
+//            + "ca.categoryId in :categoryIds ", nativeQuery = true)
+    @Query(value = "select distinct co from Course co join co.categories c where c.categoryId in :categoryIds AND co.courseName LIKE %:searchText% \n")
+    Page<Course> getConditionCourses(Pageable pageable, Integer[] categoryIds, String searchText);
+
     // @maiphuonghoang
     public Course findByCourseId(int courseId);
 
@@ -91,5 +98,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             + "JOIN `Status` s ON s.statusId = p.statusId\n"
             + "where participateRole = 2 and username = :username AND p.statusId = 1", nativeQuery = true)
     public List<Course> getCourseOfMentor(String username);
-    
+
 }
