@@ -40,11 +40,14 @@ import PostDetail from "./Pages/PostDetail/PostDetail";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import VerifyDialog from "./Components/RegisterForm/VerifyDialog";
+import Notification from "./Components/Notification/Notification";
+import SentNotification from "./Components/Notification/SentNotification";
 import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
 import AllCourses from "./Pages/Homepage/AllCourses";
 
-function App() {
+
+
   // console.log(features);
   return (
     <Routes>
@@ -205,6 +208,9 @@ function App() {
         path="/admin"
         element={<PrivateRoute component={AdminManage} roles={["admin"]} />}
       />
+      <Route path="/notification" element={<Notification> </Notification>} />
+      <Route path="/notification/send" element={<SentNotification> </SentNotification>} />
+
       <Route path="*" Component={AccessDenied}></Route>
     </Routes>
   );

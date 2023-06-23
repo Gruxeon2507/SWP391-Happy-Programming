@@ -2,7 +2,7 @@
 
 .NavBar {
   position: fixed;
-  top: 0.5rem;
+  top: 1rem;
   left: 50vw;
   transform: translateX(-50%);
   width: calc(98vw - (100vw - 100%));
@@ -15,11 +15,10 @@
 }
 
 .NavBar.show {
-  width: calc(70vw - (100vw - 100%));
+  width: calc(80vw - (100vw - 100%));
   left: 50vw;
-  top: 0.5rem;
+  top: 0.3rem;
   background-color: var(--lightItem);
-  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
   box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
     rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
 }
@@ -81,12 +80,22 @@
   white-space: nowrap;
 }
 
+.nav-item .nav-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  padding: 0 1rem;
+}
+
 .nav-item img {
   width: 64px;
   height: 64px;
   margin-right: 1rem;
   border-radius: 50%;
   border: 4px solid var(--darkItem3);
+  flex-shrink: 0;
 }
 
 .nav-item ion-icon {
@@ -182,7 +191,7 @@
 
 .Setting-Bar {
   height: 0px;
-  width: 0px;
+  /* width: 0px; */
   position: fixed;
   top: 0;
   transform: translate(-40%, 4rem);
@@ -205,6 +214,7 @@
   min-width: 200px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 4px;
   border: 4px solid var(--light);
+  padding: 1rem;
 }
 
 .Setting-Bar ul {
@@ -305,6 +315,85 @@
 .login-uti-text a {
   color: var(--item2Active);
   text-align: right;
+}
+
+/* notification */
+.noti-container {
+  /* background-color: aqua; */
+
+  position: relative;
+  margin: 0 8px;
+}
+
+.noti-toggle {
+  background-color: transparent;
+  padding: 0 !important;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.noti-toggle:hover {
+  background-color: var(--lightItem);
+  border: 2px solid var(--darkItem3);
+}
+
+.noti-toggle img {
+  width: 100%;
+  cursor: pointer;
+}
+
+.noti-list {
+  background-color: var(--lightItem);
+  position: absolute;
+  min-width: 400px;
+  max-width: 650px;
+  height: 0;
+
+  width: 0;
+  height: 0;
+  padding: 0;
+
+  top: calc(48px + 1rem);
+  transform: translateX(calc(-100% + 5rem));
+
+  border-radius: 1rem;
+
+  overflow-y: scroll;
+  opacity: 0.9;
+}
+
+.noti-list.active {
+  height: 80svh;
+  padding: 1rem;
+}
+
+.noti-list span {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.noti-list li {
+}
+
+.viewMark {
+  width: 10px;
+  height: 10px;
+  background-color: var(--item);
+  border-radius: 50%;
+  border: 1px solid var(--lightItem) !important;
+
+  position: absolute;
+  top: 20%;
+  right: 25%;
+  display: block;
+}
+
+.viewMark.view {
+  display: none;
 }
 
 @media (max-width: 991px) {

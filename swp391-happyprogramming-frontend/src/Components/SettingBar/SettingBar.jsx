@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "../Navbar/NavBar.css";
@@ -7,6 +7,7 @@ import basicAvatar from "../../Assets/base_user_img.png";
 import UserServices from "../../services/UserServices";
 
 function SettingBar(props) {
+    const toggleRef = useRef(null);
     const [navSettingOpen, setNavSettingOpen] = useState(false);
     const [userDisplayName, setUserDisplayName] = useState();
     const navigate = useNavigate();
@@ -36,21 +37,38 @@ function SettingBar(props) {
         const elements = document.querySelectorAll('.active');
         elements.forEach((element) => {
             element.classList.remove('active');
+
         });
     }
+
+    // window.localStorage.getItem("role")
 
 
     const navSettingClass = navSettingOpen ? "pf-dropdown active" : "pf-dropdown";
 
+    useEffect(() => {
+        let handler = (e) => {
+            try {
+                if (!toggleRef.current.contains(e.target)) {
+                    setNavSettingOpen(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+    });
+
     return (
         <div className="SettingBar">
-            <div className={navSettingClass} onClick={() => {
-                removeActiveClass();
-                setNavSettingOpen(!navSettingOpen);
-            }}>
+            <div
+                ref={toggleRef}
+                className={navSettingClass}
+                onClick={() => {
+                    removeActiveClass();
+                    setNavSettingOpen(!navSettingOpen);
+                }}>
                 <div className="avatar">
-                    {/* <img src={basicAvatar} alt="avatar"></img> */}
-                    {/* <img src={"http://localhost:1111/api/users/avatar/" + "anmentor"} alt="avatar"></img> */}
                     <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                 </div>
             </div>
@@ -58,33 +76,23 @@ function SettingBar(props) {
                 <ul>
                     <li className="nav-item">
                         <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
-                        <NavLink to={`/profile/${props.user}`}>{userDisplayName}</NavLink>
-                        {/* <NavLink to={`/profile/${props.user}`}>{props.user}</NavLink> */}
+                        <NavLink className="nav-link" to={`/profile/${props.user}`}>{userDisplayName}</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/admin">admin</NavLink>
-                    </li>
-                    {/* <li className="nav-item">
-                        <p>Setting</p>
-                        <div className="themeSwitch">
-                            <label>
-                                <input type="checkbox" />
-                                <span className="slider"></span>
-                            </label>
-                        </div>
-                    </li> */}
-
-                    <li className="nav-item">
-                        <NavLink to="/changepassword">changepassword</NavLink>
+                        <NavLink className="nav-link" to="/admin">Admin<ion-icon name="person-circle-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
+                        <NavLink className="nav-link" to="/mycourse">My Course<ion-icon name="albums-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
+                        <NavLink className="nav-link" to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink
+                            className="nav-link"
                             to="/login"
                             onClick={() => {
                                 alert("Are you sure you want to logout?");

@@ -68,7 +68,7 @@ public class ParticipateController {
             
             Course course = courseRepository.ducFindByCourseId(courseId);
             //Tạo conversation cho course mới vừa tạo 
-            conversationRepository.insertConversation(course.getCourseName());
+            conversationRepository.insertConversation2(course.getCourseName(), courseId);
             Conversation newCon = conversationRepository.findByConversationName(course.getCourseName());
             //Insert mentor vào group chat vừa tạo 
             int conversationId = newCon.getConversationId();

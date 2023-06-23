@@ -8,12 +8,16 @@ import SettingDrawer from "../SettingDrawer/SettingDrawer";
 import basicAvatar from "../../Assets/base_user_img.png";
 import SettingBar from "../SettingBar/SettingBar";
 import UserServices from "../../services/UserServices";
+import Notification from "../Notification/Notification";
 
 function NavBar(props) {
   const [isNavBarActive, setIsNavBarActive] = useState(false);
   const [navMenuOpen, setNavMenuOpen] = useState(false);
   const [user, setUser] = useState();
   const navigate = useNavigate();
+
+  // boolean notification seen 
+  const [notiSeen, setNotiBeenSeen] = useState(false);
 
   useEffect(() => {
     function handleScroll() {
@@ -67,6 +71,38 @@ function NavBar(props) {
     });
   }
 
+  {
+    localStorage.getItem("token") ?
+      <><li className="nav-item">
+        <NavLink to="/mycourse">My Course</NavLink>
+      </li></>
+      :
+      <><li className="nav-item">
+        <NavLink to="/login">Login</NavLink>
+      </li></>
+  }
+
+  const navItem = localStorage.getItem("token") ? [
+    // item if logged in
+    {
+      label: "Courses",
+      to: "/courses"
+    },
+    {
+      label: "Chat",
+      to: "/chat"
+    }
+  ] : [
+    // item if not logged in
+    {
+      label: "Courses",
+      to: "/courses"
+    },
+    {
+      label: "Login",
+      to: "/Login"
+    }
+  ]
 
   return (
     <div>
@@ -76,31 +112,30 @@ function NavBar(props) {
           <p className="logo">
             <span>H</span>
             PYPRO
+            <span>{window.localStorage.getItem("role")}</span>
           </p>
         </div>
         {(props.mode === 0 || props.mode === 1) && <>
           <ul className={navMenuClass}>
-            <li className="nav-item">
-              <NavLink to="/courses">Courses</NavLink>
-            </li>
-            {localStorage.getItem("token") ?
-              <><li className="nav-item">
-                <NavLink to="/mycourse">My Course</NavLink>
-              </li></>
-              :/*Dung xoa dau ":" nay nhe*/
-              <><li className="nav-item">
-                <NavLink to="/login">Login</NavLink>
-              </li></>}
-            <li className="nav-item">
-              <NavLink to="/chat">Chat</NavLink>
-            </li>
+            {navItem.map((item) =>
+              <>
+                <li className="nav-item">
+                  <NavLink to={item.to} key={item.to}>{item.label}</NavLink>
+                </li>
+              </>
+            )}
           </ul>
           <div className="navToggle">
             <button onClick={() => setNavMenuOpen(!navMenuOpen)}>
               <ion-icon name="reorder-three-outline"></ion-icon>
             </button>
           </div>
-          {window.localStorage.getItem("token") ? <SettingBar user={user} /> : <></>}
+          {window.localStorage.getItem("token") ?
+            <>
+              <Notification></Notification>
+              <SettingBar user={user} />
+            </>
+            : <></>}
         </>}
         {(props.mode === 2) && <>
           <div className="login-uti-text">

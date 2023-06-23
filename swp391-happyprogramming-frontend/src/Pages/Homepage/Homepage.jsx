@@ -190,7 +190,7 @@ function Homepage() {
               setSelectIndex(false);
               handleSearchCheckAndFilter('filterButton', e.target.value);
             }}>
-            {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
+            {selectIndex ? <option defaultValue value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
             <option value="asc|createdAt">Oldest</option>
             <option value="asc|courseName">A-Z Name</option>
             <option value="desc|courseName">Z-A Name</option>
