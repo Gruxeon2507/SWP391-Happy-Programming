@@ -7,6 +7,7 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.chatModel.Message;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +50,8 @@ public class ChatController {
     public Message recMessage(@Payload Message message){
         simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
         System.out.println(message.toString());
+//        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+//        message.setSentAt(currentTimestamp);
         return message;
     }
 

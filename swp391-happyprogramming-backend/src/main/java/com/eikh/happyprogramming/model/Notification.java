@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @NoArgsConstructor
@@ -22,7 +23,7 @@ public class Notification implements Serializable {
     private int notificationId;
 
     private String notificationContent;
-    private Timestamp notificationTime;
+    private Date notificationTime;
     private Boolean isViewed;
     @ManyToOne
     @JoinColumn(name = "notificationTo")
