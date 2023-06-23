@@ -38,6 +38,11 @@ public interface ConversationRepository extends JpaRepository<Conversation, Inte
     @Query(value = "INSERT INTO Conversation (conversationName, courseId) VALUES (:conversationName, :courseId)", nativeQuery = true)
     public void insertGroupConversation(String conversationName, int courseId);
 
+    //mph 
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO Conversation (conversationName, courseId) VALUES (:conversationName, :courseId)", nativeQuery = true)
+    public void insertConversation2(String conversationName, int courseId);
 
     @Modifying
     @Transactional

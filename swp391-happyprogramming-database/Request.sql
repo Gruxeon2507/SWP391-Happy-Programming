@@ -119,6 +119,10 @@ INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('20
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'minhnd', '7', '0');
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'antt', '7', '0');
 
-
-
+INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01 01:00:00' ,'hieudt', '5', '0');
+INSERT INTO Request (requestTime, username, courseId, requestStatus, requestReason) VALUES ('2023-06-01 02:00:00' ,'hieudt', '5', '-1', 'This course is only for mentor');
+INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01 03:00:00' ,'hieudt', '5', '0');
+INSERT INTO Request (requestTime, username, courseId, requestStatus, requestReason) VALUES ('2023-06-01 04:00:00' ,'hieudt', '5', '-1', 'This course is only for mentor');
+INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01 01:00:00' ,'minhnd', '5', '0');
+INSERT INTO Request (requestTime, username, courseId, requestStatus, requestReason) VALUES ('2023-06-02 03:00:00' ,'minhnd', '5', '-1', 'This course is only for mentor');
 

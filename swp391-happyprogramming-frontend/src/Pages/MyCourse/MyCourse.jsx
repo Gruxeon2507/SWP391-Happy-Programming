@@ -79,6 +79,7 @@ const MyCourse = () => {
 
   return (
     <>
+      <hr />
       <NavBar mode={1} />
       <div className="myCourse-body">
         <div className="course-card">

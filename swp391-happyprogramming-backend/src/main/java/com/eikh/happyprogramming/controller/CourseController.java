@@ -84,119 +84,6 @@ public class CourseController {
     /**
      * @author maiphuonghoang
      * <p>
-     * Paging, sorting for all course in homepage
-     */
-    @GetMapping("/page")
-    public Page<Course> getCourses(
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        return courseRepository.findAll(pageable);
-    }
-
-    /**
-     * @author maiphuonghoang
-     * <p>
-     * Paging, sorting for all course by categories in homepage
-     */
-    @GetMapping("/by-categories/{categoryIds}")
-    public Page<Course> getPageCoursesByCategories(
-            @PathVariable("categoryIds") Integer[] categoryIds,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        List<Course> courses = courseRepository.getCourseByCategoryIds(categoryIds);
-        List<Integer> courseIds = new ArrayList<>();
-        for (Course course : courses) {
-            courseIds.add(course.getCourseId());
-        }
-        Page<Course> pageCourses = courseRepository.findByCourseIdIn(courseIds, pageable);
-        return pageCourses;
-    }
-
-    /**
-     * @author maiphuonghoang
-     * <p>
-     * Filter, paging, sorting for all course or by categories course
-     */
-    @GetMapping("/search/{searchText}")
-    ResponseEntity<Page<Course>> findAllPublic(
-            @PathVariable String searchText,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        if (searchText.length() < 1) {
-            return new ResponseEntity<>(courseRepository.findAll(pageable), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
-
-        }
-    }
-
-    /**
-     * @author maiphuonghoang
-     * <p>
-     * Filter, Paging, sorting for combination search text course by categories
-     * in homepage
-     */
-    @GetMapping("/search-and-categories-filter")
-    public ResponseEntity<Page<Course>> searchCheckAndFilterCourses(
-            @RequestParam Integer[] categoryIds,
-            @RequestParam String searchText,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        System.out.println("searchText" + searchText + "length" + searchText.length() + "categoryIds" + categoryIds.length);
-        System.out.println(searchText.length() > 0 ? "searchText length > 0" : "searchText length = 0");
-        List<Integer> courseIds = new ArrayList<>();
-
-        if (searchText.length() < 1 && categoryIds.length == 0) {
-            return new ResponseEntity<>(courseRepository.findAll(pageable), HttpStatus.OK);
-        }
-
-        if (searchText.length() > 0 && categoryIds.length == 0) {
-            System.out.println("khong co category, chi co text");
-            return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
-        }
-
-        if (categoryIds.length > 0) {
-            List<Course> courses = courseRepository.getCourseByCategoryIds(categoryIds);
-            for (Course course : courses) {
-                courseIds.add(course.getCourseId());
-            }
-        }
-
-        Page<Course> pageCourses;
-        if (searchText.length() < 1) {
-            pageCourses = courseRepository.findByCourseIdIn(courseIds, pageable);
-        } else {
-            pageCourses = courseRepository.findAllSearchByCategories(pageable, categoryIds, searchText);
-        }
-
-        return new ResponseEntity<>(pageCourses, HttpStatus.OK);
-    }
-
-    /**
-     * @author maiphuonghoang
-     * <p>
      * get Course by username, statusId and participateRole in (mentor, mentee)
      */
     @GetMapping("/by-user")
@@ -257,7 +144,7 @@ public class CourseController {
     }
 
     @GetMapping("/courseDetails/{courseId}")
-    public List<Course> getCourseByID(@PathVariable Integer courseId) {
+    public Course getCourseByID(@PathVariable Integer courseId) {
         return courseRepository.findByCourseId(courseId);
     }
 
@@ -329,17 +216,35 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @GetMapping("ratingCourse/{username}")
-    public ResponseEntity<?> ratingCourse(@PathVariable("username") String username,
-                                          HttpServletRequest request) {
-        String usernameMentee = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-        List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
-        return ResponseEntity.ok(courses);
+    @PostMapping("/all")
+    ResponseEntity<Page<Course>> getAllCourses(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "20") int pageSize,
+            @RequestParam(defaultValue = "") String searchText,
+            @RequestParam(defaultValue = "") Integer[] categoryIds,
+            @RequestParam(defaultValue = "courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) {
+        System.out.println(searchText + categoryIds + sortField + sortOrder);
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Course> pageCourses;
+        //by all 
+        if (categoryIds.length == 0) {
+            System.out.println("chay ham alll");
+            pageCourses = courseRepository.findAllSearch(pageable, searchText);
+        } //by categoryId
+        else {
+            System.out.println("chay ham category");
+            pageCourses = courseRepository.getConditionCourses(pageable, categoryIds, searchText);
+        }
+
+        return new ResponseEntity<>(pageCourses, HttpStatus.OK);
+
     }
 
     @GetMapping("find/by-name/{courseName}")
     public List<Course> findCourseByCourseName(@PathVariable String courseName) {
-        System.out.println("LENGTH: " + courseRepository.findByCourseName(courseName).size());
         return courseRepository.findByCourseName(courseName);
     }
 

@@ -106,15 +106,18 @@ function PostDetail() {
             </div>
           </div>
           <div className="cmt-list">
-            {comments.map((comment) => (
-              <div className="cmt-card">
-                <Comment
-                  comment={comment}
-                  key={comment.commentId}
-                  layer={1}
-                ></Comment>
-              </div>
-            ))}
+            {comments.length > 0 ? <>
+              {comments.map((comment) => (
+                <div className="cmt-card">
+                  <Comment
+                    comment={comment}
+                    key={comment.commentId}
+                    layer={1}
+                  ></Comment>
+                </div>
+              ))}
+            </> : <><h2 style={{ textAlign: "center" }}>Be the first one to comment</h2></>}
+
           </div>
         </div>
       </main>

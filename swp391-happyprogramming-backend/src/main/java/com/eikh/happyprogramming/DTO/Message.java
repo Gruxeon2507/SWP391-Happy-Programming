@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.eikh.happyprogramming.chatModel;
+package com.eikh.happyprogramming.DTO;
 
 /**
  *
@@ -10,9 +10,6 @@ package com.eikh.happyprogramming.chatModel;
  */
 
 import lombok.*;
-
-import java.sql.Date;
-import java.sql.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,5 +23,4 @@ public class Message {
     private String message;
     private String date;
     private Status status;
-    private Timestamp sentAt;
 }  

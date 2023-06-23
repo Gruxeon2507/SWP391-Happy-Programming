@@ -70,6 +70,8 @@ public class User implements UserDetails {
     @JsonIgnore
     List<Report> reports;
 
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

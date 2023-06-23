@@ -27,6 +27,7 @@
   height: calc(100svh - 100px);
   width: 100%;
   z-index: 1;
+  /* background-color: red; */
   filter: blur(150px);
 }
 .addition-color .color {
@@ -142,6 +143,7 @@
   z-index: 20;
   position: relative;
   z-index: 1000;
+  filter: drop-shadow(0 0 0.75rem var(--primary));
 }
 
 .login-frag .login-form button:hover {

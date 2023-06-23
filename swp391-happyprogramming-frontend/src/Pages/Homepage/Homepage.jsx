@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
-import { Pagination } from "antd";
 import { FormControl } from "react-bootstrap";
 import NavBar from "../../Components/Navbar/NavBar";
 import "../Homepage/Homepage.css";
@@ -10,39 +9,22 @@ import { useNavigate } from "react-router-dom";
 
 import resetFilterImg from "../../Assets/resetFilter.png";
 
-// import backgound
-// import c1 from "../../Assets/courseBG/c12.png";
-// import c2 from "../../Assets/courseBG/c2.png";
-// import c3 from "../../Assets/courseBG/c3.png";
-// import c4 from "../../Assets/courseBG/c4.png";
-// import c5 from "../../Assets/courseBG/c5.png";
-// import c6 from "../../Assets/courseBG/c6.png";
-// import c7 from "../../Assets/courseBG/c7.png";
-// import c8 from "../../Assets/courseBG/c1.png";
-// import c9 from "../../Assets/courseBG/c9.png";
-// import c10 from "../../Assets/courseBG/c10.png";
-// import c11 from "../../Assets/courseBG/c11.png";
-// import c12 from "../../Assets/courseBG/c12.png";
-// import c13 from "../../Assets/courseBG/c13.png";
-// import c14 from "../../Assets/courseBG/c14.png";
-// import c15 from "../../Assets/courseBG/c15.png";
-// import c21 from "../../Assets/courseBG/c21.png";
 import c1 from "../../Assets/hpyproBG-blue/b-bg-1.png";
 import c6 from "../../Assets/hpyproBG-blue/b-bg-2.png";
 import c3 from "../../Assets/hpyproBG-blue/b-bg-3.png";
 import c7 from "../../Assets/hpyproBG-blue/b-bg-3.png";
 import c5 from "../../Assets/hpyproBG-blue/b-bg-11.png";
 import c2 from "../../Assets/hpyproBG-blue/b-bg-6.png";
-import c4 from "../../Assets/hpyproBG-blue/b-bg-7.png";
+import c4 from "../../Assets/hpyproBG-blue/b-bg-8.png";
 import c12 from "../../Assets/hpyproBG-blue/b-bg-8.png";
 import c9 from "../../Assets/hpyproBG-blue/b-bg-9.png";
 import c10 from "../../Assets/hpyproBG-blue/b-bg-10.png";
 import c11 from "../../Assets/hpyproBG-blue/b-bg-11.png";
 import c8 from "../../Assets/hpyproBG-blue/b-bg-12.png";
 import c13 from "../../Assets/hpyproBG-blue/b-bg-13.png";
+import Paging from "../../Components/Pagination/Paging";
 
-function Homepage() {
-  const navigate = useNavigate();
+const Homepage = () => {
 
   const courseBackgrounds = [
     c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13
@@ -53,24 +35,49 @@ function Homepage() {
   const [pageCourses, setPageCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const [condition, setCondition] = useState("");
   const [selectIndex, setSelectIndex] = useState(true);
-  const [isActiveCateFilter, setActiveCateFilter] = useState(false);
   const [sortField, setSortField] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [mentorOfCourses, setMentorOfCourses] = useState({});
+  const [searchText, setSearchText] = useState('');
+  const navigate = useNavigate();
 
-  const toggleActiveCateFilter = () => {
-    setActiveCateFilter(!isActiveCateFilter);
-  };
+  const sizePerPage = 12;
 
   const handleCourseNavigate = (courseId) => {
     navigate(`/courses/view/${courseId}`);
   };
 
-  const sizePerPage = 12;
-  const handleCheck = (categoryId) => {
-    setChecked((prev) => {
+  const getAllCategories = () => {
+    CategoryServices.getAllCategories()
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
+  const handleKeyPress = (event) => {
+    setSearchText(event.target.value);
+    console.log("handleKeyPress");
+    if (event.key === 'Enter') {
+      console.log(searchText);
+    }
+  };
+  const handleInputChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
+  const handlePageChange = (current) => {
+    setCurrentPage(current);
+    getPageAllCourses(checked, searchText, current - 1, sizePerPage, sortField, sortOrder)
+  };
+
+  const handleCheck = async (categoryId) => {
+    await setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
       if (isChecked) {
         //Uncheck
@@ -79,33 +86,21 @@ function Homepage() {
         return [...prev, categoryId];
       }
     });
-  };
-  console.log(checked);
-  const getAllCategories = async () => {
-    await CategoryServices.getAllCategories()
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const categoryIds = checked.join(",");
-
-  const handlePageChange = (current) => {
-    setCurrentPage(current);
-    getSearchCheckAndFilterCourses(checked, condition, current - 1, sizePerPage, sortField, sortOrder)
 
   };
 
-  useEffect(() => {
-    getAllCategories();
-    handleSearchCheckAndFilter();
-  }, []);
+  const handleSort = (value) => {
+    setSortField(value.split("|")[1]);
+    setSortOrder(value.split("|")[0]);
+    console.log(value);
+  }
 
+  const handleReset = (value) => {
+    setSearchText('');
+    setChecked([]);
+  }
 
-  const getSearchCheckAndFilterCourses = (
+  const getPageAllCourses = (
     categoryIds,
     searchText,
     pageNumber,
@@ -113,7 +108,7 @@ function Homepage() {
     sortField,
     sortOrder
   ) =>
-    CourseServices.getSearchCheckAndFilterCourses(
+    CourseServices.getPageAllCourses(
       categoryIds,
       searchText,
       pageNumber,
@@ -123,71 +118,31 @@ function Homepage() {
     ).then((response) => {
       setPageCourses(response.data.content);
       setTotalItems(response.data.totalElements);
-    });
+    }).catch((error) => {
+      console.log("loi lay ra course" + error);
+    });;
 
-  const getMentorOfCourses = (courseId) => {
-    CourseServices.getMentorsOfCourse(courseId).then((response) => {
-      setMentorOfCourses((prevUserOfCourses) => ({
-        ...prevUserOfCourses,
-        [courseId]: response.data.displayName,
-      }));
-    });
-  };
-  // useEffect(() => {
-  //   pageCourses.forEach((course) => {
-  //     getMentorOfCourses(course.courseId);
-  //   });
-  // }, [pageCourses]);
-
-  var searchText = encodeURIComponent(condition).replace(/%20/g, "%20")
   useEffect(() => {
-    getSearchCheckAndFilterCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
-  }, [sortField, sortOrder])
-
-  const handleReset = () => {
-    setSelectIndex(true);
-    setCondition("");
-    setChecked([]);
-    setSortField("createdAt");
-    setSortOrder("desc");
-    getSearchCheckAndFilterCourses("", "", 0, sizePerPage, sortField, sortOrder)
-  };
-  const handleSearchCheckAndFilter = async (source, value) => {
     setCurrentPage(1);
-    if (source === 'filterButton') {
-      const sortField = value.split("|")[1];
-      const sortOrder = value.split("|")[0];
-      await setSortField(sortField);
-      await setSortOrder(sortOrder);
-      console.log("sortField = " + sortField);
-      console.log("sortOrder = " + sortOrder);
-    }
-    else if (source === 'findButton' || source === 'searchButton') {
-      getSearchCheckAndFilterCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
-    }
-  };
+    console.log("checked trong useEffect", checked, searchText, sortField, sortOrder);
+    getPageAllCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
+  }, [checked, searchText, sortField, sortOrder]);
 
 
   return (
     <div className="container home-page">
-      {/* <section className="course-bg-inf">
-        <h1> Our courses </h1>
-      </section> */}
+
       <NavBar mode={1}></NavBar>
       {/* ====================region filter==================== */}
       <div className="filter-container">
         <div className="filter-1">
-          {/* <div className="cate-filter-head">
-            <button onClick={toggleActiveCateFilter}>
-              <ion-icon name="list-outline"></ion-icon>
-            </button>
-          </div> */}
+
           <select
             name="filter"
             id=""
             onChange={(e) => {
               setSelectIndex(false);
-              handleSearchCheckAndFilter('filterButton', e.target.value);
+              handleSort(e.target.value);
             }}>
             {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
             <option value="asc|createdAt">Oldest</option>
@@ -201,36 +156,20 @@ function Homepage() {
               type="text"
               placeholder="Search course here"
               name="search"
-              value={condition}
-              onChange={(e) => {
-                setCondition(e.target.value);
-              }}
+              value={searchText}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
             />
+          </div>
 
-            {/* <button onClick={() => handleSearchCheckAndFilter('searchButton')}> */}
-            <ion-icon onClick={() => handleSearchCheckAndFilter('searchButton')} name="search-circle-outline"></ion-icon>
-            {/* </button> */}
+          <div className="reset-btn">
+            <button onClick={handleReset}> <p>Reset</p></button>
           </div>
-          {/* <select
-            name="filter"
-            id=""
-            onChange={(e) => {
-              setSelectIndex(false);
-              handleSearchCheckAndFilter('filterButton', e.target.value);
-            }}>
-            {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
-            <option value="asc|createdAt">Oldest</option>
-            <option value="asc|courseName">A-Z Name</option>
-            <option value="desc|courseName">Z-A Name</option>
-          </select> */}
-          <div id="textBttn">
-            <button onClick={handleReset}><img src={resetFilterImg}></img></button>
-          </div>
+
         </div>
       </div>
       <main className="courses-list-main">
         <aside className="cate-filter">
-          {/* <div className={`select-list ${isActiveCateFilter ? "active" : ""}`}> */}
           <div className="select-list">
             {categories.map((category) => (
               <div className="select" key={category.categoryId}>
@@ -245,27 +184,12 @@ function Homepage() {
                 </label>
               </div>
             ))}
-            <div className="findByCate">
-              <button onClick={() => handleSearchCheckAndFilter('findButton')}>Find</button>
-            </div>
           </div>
         </aside>
         {/* ====================end region filter==================== */}
 
         {/* ====================region List of Course==================== */}
-        {/* <div className="list-Courses">
-        {pageCourses.map((course) => (
-          <div className="course" key={course.courseId}>
-            <span>
-              {course.courseId}:{course.courseName}
-            </span>
-            <span>{course.createdAt}</span>
-            <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-            <span>View details</span>
-            <hr />
-          </div>
-        ))}
-      </div> */}
+
         <section className="courses-section">
           <div className="list-Courses">
             {pageCourses.map((course, index) => (
@@ -284,9 +208,7 @@ function Homepage() {
                 >
                   <span>{course.courseName}</span>
                 </div>
-                {/* <div className="course-desc">
-                  <span>Mentor: {mentorOfCourses[course.courseId]}</span>
-                </div> */}
+
               </div>
             ))}
           </div>
@@ -294,24 +216,22 @@ function Homepage() {
 
           {/* ====================region Pagination==================== */}
           <div className="Pagination-Container">
-            <Pagination
-              total={totalItems}
-              defaultPageSize={sizePerPage}
-              showTotal={(total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`
-              }
-              current={currentPage}
-              onChange={(current) => {
-                handlePageChange(current);
-              }}
-            />
+            <Paging {...{
+              totalItems,
+              sizePerPage,
+              currentPage,
+              handlePageChange,
+              name: "courses"
+            }} />
           </div>
+
+
         </section>
       </main>
       {/* ====================End region Pagination==================== */}
     </div>
 
-  );
+  )
 }
 
-export default Homepage;
+export default Homepage

@@ -107,7 +107,6 @@ const MentorManagement = () => {
     console.log(key);
   }
   return (
-    mentorList.length > 0 ? (
       <div className="create-mentor">
         <div>
           <div className="create-form">
@@ -185,7 +184,7 @@ const MentorManagement = () => {
             })}
           </tbody>
         </table>
-      </div>) : "Quyền gì mà vào đây. You are not the apple of my eye"
+      </div>
 
   )
 }

@@ -10,6 +10,14 @@ import com.eikh.happyprogramming.modelkey.RequestKey;
 import com.eikh.happyprogramming.repository.*;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import com.eikh.happyprogramming.utils.RoleUtils;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,6 +65,9 @@ public class RequestController {
     private ParticipateRepository participateRepository;
 
     @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
     private TransactionTemplate transactionTemplate;
 
     @Autowired
@@ -97,13 +108,7 @@ public class RequestController {
         try {
             transactionTemplate.execute(status -> {
                 try {
-
-                    java.util.Date today = new java.util.Date();
-                    java.sql.Date sqlToday = new java.sql.Date(today.getTime());
                     Status s = new Status();
-                    RequestKey key = new RequestKey();
-                    key.setCourseId(courseId);
-                    key.setRequestTime(sqlToday);
                     s.setStatusId(statusId);
 
                     List<User> mentors = userRepository.getMentorsOfCourse(courseId);
@@ -192,21 +197,20 @@ public class RequestController {
         transactionTemplate.execute(status -> {
             try {
                 Request r = new Request();
-                java.util.Date today = new java.util.Date();
-                java.sql.Date sqlToday = new java.sql.Date(today.getTime());
                 Status s = new Status();
                 RequestKey key = new RequestKey();
                 key.setUsername(username);
                 key.setCourseId(courseId);
-                key.setRequestTime(sqlToday);
+                key.setRequestTime(new Timestamp(System.currentTimeMillis()));
                 s.setStatusId(0);
                 r.setStatus(s);
                 r.setRequestKey(key);
                 Participate exitParticipate = participateRepository.findByUsernameCourseId(username, courseId);
                 if (exitParticipate == null) {
                     participateRepository.saveParticipate(username, courseId, 3, 0);
-                } else
+                } else{
                     participateRepository.updateStatus(0, courseId, username);
+                }
                 requestRepository.save(r);
                 return "Participate update/save and Request save success";
             } catch (Exception ex) {
@@ -217,5 +221,31 @@ public class RequestController {
 
         });
         return null;
+    }
+
+    //@maiphuonghoang 
+    @GetMapping("/my")
+    public List<MyRequest> getAllMyAccessRejectRequestOfCourse(HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        List<MyRequest> myrequests = new ArrayList<MyRequest>();
+        List<Request> rawRequests = requestRepository.getAllMyAccessRejectRequest(username);
+        for (Request r : rawRequests) {
+            Course c = courseRepository.findByCourseId(r.getRequestKey().getCourseId());
+            myrequests.add(new MyRequest(r.getRequestKey().getCourseId(), c.getCourseName(), r.getStatus().getStatusId(), r.getRequestKey().getRequestTime(), r.getRequestReason()));
+        }
+        return myrequests;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @ToString
+    @NoArgsConstructor
+    class MyRequest {
+        private int courseId;
+        private String courseName;
+        private int requestStatus;
+        private Timestamp requestTime;
+        private String requestReason;
     }
 }

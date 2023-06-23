@@ -40,8 +40,13 @@ import PostDetail from "./Pages/PostDetail/PostDetail";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import VerifyDialog from "./Components/RegisterForm/VerifyDialog";
-function App() {
+import Notification from "./Components/Notification/Notification";
+import SentNotification from "./Components/Notification/SentNotification";
+import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
+import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
 
+
+function App() {
   // console.log(features);
   return (
     <Routes>
@@ -104,7 +109,16 @@ function App() {
         path="/mycourse"
         element={
           <PrivateRoute
-            component={MyCourse}
+            component={MyCourseHistory}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
+      <Route
+        path="/myrequest"
+        element={
+          <PrivateRoute
+            component={MyRequestHistory}
             roles={["mentee", "mentor", "admin"]}
           />
         }
@@ -183,14 +197,18 @@ function App() {
           <PrivateRoute component={CreatePost} roles={["mentor", "admin"]} />
         }
       />
-      <Route path="/resetpassword/:username" element={<ResetPassword></ResetPassword>} />
+      <Route
+        path="/resetpassword/:username"
+        element={<ResetPassword></ResetPassword>}
+      />
 
       <Route
         path="/admin"
-        element={
-          <PrivateRoute component={AdminManage} roles={["admin"]} />
-        }
+        element={<PrivateRoute component={AdminManage} roles={["admin"]} />}
       />
+      <Route path="/notification" element={<Notification> </Notification>} />
+      <Route path="/notification/send" element={<SentNotification> </SentNotification>} />
+
       <Route path="*" Component={AccessDenied}></Route>
     </Routes>
   );

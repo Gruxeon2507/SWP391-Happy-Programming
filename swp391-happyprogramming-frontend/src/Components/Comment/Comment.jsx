@@ -206,6 +206,7 @@ const Comment = ({ comment, layer }) => {
                 type="text"
                 className="inputContainter_input"
                 autoFocus
+                ref={replyRef}
                 onChange={(e) => setInput(e.target.value)}
                 ref={replyRef}
                 id="reply-content"

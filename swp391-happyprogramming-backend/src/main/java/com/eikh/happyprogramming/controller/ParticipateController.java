@@ -20,6 +20,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -109,5 +115,25 @@ public class ParticipateController {
         System.out.println("PARTICIPATE INTO " + courseId + " IS " + p);
         return p;
     }
+    
+    //maiphuonghoang
+    @PostMapping("/allmy")
+    ResponseEntity<Page<Participate>> findMyCourses(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "") String searchText,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "c.courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam(defaultValue = "1,2,3") Integer[] participateRoles,
+            @RequestParam(defaultValue = "0,1,-1") Integer[] statusIds
+    ) {
 
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return new ResponseEntity<>(participateRepository.findAllMyParticipateCourse(pageable, username, participateRoles, statusIds, searchText), HttpStatus.OK);
+
+    }
 }

@@ -264,6 +264,28 @@ REFERENCES `User`(username);
 ALTER TABLE Report ADD CONSTRAINT FK_Report_ReportType FOREIGN KEY (reportTypeId)
 REFERENCES ReportType(reportTypeId);
 
+CREATE TABLE Notification
+(
+	notificationId int NOT NULL AUTO_INCREMENT,
+    notificationContent longtext,
+    notificationTime Date,
+    notificationTypeId int,
+    notificationTo varchar(255),
+    isViewed bool,
+    CONSTRAINT PK_Notification PRIMARY KEY (notificationId)
+);
+ALTER TABLE Notification ADD CONSTRAINT FK_Notification_User FOREIGN KEY(notificationTo) 
+REFERENCES `User`(username);
+
+CREATE TABLE NotificationType
+(
+	notificationTypeId int NOT NULL AUTO_INCREMENT,
+    notificationTypeName varchar(255),
+    CONSTRAINT PK_NotificationType PRIMARY KEY(notificationTypeId)
+);
+
+ALTER TABLE Notification ADD CONSTRAINT FK_Notification_NotificationType FOREIGN KEY (notificationTypeId)
+REFERENCES NotificationType(notificationTypeId);
 /*
 SELECT * FROM Feature 
 SELECT * FROM Role 
