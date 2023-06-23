@@ -50,7 +50,14 @@ public interface RequestRepository extends JpaRepository<Request, RequestKey> {
     @Transactional
     @Query(value = "DELETE FROM Request WHERE username = :username AND courseId = :courseId", nativeQuery = true)
     public void deleteAllRequests(String username, int courseId);
-    
-    
+
+    @Query(value = "SELECT * FROM Request re \n"
+            + "JOIN Participate p ON re.username = p.username\n"
+            + "JOIN Course c ON p.courseId = c.courseId\n"
+            + " JOIN `User` u ON u.username = p.username\n"
+            + "WHERE p.statusId IN ( 1, -1) AND re.requestStatus IN ( 1, -1)\n"
+            + "  AND re.courseId = p.courseId AND u.username = :username\n"
+            + "  ORDER BY requestTime desc", nativeQuery = true)
+    public List<Request> getAllMyAccessRejectRequest(String username);
 
 }

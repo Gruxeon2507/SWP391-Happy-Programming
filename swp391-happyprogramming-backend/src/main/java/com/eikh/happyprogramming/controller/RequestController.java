@@ -6,12 +6,14 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Conversation;
+import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.model.Participate;
 import com.eikh.happyprogramming.model.Request;
 import com.eikh.happyprogramming.model.Status;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.modelkey.RequestKey;
 import com.eikh.happyprogramming.repository.ConversationRepository;
+import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.RequestRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
@@ -19,11 +21,13 @@ import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import com.eikh.happyprogramming.utils.RoleUtils;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,6 +67,9 @@ public class RequestController {
 
     @Autowired
     private ParticipateRepository participateRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Autowired
     private TransactionTemplate transactionTemplate;
@@ -217,5 +224,31 @@ public class RequestController {
 
         });
         return null;
+    }
+
+    //@maiphuonghoang 
+    @GetMapping("/my")
+    public List<MyRequest> getAllMyAccessRejectRequestOfCourse(HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        List<MyRequest> myrequests = new ArrayList<MyRequest>();
+        List<Request> rawRequests = requestRepository.getAllMyAccessRejectRequest(username);
+        for (Request r : rawRequests) {
+            Course c = courseRepository.findByCourseId(r.getRequestKey().getCourseId());
+            myrequests.add(new MyRequest(r.getRequestKey().getCourseId(), c.getCourseName(), r.getStatus().getStatusId(), r.getRequestKey().getRequestTime(), r.getRequestReason()));
+        }
+        return myrequests;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @ToString
+    @NoArgsConstructor
+    class MyRequest {
+        private int courseId;
+        private String courseName;
+        private int requestStatus;
+        private Timestamp requestTime;
+        private String requestReason;
     }
 }
