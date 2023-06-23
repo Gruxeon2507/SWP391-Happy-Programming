@@ -48,13 +48,13 @@ import AllCourses from "./Pages/Homepage/AllCourses";
 
 function App(){
 
+function App() {
   // console.log(features);
   return (
     <Routes>
       {/* GUEST */}
       <Route path="/" element={<Home />} />
       <Route path="/courses" element={<Homepage />} />
-      <Route path="/courses2" element={<AllCourses />} />
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
