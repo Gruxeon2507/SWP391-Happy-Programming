@@ -40,7 +40,7 @@ function CreateCourse() {
     const response = await CourseServices.createCourse(course);
     const newCourse = response.data;
 
-    // insert mentor into Participate table
+    // insert mentors into Participate table
     const courseId = newCourse.courseId;
     const mentors = course.mentors.map((m) => m.username);
     ParticipateServices.saveParticipate(mentors, courseId, 2, 1);

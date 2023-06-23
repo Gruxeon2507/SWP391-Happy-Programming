@@ -28,11 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -121,6 +116,8 @@ public class RequestController {
                             String menteeUsername = username;
                             Request r = new Request();
                             RequestKey key = new RequestKey();
+                            key.setCourseId(courseId);
+                            key.setRequestTime(new Timestamp(System.currentTimeMillis()));
                             key.setUsername(username);
                             r.setStatus(s);
                             r.setRequestKey(key);
@@ -135,7 +132,8 @@ public class RequestController {
                             //nếu được access vào course
                             if (statusId == 1) {
                                 //insert group chung
-                                int conversationGroupId = conversationRepository.findByCourseId(courseId).getConversationId();
+                                String courseName = courseRepository.ducFindByCourseId(courseId).getCourseName();
+                                int conversationGroupId = conversationRepository.findByConversationName(courseName).getConversationId();
                                 user_ConversationRepository.insertUserConversation(menteeUsername, conversationGroupId);
 
                                 String conversationName = mentorUsername + menteeUsername;

@@ -24,8 +24,8 @@ public interface ConversationRepository extends JpaRepository<Conversation, Inte
     Conversation findByConversationId(int conversationId);
 
     //mph 
-    @Query(value = "SELECT * FROM Conversation c WHERE c.courseId = :courseId", nativeQuery = true)
-    public Conversation findByCourseId(Integer courseId);
+//    @Query(value = "SELECT * FROM Conversation c WHERE c.courseId = :courseId", nativeQuery = true)
+//    public Conversation findByCourseId(Integer courseId);
 
 
     //mph

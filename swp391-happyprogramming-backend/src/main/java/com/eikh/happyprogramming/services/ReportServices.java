@@ -13,7 +13,6 @@ public class ReportServices {
     ReportRepository reportRepository;
 
     public List<Report> getAllReports(){
-        System.out.println("REPORT SERVICES CALLED");
         return reportRepository.findAll();
     }
 }

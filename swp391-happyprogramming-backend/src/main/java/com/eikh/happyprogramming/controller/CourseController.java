@@ -165,6 +165,7 @@ public class CourseController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createCourse(@RequestBody Course course, HttpServletRequest request) {
+
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         User adminUser = userRepository.userHasRole(username, 1);
@@ -232,7 +233,8 @@ public class CourseController {
         //by all 
         if (categoryIds.length == 0) {
             System.out.println("chay ham alll");
-            pageCourses = courseRepository.findAllSearch(pageable, searchText);
+//            pageCourses = courseRepository.findAllSearch(pageable, searchText);
+            pageCourses = courseRepository.findAll(pageable);
         } //by categoryId
         else {
             System.out.println("chay ham category");

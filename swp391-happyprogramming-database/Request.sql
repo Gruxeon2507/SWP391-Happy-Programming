@@ -8,7 +8,6 @@ INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('20
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'anmentor', '5', '1');
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'huyenmentor', '6', '1');
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'phuongmentor', '7', '1');
-INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'phuongmentor', '7', '1');
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'ducmentor', '8', '1');
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'giangmentor', '9', '1');
 INSERT INTO Request (requestTime, username, courseId, requestStatus) VALUES ('2023-06-01' ,'anmentor', '10', '1');

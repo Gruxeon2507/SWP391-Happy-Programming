@@ -70,9 +70,11 @@ public class ParticipateController {
             Course course = courseRepository.ducFindByCourseId(courseId);
             //Tạo conversation cho course mới vừa tạo 
             conversationRepository.insertGroupConversation(course.getCourseName(), courseId);
+            System.out.println("insert group chung ok.");
 
             // Create conversation for mentor team
             conversationRepository.insertGroupConversation(MENTOR_CONVERSATION_PREFIX + course.getCourseName(), courseId);
+            System.out.println("insert group mentor ok.");
 
             Conversation newCon = conversationRepository.findByConversationName(course.getCourseName());
             Conversation mentorTeamNewCon = conversationRepository.findByConversationName(MENTOR_CONVERSATION_PREFIX + course.getCourseName());
@@ -82,6 +84,7 @@ public class ParticipateController {
             for (String mentorUsername : mentorUsernames) {
                 user_ConversationRepository.insertUserConversation(mentorUsername, conversationId);
                 user_ConversationRepository.insertUserConversation(mentorUsername, mentorTeamConversationId);
+                System.out.println(mentorUsername + " inserted into conversation successfully.");
             }
         } else {
             User u1 = userRepository.userHasRole(usn, 3);
