@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/participates")
 public class ParticipateController {
+    final String MENTOR_CONVERSATION_PREFIX = "Mentor - ";
 
     @Autowired
     ParticipateRepository participateRepository;
@@ -63,11 +64,18 @@ public class ParticipateController {
             Course course = courseRepository.ducFindByCourseId(courseId);
             //Tạo conversation cho course mới vừa tạo 
             conversationRepository.insertGroupConversation(course.getCourseName(), courseId);
+
+            // Create conversation for mentor team
+            conversationRepository.insertGroupConversation(MENTOR_CONVERSATION_PREFIX + course.getCourseName(), courseId);
+
             Conversation newCon = conversationRepository.findByConversationName(course.getCourseName());
-            //Insert mentor vào group chat vừa tạo 
+            Conversation mentorTeamNewCon = conversationRepository.findByConversationName(MENTOR_CONVERSATION_PREFIX + course.getCourseName());
+            //Insert mentor vào 2 group chat vừa tạo
             int conversationId = newCon.getConversationId();
+            int mentorTeamConversationId = mentorTeamNewCon.getConversationId();
             for (String mentorUsername : mentorUsernames) {
                 user_ConversationRepository.insertUserConversation(mentorUsername, conversationId);
+                user_ConversationRepository.insertUserConversation(mentorUsername, mentorTeamConversationId);
             }
         } else {
             User u1 = userRepository.userHasRole(usn, 3);
