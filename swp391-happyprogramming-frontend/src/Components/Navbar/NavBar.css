@@ -15,7 +15,7 @@
 }
 
 .NavBar.show {
-  width: calc(70vw - (100vw - 100%));
+  width: calc(80vw - (100vw - 100%));
   left: 50vw;
   top: 0.5rem;
   background-color: var(--lightItem);
@@ -81,12 +81,22 @@
   white-space: nowrap;
 }
 
+.nav-item .nav-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  padding: 0 1rem;
+}
+
 .nav-item img {
   width: 64px;
   height: 64px;
   margin-right: 1rem;
   border-radius: 50%;
   border: 4px solid var(--darkItem3);
+  flex-shrink: 0;
 }
 
 .nav-item ion-icon {
