@@ -242,6 +242,28 @@ CREATE TABLE Attachment
 ALTER TABLE Attachment ADD CONSTRAINT FK_Attachment_Post FOREIGN KEY(postId)
 REFERENCES Post(postId);
 
+CREATE TABLE ReportType(
+	reportTypeId int NOT NULL AUTO_INCREMENT,
+    reportName nvarchar(255),
+    reportDescription longtext,
+    CONSTRAINT PK_ReportType PRIMARY KEY (reportTypeId)
+);
+
+CREATE TABLE Report(
+	commentId int NOT NULL,
+    reportedBy varchar(255),
+    reportTime datetime,
+    reportTypeId int,
+    reportContent longtext,
+    CONSTRAINT PK_Report PRIMARY KEY (commentId, reportedBy)
+);
+ALTER TABLE Report ADD CONSTRAINT FK_Report_Comment FOREIGN KEY (commentId) 
+REFERENCES `Comment`(commentId);
+ALTER TABLE Report ADD CONSTRAINT FK_Report_User FOREIGN KEY (reportedBy)
+REFERENCES `User`(username);
+ALTER TABLE Report ADD CONSTRAINT FK_Report_ReportType FOREIGN KEY (reportTypeId)
+REFERENCES ReportType(reportTypeId);
+
 /*
 SELECT * FROM Feature 
 SELECT * FROM Role 
