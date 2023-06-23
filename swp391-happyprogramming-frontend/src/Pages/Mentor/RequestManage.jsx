@@ -10,7 +10,12 @@ import statisticIcon from "../../Assets/1466735.png"
 import "./RequestManage.css"
 import NavBar from "../../Components/Navbar/NavBar";
 import Paging from "../../Components/Pagination/Paging";
+import SockJS from "sockjs-client";
+import { over } from "stompjs";
+import UserServices from "../../services/UserServices";
+import api from "../../services/BaseAuthenticationService";
 
+var stompClient = null;
 const RequestManage = () => {
     const [teachCourses, setTeachCourses] = useState([]);
     const [users, setUsers] = useState([]);
@@ -24,6 +29,13 @@ const RequestManage = () => {
     const [responses, setResponses] = useState([])
     const haveData = users.length == 0 && responses.length == 0
     const sizePerPage = 10;
+    const [userData, setUserData] = useState({
+        username: "",
+        receivername: "",
+        connected: true,
+        message: "",
+        conversationId: "",
+      });
 
     const getCoursesOfMentor = () => {
         CourseServices.getCoursesOfMentor()
@@ -115,12 +127,14 @@ const RequestManage = () => {
     const handleSubmitOne = (statusId, username) => {
         const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject this mentee") : false;
         if (confirmed || statusId === 1) {
+            
             RequestService.updateParticipadeInsertRequest(selectedCourseId, statusId, [username])
-                .then((response) => {
-                    console.log(response.data);
-                    setCheckedRequest([])
-                    getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
-
+            .then((response) => {
+                console.log(response.data);
+                setCheckedRequest([])
+                getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
+                sendPrivateValue(username,"Your request to the course "+selectedCourseId +" has been rejected")
+                
                 })
                 .catch((error) => {
                     console.log("loi update and insert" + error);
@@ -150,6 +164,99 @@ const RequestManage = () => {
         setSortOrder(sortOrder == "asc" ? "desc" : "asc");
         setSortField(e.target.id);
     }
+    useEffect(() => {
+        console.log(userData);
+      }, [userData]);
+    
+      const connect = () => {
+        let Sock = new SockJS("http://localhost:1111/ws");
+        stompClient = over(Sock);
+        stompClient.connect({}, onConnected, onError);
+      };
+      const onConnected = () => {
+        setUserData({ ...userData, connected: true });
+        // stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
+        stompClient.subscribe(
+          `/user/${userData.username}/private`,
+          onPrivateMessage
+        );
+        userJoin();
+      };
+      const onPrivateMessage = (payload) => {};
+    
+      const onError = (err) => {
+        console.log(err);
+      };
+      const userJoin = () => {
+        var chatMessage = {
+          senderName: userData.username,
+          status: "JOIN",
+        };
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+      };
+      useEffect(() => {
+        if (userData.username !== "") {
+          connect();
+        }
+      }, [userData.username]);
+    
+      const fetchUsername = async () => {
+        const loginuser = await UserServices.getLoginUsername();
+        const username = loginuser.data;
+        setUserData((prevUserData) => ({ ...prevUserData, username: username }));
+      };
+      useEffect(() => {
+        fetchUsername();
+      }, []);
+    
+      const handleMessage = (event) => {
+        const { value } = event.target;
+        setUserData({ ...userData, message: value });
+      };
+      const sendPrivateValue = (username,message) => {
+        if (stompClient) {
+          const currentDate = new Date();
+          const year = currentDate.getFullYear();
+          const month = currentDate.getMonth() + 1; // months are zero-based
+          const day = currentDate.getDate();
+    
+          var chatMessage = {
+            senderName: userData.username,
+            receiverName: username,
+            message: message,
+            status: "MESSAGE",
+            sentAt: currentDate,
+            date:
+            year +
+              "-" +
+              month +
+              "-" +
+              day
+          };
+    
+          stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
+
+        //   const Notification = {
+        //     notificationContent:message,
+        //     notificationTime:currentDate,
+        //     isViewed:0,
+        //     notificationType:{
+        //         notificationTypeId:1
+        //     },
+        //     user:{
+        //         username:username
+        //     }
+        //   }
+          const Notification = new FormData();
+          Notification.append("notificationContent",message);
+          Notification.append("notificationTime",currentDate);
+          Notification.append("notificationTypeId",1);
+          Notification.append("username",username);
+          console.log(Notification)
+          api.post("/api/notification/save",Notification)
+          setUserData({ ...userData, message: "" });
+        }
+      };
     return (
         <>
             <NavBar mode={1}></NavBar>

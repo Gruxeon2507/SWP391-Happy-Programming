@@ -70,7 +70,6 @@ const Notification = () => {
           ...prevNotification
         ]);
         setIsViewed(false);
-        break;
     }
   };
   const onError = (err) => {
@@ -113,6 +112,10 @@ const Notification = () => {
   useEffect(() => { }, [notifications]);
   console.log(newNotifications);
 
+  const setViewedStatus = () =>{
+    api.post("/api/notification/viewed")
+  }
+
   const notiClass = !isViewed ? "viewMark " : "viewMark view";
 
   const notiListClass = openNotiList ? "noti-list active" : "noti-list";
@@ -121,6 +124,7 @@ const Notification = () => {
     <div className="noti-container" ref={toggleRef} onClick={() => {
       setOpenNotiList(!openNotiList);
       setIsViewed(true);
+      setViewedStatus();
     }}>
       {/* <span>view?{isViewed ? "t" : "f"} </span> */}
       <div className="noti-toggle">
@@ -133,12 +137,18 @@ const Notification = () => {
         <ul>
           {newNotifications.map((newNotification) => (
             <li>
-              <NavLink to={"/"}>{newNotification.message}</NavLink>
+              <NavLink to={"/"}>{newNotification.message}
+              <br></br>
+              {newNotification.date}
+              </NavLink>
             </li>
           ))}
           {notifications.map((notification) => (
             <li>
-              <NavLink to={"/"}>{notification.notificationContent}</NavLink>
+              <NavLink to={"/"}>{notification.notificationContent}
+              <br></br>
+              {notification.notificationTime}
+              </NavLink>
             </li>
           ))}
         </ul>

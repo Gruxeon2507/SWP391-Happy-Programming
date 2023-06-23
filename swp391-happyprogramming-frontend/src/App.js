@@ -46,7 +46,7 @@ import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
 import AllCourses from "./Pages/Homepage/AllCourses";
 
-
+function App(){
 
   // console.log(features);
   return (

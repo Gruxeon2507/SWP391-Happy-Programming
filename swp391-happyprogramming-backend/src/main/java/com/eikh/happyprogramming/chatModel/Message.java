@@ -11,7 +11,8 @@ package com.eikh.happyprogramming.chatModel;
 
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +26,5 @@ public class Message {
     private String message;
     private String date;
     private Status status;
+    private Timestamp sentAt;
 }  
