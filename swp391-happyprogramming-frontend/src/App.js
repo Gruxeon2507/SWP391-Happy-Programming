@@ -44,17 +44,15 @@ import Notification from "./Components/Notification/Notification";
 import SentNotification from "./Components/Notification/SentNotification";
 import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
-import AllCourses from "./Pages/Homepage/AllCourses";
 
 
-
+function App() {
   // console.log(features);
   return (
     <Routes>
       {/* GUEST */}
       <Route path="/" element={<Home />} />
       <Route path="/courses" element={<Homepage />} />
-      <Route path="/courses2" element={<AllCourses />} />
       <Route path="/courses/view/:courseID" element={<CourseDetails />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
