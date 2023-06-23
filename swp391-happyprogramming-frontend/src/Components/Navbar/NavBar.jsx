@@ -15,6 +15,9 @@ function NavBar(props) {
   const [user, setUser] = useState();
   const navigate = useNavigate();
 
+  // boolean notification seen 
+  const [notiSeen, setNotiBeenSeen] = useState(false);
+
   useEffect(() => {
     function handleScroll() {
       window.pageYOffset > 0
@@ -67,6 +70,36 @@ function NavBar(props) {
     });
   }
 
+  {
+    localStorage.getItem("token") ?
+      <><li className="nav-item">
+        <NavLink to="/mycourse">My Course</NavLink>
+      </li></>
+      :
+      <><li className="nav-item">
+        <NavLink to="/login">Login</NavLink>
+      </li></>
+  }
+
+  const navItem = localStorage.getItem("token") ? [
+    {
+      label: "Courses",
+      to: "/courses"
+    },
+    {
+      label: "Chat",
+      to: "/chat"
+    }
+  ] : [
+    {
+      label: "Courses",
+      to: "/courses"
+    },
+    {
+      label: "Login",
+      to: "/Login"
+    }
+  ]
 
   return (
     <div>
@@ -76,24 +109,18 @@ function NavBar(props) {
           <p className="logo">
             <span>H</span>
             PYPRO
+            <span>{window.localStorage.getItem("role")}</span>
           </p>
         </div>
         {(props.mode === 0 || props.mode === 1) && <>
           <ul className={navMenuClass}>
-            <li className="nav-item">
-              <NavLink to="/courses">Courses</NavLink>
-            </li>
-            {localStorage.getItem("token") ?
-              <><li className="nav-item">
-                <NavLink to="/mycourse">My Course</NavLink>
-              </li></>
-              :/*Dung xoa dau ":" nay nhe*/
-              <><li className="nav-item">
-                <NavLink to="/login">Login</NavLink>
-              </li></>}
-            <li className="nav-item">
-              <NavLink to="/chat">Chat</NavLink>
-            </li>
+            {navItem.map((item) =>
+              <>
+                <li className="nav-item">
+                  <NavLink to={item.to} key={item.to}>{item.label}</NavLink>
+                </li>
+              </>
+            )}
           </ul>
           <div className="navToggle">
             <button onClick={() => setNavMenuOpen(!navMenuOpen)}>

@@ -258,6 +258,8 @@ const PrivateChatRoom = () => {
                 )}
               </li>
             ))}
+
+
             {newConversationMessage.map((chat) => (
               <li
                 className={`message ${chat.senderName === userData.username && "self"

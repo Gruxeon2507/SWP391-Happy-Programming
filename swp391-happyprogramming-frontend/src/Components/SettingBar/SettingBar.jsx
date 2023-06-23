@@ -39,6 +39,8 @@ function SettingBar(props) {
         });
     }
 
+    // window.localStorage.getItem("role")
+
 
     const navSettingClass = navSettingOpen ? "pf-dropdown active" : "pf-dropdown";
 
@@ -49,8 +51,6 @@ function SettingBar(props) {
                 setNavSettingOpen(!navSettingOpen);
             }}>
                 <div className="avatar">
-                    {/* <img src={basicAvatar} alt="avatar"></img> */}
-                    {/* <img src={"http://localhost:1111/api/users/avatar/" + "anmentor"} alt="avatar"></img> */}
                     <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                 </div>
             </div>
@@ -58,33 +58,23 @@ function SettingBar(props) {
                 <ul>
                     <li className="nav-item">
                         <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
-                        <NavLink to={`/profile/${props.user}`}>{userDisplayName}</NavLink>
-                        {/* <NavLink to={`/profile/${props.user}`}>{props.user}</NavLink> */}
+                        <NavLink className="nav-link" to={`/profile/${props.user}`}>{userDisplayName}</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/admin">admin</NavLink>
-                    </li>
-                    {/* <li className="nav-item">
-                        <p>Setting</p>
-                        <div className="themeSwitch">
-                            <label>
-                                <input type="checkbox" />
-                                <span className="slider"></span>
-                            </label>
-                        </div>
-                    </li> */}
-
-                    <li className="nav-item">
-                        <NavLink to="/changepassword">changepassword</NavLink>
+                        <NavLink className="nav-link" to="/admin">Admin<ion-icon name="person-circle-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
+                        <NavLink className="nav-link" to="/mycourse">My Course<ion-icon name="albums-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
+                        <NavLink className="nav-link" to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink
+                            className="nav-link"
                             to="/login"
                             onClick={() => {
                                 alert("Are you sure you want to logout?");
