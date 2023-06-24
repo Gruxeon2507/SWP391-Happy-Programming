@@ -78,10 +78,11 @@
   overflow: hidden;
   height: min-content;
   width: min-content;
-  padding: 1px 2px;
+  padding: 4px 1rem;
   margin: auto;
   margin-left: 8px;
 }
+
 #textBttn {
   display: flex;
   justify-content: center;
@@ -92,18 +93,17 @@
 #textBttn img {
   /* width: 24px; */
   height: 24px;
-  filter: invert(100%);
 }
 
 #textBttn button {
   height: 100%;
   width: 52px;
-  color: var(--lightItem);
-  background-color: var(--item);
+  color: var(--darkItem5);
+  background-color: transparent;
   /* margin: auto 4px auto 8px; */
   font-size: 1.05rem;
   padding: 6px 0.4rem;
-  border: 4px solid var(--light);
+  border: 4px solid var(--lightItem);
 
   display: flex;
   align-items: center;
@@ -115,6 +115,9 @@
 #textBttn button:hover {
   border: 4px solid var(--darkItem3);
   background-color: var(--itemActive);
+}
+#textBttn button:hover img {
+  filter: invert(100%);
 }
 
 .filter-container ion-icon {

@@ -169,7 +169,7 @@ const ConversationList = () => {
                     </ul>
                 </nav>
                 <div className="Message-List">
-                    <h1>asldkjasd</h1>
+                    <h1>Hi there <br />Please choose a conversation to continue...</h1>
                 </div>
             </div>
 

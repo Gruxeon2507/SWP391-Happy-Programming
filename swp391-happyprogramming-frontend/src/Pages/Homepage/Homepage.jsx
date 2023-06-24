@@ -162,9 +162,10 @@ const Homepage = () => {
             />
           </div>
 
-          <div className="reset-btn">
-            <button onClick={handleReset}> <p>Reset</p></button>
+          <div id="textBttn">
+            <button onClick={handleReset}><img src={resetFilterImg}></img></button>
           </div>
+
 
         </div>
       </div>

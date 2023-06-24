@@ -40,7 +40,7 @@ const MyCourseHistory = () => {
                 setTotalItems(response.data.totalElements);
                 response.data.content.forEach((participate) => {
                     getMentorOfCourses(participate.course.courseId);
-                  });
+                });
             })
             .catch((error) => {
                 console.log("loi lay ra course" + error);
@@ -94,7 +94,7 @@ const MyCourseHistory = () => {
     return (
         <>
             <NavBar mode={1} />
-            
+
             <div className="myCourse-body">
                 <div className="course-card">
                     <div className="RejectCourse">

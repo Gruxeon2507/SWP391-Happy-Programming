@@ -32,7 +32,7 @@ const Notification = () => {
           setOpenNotiList(false);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -110,9 +110,9 @@ const Notification = () => {
   }, [userData.username]);
 
   useEffect(() => { }, [notifications]);
-  console.log(newNotifications);
+  // console.log(newNotifications);
 
-  const setViewedStatus = () =>{
+  const setViewedStatus = () => {
     api.post("/api/notification/viewed")
   }
 
@@ -121,13 +121,17 @@ const Notification = () => {
   const notiListClass = openNotiList ? "noti-list active" : "noti-list";
 
   return (
-    <div className="noti-container" ref={toggleRef} onClick={() => {
-      setOpenNotiList(!openNotiList);
-      setIsViewed(true);
-      setViewedStatus();
-    }}>
+    <div className="noti-container"
+      ref={toggleRef}
+    >
       {/* <span>view?{isViewed ? "t" : "f"} </span> */}
-      <div className="noti-toggle">
+      <div className="noti-toggle"
+        onClick={() => {
+          setOpenNotiList(!openNotiList);
+          setIsViewed(true);
+          setViewedStatus();
+        }}
+      >
         <img src={notiIcon}></img>
       </div>
       <div className={notiClass}></div>
@@ -138,16 +142,16 @@ const Notification = () => {
           {newNotifications.map((newNotification) => (
             <li>
               <NavLink to={"/"}>{newNotification.message}
-              <br></br>
-              {newNotification.date}
+                <br></br>
+                {newNotification.date}
               </NavLink>
             </li>
           ))}
           {notifications.map((notification) => (
             <li>
               <NavLink to={"/"}>{notification.notificationContent}
-              <br></br>
-              {notification.notificationTime}
+                <br></br>
+                {notification.notificationTime}
               </NavLink>
             </li>
           ))}
