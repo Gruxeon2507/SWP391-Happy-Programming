@@ -135,19 +135,29 @@ public class RequestController {
                                 String courseName = courseRepository.ducFindByCourseId(courseId).getCourseName();
                                 int conversationGroupId = conversationRepository.findByConversationName(courseName).getConversationId();
                                 user_ConversationRepository.insertUserConversation(menteeUsername, conversationGroupId);
+                                System.out.println("insert group chung ok");
 
                                 String conversationName = mentorUsername + menteeUsername;
                                 Conversation exitConversation = conversationRepository.findByConversationName(conversationName);
+                                System.out.println("tìm group chat riêng");
+
                                 if (exitConversation == null) {
                                     //tạo chat riêng
                                     conversationRepository.insertPrivateConversation(conversationName);
+                                    System.out.println("tạo group riêng ok");
+
                                 }
                                 //lấy id của group riêng đã có/ vừa tạo
                                 Conversation conversationPrivate = conversationRepository.findByConversationName(conversationName);
                                 int conversationPrivateId = conversationPrivate.getConversationId();
+
                                 //insert group riêng cho mentor và mentee
                                 user_ConversationRepository.insertUserConversation(menteeUsername, conversationPrivateId);
+                                System.out.println("cho mentee vào group riêng ok");
+
                                 user_ConversationRepository.insertUserConversation(mentorUsername, conversationPrivateId);
+                                System.out.println("cho mentor vào group riêng ok");
+
                             }
                         }
 
@@ -169,7 +179,7 @@ public class RequestController {
     //@maiphuonghoang 
     @GetMapping("/access-reject/{courseId}")
     public List<Request> getAccessRejectRequestOfCourse(HttpServletRequest request,
-                                                        @PathVariable Integer courseId) {
+            @PathVariable Integer courseId) {
         if (!roleUtils.hasRoleFromToken(request, 2)) {
             return null;
         }
@@ -207,7 +217,7 @@ public class RequestController {
                 Participate exitParticipate = participateRepository.findByUsernameCourseId(username, courseId);
                 if (exitParticipate == null) {
                     participateRepository.saveParticipate(username, courseId, 3, 0);
-                } else{
+                } else {
                     participateRepository.updateStatus(0, courseId, username);
                 }
                 requestRepository.save(r);

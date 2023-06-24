@@ -176,3 +176,9 @@ JOIN Course c ON p.courseId = c.courseId
 WHERE p.statusId IN ( 1, -1) AND re.requestStatus IN ( 1, -1)
   AND re.courseId = p.courseId AND u.username = 'hieudt'
   ORDER BY requestTime desc
+  
+select distinct * from Course co join Course_Category cc ON co.courseId = cc.courseId
+JOIN Category ca ON  ca.categoryId = cc.categoryId
+where co.courseName LIKE '%Japan%' and 
+ca.categoryId in (1,2)
+(select courseId from Course)
