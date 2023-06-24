@@ -31,6 +31,7 @@ public class Message implements Serializable {
     private MessageKey messageKey;
 
     private String msgContent;
+    private String contentType;
 
     @ManyToOne
     @MapsId("sentBy")

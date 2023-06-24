@@ -27,4 +27,5 @@ public class Message {
     private String date;
     private Status status;
     private Timestamp sentAt;
+    private String contentType;
 }  

@@ -24,7 +24,10 @@ const PrivateChatRoom = () => {
   const [tab, setTab] = useState();
   const [count, setCount] = useState(0);
   const [conversationName, setConversationName] = useState({});
-  const [currentConversationMessage, setCurrentConversationMessage] = useState([]);
+  const [currentConversationMessage, setCurrentConversationMessage] = useState(
+    []
+  );
+  const [selectedImage, setSelectedImage] = useState(null);
   const [userData, setUserData] = useState({
     username: "",
     receivername: "",
@@ -75,9 +78,11 @@ const PrivateChatRoom = () => {
   //conversation name
   const getConversationName = async () => {
     //conversation
-    api.get("api/conversation/conversationname/" + conversationId).then((result) => {
-      setConversationName(result.data);
-    });
+    api
+      .get("api/conversation/conversationname/" + conversationId)
+      .then((result) => {
+        setConversationName(result.data);
+      });
   };
 
   useEffect(() => {
@@ -92,7 +97,6 @@ const PrivateChatRoom = () => {
     getConversationName();
     getUserConversation();
   }, [conversationId]);
-
 
   useEffect(() => {
     let map = new Map(conversationMessages);
@@ -111,10 +115,8 @@ const PrivateChatRoom = () => {
       api.get("/api/conversation/message/" + conversationId).then((result) => {
         setCurrentConversationMessage(result.data);
       });
-
     }
     getConversationName();
-
   }, [conversationId]);
 
   useEffect(() => {
@@ -154,24 +156,65 @@ const PrivateChatRoom = () => {
 
   const sendValue = () => {
     if (userData.message !== "") {
-      var chatMessage = {
-        senderName: userData.username,
-        message: userData.message,
-        status: "MESSAGE",
-        conversationId: conversationId,
-      };
-      console.log(chatMessage);
-      console.log("tab ne: " + tab);
-      stompClient.send(
-        "/chatroom/" + conversationId,
-        {},
-        JSON.stringify(chatMessage)
-      );
-      api.post("/api/conversation/sentmessage", chatMessage);
-      setUserData({ ...userData, message: "" });
-      scrollToBottom();
+      // Check if an image is selected
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append("image", selectedImage);
+  
+        // Upload the image file to the server
+        api.post("/api/conversation/image", formData)
+          .then((response) => {
+            const imageUrl = response.data;
+            // Create a message object with the image URL
+            const chatMessage = {
+              senderName: userData.username,
+              message: imageUrl,
+              status: "MESSAGE",
+              conversationId: conversationId,
+              contentType:"image"
+            };
+  
+            stompClient.send(
+              "/chatroom/" + conversationId,
+              {},
+              JSON.stringify(chatMessage)
+            );
+            api.post("/api/conversation/sentmessage", chatMessage);
+            setUserData({ ...userData, message: "" });
+            setSelectedImage(null);
+            scrollToBottom();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } 
+      if(userData.message!=="") {
+        // Create a message object without an image
+        const chatMessage = {
+          senderName: userData.username,
+          message: userData.message,
+          status: "MESSAGE",
+          conversationId: conversationId,
+          contentType:"text"
+        };
+  
+        stompClient.send(
+          "/chatroom/" + conversationId,
+          {},
+          JSON.stringify(chatMessage)
+        );
+        api.post("/api/conversation/sentmessage", chatMessage);
+        setUserData({ ...userData, message: "" });
+        scrollToBottom();
+      }
     }
   };
+  
+  const handleImageSelect = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
+  
 
   useEffect(() => {
     console.log(newConversationMessage);
@@ -220,15 +263,22 @@ const PrivateChatRoom = () => {
         </nav>
         <div className="Message-List">
           <div className="conversation-head">
-            <img src={"http://localhost:1111/api/users/avatar/" + conversationName.username} alt="placeholder"></img>
+            <img
+              src={
+                "http://localhost:1111/api/users/avatar/" +
+                conversationName.username
+              }
+              alt="placeholder"
+            ></img>
             <span>{conversationName.conversationName}</span>
             {/* <span>{conversationId}</span> */}
           </div>
           <div className="messages" ref={messagesRef}>
             {currentConversationMessage.map((chat) => (
               <li
-                className={`message ${chat.messageKey.sentBy === userData.username && "self"
-                  }`}
+                className={`message ${
+                  chat.messageKey.sentBy === userData.username && "self"
+                }`}
               >
                 {chat.messageKey.sentBy !== userData.username && (
                   <div className="message-to">
@@ -245,25 +295,33 @@ const PrivateChatRoom = () => {
                       <div className="display-name-msg-to">
                         <span>{chat.messageKey.sentBy}</span>
                       </div>
-                      <MessageTo message={chat.msgContent} />
+                      {
+                        chat.contentType==="text"?<MessageTo message={chat.msgContent} />:<>
+                          <img src={chat.msgContent}></img>
+                        </>
+                      }
                     </div>
                   </div>
                 )}
                 {chat.messageKey.sentBy === userData.username && (
                   <div className="message-from">
                     <div className="msg-text">
-                      <MessageFrom message={chat.msgContent} />
+                      {
+                        chat.contentType==="text"?<MessageTo message={chat.msgContent} />:<>
+                          <img src={chat.msgContent}></img>
+                        </>
+                      }
                     </div>
                   </div>
                 )}
               </li>
             ))}
 
-
             {newConversationMessage.map((chat) => (
               <li
-                className={`message ${chat.senderName === userData.username && "self"
-                  }`}
+                className={`message ${
+                  chat.senderName === userData.username && "self"
+                }`}
               >
                 {chat.senderName !== userData.username && (
                   <div className="message-to">
@@ -280,14 +338,23 @@ const PrivateChatRoom = () => {
                       <div className="display-name-msg-to">
                         <span>{chat.senderName}</span>
                       </div>
-                      <MessageTo message={chat.message} />
+                      {
+                        chat.contentType==="text"?<MessageTo message={chat.message} />:<>
+                          <img src={chat.message}></img>
+                        </>
+                      }
+                      
                     </div>
                   </div>
                 )}
                 {chat.senderName === userData.username && (
                   <div className="message-from">
                     <div className="msg-text">
-                      <MessageFrom message={chat.message} />
+                    {
+                        chat.contentType==="text"?<MessageFrom message={chat.message} />:<>
+                          <img src={chat.message}></img>
+                        </>
+                      }
                     </div>
                   </div>
                 )}
@@ -296,9 +363,11 @@ const PrivateChatRoom = () => {
           </div>
 
           <div className="input-message">
-            <button>
+            {/* <button>
               <ion-icon name="add-circle-outline"></ion-icon>
-            </button>
+            </button> */}
+            <input type="file" onChange={handleImageSelect}></input>
+
             <input
               type="text"
               placeholder="Type a message"
