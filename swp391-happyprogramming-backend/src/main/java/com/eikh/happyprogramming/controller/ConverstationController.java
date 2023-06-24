@@ -16,14 +16,24 @@ import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -85,6 +95,7 @@ public class ConverstationController {
                 m.setConversation(conversationRepository.findByConversationId(message.getConversationId()));
                 m.setMsgContent(message.getMessage());
                 m.setUser(userRepository.findByUsername(message.getSenderName()));
+                m.setContentType(message.getContentType());
                 messageRepository.save(m);
                 return ResponseEntity.ok(m);
             }
@@ -116,5 +127,49 @@ public class ConverstationController {
 //    public ResponseEntity<?> getCurrentConversationName(HttpServletRequest request,@PathVariable int conversationId){
 //
 //    }
+    private final String CHAT_UPLOAD_DIR = "/chat/";
+
+    @PostMapping("/image")
+    public ResponseEntity<?> uploadChatImage(@RequestParam("image") MultipartFile file,
+                                             @RequestHeader("Authorization") String token) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String uniqueId = UUID.randomUUID().toString(); // Generate a unique ID
+            String fileName = StringUtils.cleanPath(username + "_" + uniqueId + ".jpg");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + CHAT_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+                return ResponseEntity.ok("http://localhost:1111/api/conversation/chat/" + fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @GetMapping(value = "/chat/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
+        String filePath = "chat/" + fileId;
+        File file = new File(filePath);
+        InputStream inputStream = new FileInputStream(file);
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(inputStreamResource);
+    }
+    private static String getFileExtension(String fileName) {
+        String extension = "";
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            extension = fileName.substring(dotIndex + 1);
+        }
+
+        return extension;
+    }
 
 }
