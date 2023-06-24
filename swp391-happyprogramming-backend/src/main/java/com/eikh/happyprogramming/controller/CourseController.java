@@ -233,8 +233,7 @@ public class CourseController {
         //by all 
         if (categoryIds.length == 0) {
             System.out.println("chay ham alll");
-//            pageCourses = courseRepository.findAllSearch(pageable, searchText);
-            pageCourses = courseRepository.findAll(pageable);
+            pageCourses = courseRepository.findAllSearch(pageable, searchText);
         } //by categoryId
         else {
             System.out.println("chay ham category");

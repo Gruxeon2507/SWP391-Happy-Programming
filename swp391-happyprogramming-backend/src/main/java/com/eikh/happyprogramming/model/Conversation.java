@@ -35,7 +35,8 @@ public class Conversation {
     @OneToMany(mappedBy = "conversation")
     private List<Message> messages;
 
-    @OneToOne
+//    @OneToOne
+    @ManyToOne
     @JoinColumn(name="courseId")
     private Course course;
 }
