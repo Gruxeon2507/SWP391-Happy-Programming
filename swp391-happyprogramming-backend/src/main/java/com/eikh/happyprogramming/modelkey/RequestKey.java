@@ -18,6 +18,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Embeddable
 public class RequestKey implements Serializable{
 

@@ -6,6 +6,7 @@ import "./MyCourse.css"
 import NavBar from "../../Components/Navbar/NavBar";
 import Paging from "../../Components/Pagination/Paging";
 import ParticipateServices from "../../services/ParticipateServices";
+import RequestButton from "../../Components/RequestButton/RequestButton";
 
 
 const MyCourseHistory = () => {
@@ -40,7 +41,7 @@ const MyCourseHistory = () => {
                 setTotalItems(response.data.totalElements);
                 response.data.content.forEach((participate) => {
                     getMentorOfCourses(participate.course.courseId);
-                  });
+                });
             })
             .catch((error) => {
                 console.log("loi lay ra course" + error);
@@ -94,23 +95,28 @@ const MyCourseHistory = () => {
     return (
         <>
             <NavBar mode={1} />
-            
+
             <div className="myCourse-body">
                 <div className="course-card">
                     <div className="RejectCourse">
                         {courses.map((data) => (
+
                             <div key={data.course.courseId} className="card-wraper" onClick={() => {
-                                handleCourseNavigate(data.course.courseId);
+                                // handleCourseNavigate(data.course.courseId);
                             }}>
                                 <div className="card-title"><span>{data.course.courseName}</span></div>
-                                <span>Mentor: {mentorOfCourses[data.course.courseId]}</span>
+                                <RequestButton {...{ courseID: data.course.courseId }} />
+                                <div ><span>{data.status.statusName}</span></div>
 
-                                <div className="card-title"><span>{data.status.statusName}</span></div>
                             </div>
+
                         ))}
                     </div>
+
                 </div>
+
             </div>
+
             <div className="Pagination-Container">
                 <Paging {...{
                     totalItems,
@@ -138,6 +144,7 @@ const MyCourseHistory = () => {
                             onChange={handleCheckboxChange}
                         />
                         <label>{name === 'teaching' ? 'Teaching Course' : name === 'access' ? 'Access Course' : name === 'pending' ? 'Pending Course' : name === 'reject' ? 'Reject Course' : name}</label>
+
                     </div>
                 ))}
             </div>

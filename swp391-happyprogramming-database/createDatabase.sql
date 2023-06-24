@@ -304,6 +304,9 @@ SELECT * FROM Category
 SELECT * FROM Course
 SELECT * FROM Rating
 SELECT * FROM Request
+SELECT * FROM Participate
+SELECT * FROM Conversation
+SELECT * FROM User_Conversation
 */
 
 

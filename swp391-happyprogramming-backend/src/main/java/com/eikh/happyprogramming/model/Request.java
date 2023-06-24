@@ -27,6 +27,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "Request")
 public class Request implements Serializable {
