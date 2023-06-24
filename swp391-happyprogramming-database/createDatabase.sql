@@ -75,7 +75,7 @@ REFERENCES Feature(featureId);
 CREATE TABLE Course 
 (
 	courseId int NOT NULL AUTO_INCREMENT,
-    courseName nvarchar(255),
+    courseName nvarchar(255) UNIQUE,
     courseDescription longtext,
     createdAt datetime, 
     CONSTRAINT PK_Course PRIMARY KEY (courseId)
@@ -84,7 +84,7 @@ CREATE TABLE Course
 CREATE TABLE Conversation
 (
 	conversationId int NOT NULL AUTO_INCREMENT,
-    conversationName nvarchar(255),
+    conversationName nvarchar(255) UNIQUE,
 	courseId int,
     CONSTRAINT PK_Conversation PRIMARY KEY (conversationId)
 );
@@ -242,6 +242,28 @@ CREATE TABLE Attachment
 );
 ALTER TABLE Attachment ADD CONSTRAINT FK_Attachment_Post FOREIGN KEY(postId)
 REFERENCES Post(postId);
+
+CREATE TABLE ReportType(
+	reportTypeId int NOT NULL AUTO_INCREMENT,
+    reportName nvarchar(255),
+    reportDescription longtext,
+    CONSTRAINT PK_ReportType PRIMARY KEY (reportTypeId)
+);
+
+CREATE TABLE Report(
+	commentId int NOT NULL,
+    reportedBy varchar(255),
+    reportTime datetime,
+    reportTypeId int,
+    reportContent longtext,
+    CONSTRAINT PK_Report PRIMARY KEY (commentId, reportedBy)
+);
+ALTER TABLE Report ADD CONSTRAINT FK_Report_Comment FOREIGN KEY (commentId) 
+REFERENCES `Comment`(commentId);
+ALTER TABLE Report ADD CONSTRAINT FK_Report_User FOREIGN KEY (reportedBy)
+REFERENCES `User`(username);
+ALTER TABLE Report ADD CONSTRAINT FK_Report_ReportType FOREIGN KEY (reportTypeId)
+REFERENCES ReportType(reportTypeId);
 
 CREATE TABLE Notification
 (

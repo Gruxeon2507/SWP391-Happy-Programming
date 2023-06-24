@@ -44,7 +44,7 @@ public class Course implements Serializable {
     @ManyToMany(mappedBy = "courses")
     private List<Category> categories;
 
-    @OneToOne(mappedBy = "course")
+    @OneToMany(mappedBy = "course")
     @JsonIgnore
-    private Conversation conversation;
+    private List<Conversation> conversations;
 }

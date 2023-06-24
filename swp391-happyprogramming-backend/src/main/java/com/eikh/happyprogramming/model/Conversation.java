@@ -24,6 +24,8 @@ public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int conversationId;
+
+    @Column(unique = true)
     private String conversationName;
     
     @OneToMany(mappedBy = "conversation")
@@ -33,7 +35,8 @@ public class Conversation {
     @OneToMany(mappedBy = "conversation")
     private List<Message> messages;
 
-    @OneToOne
+//    @OneToOne
+    @ManyToOne
     @JoinColumn(name="courseId")
     private Course course;
 }

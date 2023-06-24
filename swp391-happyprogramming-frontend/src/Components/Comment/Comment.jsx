@@ -15,7 +15,7 @@ const Comment = ({ comment, layer }) => {
   const replyRef = useRef(null);
   const [replies, setReplies] = useState([]);
 
-  useEffect(() => { }, [replies]);
+  useEffect(() => {}, [replies]);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -27,6 +27,23 @@ const Comment = ({ comment, layer }) => {
   }, []);
 
   // console.log("USER LOGIN: " + loginUsername);
+  const commentField = document.querySelector("#comment-content");
+  const replyField = document.querySelector("#reply-content");
+  // console.log("COMMENT FIELD: ", commentField);
+  // console.log("REPLY FIELD: ", replyField);
+
+  const handleKeyDownCaptureAddReply = (event) => {
+    if (event.key === "Enter") {
+      addReply();
+    }
+  };
+
+  const handleKeyDownCaptureEditComment = (event) => {
+    if (event.key === "Enter") {
+      console.log("you pressed enter");
+      onEditComment();
+    }
+  };
 
   const decodeHtmlEntities = (str) => {
     return String(str)
@@ -62,7 +79,7 @@ const Comment = ({ comment, layer }) => {
     }
   };
 
-  const addReply = (comment) => {
+  const addReply = () => {
     if (input.trim().length !== 0) {
       const reply = {
         commentContent: input.trim(),
@@ -88,31 +105,34 @@ const Comment = ({ comment, layer }) => {
     setShowInput(true);
   };
 
-
   return (
     <>
-      <img className="cmt-avt"
+      <img
+        className="cmt-avt"
         src={`http://localhost:1111/api/users/avatar/${loginUsername}`}
         alt="avatar"
       ></img>
       <div className="cmt-item-wrap">
         <div className="cmt-content">
           <div className="cmt-author-info">
-
             <span style={{ marginBottom: "0px" }}>
-              {`${comment.user && comment.user.displayName
-                ? comment.user.displayName
-                : "Username failed to load"
-                }`}
+              {`${
+                comment.user && comment.user.displayName
+                  ? comment.user.displayName
+                  : "Username failed to load"
+              }`}
             </span>
           </div>
 
-          <span className="cmt-text"
+          <span
+            className="cmt-text"
             contentEditable={editMode}
             suppressContentEditableWarning={editMode}
             style={{ marginTop: "0" }}
             ref={inputRef}
-          // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
+            id="comment-content"
+            onKeyDownCapture={handleKeyDownCaptureEditComment}
+            // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
           >
             {decodeHtmlEntities(comment.commentContent)}
           </span>
@@ -174,8 +194,12 @@ const Comment = ({ comment, layer }) => {
             )}
           </div>
         </div>
-        {/* --------------------SHOW REPLIES-------------------- */}
-        <div className="cmt-rep-1" style={{ display: expand ? "block" : "none" }}>
+        {/* ------------------------------------- SHOW REPLIES ------------------------------------- */}
+        <div
+          className="cmt-rep-1"
+          style={{ display: expand ? "block" : "none" }}
+        >
+          {/* ------------------------------------- buttons ------------------------------------- */}
           {showInput && (
             <div className="inputContainer" style={{ display: "flex" }}>
               <input
@@ -184,11 +208,14 @@ const Comment = ({ comment, layer }) => {
                 autoFocus
                 ref={replyRef}
                 onChange={(e) => setInput(e.target.value)}
+                ref={replyRef}
+                id="reply-content"
+                onKeyDownCapture={handleKeyDownCaptureAddReply}
               />
               <ActionButton
                 className="reply"
                 type="REPLY"
-                handleClick={() => addReply(comment)}
+                handleClick={() => addReply()}
               ></ActionButton>
               <ActionButton
                 className="reply"
@@ -197,6 +224,7 @@ const Comment = ({ comment, layer }) => {
               ></ActionButton>
             </div>
           )}
+          {/* ------------------------------------- replies ------------------------------------- */}
           {replies.map((reply) => (
             <div className="cmt-card">
               <Comment
@@ -211,7 +239,5 @@ const Comment = ({ comment, layer }) => {
     </>
   );
 };
-
-
 
 export default Comment;

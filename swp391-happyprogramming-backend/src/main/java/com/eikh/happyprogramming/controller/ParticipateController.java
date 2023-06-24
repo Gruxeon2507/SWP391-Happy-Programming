@@ -12,7 +12,6 @@ import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.ConversationRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
-import com.eikh.happyprogramming.repository.RequestRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.repository.User_ConversationRepository;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
@@ -36,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/participates")
 public class ParticipateController {
+    final String MENTOR_CONVERSATION_PREFIX = "Mentor - ";
 
     @Autowired
     ParticipateRepository participateRepository;
@@ -59,20 +59,33 @@ public class ParticipateController {
     CourseRepository courseRepository;
 
     @PostMapping("/save")
-    public void saveCourseParticipate(@RequestParam("username") String username, @RequestParam("courseId") int courseId, @RequestParam("participateRoleId") int participateRoleId, @RequestParam("statusId") int statusId, HttpServletRequest request) {
+    public void saveCourseParticipate(@RequestParam("mentorUsernames") List<String> mentorUsernames, @RequestParam("courseId") int courseId, @RequestParam("participateRoleId") int participateRoleId, @RequestParam("statusId") int statusId, HttpServletRequest request) {
         String usn = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         User u = userRepository.userHasRole(usn, 1);
         if (u != null) {
             //insert mentor
-            participateRepository.saveParticipate(username, courseId, 2, 1);
-            
+            for (String mentorUsername : mentorUsernames) {
+                participateRepository.saveParticipate(mentorUsername, courseId, 2, 1);
+            }
             Course course = courseRepository.ducFindByCourseId(courseId);
             //Tạo conversation cho course mới vừa tạo 
-            conversationRepository.insertConversation2(course.getCourseName(), courseId);
+            conversationRepository.insertGroupConversation(course.getCourseName(), courseId);
+            System.out.println("insert group chung ok.");
+
+            // Create conversation for mentor team
+            conversationRepository.insertGroupConversation(MENTOR_CONVERSATION_PREFIX + course.getCourseName(), courseId);
+            System.out.println("insert group mentor ok.");
+
             Conversation newCon = conversationRepository.findByConversationName(course.getCourseName());
-            //Insert mentor vào group chat vừa tạo 
+            Conversation mentorTeamNewCon = conversationRepository.findByConversationName(MENTOR_CONVERSATION_PREFIX + course.getCourseName());
+            //Insert mentor vào 2 group chat vừa tạo
             int conversationId = newCon.getConversationId();
-            user_ConversationRepository.insertUserConversation(username, conversationId);
+            int mentorTeamConversationId = mentorTeamNewCon.getConversationId();
+            for (String mentorUsername : mentorUsernames) {
+                user_ConversationRepository.insertUserConversation(mentorUsername, conversationId);
+                user_ConversationRepository.insertUserConversation(mentorUsername, mentorTeamConversationId);
+                System.out.println(mentorUsername + " inserted into conversation successfully.");
+            }
         } else {
             User u1 = userRepository.userHasRole(usn, 3);
             if (u1 != null) {
