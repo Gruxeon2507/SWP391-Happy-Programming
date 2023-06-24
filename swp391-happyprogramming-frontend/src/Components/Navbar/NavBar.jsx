@@ -112,7 +112,7 @@ function NavBar(props) {
           <p className="logo">
             <span>H</span>
             PYPRO
-            <span>{window.localStorage.getItem("role")}</span>
+            {/* <span>{window.localStorage.getItem("role")}</span> */}
           </p>
         </div>
         {(props.mode === 0 || props.mode === 1) && <>

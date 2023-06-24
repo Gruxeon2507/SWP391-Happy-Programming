@@ -108,7 +108,7 @@
 }
 
 .Conversation-List a {
-  padding: 8px 1rem;
+  padding: 8px 1rem 8px 8px;
   margin: 4px;
   width: 80%;
 
@@ -163,7 +163,7 @@
   height: 100%;
   width: 70%;
   grid-column: 3;
-  background-color: aquamarine;
+  background-color: var(--grd2);
   /* padding: 1rem; */
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
@@ -173,6 +173,8 @@
   margin-right: 0.5rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .conversation-head {
@@ -214,6 +216,8 @@
 }
 
 .input-message {
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-evenly;
