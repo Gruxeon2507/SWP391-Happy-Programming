@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Pagination } from "antd";
 
 const Paging = ({ totalItems, sizePerPage, name, currentPage, handlePageChange }) => {
+  console.log("size" + sizePerPage);
     return (
       <Pagination
         total={totalItems}

@@ -7,15 +7,6 @@ class CourseServices {
   getAllCourses() {
     return axios.get(COURSE_BASE_REST_API_URL);
   }
-  //@maiphuonghoang
-  getPageAllCourses(pageNumber, pageSize, sortField, sortOrder) {
-    console.log(
-      `${COURSE_BASE_REST_API_URL}/page?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-    return axios.get(
-      `${COURSE_BASE_REST_API_URL}/page?pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-  }
   // @HuyenNTK
   createCourse(course) {
     return api.post("api/courses/create", course);
@@ -27,7 +18,7 @@ class CourseServices {
     return api.get(`/api/courses/by-user?statusId=${statusId}`);
   }
   //@maiphuonghoang
-  getMentorOfCourse(courseId) {
+  getMentorsOfCourse(courseId) {
     console.log(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
     return axios.get(`${COURSE_BASE_REST_API_URL}/find-mentor/${courseId}`);
   }
@@ -38,52 +29,30 @@ class CourseServices {
     return axios.get(`${COURSE_BASE_REST_API_URL}/courseDetails/${courseId}`);
   }
 
-  //@maiphuonghoang
-  getSearchCheckAndFilterCourses(categoryIds, searchText, pageNumber, pageSize, sortField, sortOrder) {
-    console.log(
-      `${COURSE_BASE_REST_API_URL}/search-and-categories-filter?categoryIds=${categoryIds}&searchText=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-    return axios.get(
-      `${COURSE_BASE_REST_API_URL}/search-and-categories-filter?categoryIds=${categoryIds}&searchText=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`
-    );
-  }
 
   //@maiphuonghoang
   getCoursesOfMentor(){
     console.log(`http://localhost:1111/api/courses/by-mentor`);
     return api.get("/api/courses/by-mentor")
   }
+  
+  getCoursesByName(courseName){
+    console.log(`http://localhost:1111/api/courses/find/by-name/${courseName}`);
+    return api.get(`/api/courses/find/by-name/${courseName}`);
+  }
 
-  getPageMyCourses(pageNumber, pageSize, searchText, checked){
-    var participateRoles = [];
-    var statusIds = [];
-    if (checked.length > 0) {
-      checked.forEach((item) => {
-            if (item === 'teaching') {
-              participateRoles = [...participateRoles, 2];
-              statusIds = [...statusIds, 1];
-            }
-            else if (item === 'access') {
-              participateRoles = [...participateRoles, 3];
-              statusIds = [...statusIds, 1];
-            } else if (item === 'pending') {
-              participateRoles = [...participateRoles, 3];
-              statusIds = [...statusIds, 0];
-            }
-            else if (item === 'reject') {
-              participateRoles = [...participateRoles, 3];
-              statusIds = [...statusIds, -1];
-            }
-          })
-        }
+
+  getPageAllCourses(categoryIds, searchText, pageNumber, pageSize, sortField, sortOrder){
     const formData = new FormData();
     formData.append("pageNumber", pageNumber);
     formData.append("pageSize", pageSize);
     formData.append("searchText", searchText)
-    formData.append("participateRoles", participateRoles)
-    formData.append("statusIds", statusIds)
-    console.log("dang goi api", participateRoles, statusIds);
-    return api.post("/api/courses/allmy", formData);
+    formData.append("categoryIds", categoryIds)
+    formData.append("sortField", sortField)
+    formData.append("sortOrder", sortOrder)
+    console.log("dang goi api", searchText, categoryIds, sortField, sortOrder);
+    console.log(`http://localhost:1111/api/courses/all?categoryIds=${categoryIds}&searchText=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`, );
+    return api.post("/api/courses/all", formData);
   }
 
 }

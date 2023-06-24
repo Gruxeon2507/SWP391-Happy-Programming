@@ -5,7 +5,7 @@
 package com.eikh.happyprogramming.repository;
 
 import com.eikh.happyprogramming.model.Conversation;
-import com.eikh.happyprogramming.model.User;
+
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,8 +24,8 @@ public interface ConversationRepository extends JpaRepository<Conversation, Inte
     Conversation findByConversationId(int conversationId);
 
     //mph 
-    @Query(value = "SELECT * FROM Conversation c WHERE c.courseId = :courseId", nativeQuery = true)
-    public Conversation findByCourseId(Integer courseId);
+//    @Query(value = "SELECT * FROM Conversation c WHERE c.courseId = :courseId", nativeQuery = true)
+//    public Conversation findByCourseId(Integer courseId);
 
 
     //mph
@@ -35,13 +35,18 @@ public interface ConversationRepository extends JpaRepository<Conversation, Inte
     //mph 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Conversation (conversationName) VALUES (:conversationName)", nativeQuery = true)
-    public void insertConversation(String conversationName);
+    @Query(value = "INSERT INTO Conversation (conversationName, courseId) VALUES (:conversationName, :courseId)", nativeQuery = true)
+    public void insertGroupConversation(String conversationName, int courseId);
 
     //mph 
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO Conversation (conversationName, courseId) VALUES (:conversationName, :courseId)", nativeQuery = true)
     public void insertConversation2(String conversationName, int courseId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO Conversation (conversationName) VALUES (:conversationName)", nativeQuery = true)
+    public void insertPrivateConversation(String conversationName);
 
 }

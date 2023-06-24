@@ -83,8 +83,8 @@ public class PublicController {
     }
 
     @GetMapping("/mentor/by-course/{courseId}")
-    User getMentorByCourse(@PathVariable int courseId) {
-        return userRepository.getMentorOfCourse(courseId);
+    List<User> getMentorsByCourse(@PathVariable int courseId) {
+        return userRepository.getMentorsOfCourse(courseId);
     }
 
     @GetMapping("/mentor/rating/{username}")

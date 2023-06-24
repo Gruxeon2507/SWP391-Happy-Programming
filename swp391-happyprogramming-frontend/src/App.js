@@ -43,10 +43,10 @@ import VerifyDialog from "./Components/RegisterForm/VerifyDialog";
 import Notification from "./Components/Notification/Notification";
 import SentNotification from "./Components/Notification/SentNotification";
 import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
+import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
+
+
 function App() {
-
-
-
   // console.log(features);
   return (
     <Routes>
@@ -114,7 +114,15 @@ function App() {
           />
         }
       />
-
+      <Route
+        path="/myrequest"
+        element={
+          <PrivateRoute
+            component={MyRequestHistory}
+            roles={["mentee", "mentor", "admin"]}
+          />
+        }
+      />
 
       <Route
         path="/setting"
@@ -189,13 +197,14 @@ function App() {
           <PrivateRoute component={CreatePost} roles={["mentor", "admin"]} />
         }
       />
-      <Route path="/resetpassword/:username" element={<ResetPassword></ResetPassword>} />
+      <Route
+        path="/resetpassword/:username"
+        element={<ResetPassword></ResetPassword>}
+      />
 
       <Route
         path="/admin"
-        element={
-          <PrivateRoute component={AdminManage} roles={["admin"]} />
-        }
+        element={<PrivateRoute component={AdminManage} roles={["admin"]} />}
       />
       <Route path="/notification" element={<Notification> </Notification>} />
       <Route path="/notification/send" element={<SentNotification> </SentNotification>} />

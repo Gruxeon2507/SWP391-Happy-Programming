@@ -17,12 +17,14 @@ import com.eikh.happyprogramming.repository.ParticipateRepository;
 import com.eikh.happyprogramming.repository.PostRepository;
 import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.repository.User_ConversationRepository;
+import com.eikh.happyprogramming.services.CourseServices;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
-import com.eikh.happyprogramming.utils.RoleUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +46,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/courses")
 public class CourseController {
+    @Autowired
+    CourseServices courseServices;
 
     @Autowired
     CourseRepository courseRepository;
@@ -79,125 +83,12 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
-     * Paging, sorting for all course in homepage
-     */
-    @GetMapping("/page")
-    public Page<Course> getCourses(
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        return courseRepository.findAll(pageable);
-    }
-
-    /**
-     * @author maiphuonghoang
-     *
-     * Paging, sorting for all course by categories in homepage
-     */
-    @GetMapping("/by-categories/{categoryIds}")
-    public Page<Course> getPageCoursesByCategories(
-            @PathVariable("categoryIds") Integer[] categoryIds,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        List<Course> courses = courseRepository.getCourseByCategoryIds(categoryIds);
-        List<Integer> courseIds = new ArrayList<>();
-        for (Course course : courses) {
-            courseIds.add(course.getCourseId());
-        }
-        Page<Course> pageCourses = courseRepository.findByCourseIdIn(courseIds, pageable);
-        return pageCourses;
-    }
-
-    /**
-     * @author maiphuonghoang
-     *
-     * Filter, paging, sorting for all course or by categories course
-     */
-    @GetMapping("/search/{searchText}")
-    ResponseEntity<Page<Course>> findAllPublic(
-            @PathVariable String searchText,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        if (searchText.length() < 1) {
-            return new ResponseEntity<>(courseRepository.findAll(pageable), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
-
-        }
-    }
-
-    /**
-     * @author maiphuonghoang
-     *
-     * Filter, Paging, sorting for combination search text course by categories
-     * in homepage
-     */
-    @GetMapping("/search-and-categories-filter")
-    public ResponseEntity<Page<Course>> searchCheckAndFilterCourses(
-            @RequestParam Integer[] categoryIds,
-            @RequestParam String searchText,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "courseId") String sortField,
-            @RequestParam(defaultValue = "asc") String sortOrder
-    ) {
-        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        System.out.println("searchText" + searchText + "length" + searchText.length() + "categoryIds" + categoryIds.length);
-        System.out.println(searchText.length() > 0 ? "searchText length > 0" : "searchText length = 0");
-        List<Integer> courseIds = new ArrayList<>();
-
-        if (searchText.length() < 1 && categoryIds.length == 0) {
-            return new ResponseEntity<>(courseRepository.findAll(pageable), HttpStatus.OK);
-        }
-
-        if (searchText.length() > 0 && categoryIds.length == 0) {
-            System.out.println("khong co category, chi co text");
-            return new ResponseEntity<>(courseRepository.findAllSearch(pageable, searchText), HttpStatus.OK);
-        }
-
-        if (categoryIds.length > 0) {
-            List<Course> courses = courseRepository.getCourseByCategoryIds(categoryIds);
-            for (Course course : courses) {
-                courseIds.add(course.getCourseId());
-            }
-        }
-
-        Page<Course> pageCourses;
-        if (searchText.length() < 1) {
-            pageCourses = courseRepository.findByCourseIdIn(courseIds, pageable);
-        } else {
-            pageCourses = courseRepository.findAllSearchByCategories(pageable, categoryIds, searchText);
-        }
-
-        return new ResponseEntity<>(pageCourses, HttpStatus.OK);
-    }
-
-    /**
-     * @author maiphuonghoang
-     *
+     * <p>
      * get Course by username, statusId and participateRole in (mentor, mentee)
      */
     @GetMapping("/by-user")
     List<Course> getCourseByUsernameAndStatus(HttpServletRequest request,
-            @RequestParam(defaultValue = "1") Integer statusId) {
+                                              @RequestParam(defaultValue = "1") Integer statusId) {
         try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -211,7 +102,7 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * get Courses of active Mentor
      */
     @GetMapping("/by-mentor")
@@ -228,32 +119,32 @@ public class CourseController {
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * Get Mentor and Mentee of course
      */
     @GetMapping("/find-user/{courseId}")
     List<User> getUserOfCourse(@PathVariable Integer courseId,
-            @RequestParam(defaultValue = "1") Integer statusId
+                               @RequestParam(defaultValue = "1") Integer statusId
     ) {
         return userRepository.getUserOfCourseByStatusId(courseId, statusId);
     }
 
     /**
      * @author maiphuonghoang
-     *
+     * <p>
      * get Mentor of Course
      */
     @GetMapping("/find-mentor/{courseId}")
-    User getMentorOfCourse(@PathVariable Integer courseId) {
-        User user = userRepository.getMentorOfCourse(courseId);
-        List<Participate> p = participateRepository.findByUsername(user.getUsername());
-        System.out.println(p.get(0).getCourse().getCourseName());
-        return userRepository.getMentorOfCourse(courseId);
+    List<User> getMentorsOfCourse(@PathVariable Integer courseId) {
+//        List<User> mentors = userRepository.getMentorsOfCourse(courseId);
+//        List<Participate> p = participateRepository.findByUsername(mentors.getUsername());
+//        System.out.println(p.get(0).getCourse().getCourseName());
+        return userRepository.getMentorsOfCourse(courseId);
 //        return null;
     }
 
     @GetMapping("/courseDetails/{courseId}")
-    public List<Course> getCourseByID(@PathVariable Integer courseId) {
+    public Course getCourseByID(@PathVariable Integer courseId) {
         return courseRepository.findByCourseId(courseId);
     }
 
@@ -274,6 +165,7 @@ public class CourseController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createCourse(@RequestBody Course course, HttpServletRequest request) {
+
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         User adminUser = userRepository.userHasRole(username, 1);
@@ -281,17 +173,19 @@ public class CourseController {
             java.util.Date today = new java.util.Date();
             java.sql.Date createdAt = new java.sql.Date(today.getTime());
             course.setCreatedAt(createdAt);
-//        Insert into Course
-            Course newCourse = courseRepository.save(course);
-
-//         Insert into Course_Category
-            for (Category c : newCourse.getCategories()) {
-                categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
+//          Insert into Course
+            if (courseServices.isCourseNameTaken(course.getCourseName()) || course.getCourseName().trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            } else {
+                Course newCourse = courseRepository.save(course);
+//              Insert into Course_Category
+                for (Category c : newCourse.getCategories()) {
+                    categoryRepository.saveCourseCategory(c.getCategoryId(), newCourse.getCourseId());
+                }
+//              Insert admin into participate table
+                participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
+                return ResponseEntity.ok(newCourse);
             }
-//             Insert admin into participate table          
-            participateRepository.saveParticipate(username, newCourse.getCourseId(), 1, 1);
-
-            return ResponseEntity.ok(newCourse);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
@@ -322,6 +216,38 @@ public class CourseController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-    
+
+    @PostMapping("/all")
+    ResponseEntity<Page<Course>> getAllCourses(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "20") int pageSize,
+            @RequestParam(defaultValue = "") String searchText,
+            @RequestParam(defaultValue = "") Integer[] categoryIds,
+            @RequestParam(defaultValue = "courseId") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) {
+        System.out.println(searchText + categoryIds + sortField + sortOrder);
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Course> pageCourses;
+        //by all 
+        if (categoryIds.length == 0) {
+            System.out.println("chay ham alll");
+            pageCourses = courseRepository.findAllSearch(pageable, searchText);
+        } //by categoryId
+        else {
+            System.out.println("chay ham category");
+            pageCourses = courseRepository.getConditionCourses(pageable, categoryIds, searchText);
+        }
+
+        return new ResponseEntity<>(pageCourses, HttpStatus.OK);
+
+    }
+
+    @GetMapping("find/by-name/{courseName}")
+    public List<Course> findCourseByCourseName(@PathVariable String courseName) {
+        return courseRepository.findByCourseName(courseName);
+    }
+
 
 }
