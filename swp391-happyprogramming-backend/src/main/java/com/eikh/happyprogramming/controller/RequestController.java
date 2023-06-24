@@ -103,67 +103,67 @@ public class RequestController {
         try {
             transactionTemplate.execute(status -> {
                 try {
-                    Status s = new Status();
-                    s.setStatusId(statusId);
+        Status s = new Status();
+        s.setStatusId(statusId);
 
-                    List<User> mentors = userRepository.getMentorsOfCourse(courseId);
-                    List<String> mentorUsernames = mentors.stream()
-                            .map(User::getUsername)
-                            .collect(Collectors.toList());
+        List<User> mentors = userRepository.getMentorsOfCourse(courseId);
+        List<String> mentorUsernames = mentors.stream()
+                .map(User::getUsername)
+                .collect(Collectors.toList());
 
-                    for (String username : usernames) {
-                        for (String mentorUsername : mentorUsernames) {
-                            String menteeUsername = username;
-                            Request r = new Request();
-                            RequestKey key = new RequestKey();
-                            key.setCourseId(courseId);
-                            key.setRequestTime(new Timestamp(System.currentTimeMillis()));
-                            key.setUsername(username);
-                            r.setStatus(s);
-                            r.setRequestKey(key);
+        for (String username : usernames) {
+            for (String mentorUsername : mentorUsernames) {
+                String menteeUsername = username;
+                Request r = new Request();
+                RequestKey key = new RequestKey();
+                key.setCourseId(courseId);
+                key.setRequestTime(new Timestamp(System.currentTimeMillis()));
+                key.setUsername(username);
+                r.setStatus(s);
+                r.setRequestKey(key);
 
-                            //update participate
-                            participateRepository.updateStatus(statusId, courseId, username);
+                //update participate
+                participateRepository.updateStatus(statusId, courseId, username);
 
-                            //insert request
-                            requestRepository.save(r);
-                            //System.out.println(1/0);
+                //insert request
+                requestRepository.save(r);
+                //System.out.println(1/0);
 
-                            //nếu được access vào course
-                            if (statusId == 1) {
-                                //insert group chung
-                                String courseName = courseRepository.ducFindByCourseId(courseId).getCourseName();
-                                int conversationGroupId = conversationRepository.findByConversationName(courseName).getConversationId();
-                                user_ConversationRepository.insertUserConversation(menteeUsername, conversationGroupId);
-                                System.out.println("insert group chung ok");
+                //nếu được access vào course
+                if (statusId == 1) {
+                    //insert group chung
+                    String courseName = courseRepository.ducFindByCourseId(courseId).getCourseName();
+                    int conversationGroupId = conversationRepository.findByConversationName(courseName).getConversationId();
+                    user_ConversationRepository.insertUserConversation(menteeUsername, conversationGroupId);
+                    System.out.println("insert group chung ok");
 
-                                String conversationName = mentorUsername + menteeUsername;
-                                Conversation exitConversation = conversationRepository.findByConversationName(conversationName);
-                                System.out.println("tìm group chat riêng");
+                    String conversationName = mentorUsername + menteeUsername;
+                    Conversation exitConversation = conversationRepository.findByConversationName(conversationName);
+                    System.out.println("tìm group chat riêng");
 
-                                if (exitConversation == null) {
-                                    //tạo chat riêng
-                                    conversationRepository.insertPrivateConversation(conversationName);
-                                    System.out.println("tạo group riêng ok");
-
-                                }
-                                //lấy id của group riêng đã có/ vừa tạo
-                                Conversation conversationPrivate = conversationRepository.findByConversationName(conversationName);
-                                int conversationPrivateId = conversationPrivate.getConversationId();
-
-                                //insert group riêng cho mentor và mentee
-                                user_ConversationRepository.insertUserConversation(menteeUsername, conversationPrivateId);
-                                System.out.println("cho mentee vào group riêng ok");
-
-                                user_ConversationRepository.insertUserConversation(mentorUsername, conversationPrivateId);
-                                System.out.println("cho mentor vào group riêng ok");
-
-                            }
-                        }
+                    if (exitConversation == null) {
+                        //tạo chat riêng
+                        conversationRepository.insertPrivateConversation(conversationName);
+                        System.out.println("tạo group riêng ok");
 
                     }
+                    //lấy id của group riêng đã có/ vừa tạo
+                    Conversation conversationPrivate = conversationRepository.findByConversationName(conversationName);
+                    int conversationPrivateId = conversationPrivate.getConversationId();
 
-                    System.out.println("Request save and update success; insert conversation success");
+                    //insert group riêng cho mentor và mentee
+                    user_ConversationRepository.insertUserConversation(menteeUsername, conversationPrivateId);
+                    System.out.println("cho mentee vào group riêng ok");
+
+                    user_ConversationRepository.insertUserConversation(mentorUsername, conversationPrivateId);
+                    System.out.println("cho mentor vào group riêng ok");
+
+                }
+            }
+
+        }
+
+        System.out.println("Request save and update success; insert conversation success");
                 } catch (Exception ex) {
                     Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
                     status.setRollbackOnly();
@@ -223,6 +223,7 @@ public class RequestController {
                 requestRepository.save(r);
                 return "Participate update/save and Request save success";
             } catch (Exception ex) {
+                System.out.println("Failed Participate update/save and Request save;");
                 Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
                 status.setRollbackOnly();
             }
@@ -251,6 +252,7 @@ public class RequestController {
     @ToString
     @NoArgsConstructor
     class MyRequest {
+
         private int courseId;
         private String courseName;
         private int requestStatus;
