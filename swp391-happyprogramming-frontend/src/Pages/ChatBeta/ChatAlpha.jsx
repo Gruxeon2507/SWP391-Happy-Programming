@@ -15,6 +15,7 @@ import CourseServices from "../../services/CourseServices";
 var stompClient = null;
 const PrivateChatRoom = () => {
   const messagesRef = useRef(null);
+  const inputFileRef = useRef(null);
 
   const { conversationId } = useParams();
   const [conversations, setConversation] = useState([]);
@@ -27,6 +28,12 @@ const PrivateChatRoom = () => {
   const [currentConversationMessage, setCurrentConversationMessage] = useState(
     []
   );
+
+  const clearInputFile = () => {
+    inputFileRef.current.value = null;
+    setSelectedImage(null);
+  };
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [userData, setUserData] = useState({
     username: "",
@@ -160,7 +167,7 @@ const PrivateChatRoom = () => {
       if (selectedImage) {
         const formData = new FormData();
         formData.append("image", selectedImage);
-  
+
         // Upload the image file to the server
         api.post("/api/conversation/image", formData)
           .then((response) => {
@@ -171,9 +178,9 @@ const PrivateChatRoom = () => {
               message: imageUrl,
               status: "MESSAGE",
               conversationId: conversationId,
-              contentType:"image"
+              contentType: "image"
             };
-  
+
             stompClient.send(
               "/chatroom/" + conversationId,
               {},
@@ -187,17 +194,17 @@ const PrivateChatRoom = () => {
           .catch((error) => {
             console.log(error);
           });
-      } 
-      if(userData.message!=="") {
+      }
+      if (userData.message !== "") {
         // Create a message object without an image
         const chatMessage = {
           senderName: userData.username,
           message: userData.message,
           status: "MESSAGE",
           conversationId: conversationId,
-          contentType:"text"
+          contentType: "text"
         };
-  
+
         stompClient.send(
           "/chatroom/" + conversationId,
           {},
@@ -209,12 +216,12 @@ const PrivateChatRoom = () => {
       }
     }
   };
-  
+
   const handleImageSelect = (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
   };
-  
+
 
   useEffect(() => {
     console.log(newConversationMessage);
@@ -276,9 +283,8 @@ const PrivateChatRoom = () => {
           <div className="messages" ref={messagesRef}>
             {currentConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.messageKey.sentBy === userData.username && "self"
-                }`}
+                className={`message ${chat.messageKey.sentBy === userData.username && "self"
+                  }`}
               >
                 {chat.messageKey.sentBy !== userData.username && (
                   <div className="message-to">
@@ -296,7 +302,7 @@ const PrivateChatRoom = () => {
                         <span>{chat.messageKey.sentBy}</span>
                       </div>
                       {
-                        chat.contentType==="text"?<MessageTo message={chat.msgContent} />:<>
+                        chat.contentType === "text" ? <MessageTo message={chat.msgContent} /> : <>
                           <img src={chat.msgContent}></img>
                         </>
                       }
@@ -307,7 +313,7 @@ const PrivateChatRoom = () => {
                   <div className="message-from">
                     <div className="msg-text">
                       {
-                        chat.contentType==="text"?<MessageTo message={chat.msgContent} />:<>
+                        chat.contentType === "text" ? <MessageTo message={chat.msgContent} /> : <>
                           <img src={chat.msgContent}></img>
                         </>
                       }
@@ -319,9 +325,8 @@ const PrivateChatRoom = () => {
 
             {newConversationMessage.map((chat) => (
               <li
-                className={`message ${
-                  chat.senderName === userData.username && "self"
-                }`}
+                className={`message ${chat.senderName === userData.username && "self"
+                  }`}
               >
                 {chat.senderName !== userData.username && (
                   <div className="message-to">
@@ -339,19 +344,19 @@ const PrivateChatRoom = () => {
                         <span>{chat.senderName}</span>
                       </div>
                       {
-                        chat.contentType==="text"?<MessageTo message={chat.message} />:<>
+                        chat.contentType === "text" ? <MessageTo message={chat.message} /> : <>
                           <img src={chat.message}></img>
                         </>
                       }
-                      
+
                     </div>
                   </div>
                 )}
                 {chat.senderName === userData.username && (
                   <div className="message-from">
                     <div className="msg-text">
-                    {
-                        chat.contentType==="text"?<MessageFrom message={chat.message} />:<>
+                      {
+                        chat.contentType === "text" ? <MessageFrom message={chat.message} /> : <>
                           <img src={chat.message}></img>
                         </>
                       }
@@ -363,18 +368,41 @@ const PrivateChatRoom = () => {
           </div>
 
           <div className="input-message">
-            {/* <button>
-              <ion-icon name="add-circle-outline"></ion-icon>
-            </button> */}
-            <input type="file" onChange={handleImageSelect}></input>
+            <div className="attachment-button">
+              <label>
+                <ion-icon name="add-circle-outline"></ion-icon>
+                <input ref={inputFileRef}
+                  style={{ display: "none" }}
+                  type="file"
+                  onChange={handleImageSelect}>
 
-            <input
-              type="text"
-              placeholder="Type a message"
-              value={userData.message}
-              onChange={handleMessage}
-              onKeyPress={handleKeyPressSent}
-            ></input>
+                </input>
+              </label>
+              {/* <div className="attachment-img">
+                <label>
+                  <input type="file" onChange={handleImageSelect}></input>
+                  Add
+                </label>
+              </div> */}
+            </div>
+            <div className="msg-text-input">
+              <div className="input-inner">
+                {selectedImage ?
+                  <>
+                    <span>
+                      {selectedImage.name}
+                    </span>
+                    <ion-icon onClick={clearInputFile} name="close-outline"></ion-icon>
+                  </> : <></>}
+                <input
+                  type="text"
+                  placeholder="Type a message"
+                  value={userData.message}
+                  onChange={handleMessage}
+                  onKeyPress={handleKeyPressSent}
+                ></input>
+              </div>
+            </div>
             <button>
               <ion-icon name="send" onClick={sendValue}></ion-icon>
             </button>

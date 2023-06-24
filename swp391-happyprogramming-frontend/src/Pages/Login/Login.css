@@ -4,7 +4,7 @@
   width: 74vw;
 
   position: fixed;
-  top: calc(50% + 45px);
+  top: calc(50% + 40px);
   left: 50%;
   transform: translate(-50%, -50%);
 
@@ -28,13 +28,12 @@
   width: 100%;
   z-index: 1;
   /* background-color: red; */
-  filter: blur(150px);
+  filter: blur(200px);
 }
 .addition-color .color {
   position: absolute;
   width: 500px;
   height: 400px;
-  top: 40%;
   transform: translateY(-50%);
   background-color: var(--grd1);
   opacity: 0.3;
@@ -42,15 +41,15 @@
   z-index: 2;
 }
 .addition-color .color:nth-child(1) {
-  top: 60%;
+  top: 70%;
   background-color: var(--grd2);
   left: 0;
 }
 .addition-color .color:nth-child(2) {
   background-color: var(--grd1);
-  top: 50%;
-  left: 100%;
-  opacity: 1;
+  top: 80%;
+  left: calc(100% - 500px);
+  opacity: 0.5;
 }
 
 .login-frag .login-form form {
