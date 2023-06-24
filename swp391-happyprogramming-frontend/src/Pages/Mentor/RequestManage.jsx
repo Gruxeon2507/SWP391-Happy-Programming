@@ -128,7 +128,7 @@ const RequestManage = () => {
         const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject this mentee") : false;
         if (confirmed || statusId === 1) {
             
-            RequestService.updateParticipadeInsertRequest(selectedCourseId, statusId, [username])
+            RequestService.updateParticipateInsertRequest(selectedCourseId, statusId, [username])
             .then((response) => {
                 console.log(response.data);
                 setCheckedRequest([])
@@ -150,7 +150,7 @@ const RequestManage = () => {
         var statusId = Number(selectedValue);
         const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject these mentees") : false;
         if (confirmed || statusId === 1) {
-            RequestService.updateParticipadeInsertRequest(selectedCourseId, selectedValue, checkedRequest)
+            RequestService.updateParticipateInsertRequest(selectedCourseId, selectedValue, checkedRequest)
                 .then((response) => {
                     console.log(response.data);
                     setCheckedRequest([])

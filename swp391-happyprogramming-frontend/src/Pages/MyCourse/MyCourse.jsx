@@ -4,6 +4,7 @@ import convertDateFormat from "../../util/DateConvert";
 import { useNavigate } from "react-router-dom";
 import "./MyCourse.css"
 import NavBar from "../../Components/Navbar/NavBar";
+import RequestButton from "../../Components/RequestButton/RequestButton";
 
 const MyCourse = () => {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ const MyCourse = () => {
         handleCourseNavigate(course.courseId);
       }}>
         <div className="card-title"><span>{course.courseName}</span></div>
+        <RequestButton {...{courseID: course.courseId}} />
         {/* <span>Mentor: {mentorOfCourses[course.courseId]}</span> */} 
       </div>
     ));
