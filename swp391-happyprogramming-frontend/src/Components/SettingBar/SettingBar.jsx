@@ -72,7 +72,7 @@ function SettingBar(props) {
                     <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                 </div>
             </div>
-            <div className="Setting-Bar">
+            <div className="Setting-Bar" ref={toggleRef}>
                 <ul>
                     <li className="nav-item">
                         <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
