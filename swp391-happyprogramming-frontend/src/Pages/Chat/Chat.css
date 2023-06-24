@@ -226,18 +226,96 @@
   height: 60px;
   /* border-top: 2px solid #a1a1a155; */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  position: relative;
 }
 
-.input-message input {
+.msg-text-input {
   width: 80%;
-  height: 32px;
+  position: relative;
+  /* background-color: aquamarine; */
+  height: max-content;
+  height: calc(100% - 1.4rem);
+}
+
+.msg-text-input .input-inner {
+  background-color: var(--light);
+  position: absolute;
+  bottom: 0;
+  border-radius: 1rem;
+  width: 100%;
+  /* padding: 0 1rem; */
+  /* background-color: red; */
+  /* padding: 0.8rem; */
+  border: 2px solid var(--grd2);
+
+  padding: 0 1rem;
+}
+.msg-text-input .input-inner span {
+  /* background-color: red; */
+}
+
+.msg-text-input .input-inner ion-icon {
+  text-align: left;
+  transform: translateY(15%);
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin: 0 4px;
+  border-radius: 50%;
+}
+.msg-text-input .input-inner ion-icon:hover {
+  background-color: var(--darkItem3);
+}
+
+.msg-text-input span {
+  /* position: absolute; */
+  top: 0;
+  transform: translateY(-100%);
+}
+
+.msg-text-input input[type="text"] {
+  width: 100%;
+  height: 2rem;
   border-radius: 1rem;
   border: none;
-  padding: 0.8rem 1rem;
+  /* margin: 1rem 0; */
+  /* padding: 0.8rem 1rem; */
   background-color: var(--light);
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
-    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  font-size: 1.2rem;
+  /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
   /* background-color: red; */
+}
+.msg-text-input input[type="text"]:focus {
+  outline: none;
+}
+
+.attachment-button {
+  position: relative;
+  cursor: pointer;
+}
+.attachment-button label {
+  cursor: pointer;
+}
+
+.attachment-img {
+  background-color: var(--lightItem);
+  /* width: 500px; */
+  /* height: 200px; */
+  position: absolute;
+  top: -0.2rem;
+  transform: translateY(-100%);
+  /* isolation: isolate; */
+
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 4px solid var(--light);
+
+  cursor: pointer;
+}
+
+.attachment-img input[type="file"] {
+  display: none;
 }
 
 .input-message input:focus {
@@ -312,12 +390,21 @@
 
 .msg-text {
   width: fit-content;
-  max-width: 80%;
+  max-width: 70%;
+  max-height: 400px;
   padding: 8px;
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   border: 4px solid var(--lightItem);
+}
+.msg-text img {
+  width: 100%;
+  height: calc(100% - 2rem);
+  max-height: 300px;
+  margin: 0;
+  margin-top: 4px;
+  border-radius: 1rem;
 }
 
 .display-name-msg-to span {
