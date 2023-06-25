@@ -26,7 +26,7 @@ function Home(props) {
   return (
     <>
       {/* {props.url} */}
-      <LoadFinish state={-1}></LoadFinish>
+      <LoadFinish state={1}></LoadFinish>
       <NavBar mode={1} />
       <div className="scroll-snap-container">
         {/* <Loading></Loading> */}
