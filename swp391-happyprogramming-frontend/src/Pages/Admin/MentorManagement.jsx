@@ -107,18 +107,19 @@ const MentorManagement = () => {
     console.log(key);
   }
   return (
+    <div >
       <div className="create-mentor">
-        <div>
-          <div className="create-form">
+        <div className="create-form">
 
-            <form onSubmit={handleSubmit}>
-              <div className="user-input">
-                <span>Mail</span>
+          <form onSubmit={handleSubmit}>
+            <div className='mail-input'>
+              <div>
                 <input
                   type="email"
                   id="userEmail"
                   required
                   onChange={onChangeEmail}
+                  placeholder='Gmail'
                 />
               </div>
               {showErrorEmail ? (
@@ -135,56 +136,59 @@ const MentorManagement = () => {
                   </div>
                 </>
               ) : null}
+            </div>
+            <div className='mail-sbtn'>
               <button type="submit" onSubmit={handleSubmit} id='mentor-account-gen'>
                 Generate account
               </button>
-            </form>
-          </div>
-
+            </div>
+          </form>
         </div>
-        <table className="table-mentor-manage">
-          <thead>
-            <th>Name</th>
-            <th>Avatar</th>
-            <th>Created Date</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Action</th>
-          </thead>
-          <tbody>
-            {mentorList.map((mentor) => {
-              const buttonKey = mentor.activeStatus === 0 ? 0 : 1;
-              return (
-                <tr key={mentor.username}>
-                  <td>
-                    {mentor.displayName}
-                  </td>
-                  <td>
-                    <img
-                      src={
-                        "http://localhost:1111/api/users/avatar/" +
-                        mentor.username
-                      }
-                      alt=""
-                    />
-                  </td>
-                  <td>{convertDateFormat(mentor.createdDate)}</td>
-                  <td>{mentor.mail}</td>
-                  <td>
-                    {(mentor.activeStatus == 0) ? (<p>Banned</p>) : (<p>Active</p>)}
-                  </td>
-                  <td>
-                    {(mentor.activeStatus == 0) ?
-                      (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 0) }}>UnBan</button>) :
-                      (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 1) }}>Ban</button>)
-                    }
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+
       </div>
+      <table className="table-mentor-manage">
+        <thead>
+          <th>Name</th>
+          <th>Avatar</th>
+          <th>Created Date</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+          {mentorList.map((mentor) => {
+            const buttonKey = mentor.activeStatus === 0 ? 0 : 1;
+            return (
+              <tr key={mentor.username}>
+                <td>
+                  {mentor.displayName}
+                </td>
+                <td>
+                  <img
+                    src={
+                      "http://localhost:1111/api/users/avatar/" +
+                      mentor.username
+                    }
+                    alt=""
+                  />
+                </td>
+                <td>{convertDateFormat(mentor.createdDate)}</td>
+                <td>{mentor.mail}</td>
+                <td>
+                  {(mentor.activeStatus == 0) ? (<p>Banned</p>) : (<p>Active</p>)}
+                </td>
+                <td>
+                  {(mentor.activeStatus == 0) ?
+                    (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 0) }}>UnBan</button>) :
+                    (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 1) }}>Ban</button>)
+                  }
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
 
   )
 }
