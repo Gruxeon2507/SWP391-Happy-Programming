@@ -134,9 +134,9 @@ public class ConverstationController {
                                              @RequestHeader("Authorization") String token) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
-        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+        if (file.getSize() < 5000000) {
             String uniqueId = UUID.randomUUID().toString(); // Generate a unique ID
-            String fileName = StringUtils.cleanPath(username + "_" + uniqueId + ".jpg");
+            String fileName = StringUtils.cleanPath(username + "_" + uniqueId +"."+ fileExtension);
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + CHAT_UPLOAD_DIR;

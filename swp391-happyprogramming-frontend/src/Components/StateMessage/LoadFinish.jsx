@@ -8,7 +8,8 @@ function LoadFinish(props) {
     const [showState, setShowState] = useState(true);
     const hideState = () => {
         setShowState(false);
-    }
+        console.log("loadshow");
+    };
 
     return (
         <>
