@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CategoryServices from "../../services/CategoryServices.js";
 import UserServices from "../../services/UserServices.js";
 import CourseServices from "../../services/CourseServices";
@@ -10,8 +11,10 @@ import NavBar from "../../Components/Navbar/NavBar";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Loading from "../../Components/StateMessage/Loading.jsx";
+import { notiError, notiSuccess } from "../../Components/Notification/notify.js";
 
 function CreateCourse() {
+  const navigate = useNavigate();
   const INVALID_COURSENAME_MSG =
     "Course name must be unique, non-empty and must not contain special characters.";
   const INVALID_COURSEDESC_MSG = "Course description must not be empty";
@@ -49,12 +52,15 @@ function CreateCourse() {
       const courseId = newCourse.courseId;
       const mentors = course.mentors.map((m) => m.username);
       ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
-      // setLoading(false);
-      alert("Course created successfully.");
-      window.location.href = "/";
+      setLoading(false);
+      // alert("Course created successfully.");
+      notiSuccess();
+      // window.location.href = "/";
+      navigate("/courses");
     } catch (error) {
       setLoading(false);
-      alert("Failed to created Course.");
+      // alert("Failed to created Course.");
+      notiError();
     }
 
   };
@@ -222,9 +228,7 @@ function CreateCourse() {
               <td>
                 <label>Mentor:</label>
               </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>
+              <td>
                 <Select
                   options={mentors.map((mentor) => ({
                     value: mentor.username,
@@ -237,8 +241,13 @@ function CreateCourse() {
                     setTempMentors(values);
                   }}
                 />
+              </td>
+            </tr>
+            {/* <tr> */}
+            {/* <td colSpan={2}> */}
 
-                {/* {mentors.map((mentor) => (
+
+            {/* {mentors.map((mentor) => (
                   <div key={mentor.username}>
                     <input
                       type="radio"
@@ -253,8 +262,8 @@ function CreateCourse() {
                     </label>
                   </div>
                 ))} */}
-              </td>
-            </tr>
+            {/* </td> */}
+            {/* </tr> */}
             <tr>
               <td colSpan={2}>
                 <div className="bttnRow">

@@ -57,15 +57,16 @@
   padding: 0.6rem 2rem;
   margin: auto;
   border-radius: 2rem;
-  border: 4px solid var(--item);
-  color: var(--item);
+  border: 4px solid var(--item2);
+  color: var(--item2);
   font-size: 1.5rem;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .courseForm button:hover {
   color: var(--lightItem);
-  background-color: var(--item);
+  background-color: var(--item2);
   transition: 0.3s all ease;
 }
 
@@ -75,7 +76,15 @@
   border-collapse: collapse;
   border-color: transparent;
 }
-
+.courseForm table input[type="text"],
+.courseForm table textarea {
+  border: 2px solid var(--darkItem3);
+}
+.courseForm table input[type="text"]:focus,
+.courseForm table textarea:focus {
+  border: 2px solid var(--item2);
+  outline: none;
+}
 .table-input tr {
   border-bottom: 2px solid var(--darkItem3);
 }

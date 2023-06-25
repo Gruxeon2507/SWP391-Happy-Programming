@@ -145,10 +145,10 @@ const MyCourseHistory = () => {
                         {courses.map((data) => (
 
                             <div key={data.course.courseId} className="card-wraper" onClick={() => {
-                                // handleCourseNavigate(data.course.courseId);
+                                handleCourseNavigate(data.course.courseId);
                             }}>
                                 <div className="card-title"><span>{data.course.courseName}</span></div>
-                                <RequestButton {...{ courseID: data.course.courseId }} />
+                                {/* <RequestButton {...{ courseID: data.course.courseId }} /> */}
 
                                 <div className="c-status">
                                     <div className={CourseClassName(data.status.statusName)}></div>
