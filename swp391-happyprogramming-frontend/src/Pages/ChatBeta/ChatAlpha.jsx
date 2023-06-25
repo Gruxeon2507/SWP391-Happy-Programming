@@ -162,7 +162,6 @@ const PrivateChatRoom = () => {
   };
 
   const sendValue = () => {
-    if (userData.message !== "") {
       // Check if an image is selected
       if (selectedImage) {
         const formData = new FormData();
@@ -189,6 +188,7 @@ const PrivateChatRoom = () => {
             api.post("/api/conversation/sentmessage", chatMessage);
             setUserData({ ...userData, message: "" });
             setSelectedImage(null);
+            clearInputFile();
             scrollToBottom();
           })
           .catch((error) => {
@@ -214,7 +214,7 @@ const PrivateChatRoom = () => {
         setUserData({ ...userData, message: "" });
         scrollToBottom();
       }
-    }
+  
   };
 
   const handleImageSelect = (event) => {

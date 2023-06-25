@@ -109,7 +109,9 @@
 
 .success-dialog button {
   background-color: var(--item2);
+  cursor: pointer;
 }
 .fail-dialog button {
   background-color: var(--item);
+  cursor: pointer;
 }
