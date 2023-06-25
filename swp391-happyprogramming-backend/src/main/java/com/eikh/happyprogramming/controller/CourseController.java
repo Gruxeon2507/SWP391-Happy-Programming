@@ -248,6 +248,14 @@ public class CourseController {
     public List<Course> findCourseByCourseName(@PathVariable String courseName) {
         return courseRepository.findByCourseName(courseName);
     }
+    @GetMapping("ratingCourse/{username}")
+    public ResponseEntity<?> ratingCourse(@PathVariable("username") String username,
+                                          HttpServletRequest request){
+        String usernameMentee = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
+        return ResponseEntity.ok(courses);
+    }
+
 
 
 }
