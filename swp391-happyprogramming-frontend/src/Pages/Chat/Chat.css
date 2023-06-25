@@ -247,12 +247,16 @@
   /* padding: 0 1rem; */
   /* background-color: red; */
   /* padding: 0.8rem; */
-  border: 2px solid var(--grd2);
+  border: 2px solid var(--primary);
 
   padding: 0 1rem;
 }
 .msg-text-input .input-inner span {
   /* background-color: red; */
+}
+
+.input-inner img {
+  width: 150px;
 }
 
 .msg-text-input .input-inner ion-icon {
