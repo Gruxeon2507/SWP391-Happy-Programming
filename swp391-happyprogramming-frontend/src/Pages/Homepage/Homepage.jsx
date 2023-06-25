@@ -131,10 +131,71 @@ const Homepage = () => {
 
   return (
     <div className="container home-page">
-
+      <div className="course-banner">
+        <h1>Course</h1>
+      </div>
       <NavBar mode={1}></NavBar>
       {/* ====================region filter==================== */}
-      <div className="filter-container">
+      {/* <div className="filter-container">
+        <div className="filter-1">
+
+          <select
+            name="filter"
+            id=""
+            onChange={(e) => {
+              setSelectIndex(false);
+              handleSort(e.target.value);
+            }}>
+            {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
+            <option value="asc|createdAt">Oldest</option>
+            <option value="asc|courseName">A-Z Name</option>
+            <option value="desc|courseName">Z-A Name</option>
+          </select>
+
+          <div className="search-border">
+
+            <input
+              type="text"
+              placeholder="Search course here"
+              name="search"
+              value={searchText}
+              onChange={handleInputChange}
+              // onKeyPress={handleKeyPress}
+            />
+          </div>
+
+          <div id="textBttn">
+            <button onClick={handleReset}><img src={resetFilterImg}></img></button>
+          </div>
+
+
+        </div>
+      </div> */}
+      <main className="courses-list-main">
+        <aside className="cate-filter">
+          <div className="select-list">
+            <h2>Categories</h2>
+            {categories.map((category) => (
+              <div className="select" key={category.categoryId}>
+                <label>
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    checked={checked.includes(category.categoryId)}
+                    onChange={() => handleCheck(category.categoryId)}
+                  />
+                  {category.categoryName}
+                </label>
+              </div>
+            ))}
+          </div>
+        </aside>
+        {/* ====================end region filter==================== */}
+
+        {/* ====================region List of Course==================== */}
+
+        <section className="courses-section">
+        <div className="filter-container">
         <div className="filter-1">
 
           <select
@@ -169,29 +230,6 @@ const Homepage = () => {
 
         </div>
       </div>
-      <main className="courses-list-main">
-        <aside className="cate-filter">
-          <div className="select-list">
-            {categories.map((category) => (
-              <div className="select" key={category.categoryId}>
-                <label>
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    checked={checked.includes(category.categoryId)}
-                    onChange={() => handleCheck(category.categoryId)}
-                  />
-                  {category.categoryName}
-                </label>
-              </div>
-            ))}
-          </div>
-        </aside>
-        {/* ====================end region filter==================== */}
-
-        {/* ====================region List of Course==================== */}
-
-        <section className="courses-section">
           <div className="list-Courses">
             {pageCourses.map((course, index) => (
               <div
