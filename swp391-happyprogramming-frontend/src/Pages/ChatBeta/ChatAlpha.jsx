@@ -375,7 +375,6 @@ const PrivateChatRoom = () => {
                   style={{ display: "none" }}
                   type="file"
                   onChange={handleImageSelect}>
-
                 </input>
               </label>
               {/* <div className="attachment-img">
@@ -389,9 +388,8 @@ const PrivateChatRoom = () => {
               <div className="input-inner">
                 {selectedImage ?
                   <>
-                    <span>
-                      {selectedImage.name}
-                    </span>
+                    <img src={URL.createObjectURL(selectedImage)}></img>
+                    {/* <span>{selectedImage.name}</span> */}
                     <ion-icon onClick={clearInputFile} name="close-outline"></ion-icon>
                   </> : <></>}
                 <input

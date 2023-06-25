@@ -5,6 +5,8 @@ import "./Home.css";
 import bg from "../../Assets/backround.jpg";
 import { NavLink } from "react-router-dom";
 import gmt from "../../Assets/giangmentor.png";
+import Loading from "../../Components/StateMessage/Loading";
+import LoadFinish, { FailDialog, SuccessDialog } from "../../Components/StateMessage/LoadFinish";
 
 function Home(props) {
 
@@ -24,9 +26,14 @@ function Home(props) {
   return (
     <>
       {/* {props.url} */}
+      <LoadFinish state={1}></LoadFinish>
       <NavBar mode={1} />
       <div className="scroll-snap-container">
-
+        {/* <Loading></Loading> */}
+        <div className="scroll-snap-item">
+          {/* <FailDialog></FailDialog> */}
+          {/* <SuccessDialog></SuccessDialog> */}
+        </div>
         <div className="scroll-snap-item">
           <div className="banner-1">
             <img src={bg} alt="background" loading="lazy" />

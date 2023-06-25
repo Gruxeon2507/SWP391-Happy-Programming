@@ -9,6 +9,7 @@ import "../Course/CreateCourse.css";
 import NavBar from "../../Components/Navbar/NavBar";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Loading from "../../Components/StateMessage/Loading.jsx";
 
 function CreateCourse() {
   const INVALID_COURSENAME_MSG =
@@ -30,23 +31,32 @@ function CreateCourse() {
   const [tempCategories, setTempCategories] = useState([]);
   const [tempMentors, setTempMentors] = useState([]);
   const [courseWithName, setCourseWithName] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     if (!(await validateCourseAtCreation(course))) {
+      setLoading(false);
       return;
     }
-    // insert into Course + CourseCategories + Participate admin
-    const response = await CourseServices.createCourse(course);
-    const newCourse = response.data;
+    try {
+      // insert into Course + CourseCategories + Participate admin
+      const response = await CourseServices.createCourse(course);
+      const newCourse = response.data;
 
-    // insert mentors into Participate table
-    const courseId = newCourse.courseId;
-    const mentors = course.mentors.map((m) => m.username);
-    ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
+      // insert mentors into Participate table
+      const courseId = newCourse.courseId;
+      const mentors = course.mentors.map((m) => m.username);
+      ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
+      // setLoading(false);
+      alert("Course created successfully.");
+      window.location.href = "/";
+    } catch (error) {
+      setLoading(false);
+      alert("Failed to created Course.");
+    }
 
-    alert("Course created successfully.");
-    window.location.href = "/";
   };
 
   const handleChangeCourseName = (e) => {
@@ -151,6 +161,9 @@ function CreateCourse() {
   }, [tempMentors]);
   return (
     <>
+      {loading ? (
+        <Loading></Loading>
+      ) : <></>}
       <div className="createCourse-container">
         <form id="courseForm" className="courseForm">
           <table border={1} className="table-input">
