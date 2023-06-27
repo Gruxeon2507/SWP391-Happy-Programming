@@ -108,6 +108,7 @@ CREATE TABLE Message
     sentBy varchar(255),
     sentAt datetime(6),
     msgContent longtext,
+    contentType varchar(255),
     CONSTRAINT PK_Message PRIMARY KEY (conversationId, sentBy, sentAt)
 );
 ALTER TABLE Message ADD CONSTRAINT FK_Message_Conversation FOREIGN KEY(conversationId)
@@ -303,6 +304,9 @@ SELECT * FROM Category
 SELECT * FROM Course
 SELECT * FROM Rating
 SELECT * FROM Request
+SELECT * FROM Participate
+SELECT * FROM Conversation
+SELECT * FROM User_Conversation
 */
 
 

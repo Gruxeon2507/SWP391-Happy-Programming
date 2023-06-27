@@ -1,9 +1,73 @@
 @import url("../../global/ColorPalette.css");
 
+.mycourse-seachbar {
+  background-color: var(--lightItem);
+  margin: 1rem;
+  margin-top: 6rem;
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 4px solid var(--light);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border-radius: 1rem;
+}
+
+.list-request {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  justify-content: center;
+}
+.type-cb {
+  margin: 8px 1rem;
+  padding: 4px 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.type-cb label {
+  cursor: pointer;
+}
+
+.type-cb:hover,
+.type-cb.checked {
+  background-color: var(--light);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.type-cb input[type="checkbox"] {
+  display: none;
+}
+
 .myCourse-body {
-  margin-top: 4rem;
   padding: 1rem;
   width: calc(100%);
+}
+
+.mycourse-seachbar .search-bar input {
+  background-color: var(--lightItem);
+  width: 100%;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 2rem;
+  padding: 1rem 2rem;
+}
+.mycourse-seachbar .search-bar input:focus,
+.mycourse-seachbar .search-bar input:hover {
+  outline: none;
+  background-color: var(--light);
+}
+
+#hr-span {
+  width: calc(100% - 3rem);
+  height: 2px;
+  background-color: var(--darkItem3);
+  margin: 4px auto 1rem auto;
 }
 
 .card-wraper {
@@ -80,4 +144,37 @@
 
 .c-c-head ion-icon {
   font-size: 2rem;
+}
+
+.c-status {
+  background-color: var(--light);
+  width: min-content;
+
+  padding: 2px 4px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border-radius: 8px;
+}
+
+:where(.access-state, .reject-state, .pending-state) {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+
+  margin-right: 4px;
+}
+
+.access-state {
+  background-color: aquamarine;
+}
+.reject-state {
+  background-color: var(--item);
+}
+.pending-state {
+  background-color: lemonchiffon;
 }

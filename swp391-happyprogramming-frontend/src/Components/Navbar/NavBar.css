@@ -221,7 +221,7 @@
   padding: 0;
 }
 .Setting-Bar li {
-  padding: 0.2rem 1rem;
+  padding: 0.4rem 1rem;
   margin: 8px;
   align-items: center;
   box-sizing: border-box;
@@ -360,15 +360,67 @@
   top: calc(48px + 1rem);
   transform: translateX(calc(-100% + 5rem));
 
+  border: none;
   border-radius: 1rem;
 
   overflow-y: scroll;
   opacity: 0.9;
 }
 
+.noti-list ul li Navlink {
+  margin: 1rem 0;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+.noti-list ul li:hover {
+  background-color: var(--darkItem3);
+  border-radius: 8px;
+}
+.notification-item-left {
+  width: 95%;
+}
+.notification-item {
+  display: flex;
+  flex-direction: row;
+}
+.new-note-mark {
+  /* width: 20px;
+  height: 20px;
+  background-color: red;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%); */
+  /* background-color: red; */
+  display: flex;
+  width: 5%;
+  align-items: center;
+  justify-content: center;
+}
+.notification-mark {
+  background-color: blue;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+}
+.noti-list ul li span {
+  font-size: 1rem;
+  display: block;
+}
+.noti-list ul li span:nth-child(2) {
+  color: var(--item2);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
 .noti-list.active {
   height: 80svh;
   padding: 1rem;
+  border: 4px solid var(--light);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 }
 
 .noti-list span {

@@ -14,7 +14,7 @@ class RequestService {
   }
 
   //phuong 
-  updateParticipadeInsertRequest(courseId, statusId, usernames) {
+  updateParticipateInsertRequest(courseId, statusId, usernames) {
     const formData = new FormData();
     formData.append("courseId", courseId);
     formData.append("statusId", statusId);
@@ -40,7 +40,7 @@ class RequestService {
   }
 
   //phuong 
-  insertParticipadeInsertRequest(courseId) {
+  insertParticipateInsertRequest(courseId) {
     console.log(`/api/requests/send?courseId=${courseId}`);
     return api.post(`/api/requests/send?courseId=${courseId}`);
   }

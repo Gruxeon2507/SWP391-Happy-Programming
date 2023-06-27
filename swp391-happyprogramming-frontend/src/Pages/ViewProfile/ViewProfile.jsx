@@ -123,25 +123,57 @@ function ViewProfile(props) {
     setErrorComment(``);
     setComment(inputComment);
   };
-  const handleRateMentor = (event, courseId) => {
+  const handleRateMentor = async (event, courseId) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append(`username`, id);
     formData.append(`courseId`, courseId);
     formData.append(`comment`, comment);
     formData.append(`noStar`, noStar);
-    axios
+   await axios
       .post(`http://localhost:1111/api/ratings/rates`, formData, {
         headers: requestHeadersFormdata,
       })
       .then((res) => {
-        // console.log("Rate ok");
+        console.log("Rate ok");
       })
       .catch((error) => {
-        // console.log(error);
-        // console.log("Rate failed");
+        console.log(error);
+        console.log("Rate failed");
       });
-    window.location.href = "";
+      
+    await axios
+      .get(`http://localhost:1111/api/courses/ratingCourse/${id}`, {
+        headers: requestHeadersFormdata,
+      })
+      .then((res) => {
+        setCourses(res.data);
+        console.log(courses);
+      })
+      .catch((error) => {
+        console.log(error + " When get courses");
+      }); 
+   await axios
+      .get(`http://localhost:1111/api/ratings/rate/${id}`)
+      .then((res) => {
+        setRatings(res.data);
+        console.log(res.data);
+        console.log(ratings);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Error when get ratings");
+      });
+   await axios
+      .get(`http://localhost:1111/api/ratings/avg/${id}`)
+      .then((res) => {
+        setAvgRate(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("get avg stars wrong");
+      });
   };
 
   //create skill
@@ -345,7 +377,6 @@ function ViewProfile(props) {
       });
     window.location.href = "";
   };
-
   useEffect(() => {
     axios
       .get(`http://localhost:1111/api/auth/profile/${id}`)

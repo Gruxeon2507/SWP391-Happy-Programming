@@ -41,25 +41,25 @@ function AdminManage(props) {
               className={active === 3 ? "active" : ""}
               onClick={() => setActiveMode(3)}
             >
-              Create Course
+              item placeholder
             </li>
             <li
               className={active === 4 ? "active" : ""}
               onClick={() => setActiveMode(4)}
             >
-              Create Course
+              item placeholder
             </li>
             <li
               className={active === 5 ? "active" : ""}
               onClick={() => setActiveMode(5)}
             >
-              Create Course
+              item placeholder
             </li>
             <li
               className={active === 5 ? "active" : ""}
               onClick={() => setActiveMode(5)}
             >
-              Create Course
+              item placeholder
             </li>
           </ul>
         </div>

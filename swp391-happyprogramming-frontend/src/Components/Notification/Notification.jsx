@@ -32,7 +32,7 @@ const Notification = () => {
           setOpenNotiList(false);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -75,24 +75,24 @@ const Notification = () => {
   const onError = (err) => {
     console.log(err);
   };
-
+  const getUserNotification = async () => {
+    const result = await api.get(
+      "http://localhost:1111/api/notification/all"
+    );
+    setNotification(result.data);
+    result.data.forEach((notification) => {
+      if (!notification.isViewed) {
+        setIsViewed(false);
+      }
+    });
+  };
   useEffect(() => {
     const fetchUsername = async () => {
       const loginuser = await UserServices.getLoginUsername();
       const username = loginuser.data;
       setUserData((prevUserData) => ({ ...prevUserData, username: username }));
     };
-    const getUserNotification = async () => {
-      const result = await api.get(
-        "http://localhost:1111/api/notification/all"
-      );
-      setNotification(result.data);
-      result.data.forEach((notification) => {
-        if (!notification.isViewed) {
-          setIsViewed(false);
-        }
-      });
-    };
+
     getUserNotification();
     fetchUsername();
   }, []);
@@ -110,9 +110,9 @@ const Notification = () => {
   }, [userData.username]);
 
   useEffect(() => { }, [notifications]);
-  console.log(newNotifications);
+  console.log(notifications);
 
-  const setViewedStatus = () =>{
+  const setViewedStatus = () => {
     api.post("/api/notification/viewed")
   }
 
@@ -121,13 +121,18 @@ const Notification = () => {
   const notiListClass = openNotiList ? "noti-list active" : "noti-list";
 
   return (
-    <div className="noti-container" ref={toggleRef} onClick={() => {
-      setOpenNotiList(!openNotiList);
-      setIsViewed(true);
-      setViewedStatus();
-    }}>
+    <div className="noti-container"
+      ref={toggleRef}
+    >
       {/* <span>view?{isViewed ? "t" : "f"} </span> */}
-      <div className="noti-toggle">
+      <div className="noti-toggle"
+        onClick={() => {
+          setOpenNotiList(!openNotiList);
+          setIsViewed(true);
+          setViewedStatus();
+          getUserNotification();
+        }}
+      >
         <img src={notiIcon}></img>
       </div>
       <div className={notiClass}></div>
@@ -137,17 +142,30 @@ const Notification = () => {
         <ul>
           {newNotifications.map((newNotification) => (
             <li>
-              <NavLink to={"/"}>{newNotification.message}
-              <br></br>
-              {newNotification.date}
+              <NavLink to={"/"}>
+                <span>{newNotification.message}</span>
+                <span>{newNotification.date}</span>
+                <span>{newNotification.isViewed}</span>
               </NavLink>
             </li>
           ))}
           {notifications.map((notification) => (
             <li>
-              <NavLink to={"/"}>{notification.notificationContent}
-              <br></br>
-              {notification.notificationTime}
+              {/* code nay cua duckm */}
+              <NavLink to={"/"}>
+                <div className="notification-item">
+
+                  <div className="notification-item-left">
+
+                    <span>{notification.notificationContent}</span>
+                    <span>{notification.notificationTime}</span>
+
+                  </div>
+
+                  <div className="new-note-mark">
+                    {notification.isViewed ? <></> : <div className="notification-mark"></div>}
+                  </div>
+                </div>
               </NavLink>
             </li>
           ))}

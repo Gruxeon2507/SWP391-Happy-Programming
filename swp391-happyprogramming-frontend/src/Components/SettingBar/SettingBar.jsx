@@ -37,7 +37,6 @@ function SettingBar(props) {
         const elements = document.querySelectorAll('.active');
         elements.forEach((element) => {
             element.classList.remove('active');
-
         });
     }
 
@@ -53,16 +52,16 @@ function SettingBar(props) {
                     setNavSettingOpen(false);
                 }
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         };
         document.addEventListener("mousedown", handler);
     });
 
     return (
-        <div className="SettingBar">
+        <div className="SettingBar" ref={toggleRef}>
             <div
-                ref={toggleRef}
+
                 className={navSettingClass}
                 onClick={() => {
                     removeActiveClass();
@@ -72,18 +71,22 @@ function SettingBar(props) {
                     <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                 </div>
             </div>
-            <div className="Setting-Bar">
+            <div className="Setting-Bar" >
                 <ul>
                     <li className="nav-item">
                         <img src={"http://localhost:1111/api/users/avatar/" + props.user} alt="avatar"></img>
                         <NavLink className="nav-link" to={`/profile/${props.user}`}>{userDisplayName}</NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/admin">Admin<ion-icon name="person-circle-outline"></ion-icon></NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/mycourse">My Course<ion-icon name="albums-outline"></ion-icon></NavLink>
-                    </li>
+                    {(localStorage.getItem("role") === 'admin') ? <>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/admin">Admin<ion-icon name="person-circle-outline"></ion-icon></NavLink>
+                        </li>
+                    </> : <>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/mycourse">My Course<ion-icon name="albums-outline"></ion-icon></NavLink>
+                        </li>
+                    </>}
+
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
                     </li>

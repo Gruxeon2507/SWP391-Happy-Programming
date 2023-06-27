@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CategoryServices from "../../services/CategoryServices.js";
 import UserServices from "../../services/UserServices.js";
 import CourseServices from "../../services/CourseServices";
@@ -9,8 +10,11 @@ import "../Course/CreateCourse.css";
 import NavBar from "../../Components/Navbar/NavBar";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Loading from "../../Components/StateMessage/Loading.jsx";
+import { notiError, notiSuccess } from "../../Components/Notification/notify.js";
 
 function CreateCourse() {
+  const navigate = useNavigate();
   const INVALID_COURSENAME_MSG =
     "Course name must be unique, non-empty and must not contain special characters.";
   const INVALID_COURSEDESC_MSG = "Course description must not be empty";
@@ -30,23 +34,35 @@ function CreateCourse() {
   const [tempCategories, setTempCategories] = useState([]);
   const [tempMentors, setTempMentors] = useState([]);
   const [courseWithName, setCourseWithName] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     if (!(await validateCourseAtCreation(course))) {
+      setLoading(false);
       return;
     }
-    // insert into Course + CourseCategories + Participate admin
-    const response = await CourseServices.createCourse(course);
-    const newCourse = response.data;
+    try {
+      // insert into Course + CourseCategories + Participate admin
+      const response = await CourseServices.createCourse(course);
+      const newCourse = response.data;
 
-    // insert mentors into Participate table
-    const courseId = newCourse.courseId;
-    const mentors = course.mentors.map((m) => m.username);
-    ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
+      // insert mentors into Participate table
+      const courseId = newCourse.courseId;
+      const mentors = course.mentors.map((m) => m.username);
+      ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
+      setLoading(false);
+      // alert("Course created successfully.");
+      notiSuccess();
+      // window.location.href = "/";
+      navigate("/courses");
+    } catch (error) {
+      setLoading(false);
+      // alert("Failed to created Course.");
+      notiError();
+    }
 
-    alert("Course created successfully.");
-    window.location.href = "/";
   };
 
   const handleChangeCourseName = (e) => {
@@ -151,6 +167,9 @@ function CreateCourse() {
   }, [tempMentors]);
   return (
     <>
+      {loading ? (
+        <Loading></Loading>
+      ) : <></>}
       <div className="createCourse-container">
         <form id="courseForm" className="courseForm">
           <table border={1} className="table-input">
@@ -209,9 +228,7 @@ function CreateCourse() {
               <td>
                 <label>Mentor:</label>
               </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>
+              <td>
                 <Select
                   options={mentors.map((mentor) => ({
                     value: mentor.username,
@@ -224,8 +241,13 @@ function CreateCourse() {
                     setTempMentors(values);
                   }}
                 />
+              </td>
+            </tr>
+            {/* <tr> */}
+            {/* <td colSpan={2}> */}
 
-                {/* {mentors.map((mentor) => (
+
+            {/* {mentors.map((mentor) => (
                   <div key={mentor.username}>
                     <input
                       type="radio"
@@ -240,8 +262,8 @@ function CreateCourse() {
                     </label>
                   </div>
                 ))} */}
-              </td>
-            </tr>
+            {/* </td> */}
+            {/* </tr> */}
             <tr>
               <td colSpan={2}>
                 <div className="bttnRow">

@@ -1,0 +1,121 @@
+.loading-screen {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100svw;
+  height: 100svh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  /* display: none; */
+}
+
+.loading-screen img {
+  position: fixed;
+  bottom: 3rem;
+  right: 4rem;
+  height: 100px;
+}
+
+.loading-screen:before {
+  font-size: 6rem;
+  font-weight: 600;
+  content: "loading....";
+  animation: loadingAnimation 6s infinite;
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  color: var(--lightItem);
+}
+
+@keyframes loadingAnimation {
+  0% {
+    content: "Loading.   ";
+  }
+  33.33% {
+    content: "Loading..  ";
+  }
+  66.66% {
+    content: "Loading... ";
+  }
+  100% {
+    content: "Loading....";
+  }
+}
+
+.load-finish-dialog {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: var(--light);
+
+  z-index: 1000;
+}
+
+.load-finish-dialog ion-icon {
+  font-size: 6rem;
+}
+.load-finish-dialog h1 {
+  margin: 0;
+}
+.load-finish-dialog p {
+  color: var(--darkItem4);
+}
+
+.load-finish-dialog Button {
+  color: var(--lightItem);
+  font-weight: 600;
+  font-size: 2rem;
+  border: none;
+  border-radius: 1rem;
+  padding: 2px 1rem;
+
+  cursor: pointer;
+}
+.load-finish-dialog Button:hover {
+  transform: translateY(-5%);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.fail-dialog,
+.success-dialog {
+  margin: auto;
+  padding: 2rem;
+
+  width: 500px;
+  /* height: 300px; */
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background-color: var(--lightItem);
+  border-radius: 2rem;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-dialog h1,
+.success-dialog ion-icon {
+  color: var(--item2);
+}
+.fail-dialog h1,
+.fail-dialog ion-icon {
+  color: var(--item);
+}
+
+.success-dialog button {
+  background-color: var(--item2);
+  cursor: pointer;
+}
+.fail-dialog button {
+  background-color: var(--item);
+  cursor: pointer;
+}

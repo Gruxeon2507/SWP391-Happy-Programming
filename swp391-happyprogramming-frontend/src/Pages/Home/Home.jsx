@@ -5,6 +5,10 @@ import "./Home.css";
 import bg from "../../Assets/backround.jpg";
 import { NavLink } from "react-router-dom";
 import gmt from "../../Assets/giangmentor.png";
+import Loading from "../../Components/StateMessage/Loading";
+import LoadFinish, { FailDialog, SuccessDialog } from "../../Components/StateMessage/LoadFinish";
+import { toast } from "react-toastify";
+
 
 function Home(props) {
 
@@ -21,12 +25,25 @@ function Home(props) {
     };
   }, []);
 
+
+
   return (
     <>
       {/* {props.url} */}
+      {/* <LoadFinish state={1}></LoadFinish> */}
       <NavBar mode={1} />
       <div className="scroll-snap-container">
 
+        <div className="scroll-snap-item">
+          <div className="scroll-snap-item">
+            <div className="hapi-pro-gb">
+              <div className="hapi-pro-cover">
+                <h1>EIKH</h1>
+                <q>Unlock Your Code Potential</q>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="scroll-snap-item">
           <div className="banner-1">
             <img src={bg} alt="background" loading="lazy" />
@@ -42,18 +59,11 @@ function Home(props) {
               <div className="regisFW">
                 <NavLink to="/register">RegisterNow!!!</NavLink>
               </div>
+
             </div>
           </div>
         </div>
 
-        <div className="scroll-snap-item">
-          <div className="hapi-pro-gb">
-            <div className="hapi-pro-cover">
-              <h1>EIKH.</h1>
-              <q>Unlock Your Code Potential</q>
-            </div>
-          </div>
-        </div>
 
         <div className="scroll-snap-item">
           <div className="banner-2">

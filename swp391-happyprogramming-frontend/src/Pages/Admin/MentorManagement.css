@@ -1,3 +1,34 @@
+.create-mentor {
+  padding: 1rem;
+  background-color: var(--darkItem3);
+  margin-bottom: 1rem;
+}
+.create-form form {
+  display: flex;
+  flex-direction: row;
+  /* background-color: black; */
+  align-items: center;
+}
+.mail-input .w-message {
+  position: absolute;
+  bottom: -0.4rem;
+  color: var(--item);
+}
+.mail-input {
+  padding: 1rem;
+  position: relative;
+  width: 400px;
+}
+.mail-input input {
+  width: 100%;
+  padding: 0.4rem 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid var(--item2);
+}
+.mail-sbtn {
+}
 .table-mentor-manage {
   width: 100%;
   border-collapse: collapse;
@@ -35,10 +66,12 @@
 #mentor-account-gen {
   background-color: var(--lightItem);
   border-radius: 1rem;
-  padding: 0.2rem 0.8rem;
+  padding: 0.4rem 1rem;
   color: var(--item2);
   border: 2px solid var(--item2);
+  font-size: 1.1rem;
   font-weight: bold;
+  cursor: pointer;
 }
 
 #mentor-account-gen:hover {
@@ -46,7 +79,7 @@
   color: var(--lightItem);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   transform: translateY(-5%);
-  margin: 1rem;
+  /* margin: 1rem; */
 }
 
 .banBtn {
