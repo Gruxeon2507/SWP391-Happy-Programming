@@ -144,26 +144,6 @@ const CourseDetails = (props) => {
               <StarRating rating={rating} />{" "}
             </span>
           </div>
-          {/* {Object.keys(participation).length == 0 ? (
-            <div>
-              <button id="requestBttn" onClick={() => handleRequest()}>
-                Request
-              </button>
-            </div>
-          ) : (
-            <div>
-              <button
-                id="requestBttn"
-                style={{
-                  border: "4px solid var(--item2)",
-                  color: "var(--item2)",
-                }}
-              >
-                Requested
-              </button>
-            </div>
-          )} */}
-
           {participateStatus == -1 ? (
             <>
               <div>
