@@ -9,19 +9,22 @@ import { useNavigate } from "react-router-dom";
 
 import resetFilterImg from "../../Assets/resetFilter.png";
 
-import c1 from "../../Assets/hpyproBG-blue/b-bg-1.png";
+
+// import c1 from "../../Assets/hpyproBG-blue/b-bg-1.png";
+import c3 from "../../Assets/hpgBg/blob-scene-haikei.png";
+import c2 from "../../Assets/hpyproBG-blue/b-bg-1.png";
+import c1 from "../../Assets/hpyproBG-blue/b-bg-3.png";
+import c4 from "../../Assets/hpgBg/blob-scene-haikei2.png";
+import c5 from "../../Assets/hpgBg/blob-scene-haikei1.png";
 import c6 from "../../Assets/hpyproBG-blue/b-bg-2.png";
-import c3 from "../../Assets/hpyproBG-blue/b-bg-3.png";
-import c7 from "../../Assets/hpyproBG-blue/b-bg-3.png";
-import c5 from "../../Assets/hpyproBG-blue/b-bg-11.png";
-import c2 from "../../Assets/hpyproBG-blue/b-bg-6.png";
-import c4 from "../../Assets/hpyproBG-blue/b-bg-8.png";
-import c12 from "../../Assets/hpyproBG-blue/b-bg-8.png";
-import c9 from "../../Assets/hpyproBG-blue/b-bg-9.png";
-import c10 from "../../Assets/hpyproBG-blue/b-bg-10.png";
-import c11 from "../../Assets/hpyproBG-blue/b-bg-11.png";
-import c8 from "../../Assets/hpyproBG-blue/b-bg-12.png";
-import c13 from "../../Assets/hpyproBG-blue/b-bg-13.png";
+import c7 from "../../Assets/hpgBg/blob-scene-haikei1.png";
+import c8 from "../../Assets/hpgBg/blob-scene-haikei2.png";
+import c9 from "../../Assets/hpyproBG-blue/b-bg-3.png";
+import c10 from "../../Assets/hpgBg/blob-scene-haikei2.png";
+import c11 from "../../Assets/hpyproBG-blue/b-bg-3.png";
+import c12 from "../../Assets/hpyproBG-blue/b-bg-3.png";
+import c13 from "../../Assets/hpyproBG-blue/b-bg-3.png";
+
 import Paging from "../../Components/Pagination/Paging";
 
 const Homepage = () => {
@@ -65,7 +68,7 @@ const Homepage = () => {
   //   if (event.key === 'Enter') {
   //   }  
   // };
-  
+
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
   };
@@ -122,18 +125,19 @@ const Homepage = () => {
     });;
 
   useEffect(() => {
-      setCurrentPage(1);
-      console.log("checked trong useEffect", checked, searchText, sortField, sortOrder);
-      getPageAllCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
+    setCurrentPage(1);
+    console.log("checked trong useEffect", checked, searchText, sortField, sortOrder);
+    getPageAllCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
   }, [checked, searchText, sortField, sortOrder]);
 
 
 
   return (
     <div className="container home-page">
-      <div className="course-banner">
-        <h1>Course</h1>
-      </div>
+
+      <section className="course-bg-inf">
+        <h1>Courses</h1>
+      </section>
       <NavBar mode={1}></NavBar>
       {/* ====================region filter==================== */}
       {/* <div className="filter-container">
@@ -195,41 +199,42 @@ const Homepage = () => {
         {/* ====================region List of Course==================== */}
 
         <section className="courses-section">
-        <div className="filter-container">
-        <div className="filter-1">
 
-          <select
-            name="filter"
-            id=""
-            onChange={(e) => {
-              setSelectIndex(false);
-              handleSort(e.target.value);
-            }}>
-            {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
-            <option value="asc|createdAt">Oldest</option>
-            <option value="asc|courseName">A-Z Name</option>
-            <option value="desc|courseName">Z-A Name</option>
-          </select>
+          <div className="filter-container">
+            <div className="filter-1">
 
-          <div className="search-border">
+              <select
+                name="filter"
+                id=""
+                onChange={(e) => {
+                  setSelectIndex(false);
+                  handleSort(e.target.value);
+                }}>
+                {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
+                <option value="asc|createdAt">Oldest</option>
+                <option value="asc|courseName">A-Z Name</option>
+                <option value="desc|courseName">Z-A Name</option>
+              </select>
 
-            <input
-              type="text"
-              placeholder="Search course here"
-              name="search"
-              value={searchText}
-              onChange={handleInputChange}
-              // onKeyPress={handleKeyPress}
-            />
+              <div className="search-border">
+
+                <input
+                  type="text"
+                  placeholder="Search course here"
+                  name="search"
+                  value={searchText}
+                  onChange={handleInputChange}
+                // onKeyPress={handleKeyPress}
+                />
+              </div>
+
+              <div id="textBttn">
+                <button onClick={handleReset}><img src={resetFilterImg}></img></button>
+              </div>
+
+
+            </div>
           </div>
-
-          <div id="textBttn">
-            <button onClick={handleReset}><img src={resetFilterImg}></img></button>
-          </div>
-
-
-        </div>
-      </div>
           <div className="list-Courses">
             {pageCourses.map((course, index) => (
               <div
@@ -242,6 +247,7 @@ const Homepage = () => {
                   style={{
                     backgroundImage: `url(${courseBackgrounds[index]})`,
                     backgroundSize: 'cover',
+                    // backgroundPositionY: "-100",
                     backgroundPosition: 'center',
                   }}
                 >

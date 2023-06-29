@@ -7,6 +7,8 @@ import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import "./ForogetPassword.css";
 import { Nav } from "react-bootstrap";
 import { Navigate, useNavigate } from "react-router-dom";
+import { notiError, notiSuccess } from "../../Components/Notification/notify";
+import Loading from "../../Components/StateMessage/Loading";
 
 function ForgetPassword(props) {
   const Navigate = useNavigate();
@@ -14,6 +16,7 @@ function ForgetPassword(props) {
   const [showErrorUsername, setShowErrorUsername] = useState(false);
   const [errorUsername, setErrorUsername] = useState("");
   const [screenState, setScreenState] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const onChangeUsername = async (event) => {
     const inputUsername = event.target.value;
@@ -40,22 +43,30 @@ function ForgetPassword(props) {
       alert("Username: " + errorUsername);
       return;
     }
-    setScreenState(false);
-
+    // setScreenState(false);
+    setLoading(true);
     axios
       .post(`http://localhost:1111/api/auth/forgetpassword/${username}`)
       .then((res) => {
         console.log(res.data);
         // window.location.href = `../resetpassword/${username}`;
+        setLoading(false);
+        setScreenState(false);
+        notiSuccess();
       })
       .catch((error) => {
         console.log(error);
-        alert(error);
+        // alert(error);
+        setLoading(false);
+        notiError();
       });
     // window.location.href = `../resetpassword/${username}`;
   };
   return (
     <>
+      {loading ? <>
+        <Loading></Loading>
+      </> : <></>}
       <NavBar mode={2} />{" "}
       <div className="forgetpassword-container">
         <form onSubmit={handleSubmit} className="forgetpassword-form">
