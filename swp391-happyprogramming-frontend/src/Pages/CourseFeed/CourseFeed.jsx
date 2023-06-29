@@ -9,10 +9,10 @@ import PostServices from "../../services/PostServices";
 import CourseServices from "../../services/CourseServices";
 
 
-function CourseFeed() {
+function CourseFeed(props) {
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
-  const [currentCourse, setCurrentCourse] = useState('');
+  const [currentCourse, setCurrentCourse] = useState();
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [postId, setPostId] = useState();
   const [activeMenus, setActiveMenus] = useState({});
@@ -82,7 +82,7 @@ function CourseFeed() {
       <NavBar mode={1}></NavBar>
       <main className="cf-content">
         <section className="course-bg-inf">
-          <h1>{currentCourse}</h1>
+          <h1>{currentCourse}{courseId}</h1>
         </section>
         <div className="main-posts-cc">
           <section className="posts-section">

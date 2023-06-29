@@ -83,13 +83,18 @@ function SettingBar(props) {
                         </li>
                     </> : <>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/mycourse">My Course<ion-icon name="albums-outline"></ion-icon></NavLink>
+                            <NavLink className="nav-link" to="/mycourse">My Course<ion-icon name="library-outline"></ion-icon></NavLink>
                         </li>
                     </>}
+                    {localStorage.getItem("role") === "mentor" ? <>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/request/manage">Course Manage<ion-icon name="documents-outline"></ion-icon></NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
+                        </li>
+                    </> : <></>}
 
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/request/statistic">Statisic <ion-icon name="stats-chart-outline"></ion-icon></NavLink>
-                    </li>
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>

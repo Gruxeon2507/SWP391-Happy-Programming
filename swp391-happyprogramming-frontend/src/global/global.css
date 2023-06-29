@@ -30,9 +30,10 @@ body {
 
 * {
   transition: 0.3s all ease;
-  border: 1px solid black !important;
+  /* border: 1px solid black !important; */
   /* border: none !important; */
   box-sizing: border-box !important;
+  /* filter: grayscale(1) !important; */
 }
 .user-input {
   position: relative;
