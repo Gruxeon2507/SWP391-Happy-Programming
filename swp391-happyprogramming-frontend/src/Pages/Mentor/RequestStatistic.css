@@ -94,16 +94,32 @@
   box-sizing: border-box;
   margin: 2rem;
   border-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--darkItem5);
+}
+
+.stat-item span:nth-child(1) {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+.stat-item span:nth-child(2) {
+  font-weight: 800;
+  font-size: 2.2rem;
 }
 
 .stat-item:nth-child(1) {
-  background-color: var(--item);
+  background-color: #9ad0f5;
 }
 .stat-item:nth-child(2) {
-  background-color: var(--item2);
+  background-color: #ffb1c1;
 }
 .stat-item:nth-child(3) {
-  background-color: #00ffaa;
+  background-color: #ffcf9f;
 }
 
 .chart-container {
@@ -180,7 +196,7 @@
 }
 
 .course-statistic-container.active {
-  width: calc(94svw - 300px);
+  width: calc(94svw - 280px);
   border-right: 2px solid var(--darkItem3);
 }
 

@@ -162,59 +162,59 @@ const PrivateChatRoom = () => {
   };
 
   const sendValue = () => {
-      // Check if an image is selected
-      if (selectedImage) {
-        const formData = new FormData();
-        formData.append("image", selectedImage);
+    // Check if an image is selected
+    if (selectedImage) {
+      const formData = new FormData();
+      formData.append("image", selectedImage);
 
-        // Upload the image file to the server
-        api.post("/api/conversation/image", formData)
-          .then((response) => {
-            const imageUrl = response.data;
-            // Create a message object with the image URL
-            const chatMessage = {
-              senderName: userData.username,
-              message: imageUrl,
-              status: "MESSAGE",
-              conversationId: conversationId,
-              contentType: "image"
-            };
+      // Upload the image file to the server
+      api.post("/api/conversation/image", formData)
+        .then((response) => {
+          const imageUrl = response.data;
+          // Create a message object with the image URL
+          const chatMessage = {
+            senderName: userData.username,
+            message: imageUrl,
+            status: "MESSAGE",
+            conversationId: conversationId,
+            contentType: "image"
+          };
 
-            stompClient.send(
-              "/chatroom/" + conversationId,
-              {},
-              JSON.stringify(chatMessage)
-            );
-            api.post("/api/conversation/sentmessage", chatMessage);
-            setUserData({ ...userData, message: "" });
-            setSelectedImage(null);
-            clearInputFile();
-            scrollToBottom();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      if (userData.message !== "") {
-        // Create a message object without an image
-        const chatMessage = {
-          senderName: userData.username,
-          message: userData.message,
-          status: "MESSAGE",
-          conversationId: conversationId,
-          contentType: "text"
-        };
+          stompClient.send(
+            "/chatroom/" + conversationId,
+            {},
+            JSON.stringify(chatMessage)
+          );
+          api.post("/api/conversation/sentmessage", chatMessage);
+          setUserData({ ...userData, message: "" });
+          setSelectedImage(null);
+          clearInputFile();
+          scrollToBottom();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    if (userData.message !== "") {
+      // Create a message object without an image
+      const chatMessage = {
+        senderName: userData.username,
+        message: userData.message,
+        status: "MESSAGE",
+        conversationId: conversationId,
+        contentType: "text"
+      };
 
-        stompClient.send(
-          "/chatroom/" + conversationId,
-          {},
-          JSON.stringify(chatMessage)
-        );
-        api.post("/api/conversation/sentmessage", chatMessage);
-        setUserData({ ...userData, message: "" });
-        scrollToBottom();
-      }
-  
+      stompClient.send(
+        "/chatroom/" + conversationId,
+        {},
+        JSON.stringify(chatMessage)
+      );
+      api.post("/api/conversation/sentmessage", chatMessage);
+      setUserData({ ...userData, message: "" });
+      scrollToBottom();
+    }
+
   };
 
   const handleImageSelect = (event) => {
@@ -240,6 +240,11 @@ const PrivateChatRoom = () => {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
   };
+
+  const handleImageClick = (imageUrl) => {
+    window.open(imageUrl, '_blank');
+  };
+
   return (
     <>
       <NavBar mode={1}></NavBar>
@@ -256,7 +261,7 @@ const PrivateChatRoom = () => {
                   to={"/chat/" + conversation.conversationId}
                   key={conversation.conversationId}
                 >
-                  <img
+                  <img loading="lazy"
                     src={`http://localhost:1111/api/users/avatar/${conversation.username}`}
                     alt="avatar"
                   ></img>
@@ -270,7 +275,7 @@ const PrivateChatRoom = () => {
         </nav>
         <div className="Message-List">
           <div className="conversation-head">
-            <img
+            <img loading="lazy"
               src={
                 "http://localhost:1111/api/users/avatar/" +
                 conversationName.username
@@ -289,7 +294,7 @@ const PrivateChatRoom = () => {
                 {chat.messageKey.sentBy !== userData.username && (
                   <div className="message-to">
                     <div className="avatar">
-                      <img
+                      <img loading="lazy"
                         src={
                           "http://localhost:1111/api/users/avatar/" +
                           chat.messageKey.sentBy
@@ -303,7 +308,7 @@ const PrivateChatRoom = () => {
                       </div>
                       {
                         chat.contentType === "text" ? <MessageTo message={chat.msgContent} /> : <>
-                          <img src={chat.msgContent}></img>
+                          <img loading="lazy" src={chat.msgContent} alt="sentimg" onClick={() => handleImageClick(chat.msgContent)}></img>
                         </>
                       }
                     </div>
@@ -314,7 +319,7 @@ const PrivateChatRoom = () => {
                     <div className="msg-text">
                       {
                         chat.contentType === "text" ? <MessageTo message={chat.msgContent} /> : <>
-                          <img src={chat.msgContent}></img>
+                          <img loading="lazy" src={chat.msgContent} alt="sentimg" onClick={() => handleImageClick(chat.msgContent)}></img>
                         </>
                       }
                     </div>
@@ -331,7 +336,7 @@ const PrivateChatRoom = () => {
                 {chat.senderName !== userData.username && (
                   <div className="message-to">
                     <div className="avatar">
-                      <img
+                      <img loading="lazy"
                         src={
                           "http://localhost:1111/api/users/avatar/" +
                           chat.senderName
@@ -345,7 +350,7 @@ const PrivateChatRoom = () => {
                       </div>
                       {
                         chat.contentType === "text" ? <MessageTo message={chat.message} /> : <>
-                          <img src={chat.message}></img>
+                          <img loading="lazy" src={chat.message} alt="sentimg" onClick={() => handleImageClick(chat.msgContent)}></img>
                         </>
                       }
 
@@ -357,7 +362,7 @@ const PrivateChatRoom = () => {
                     <div className="msg-text">
                       {
                         chat.contentType === "text" ? <MessageFrom message={chat.message} /> : <>
-                          <img src={chat.message}></img>
+                          <img loading="lazy" src={chat.message} alt="sentimg" onClick={() => handleImageClick(chat.msgContent)}></img>
                         </>
                       }
                     </div>
@@ -388,7 +393,7 @@ const PrivateChatRoom = () => {
               <div className="input-inner">
                 {selectedImage ?
                   <>
-                    <img src={URL.createObjectURL(selectedImage)}></img>
+                    <img loading="lazy" src={URL.createObjectURL(selectedImage)}></img>
                     {/* <span>{selectedImage.name}</span> */}
                     <ion-icon onClick={clearInputFile} name="close-outline"></ion-icon>
                   </> : <></>}
