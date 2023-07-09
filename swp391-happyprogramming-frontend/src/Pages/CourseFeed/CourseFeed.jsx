@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import CreateCourse from "../Course/CreateCourse";
 import { useParams } from "react-router-dom";
 import CreatePost from "../../Components/CreatePost/CreatePost";
@@ -10,12 +10,37 @@ import CourseServices from "../../services/CourseServices";
 
 
 function CourseFeed(props) {
+  const toggleRef = useRef(null);
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
   const [currentCourse, setCurrentCourse] = useState();
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [postId, setPostId] = useState();
   const [activeMenus, setActiveMenus] = useState({});
+
+  useEffect(() => {
+    let handler = (e) => {
+      try {
+        if (!toggleRef.current.contains(e.target)) {
+          setActiveMenus((prevActiveMenus) => {
+
+            const updatedActiveMenus = {};
+            for (const postId in prevActiveMenus) {
+              updatedActiveMenus[postId] = false;
+            }
+            return updatedActiveMenus;
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
 
 
   const toggleEditMenu = (postId) => {
@@ -88,7 +113,7 @@ function CourseFeed(props) {
           <section className="posts-section">
             {posts.map((post) => (
               <div className="post-card-wrap" key={post.postId}>
-                <div className="pcw-edit-opt">
+                <div className="pcw-edit-opt" ref={toggleRef}>
                   <div className="pcw-edit-opt-btn">
                     <ion-icon
                       onClick={() => toggleEditMenu(post.postId)}
@@ -98,6 +123,7 @@ function CourseFeed(props) {
                   <nav
                     className={`pcw-edit-opt-list ${activeMenus[post.postId] ? "active" : ""
                       }`}
+                    ref={toggleRef}
                   >
                     <ul>
                       <li>only right mentor can see</li>

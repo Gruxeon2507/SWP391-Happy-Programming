@@ -12,8 +12,7 @@ function SettingBar(props) {
     const [userDisplayName, setUserDisplayName] = useState();
     const navigate = useNavigate();
     useEffect(() => {
-        // const udn = UserServices.getLoginUserDisplayname();
-        // console.log(userDisplayName);
+
         try {
             const fetchUserDisplayName = async () => {
                 const udn = await UserServices.getLoginUserDisplayname().catch((error) => {
@@ -56,6 +55,9 @@ function SettingBar(props) {
             }
         };
         document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     });
 
     return (
@@ -95,6 +97,10 @@ function SettingBar(props) {
                         </li>
                     </> : <></>}
 
+
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/myrequest">My Request <ion-icon name="git-pull-request-outline"></ion-icon></NavLink>
+                    </li>
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>

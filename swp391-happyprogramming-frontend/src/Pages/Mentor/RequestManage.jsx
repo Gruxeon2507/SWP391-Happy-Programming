@@ -319,10 +319,10 @@ const RequestManage = () => {
                         disabled={checkedRequest.length <= 1}
                         onChange={handleSelectChange} >
                         <option disabled>-- Action --</option>
-                        <option value="1" >Access</option>
+                        <option value="1" >Accept</option>
                         <option value="-1" >Reject</option>
                     </select>
-                    <button disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Thực hiện</button>
+                    <button id="processBttn" disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Process</button>
 
 
                     <div style={{ display: !haveData ? "inline" : "none" }} className="show-info">
@@ -374,10 +374,12 @@ const RequestManage = () => {
 
                                             <td>
                                                 <button
+                                                    id="c-m-acceptBttn"
                                                     onClick={() => handleSubmitOne(1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
-                                                >Access </button>
+                                                >Accept </button>
                                                 <button
+                                                    id="c-m-rejectBttn"
                                                     onClick={() => handleSubmitOne(-1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
                                                 >Reject</button>
