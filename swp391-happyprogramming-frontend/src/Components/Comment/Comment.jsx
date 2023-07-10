@@ -5,7 +5,7 @@ import ActionButton from "../ActionButton/ActionButton";
 import CommentServices from "../../services/CommentServices";
 import UserServices from "../../services/UserServices";
 
-const Comment = ({ comment, layer }) => {
+const Comment = ({ comment, layer, onReportClick }) => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -26,11 +26,9 @@ const Comment = ({ comment, layer }) => {
     setReplies(comment.replies);
   }, []);
 
-  // console.log("USER LOGIN: " + loginUsername);
-  const commentField = document.querySelector("#comment-content");
-  const replyField = document.querySelector("#reply-content");
-  // console.log("COMMENT FIELD: ", commentField);
-  // console.log("REPLY FIELD: ", replyField);
+  const handleReportClick = () => {
+    onReportClick(comment.commentId);
+  };
 
   const handleKeyDownCaptureAddReply = (event) => {
     if (event.key === "Enter") {
@@ -192,7 +190,7 @@ const Comment = ({ comment, layer }) => {
                     <ActionButton
                       className="report comment"
                       type="REPORT"
-                      // handleClick={() => reportComment()}
+                      handleClick={handleReportClick}
                     ></ActionButton>
                   </>
                 )}

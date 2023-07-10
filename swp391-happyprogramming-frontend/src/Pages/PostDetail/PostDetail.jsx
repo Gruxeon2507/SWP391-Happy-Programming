@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 import PostServices from "../../services/PostServices";
 import CreatePost from "../../Components/CreatePost/CreatePost";
 import Comment from "../../Components/Comment/Comment";
+import Report from "../../Components/Report/Report";
 import CommentServices from "../../services/CommentServices";
 import UserServices from "../../services/UserServices";
-import "./PostDetail.css"
+import "./PostDetail.css";
 import NavBar from "../../Components/Navbar/NavBar";
 
 function PostDetail() {
@@ -15,6 +16,8 @@ function PostDetail() {
   const [comments, setComments] = useState([]);
   const [input, setInput] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
+  const [reportedCommentId, setReportedCommentId] = useState(null);
+  const [showReportDialog, setShowReportDialog] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -43,6 +46,8 @@ function PostDetail() {
       });
   }, []);
 
+  useEffect(() => {}, []);
+
   const addComment = async () => {
     if (input.trim().length != 0) {
       // console.log("add comment ...");
@@ -66,17 +71,14 @@ function PostDetail() {
     setInput("");
   };
 
-  useEffect(() => { }, []);
-
+  const handleReportClick = (commentId) => {
+    setReportedCommentId(commentId);
+    setShowReportDialog(true);
+  };
 
   return (
     <>
-    
       <NavBar mode={1} />
-    <section>
-      <h1>Report</h1>
-      
-    </section>
 
       <main className="comment-main">
         <div className="post-card-wrap" key={post.postId}>
@@ -85,8 +87,19 @@ function PostDetail() {
         </div>
 
         <hr></hr>
-        <div id={"comment-section"} >
-
+        <section
+          style={{
+            border: "5px solid red",
+            display: showReportDialog ? "block" : "none",
+          }}
+        >
+          <h1>Report</h1>
+          <Report
+            commentId={reportedCommentId}
+            username={loginUsername}
+          ></Report>
+        </section>
+        <div id={"comment-section"}>
           <div className="cmt-input">
             <img
               src={`http://localhost:1111/api/users/avatar/${loginUsername}`}
@@ -110,24 +123,31 @@ function PostDetail() {
             </div>
           </div>
           <div className="cmt-list">
-            {comments.length > 0 ? <>
-              {comments.map((comment) => (
-                <div className="cmt-card">
-                  <Comment
-                    comment={comment}
-                    key={comment.commentId}
-                    layer={1}
-                  ></Comment>
-                </div>
-              ))}
-            </> : <><h2 style={{ textAlign: "center" }}>Be the first one to comment</h2></>}
-
+            {comments.length > 0 ? (
+              <>
+                {comments.map((comment) => (
+                  <div className="cmt-card">
+                    <Comment
+                      comment={comment}
+                      key={comment.commentId}
+                      layer={1}
+                      onReportClick={handleReportClick}
+                    ></Comment>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                <h2 style={{ textAlign: "center" }}>
+                  Be the first one to comment
+                </h2>
+              </>
+            )}
           </div>
         </div>
       </main>
     </>
   );
 }
-
 
 export default PostDetail;

@@ -42,7 +42,7 @@ INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportType
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('2', 'huyenntk', '2023-06-02', '', '10');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('2', 'phuonghm', '2023-06-02', 'khong ua', '1');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('2', 'phuongmentor', '2023-06-02', '', '2');
--- INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'antt', '2023-06-02', '', '3');
+/* INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'antt', '2023-06-02', '', '3');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'dungbt', '2023-06-02', '', '4');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'giangpt', '2023-06-02', '', '5');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'huyenntk', '2023-06-02', '', '6');
@@ -89,7 +89,8 @@ INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportType
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'giangpt', '2023-06-02', '', '7');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'huyenntk', '2023-06-02', '', '8');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuonghm', '2023-06-02', '', '9');
-INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuongmentor', '2023-06-02', '', '10');
+INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuongmentor', '2023-06-02', '', '10'); 
+*/
 
 -- delete from Report where commentId != -1;
 -- delete from `Comment` where commentId != -1;
@@ -97,3 +98,9 @@ INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportType
 -- drop table Report;
 -- select * from `User`;
 -- select * from Participate where courseId = 1;
+select * from Report;
+select * from `Comment`;
+
+
+select * from Report r join `Comment` c on r.commentId = c.commentId
+where c.commentedBy = 'antt';

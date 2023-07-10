@@ -256,6 +256,9 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-
+    @GetMapping("/find/by-comment/{commentId}")
+    public Course findCourseByComment(@PathVariable("commentId") int commentId){
+        return courseRepository.findByPosts_Comments_CommentId(commentId);
+    }
 
 }
