@@ -109,8 +109,8 @@ const Notification = () => {
     // };
   }, [userData.username]);
 
-  useEffect(() => { }, [notifications]);
-  console.log(notifications);
+  // useEffect(() => { }, [notifications]);
+  // console.log(notifications);
 
   const setViewedStatus = () => {
     api.post("/api/notification/viewed")

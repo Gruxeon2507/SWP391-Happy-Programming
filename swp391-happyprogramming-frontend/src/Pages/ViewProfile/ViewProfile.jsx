@@ -718,7 +718,10 @@ function ViewProfile(props) {
                       >
                         <div className="i-c">
                           <span>{skill.skillName}</span>
-                          <button><ion-icon name="remove-circle-outline"></ion-icon></button>
+                          {window.localStorage.getItem("role") == "mentor" ?
+                            <>
+                              <button><ion-icon name="remove-circle-outline"></ion-icon></button>
+                            </> : <></>}
                         </div>
                       </form>
                     </li>

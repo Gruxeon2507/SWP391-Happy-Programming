@@ -52,7 +52,13 @@ const RequestButton = ({ courseID }) => {
             {participateStatus == -1 ? (
                 <>
                     <div>
-                        <button disabled={clickedButtonId === courseID} id="requestBttn" onClick={() => handleRequest()}>
+                        <button disabled={clickedButtonId === courseID}
+                            style={{
+                                border: "4px solid var(--item2)",
+                                color: "var(--item2)",
+                            }}
+                            id="requestBttn"
+                            onClick={() => handleRequest()}>
                             Request
                         </button>
                     </div>
@@ -63,8 +69,8 @@ const RequestButton = ({ courseID }) => {
                         <button
                             id="requestBttn"
                             style={{
-                                border: "4px solid var(--item2)",
-                                color: "var(--item2)",
+                                border: "4px solid var(--item)",
+                                color: "var(--item)",
                             }}
                         >
                             Cancel request

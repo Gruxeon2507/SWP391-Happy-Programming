@@ -204,7 +204,7 @@ const CourseDetails = (props) => {
             </>
           )} */}
           <RequestButton
-            {...{courseID:courseProp}}
+            {...{ courseID: courseProp }}
           />
         </div>
       </div>
