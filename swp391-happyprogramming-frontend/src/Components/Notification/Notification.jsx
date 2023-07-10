@@ -140,7 +140,7 @@ const Notification = () => {
       <div className={notiListClass}>
         <span>Notification</span>
         <ul>
-          {newNotifications.map((newNotification) => (
+          {/* {newNotifications.map((newNotification) => (
             <li>
               <NavLink to={"/"}>
                 <span>{newNotification.message}</span>
@@ -148,11 +148,11 @@ const Notification = () => {
                 <span>{newNotification.isViewed}</span>
               </NavLink>
             </li>
-          ))}
+          ))} */}
           {notifications.map((notification) => (
             <li>
               {/* code nay cua duckm */}
-              <NavLink to={"/"}>
+              <NavLink to={notification.url}>
                 <div className="notification-item">
 
                   <div className="notification-item-left">

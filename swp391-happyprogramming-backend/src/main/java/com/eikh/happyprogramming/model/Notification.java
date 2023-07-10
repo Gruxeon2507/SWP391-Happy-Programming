@@ -25,6 +25,7 @@ public class Notification implements Serializable {
     private String notificationContent;
     private Date notificationTime;
     private Boolean isViewed;
+    private String url;
     @ManyToOne
     @JoinColumn(name = "notificationTo")
     @JsonIgnore
