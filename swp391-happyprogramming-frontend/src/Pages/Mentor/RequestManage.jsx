@@ -24,6 +24,7 @@ const RequestManage = () => {
     const [sortField, setSortField] = useState("username");
     const [sortOrder, setSortOrder] = useState("desc");
     const [selectedCourseId, setSelectedCourseId] = useState("");
+    const [selectedCourseName, setSelectedCourseName] = useState("");;
     const [checkedRequest, setCheckedRequest] = useState([]);
     const [selectedValue, setSelectedValue] = useState(1);
     const [responses, setResponses] = useState([])
@@ -110,6 +111,12 @@ const RequestManage = () => {
     const handleCourseChange = (e) => {
         const courseId = e.target.value;
         setSelectedCourseId(courseId);
+        teachCourses.map((course)=>{
+            if(course.courseId==courseId){
+                setSelectedCourseName(course.courseName)
+            }
+            
+        })
         setCheckedRequest([])
         getPendingUserOfCourse(courseId, 0, sizePerPage, sortField, sortOrder);
     }
@@ -134,9 +141,22 @@ const RequestManage = () => {
                     setCheckedRequest([])
                     getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
                     if (statusId !== 1) {
-                        sendPrivateValue(username, "(One)Your request to the course " + selectedCourseId + " has been rejected","/myrequest")
+                        // teachCourses.map((course)=>{
+                        //     if(course.courseId==selectedCourseId){
+                                // sendPrivateValue(username, "Your request to the course " + course.courseName + " has been rejected","/myrequest")
+                            // }
+                            
+                        // })
+                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected","/myrequest")
+                        
                     } else {
-                        sendPrivateValue(username, "(One) Your request to the course " + selectedCourseId + " has been accepted","/myrequest")
+                        // teachCourses.map((course)=>{
+                        //     if(course.courseId==selectedCourseId){
+                        //         sendPrivateValue(username, "Your request to the course " + course.courseName+ " has been accepted","/myrequest")
+                        //     }
+                            
+                        // })
+                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/myrequest")
 
                     }
 
@@ -157,12 +177,14 @@ const RequestManage = () => {
                     if (statusId !== 1) {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for reject " + username);
-                            sendPrivateValue(username, "(Many) Your request to the course " + selectedCourseId + " has been rejected","/myrequest")
+                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected","/myrequest")
+                        
                         });
                     } else {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for access" + username);
-                            sendPrivateValue(username, "(Many) Your request to the course " + selectedCourseId + " has been accepted","/myrequest")
+                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/myrequest")
+                        
                         });
                     }
                     setCheckedRequest([])
