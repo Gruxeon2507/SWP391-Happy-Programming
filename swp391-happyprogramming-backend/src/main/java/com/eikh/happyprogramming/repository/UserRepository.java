@@ -76,4 +76,5 @@ public interface UserRepository extends JpaRepository<User, String> {
     // duckm
     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE u.username = ?1 AND p.courseId = ?2 AND p.statusId= 1", nativeQuery = true)
     public User findEnrolledUserInCourse(String username, int courseId);
+
 }

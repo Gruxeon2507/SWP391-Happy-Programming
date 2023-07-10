@@ -7,6 +7,8 @@ package com.eikh.happyprogramming.repository;
 import com.eikh.happyprogramming.model.Course;
 import java.util.List;
 import javax.transaction.Transactional;
+
+import com.eikh.happyprogramming.model.Participate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -100,4 +102,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     public List<Course> getCourseOfMentor(String username);
 
     public List<Course> findByCourseName(String courseName);
+
+    public Course findByPosts_Comments_CommentId(int commentId);
 }

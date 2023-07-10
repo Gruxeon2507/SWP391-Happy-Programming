@@ -66,4 +66,6 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
             + "                      AND p.participateRole IN :participateRoles AND s.statusId IN :statusIds\n"
             + "                      AND c.courseName LIKE %:searchText% ", nativeQuery = true)
     Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
+
+    public Participate findByUser_UsernameAndParticipateRole_ParticipateRoleAndStatus_StatusId(String username, int participateRole, int statusId);
 }

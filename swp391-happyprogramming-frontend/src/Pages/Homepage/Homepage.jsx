@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 import resetFilterImg from "../../Assets/resetFilter.png";
 
-
 // import c1 from "../../Assets/hpyproBG-blue/b-bg-1.png";
 import c3 from "../../Assets/hpgBg/blob-scene-haikei.png";
 import c2 from "../../Assets/hpyproBG-blue/b-bg-1.png";
@@ -28,9 +27,20 @@ import c13 from "../../Assets/hpyproBG-blue/b-bg-3.png";
 import Paging from "../../Components/Pagination/Paging";
 
 const Homepage = () => {
-
   const courseBackgrounds = [
-    c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13
+    c1,
+    c2,
+    c3,
+    c4,
+    c5,
+    c6,
+    c7,
+    c8,
+    c9,
+    c10,
+    c11,
+    c12,
+    c13,
   ];
 
   const [categories, setCategories] = useState([]);
@@ -41,7 +51,7 @@ const Homepage = () => {
   const [selectIndex, setSelectIndex] = useState(true);
   const [sortField, setSortField] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
 
   const sizePerPage = 12;
@@ -66,7 +76,7 @@ const Homepage = () => {
   // const handleKeyPress = (event) => {
   //   setSearchText(event.target.value);
   //   if (event.key === 'Enter') {
-  //   }  
+  //   }
   // };
 
   const handleInputChange = (event) => {
@@ -75,7 +85,14 @@ const Homepage = () => {
 
   const handlePageChange = (current) => {
     setCurrentPage(current);
-    getPageAllCourses(checked, searchText, current - 1, sizePerPage, sortField, sortOrder)
+    getPageAllCourses(
+      checked,
+      searchText,
+      current - 1,
+      sizePerPage,
+      sortField,
+      sortOrder
+    );
   };
 
   const handleCheck = async (categoryId) => {
@@ -88,19 +105,18 @@ const Homepage = () => {
         return [...prev, categoryId];
       }
     });
-
   };
 
   const handleSort = (value) => {
     setSortField(value.split("|")[1]);
     setSortOrder(value.split("|")[0]);
     console.log(value);
-  }
+  };
 
   const handleReset = (value) => {
-    setSearchText('');
+    setSearchText("");
     setChecked([]);
-  }
+  };
 
   const getPageAllCourses = (
     categoryIds,
@@ -117,24 +133,36 @@ const Homepage = () => {
       pageSize,
       sortField,
       sortOrder
-    ).then((response) => {
-      setPageCourses(response.data.content);
-      setTotalItems(response.data.totalElements);
-    }).catch((error) => {
-      console.log("loi lay ra course" + error);
-    });;
+    )
+      .then((response) => {
+        setPageCourses(response.data.content);
+        setTotalItems(response.data.totalElements);
+      })
+      .catch((error) => {
+        console.log("loi lay ra course" + error);
+      });
 
   useEffect(() => {
     setCurrentPage(1);
-    console.log("checked trong useEffect", checked, searchText, sortField, sortOrder);
-    getPageAllCourses(checked, searchText, 0, sizePerPage, sortField, sortOrder)
+    console.log(
+      "checked trong useEffect",
+      checked,
+      searchText,
+      sortField,
+      sortOrder
+    );
+    getPageAllCourses(
+      checked,
+      searchText,
+      0,
+      sizePerPage,
+      sortField,
+      sortOrder
+    );
   }, [checked, searchText, sortField, sortOrder]);
-
-
 
   return (
     <div className="container home-page">
-
       <section className="course-bg-inf">
         <h1>Courses</h1>
       </section>
@@ -164,40 +192,44 @@ const Homepage = () => {
         {/* ====================region List of Course==================== */}
 
         <section className="courses-section">
-
           <div className="filter-container">
             <div className="filter-1">
-
               <select
                 name="filter"
                 id=""
                 onChange={(e) => {
                   setSelectIndex(false);
                   handleSort(e.target.value);
-                }}>
-                {selectIndex ? <option selected value="desc|createdAt">Newest</option> : <option value="desc|createdAt">Newest</option>}
+                }}
+              >
+                {selectIndex ? (
+                  <option selected value="desc|createdAt">
+                    Newest
+                  </option>
+                ) : (
+                  <option value="desc|createdAt">Newest</option>
+                )}
                 <option value="asc|createdAt">Oldest</option>
                 <option value="asc|courseName">A-Z Name</option>
                 <option value="desc|courseName">Z-A Name</option>
               </select>
 
               <div className="search-border">
-
                 <input
                   type="text"
                   placeholder="Search course here"
                   name="search"
                   value={searchText}
                   onChange={handleInputChange}
-                // onKeyPress={handleKeyPress}
+                  // onKeyPress={handleKeyPress}
                 />
               </div>
 
               <div id="textBttn">
-                <button onClick={handleReset}><img src={resetFilterImg}></img></button>
+                <button onClick={handleReset}>
+                  <img src={resetFilterImg}></img>
+                </button>
               </div>
-
-
             </div>
           </div>
           <div className="list-Courses">
@@ -211,14 +243,13 @@ const Homepage = () => {
                   className="couse-card-view"
                   style={{
                     backgroundImage: `url(${courseBackgrounds[index]})`,
-                    backgroundSize: 'cover',
+                    backgroundSize: "cover",
                     // backgroundPositionY: "-100",
-                    backgroundPosition: 'center',
+                    backgroundPosition: "center",
                   }}
                 >
                   <span>{course.courseName}</span>
                 </div>
-
               </div>
             ))}
           </div>
@@ -226,22 +257,21 @@ const Homepage = () => {
 
           {/* ====================region Pagination==================== */}
           <div className="Pagination-Container">
-            <Paging {...{
-              totalItems,
-              sizePerPage,
-              currentPage,
-              handlePageChange,
-              name: "courses"
-            }} />
+            <Paging
+              {...{
+                totalItems,
+                sizePerPage,
+                currentPage,
+                handlePageChange,
+                name: "courses",
+              }}
+            />
           </div>
-
-
         </section>
       </main>
       {/* ====================End region Pagination==================== */}
     </div>
+  );
+};
 
-  )
-}
-
-export default Homepage
+export default Homepage;
