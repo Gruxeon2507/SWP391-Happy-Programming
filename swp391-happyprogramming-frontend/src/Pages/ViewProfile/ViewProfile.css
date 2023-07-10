@@ -15,9 +15,12 @@
   position: absolute;
   background-color: var(--lightItem);
   padding: 2rem;
+  margin-top: 3rem;
   border: 1px solid var(--light);
   border-radius: 1rem;
   width: 80%;
+  max-height: 600px;
+  overflow: scroll;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

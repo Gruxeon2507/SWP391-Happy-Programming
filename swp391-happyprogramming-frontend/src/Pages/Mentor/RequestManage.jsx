@@ -111,11 +111,11 @@ const RequestManage = () => {
     const handleCourseChange = (e) => {
         const courseId = e.target.value;
         setSelectedCourseId(courseId);
-        teachCourses.map((course)=>{
-            if(course.courseId==courseId){
+        teachCourses.map((course) => {
+            if (course.courseId == courseId) {
                 setSelectedCourseName(course.courseName)
             }
-            
+
         })
         setCheckedRequest([])
         getPendingUserOfCourse(courseId, 0, sizePerPage, sortField, sortOrder);
@@ -143,20 +143,20 @@ const RequestManage = () => {
                     if (statusId !== 1) {
                         // teachCourses.map((course)=>{
                         //     if(course.courseId==selectedCourseId){
-                                // sendPrivateValue(username, "Your request to the course " + course.courseName + " has been rejected","/myrequest")
-                            // }
-                            
+                        // sendPrivateValue(username, "Your request to the course " + course.courseName + " has been rejected","/myrequest")
+                        // }
+
                         // })
-                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected","/myrequest")
-                        
+                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected", "/myrequest")
+
                     } else {
                         // teachCourses.map((course)=>{
                         //     if(course.courseId==selectedCourseId){
                         //         sendPrivateValue(username, "Your request to the course " + course.courseName+ " has been accepted","/myrequest")
                         //     }
-                            
+
                         // })
-                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/myrequest")
+                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted", "/myrequest")
 
                     }
 
@@ -177,14 +177,14 @@ const RequestManage = () => {
                     if (statusId !== 1) {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for reject " + username);
-                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected","/myrequest")
-                        
+                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected", "/myrequest")
+
                         });
                     } else {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for access" + username);
-                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/myrequest")
-                        
+                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted", "/myrequest")
+
                         });
                     }
                     setCheckedRequest([])
@@ -251,7 +251,7 @@ const RequestManage = () => {
         const { value } = event.target;
         setUserData({ ...userData, message: value });
     };
-    const sendPrivateValue = (username, message,url) => {
+    const sendPrivateValue = (username, message, url) => {
         if (stompClient) {
             const currentDate = new Date();
             const year = currentDate.getFullYear();
@@ -345,7 +345,7 @@ const RequestManage = () => {
                         <option value="1" >Access</option>
                         <option value="-1" >Reject</option>
                     </select>
-                    <button disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Thực hiện</button>
+                    <button id="processBttn" disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Process</button>
 
 
                     <div style={{ display: !haveData ? "inline" : "none" }} className="show-info">
@@ -399,10 +399,12 @@ const RequestManage = () => {
                                                 <button
                                                     onClick={() => handleSubmitOne(1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
+                                                    id="c-m-acceptBttn"
                                                 >Access </button>
                                                 <button
                                                     onClick={() => handleSubmitOne(-1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
+                                                    id="c-m-rejectBttn"
                                                 >Reject</button>
                                             </td>
                                         </tr>
