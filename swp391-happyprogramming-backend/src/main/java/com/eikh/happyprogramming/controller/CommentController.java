@@ -63,9 +63,9 @@ public class CommentController {
         Comment parent = new Comment();
         parent.setCommentId(parentId);
         comment.setParent(parent);
-        System.out.println("COMMENTID: " + comment.getCommentId());
-        System.out.println("POSTID: " + comment.getPost().getPostId());
-        System.out.println("PARENTID: " + comment.getParent().getCommentId());
+//        System.out.println("COMMENTID: " + comment.getCommentId());
+//        System.out.println("POSTID: " + comment.getPost().getPostId());
+//        System.out.println("PARENTID: " + comment.getParent().getCommentId());
         commentRepository.save(comment);
         return ResponseEntity.ok(comment);
     }
