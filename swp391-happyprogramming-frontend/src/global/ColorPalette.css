@@ -1,6 +1,6 @@
 :root {
   --light: #f5faff;
-  --lightActive: #e8f1fa;
+  --lightActive: #f8f8f8;
   --lightItem: #ffffff;
   --lightItem--t: #ffffffeb;
 
@@ -22,6 +22,10 @@
   --grd2: #7fbaff;
 
   --primary: #8a85ea;
+
+  --purple1: #e4dffa;
+  --purple2: #aaa2f0;
+  --purple3: #8a85ea;
 }
 
 .dark-theme {

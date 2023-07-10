@@ -7,6 +7,8 @@ import { Button } from "bootstrap";
 import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import resBG from "../../Assets/resBG.jpg";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../Components/StateMessage/Loading";
+import { notiError, notiSuccess } from "../../Components/Notification/notify";
 
 function Register(props) {
   const navigate = useNavigate();
@@ -25,6 +27,9 @@ function Register(props) {
       dob: todayDate
     })
   }, [])
+
+  const [showLoading, setShowLoading] = useState(false);
+
   // Validate input
   const [checkUsernameDuplicate, setcheckUsernameDuplicate] = useState(true);
 
@@ -262,16 +267,22 @@ function Register(props) {
       return;
     }
 
+    setShowLoading(true);
+
     axios
       .post("http://localhost:1111/api/auth/register", user)
       .then((res) => {
+        setShowLoading(false);
 
         navigate(`/verify/${user.username}`);
+        notiSuccess();
         console.log(res.data);
       })
       .catch((err) => {
+        setShowLoading(false);
         console.error(err);
-        alert("bump")
+        notiError();
+        // alert("bump")
       });
 
     setMessageVerify("Please verify mail your account");
@@ -280,7 +291,9 @@ function Register(props) {
   return (
     <>
       <NavBar mode={3} />
-
+      {showLoading ? <>
+        <Loading></Loading>
+      </> : <></>}
 
       <div className="regis-frag">
         <div className="res-bg">

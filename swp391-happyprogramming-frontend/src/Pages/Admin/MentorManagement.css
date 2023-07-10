@@ -6,8 +6,8 @@
 .create-form form {
   display: flex;
   flex-direction: row;
-  /* background-color: black; */
   align-items: center;
+  justify-content: center;
 }
 .mail-input .w-message {
   position: absolute;
@@ -17,7 +17,7 @@
 .mail-input {
   padding: 1rem;
   position: relative;
-  width: 400px;
+  width: 100%;
 }
 .mail-input input {
   width: 100%;
@@ -28,6 +28,7 @@
   border: 2px solid var(--item2);
 }
 .mail-sbtn {
+  flex-shrink: 0;
 }
 .table-mentor-manage {
   width: 100%;

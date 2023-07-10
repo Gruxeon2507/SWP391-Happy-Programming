@@ -2,7 +2,7 @@
 
 .course-bg-inf {
   box-sizing: border-box;
-  /* background: rgb(255, 227, 224); */
+  background: var(--lightItem);
   background: linear-gradient(
     150deg,
     rgba(255, 227, 224, 1) 11%,
@@ -11,6 +11,8 @@
   height: 250px;
   border-radius: 1rem;
   /* transform: rotateY(180deg); */
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .course-bg-inf {

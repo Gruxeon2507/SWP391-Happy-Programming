@@ -12,13 +12,22 @@
 }
 
 .popup-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
+  position: absolute;
+  background-color: var(--lightItem);
+  padding: 2rem;
+  border: 1px solid var(--light);
+  border-radius: 1rem;
   width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
+.close {
+  position: absolute;
+  right: 0.5rem;
+  top: 0;
+}
 .close {
   color: #aaa;
   float: right;
@@ -72,7 +81,6 @@
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid var(--darkItem3);
-  /* padding: 1rem; */
 }
 .upf-section:hover {
   background-color: var(--darkItem3);
@@ -88,11 +96,12 @@
 
 .upf-info {
   width: 40%;
-  padding-left: 8rem;
+  padding: 1rem;
+  padding-left: 6rem;
   display: flex;
-  align-items: center;
-
-  flex-direction: row;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
 }
 
 .upf-info span {

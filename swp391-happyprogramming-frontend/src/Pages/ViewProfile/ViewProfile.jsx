@@ -7,6 +7,7 @@ import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import { useParams, Link } from "react-router-dom";
 import "./ViewProfile.css";
 import { Nav } from "react-bootstrap";
+import { notiError, notiSuccess } from "../../Components/Notification/notify";
 
 function ViewProfile(props) {
   const { id } = useParams();
@@ -130,18 +131,20 @@ function ViewProfile(props) {
     formData.append(`courseId`, courseId);
     formData.append(`comment`, comment);
     formData.append(`noStar`, noStar);
-   await axios
+    await axios
       .post(`http://localhost:1111/api/ratings/rates`, formData, {
         headers: requestHeadersFormdata,
       })
       .then((res) => {
         console.log("Rate ok");
+        notiSuccess();
       })
       .catch((error) => {
         console.log(error);
         console.log("Rate failed");
+        notiError();
       });
-      
+
     await axios
       .get(`http://localhost:1111/api/courses/ratingCourse/${id}`, {
         headers: requestHeadersFormdata,
@@ -152,19 +155,20 @@ function ViewProfile(props) {
       })
       .catch((error) => {
         console.log(error + " When get courses");
-      }); 
-   await axios
+      });
+    await axios
       .get(`http://localhost:1111/api/ratings/rate/${id}`)
       .then((res) => {
         setRatings(res.data);
         console.log(res.data);
         console.log(ratings);
+
       })
       .catch((error) => {
         console.log(error);
         console.log("Error when get ratings");
       });
-   await axios
+    await axios
       .get(`http://localhost:1111/api/ratings/avg/${id}`)
       .then((res) => {
         setAvgRate(res.data);
@@ -197,9 +201,11 @@ function ViewProfile(props) {
       })
       .then((res) => {
         // console.log(res.data);
+        notiSuccess();
       })
       .catch((error) => {
         // console.log(error);
+        notiError();
       });
     window.location.href = "";
   };
@@ -247,12 +253,14 @@ function ViewProfile(props) {
         headers: requestHeadersFormdata,
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         window.location.reload();
+        notiSuccess();
       })
       .catch((error) => {
-        console.log("Error when update avatar user" + error);
-        alert("Error when update avatar");
+        // console.log("Error when update avatar user" + error);
+        // alert("Error when update avatar");
+        notiError();
       });
   };
   // Upload CV File
@@ -370,10 +378,12 @@ function ViewProfile(props) {
         headers: requestHeadersFormdata,
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
+        notiSuccess();
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        notiError();
       });
     window.location.href = "";
   };
@@ -522,7 +532,7 @@ function ViewProfile(props) {
         <section className="upf-section">
           <div className="upf-info">
             <label>Email: </label>
-            <h1>{user.mail}</h1>
+            <span>{user.mail}</span>
 
           </div>
         </section>
@@ -531,9 +541,9 @@ function ViewProfile(props) {
             <>
               <div className="upf-info">
                 <label>Displayname</label>
-                <h3 style={{ display: editDisplayName ? "none" : "block" }}>
+                <span style={{ display: editDisplayName ? "none" : "block" }}>
                   {user.displayName}
-                </h3>
+                </span>
               </div>
               <div className="upf-edit-section">
                 {editDisplayName ? (
@@ -575,7 +585,7 @@ function ViewProfile(props) {
             <>
               <div className="upf-info">
                 <label>Display Name</label>
-                <h2>{user.displayName}</h2>
+                <span>{user.displayName}</span>
               </div>
             </>
           )}
@@ -613,70 +623,7 @@ function ViewProfile(props) {
                       <>
                         {" "}
                         <button onClick={editShowPopupRating}>Rating Users</button>
-                        {showPopupRating ? (
-                          <>
-                            <div className="popup">
-                              <div className="popup-content">
-                                <span className="close" onClick={editShowPopupRating}>
-                                  &times;
-                                </span>
-                                <h2>Courses Being Taught</h2>
-                                <ul>
-                                  {courses.map((course, index) => (
-                                    <li key={index}>
-                                      {course.courseName}
-                                      <button onClick={handleEditRateInfo}>Rate</button>
-                                      {editRateInfo ? (
-                                        <>
-                                          {" "}
-                                          <form
-                                            onSubmit={(event) =>
-                                              handleRateMentor(event, course.courseId)
-                                            }
-                                          >
-                                            Vote Star:
-                                            <div>
-                                              {[1, 2, 3, 4, 5].map((value) => (
-                                                <span
-                                                  key={value}
-                                                  onClick={() => onClickNoStar(value)}
-                                                  style={{
-                                                    cursor: "pointer",
-                                                    color:
-                                                      value <= noStar ? "gold" : "gray",
-                                                  }}
-                                                >
-                                                  &#9733;
-                                                </span>
-                                              ))}
-                                            </div>
-                                            <label>Comment:</label>
-                                            <input
-                                              type="text"
-                                              required
-                                              onChange={onChangeComment}
-                                            ></input>
-                                            {showErrorComment ? (
-                                              <>
-                                                <div
-                                                  className="w-message"
-                                                  style={{ color: "black" }}
-                                                >
-                                                  {errorComment}
-                                                </div>
-                                              </>
-                                            ) : null}
-                                            <button>Rate Mentor</button>
-                                          </form>
-                                        </>
-                                      ) : null}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </div>
-                          </>
-                        ) : null}
+
                       </>
                     ) : null}
                   </>
@@ -685,55 +632,7 @@ function ViewProfile(props) {
               <div className="upf-edt-btn">
                 <button onClick={editShowPopupAllRating}>View All Rating</button>
               </div>
-              <div>
-                {showPopupAllRating ? (
-                  <>
-                    <div className="popup">
-                      <div className="popup-content">
-                        <span className="close" onClick={editShowPopupAllRating}>
-                          &times;
-                        </span>
-                        {ratings.map((rating) => (
-                          <div>
-                            <div>
-                              <Link
-                                to={`/profile/${rating.ratingKey.ratedFromUser}`}
-                              >
-                                {rating.ratingKey.ratedFromUser}
-                              </Link>{" "}
-                              voted {rating.noStar} Stars
-                            </div>
-                            <div>
-                              {[1, 2, 3, 4, 5].map((value) => (
-                                <span
-                                  key={value}
-                                  style={{
-                                    color:
-                                      value <= rating.noStar ? "gold" : "gray",
-                                  }}
-                                >
-                                  &#9733;
-                                </span>
-                              ))}
-                            </div>
-                            <div>
-                              <label>Comment: </label>
-                              {rating.ratingComment}
-                            </div>
-                            About{" "}
-                            <div>
-                              <Link to={`/courses/${rating.course.courseId}`}>
-                                {rating.course.courseName}
-                              </Link>
-                            </div>
-                            -------------------------------------------
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                ) : null}
-              </div>
+
             </>
           ) : null}
         </section>
@@ -743,9 +642,9 @@ function ViewProfile(props) {
 
               <div className="upf-info">
                 <label>Date Of Birth</label>
-                <h3 style={{ display: editDateOfBirth ? "none" : "block" }}>
+                <span style={{ display: editDateOfBirth ? "none" : "block" }}>
                   {new Date(user.dob).toLocaleDateString(`en-GB`)}
-                </h3>
+                </span>
               </div>
 
               <div className="upf-edit-section">
@@ -793,9 +692,9 @@ function ViewProfile(props) {
             <>
               <div className="upf-info">
                 <label>Date Of Birth</label>
-                <h3 style={{ display: editDateOfBirth ? "none" : "block" }}>
+                <span style={{ display: editDateOfBirth ? "none" : "block" }}>
                   {new Date(user.dob).toLocaleDateString(`en-GB`)}
-                </h3>
+                </span>
               </div>
             </>
           )}
@@ -897,6 +796,120 @@ function ViewProfile(props) {
         ) : null}
 
       </main>
+      <div>
+        {showPopupRating ? (
+          <>
+            <div className="popup">
+              <div className="popup-content">
+                <span className="close" onClick={editShowPopupRating}>
+                  &times;
+                </span>
+                <h2>Courses Being Taught</h2>
+                <ul>
+                  {courses.length === 0 ? "You'd already voted or not yet enrolled in this mentor's course!" : ""}
+                  {courses.map((course, index) => (
+                    <li key={index}>
+                      {course.courseName}
+                      <button onClick={handleEditRateInfo}>Rate</button>
+                      {editRateInfo ? (
+                        <>
+                          {" "}
+                          <form
+                            onSubmit={(event) =>
+                              handleRateMentor(event, course.courseId)
+                            }
+                          >
+                            Vote Star:
+                            <div>
+                              {[1, 2, 3, 4, 5].map((value) => (
+                                <span
+                                  key={value}
+                                  onClick={() => onClickNoStar(value)}
+                                  style={{
+                                    cursor: "pointer",
+                                    color:
+                                      value <= noStar ? "gold" : "gray",
+                                  }}
+                                >
+                                  &#9733;
+                                </span>
+                              ))}
+                            </div>
+                            <label>Comment:</label>
+                            <input
+                              type="text"
+                              required
+                              onChange={onChangeComment}
+                            ></input>
+                            {showErrorComment ? (
+                              <>
+                                <div
+                                  className="w-message"
+                                  style={{ color: "black" }}
+                                >
+                                  {errorComment}
+                                </div>
+                              </>
+                            ) : null}
+                            <button>Rate Mentor</button>
+                          </form>
+                        </>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </>
+        ) : null}
+        {showPopupAllRating ? (
+          <>
+            <div className="popup">
+              <div className="popup-content">
+                <span className="close" onClick={editShowPopupAllRating}>
+                  &times;
+                </span>
+                {ratings.map((rating) => (
+                  <div>
+                    <div>
+                      <Link
+                        to={`/profile/${rating.ratingKey.ratedFromUser}`}
+                      >
+                        {rating.ratingKey.ratedFromUser}
+                      </Link>{" "}
+                      voted {rating.noStar} Stars
+                    </div>
+                    <div>
+                      {[1, 2, 3, 4, 5].map((value) => (
+                        <span
+                          key={value}
+                          style={{
+                            color:
+                              value <= rating.noStar ? "gold" : "gray",
+                          }}
+                        >
+                          &#9733;
+                        </span>
+                      ))}
+                    </div>
+                    <div>
+                      <label>Comment: </label>
+                      {rating.ratingComment}
+                    </div>
+                    About{" "}
+                    <div>
+                      <Link to={`/courses/${rating.course.courseId}`}>
+                        {rating.course.courseName}
+                      </Link>
+                    </div>
+                    -------------------------------------------
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : null}
+      </div>
     </>
   );
 }

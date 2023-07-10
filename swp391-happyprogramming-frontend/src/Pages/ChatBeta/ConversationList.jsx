@@ -152,21 +152,26 @@ const ConversationList = () => {
                         <input type="text" placeholder="Search"></input>
                         <ion-icon name="search-circle-outline"></ion-icon>
                     </div>
-                    <ul>
-                        {conversations.map((conversation) => (
-                            <NavLink
-                                to={"/chat/" + conversation.conversationId}
-                                key={conversation.conversationId}
-                            >
-                                <img
-                                    src={`http://localhost:1111/api/users/avatar/${conversation.username}`}
-                                    alt="avatar"
-                                ></img>
-                                <span>{conversation.conversationName}</span>
+                    <div className="lst-conv">
+                        <ul>
+                            {conversations.map((conversation) => (
+                                <NavLink
+                                    to={"/chat/" + conversation.conversationId}
+                                    key={conversation.conversationId}
+                                >
+                                    <img
+                                        src={`http://localhost:1111/api/users/avatar/${conversation.username}`}
+                                        alt="avatar"
+                                    ></img>
+                                    <div className="conv-name">
+                                        <span>{conversation.conversationName}</span>
+                                    </div>
+                                </NavLink>
+                            ))}
+                        </ul>
 
-                            </NavLink>
-                        ))}
-                    </ul>
+                    </div>
+
                 </nav>
                 <div className="Message-List">
                     <h1>Hi there <br />Please choose a conversation to continue...</h1>

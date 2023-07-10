@@ -192,16 +192,17 @@ const RequestStatistic = () => {
                 <div className="overAll-statistic-container">
                     <div className="overAll-stat">
                         <div className="stat-item">
-                            thong tin j do 1
-                            tong so thanh vien?
+                            <span>Your Mentee: </span>
+                            <span>90173</span>
+                            <ion-icon name="people-outline"></ion-icon>
                         </div>
                         <div className="stat-item">
-                            thong tin j do 2
-                            tong so jj do
+                            <span>Pending Requests: </span>
+                            <span>513</span>
                         </div>
                         <div className="stat-item">
-                            thong tin j do 3
-                            request?
+                            <span>Rejected: </span>
+                            <span>67</span>
                         </div>
                     </div>
                     <div className="chart-container">

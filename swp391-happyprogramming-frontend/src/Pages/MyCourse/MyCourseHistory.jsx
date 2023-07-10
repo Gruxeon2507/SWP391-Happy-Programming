@@ -107,7 +107,14 @@ const MyCourseHistory = () => {
     return (
         <>
             <NavBar mode={1} />
+            <section className="mycourse-header">
+
+            </section>
             <section className="mycourse-seachbar">
+                <section className="course-bg-inf"
+                    style={{ margin: "0" }}>
+                    <h1>My Courses</h1>
+                </section>
                 <div className="search-bar">
                     <input
                         type="text"

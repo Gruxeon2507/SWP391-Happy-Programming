@@ -7,6 +7,7 @@ import VerifyDialog from "../../Components/RegisterForm/VerifyDialog";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import "./ResetPassword.css"
+import { notiSuccess } from "../../Components/Notification/notify";
 
 function ResetPassword(props) {
   const { username } = useParams();
@@ -59,15 +60,16 @@ function ResetPassword(props) {
     formData.append("code", code);
     formData.append("password", newPassword);
 
-    axios
+    await axios
       .post(`http://localhost:1111/api/auth/resetpassword`, formData, config)
       .then((res) => {
         console.log(res.data);
         if (res.data === true) {
-          alert("wrong code");
-        } else {
-          alert("change successfully");
+          // alert("change successfully");
+          notiSuccess();
           window.location.href = "../login";
+        } else {
+          alert("wrong code");
         }
       })
       .catch((error) => {
