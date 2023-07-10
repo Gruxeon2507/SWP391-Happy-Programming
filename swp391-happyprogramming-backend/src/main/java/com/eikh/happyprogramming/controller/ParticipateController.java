@@ -137,6 +137,10 @@ public class ParticipateController {
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return new ResponseEntity<>(participateRepository.findAllMyParticipateCourse(pageable, username, participateRoles, statusIds, searchText), HttpStatus.OK);
+    }
 
+    @GetMapping("/findMentorCourse")
+    ResponseEntity<List<Participate>> findAllMentorCourse(){
+        return ResponseEntity.ok(participateRepository.findAllMentorCourse());
     }
 }

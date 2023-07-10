@@ -47,6 +47,9 @@ class ParticipateServices {
     console.log("dang goi api", participateRoles, statusIds);
     return api.post("/api/participates/allmy", formData);
   }
+  findAllMentorCourse(){
+    return api.get("/api/participates/findMentorCourse");
+  }
 }
 
 export default new ParticipateServices();
