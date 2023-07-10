@@ -72,8 +72,12 @@ function PostDetail() {
   return (
     <>
     
-    <section>REPORT SECTION</section>
       <NavBar mode={1} />
+    <section>
+      <h1>Report</h1>
+      
+    </section>
+
       <main className="comment-main">
         <div className="post-card-wrap" key={post.postId}>
           <div>{post.postedAt}</div>

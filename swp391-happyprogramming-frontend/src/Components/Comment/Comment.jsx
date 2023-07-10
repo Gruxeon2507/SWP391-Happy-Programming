@@ -15,7 +15,7 @@ const Comment = ({ comment, layer }) => {
   const replyRef = useRef(null);
   const [replies, setReplies] = useState([]);
 
-  useEffect(() => { }, [replies]);
+  useEffect(() => {}, [replies]);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -116,10 +116,11 @@ const Comment = ({ comment, layer }) => {
         <div className="cmt-content">
           <div className="cmt-author-info">
             <span style={{ marginBottom: "0px" }}>
-              {`${comment.user && comment.user.displayName
+              {`${
+                comment.user && comment.user.displayName
                   ? comment.user.displayName
                   : "Username failed to load"
-                }`}
+              }`}
             </span>
           </div>
 
@@ -131,7 +132,7 @@ const Comment = ({ comment, layer }) => {
             ref={inputRef}
             id="comment-content"
             onKeyDownCapture={handleKeyDownCaptureEditComment}
-          // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
+            // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
           >
             {decodeHtmlEntities(comment.commentContent)}
           </span>
@@ -187,7 +188,13 @@ const Comment = ({ comment, layer }) => {
                     ></ActionButton>
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <ActionButton
+                      className="report comment"
+                      type="REPORT"
+                      // handleClick={() => reportComment()}
+                    ></ActionButton>
+                  </>
                 )}
               </div>
             )}

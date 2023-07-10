@@ -16,11 +16,11 @@ import java.util.List;
 public class ReportController {
     @Autowired
     ReportServices reportServices;
+
     @GetMapping("/")
-    public List<Report> getAllReports(){
+    public List<Report> getAllReports() {
         List<Report> reports = reportServices.getAllReports();
-        for (Report r : reports
-             ) {
+        for (Report r : reports) {
 //            System.out.println("OBJ: " + r.g);
         }
         return reportServices.getAllReports();
