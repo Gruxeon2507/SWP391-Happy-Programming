@@ -134,9 +134,9 @@ const RequestManage = () => {
                     setCheckedRequest([])
                     getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
                     if (statusId !== 1) {
-                        sendPrivateValue(username, "(One)Your request to the course " + selectedCourseId + " has been rejected")
+                        sendPrivateValue(username, "(One)Your request to the course " + selectedCourseId + " has been rejected","/myrequest")
                     } else {
-                        sendPrivateValue(username, "(One) Your request to the course " + selectedCourseId + " has been accepted")
+                        sendPrivateValue(username, "(One) Your request to the course " + selectedCourseId + " has been accepted","/myrequest")
 
                     }
 
@@ -157,12 +157,12 @@ const RequestManage = () => {
                     if (statusId !== 1) {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for reject " + username);
-                            sendPrivateValue(username, "(Many) Your request to the course " + selectedCourseId + " has been rejected")
+                            sendPrivateValue(username, "(Many) Your request to the course " + selectedCourseId + " has been rejected","/myrequest")
                         });
                     } else {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for access" + username);
-                            sendPrivateValue(username, "(Many) Your request to the course " + selectedCourseId + " has been accepted")
+                            sendPrivateValue(username, "(Many) Your request to the course " + selectedCourseId + " has been accepted","/myrequest")
                         });
                     }
                     setCheckedRequest([])
@@ -229,7 +229,7 @@ const RequestManage = () => {
         const { value } = event.target;
         setUserData({ ...userData, message: value });
     };
-    const sendPrivateValue = (username, message) => {
+    const sendPrivateValue = (username, message,url) => {
         if (stompClient) {
             const currentDate = new Date();
             const year = currentDate.getFullYear();
@@ -242,6 +242,7 @@ const RequestManage = () => {
                 message: message,
                 status: "MESSAGE",
                 sentAt: currentDate,
+                url: url,
                 date:
                     year +
                     "-" +
@@ -268,7 +269,7 @@ const RequestManage = () => {
             Notification.append("notificationTime", currentDate);
             Notification.append("notificationTypeId", 1);
             Notification.append("username", username);
-            console.log(Notification)
+            Notification.append("url", url);
             api.post("/api/notification/save", Notification)
             setUserData({ ...userData, message: "" });
         }
@@ -319,10 +320,10 @@ const RequestManage = () => {
                         disabled={checkedRequest.length <= 1}
                         onChange={handleSelectChange} >
                         <option disabled>-- Action --</option>
-                        <option value="1" >Accept</option>
+                        <option value="1" >Access</option>
                         <option value="-1" >Reject</option>
                     </select>
-                    <button id="processBttn" disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Process</button>
+                    <button disabled={checkedRequest.length <= 1} onClick={() => handleSubmitMany()}>Thực hiện</button>
 
 
                     <div style={{ display: !haveData ? "inline" : "none" }} className="show-info">
@@ -374,12 +375,10 @@ const RequestManage = () => {
 
                                             <td>
                                                 <button
-                                                    id="c-m-acceptBttn"
                                                     onClick={() => handleSubmitOne(1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
-                                                >Accept </button>
+                                                >Access </button>
                                                 <button
-                                                    id="c-m-rejectBttn"
                                                     onClick={() => handleSubmitOne(-1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
                                                 >Reject</button>
