@@ -106,6 +106,10 @@ const CourseDetails = (props) => {
   // };
 
   // console.log("PART: " + JSON.stringify(participation));
+
+
+  //notification 
+
   return (
     <div>
       <NavBar mode={0}></NavBar>
@@ -204,7 +208,7 @@ const CourseDetails = (props) => {
             </>
           )} */}
           <RequestButton
-            {...{ courseID: courseProp }}
+            {...{ courseID: courseProp, courseName: course.courseName }}
           />
         </div>
       </div>

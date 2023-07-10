@@ -48,7 +48,8 @@ public class NotificationController {
     public void saveLoginUserNofitication(@RequestParam("notificationContent") String notificationContent,
 //                                          @RequestParam("notificationTime") Date notificationTime,
                                           @RequestParam("notificationTypeId") int notificationTypeId,
-                                          @RequestParam("username") String username
+                                          @RequestParam("username") String username,
+                                          @RequestParam("url") String url
             ,HttpServletRequest request){
         try {
             String token=jwtTokenFilter.getJwtFromRequest(request);
@@ -69,6 +70,7 @@ public class NotificationController {
                 notification.setIsViewed(false);
                 notification.setNotificationContent(notificationContent);
                 notification.setNotificationType(nt);
+                notification.setUrl(url);
                 notificationRepository.save(notification);
             }
         }catch (Exception e){
