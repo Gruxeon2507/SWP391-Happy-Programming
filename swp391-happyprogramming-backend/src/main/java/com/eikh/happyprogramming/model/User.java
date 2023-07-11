@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private String CVPath;
     private boolean activeStatus;
 
-
+    
     @Column(nullable = true)
     private boolean isVerified;
     private String verification_code;

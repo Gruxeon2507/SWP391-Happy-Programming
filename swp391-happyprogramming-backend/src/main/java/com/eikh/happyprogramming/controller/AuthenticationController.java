@@ -84,9 +84,11 @@ public class AuthenticationController {
 
             String token = jwtTokenProvider.generateToken(credentials);
             String role = user.getRoles().get(0).getRoleName();
+            String status = user.isActiveStatus()+"";
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             response.put("role", role);
+            response.put("status",status);
 
             return ResponseEntity.ok(response);
         }else if(user!=null &&  ((user.getPassword().equals(credentials.getPassword()))
