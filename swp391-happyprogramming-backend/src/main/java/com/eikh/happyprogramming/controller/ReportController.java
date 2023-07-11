@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
+
     @Autowired
     CommentRepository commentRepository;
     @Autowired
@@ -62,7 +63,9 @@ public class ReportController {
         String username = jwtTokenUtil.getUsernameFromToken((jwtTokenFilter.getJwtFromRequest(request)));
         Course c = courseRepository.findByPosts_Comments_CommentId(report.getComment().getCommentId());
         Participate p = participateRepository.getUserParticipateFromCourse(username, c.getCourseId());
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         java.util.Date now = new java.util.Date();
         report.setReportTime(new Timestamp(System.currentTimeMillis()));
         User u = new User();
@@ -89,7 +92,9 @@ public class ReportController {
         System.out.println("calling ban mentee");
         // return if user is an active mentor of any course
         Participate p = participateRepository.findByUser_UsernameAndParticipateRole_ParticipateRoleAndStatus_StatusId(username, 2, 1);
-        if (p != null) return;
+        if (p != null) {
+            return;
+        }
         // count total report for given username
         int reportCount = reportRepository.countAllByComment_User_Username(username);
         System.out.println("no of report for " + username + ": " + reportCount);
@@ -102,4 +107,6 @@ public class ReportController {
             System.out.println("banned ok");
         }
     }
+
+
 }

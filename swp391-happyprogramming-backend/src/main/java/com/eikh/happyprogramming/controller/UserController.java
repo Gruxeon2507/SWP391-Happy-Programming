@@ -1,6 +1,7 @@
 package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
+import com.eikh.happyprogramming.model.Course;
 import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.Skill;
 import com.eikh.happyprogramming.model.User;
@@ -30,6 +31,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -189,8 +194,8 @@ public class UserController {
             @RequestHeader("Authorization") String token) {
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         User user = userRepository.findByUsername(username);
-        user.setAvatarPath(username+".jpg");
-        user.setCVPath(username+".pdf");
+        user.setAvatarPath(username + ".jpg");
+        user.setCVPath(username + ".pdf");
         userRepository.save(user);
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
@@ -227,8 +232,8 @@ public class UserController {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
         User user = userRepository.findByUsername(username);
-        user.setAvatarPath(username+".jpg");
-        user.setCVPath(username+".pdf");
+        user.setAvatarPath(username + ".jpg");
+        user.setCVPath(username + ".pdf");
         userRepository.save(user);
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".jpg");
@@ -373,6 +378,42 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         }
+    }
+
+    // Date: 22/05/2023
+    // Function: List user (except mentor) for only admin
+    // author: maiphuonghoang
+    @PostMapping("/only-role-mentee-users")
+    ResponseEntity<Page<User>> getOnlyRoleMenteeUser(HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String searchText,
+            @RequestParam(defaultValue = "createdDate") String sortField,
+            @RequestParam(defaultValue = "asc") String sortOrder
+    ) {
+//        if (!roleUtils.hasRoleFromToken(request, 1)) {
+//            return null;
+//        }
+        Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<User> pageMentees = userRepository.getOnlyRoleMenteeUser(pageable);
+        return new ResponseEntity<>(pageMentees, HttpStatus.OK);
+
+    }
+
+    @PutMapping("/status")
+    public void unbanMentee(HttpServletRequest request, @RequestParam String username, @RequestParam boolean status) {
+        System.out.println(status);
+        if (!roleUtils.hasRoleFromToken(request, 1)) {
+            return;
+        }
+        User u = userRepository.findByUsername(username);
+        System.out.println(u.isActiveStatus());
+        u.setActiveStatus(status);
+        System.out.println("status truoc" + u.isActiveStatus());
+        userRepository.save(u);
+        System.out.println("status sau" + u.isActiveStatus());
+
     }
 
 }

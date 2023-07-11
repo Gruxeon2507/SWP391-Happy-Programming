@@ -9,5 +9,6 @@ class ReportServices {
     console.log("insert report at service called");
     api.post(`api/reports/create`, report);
   }
+
 }
 export default new ReportServices();

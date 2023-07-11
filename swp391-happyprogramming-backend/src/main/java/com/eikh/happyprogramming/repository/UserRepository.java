@@ -7,6 +7,8 @@ package com.eikh.happyprogramming.repository;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -76,5 +78,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     // duckm
     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE u.username = ?1 AND p.courseId = ?2 AND p.statusId= 1", nativeQuery = true)
     public User findEnrolledUserInCourse(String username, int courseId);
-
+    
+    @Query(value = "SELECT * FROM User u WHERE u.username NOT IN (SELECT DISTINCT p.username FROM Participate p WHERE p.participateRole IN (1,2))" , nativeQuery = true)
+    public  Page<User> getOnlyRoleMenteeUser(Pageable pageable);
 }

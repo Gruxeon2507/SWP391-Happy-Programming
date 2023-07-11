@@ -46,6 +46,26 @@ class UserServices {
       return null;
     }
   }
+  getOnlyRoleMenteeList(searchText, pageNumber, pageSize, sortField, sortOrder){
+    const formData = new FormData();
+    formData.append("pageNumber", pageNumber);
+    formData.append("pageSize", pageSize);
+    formData.append("searchText", searchText)
+    formData.append("sortField", sortField)
+    formData.append("sortOrder", sortOrder)
+    console.log("dang goi api", searchText, sortField, sortOrder , pageNumber);
+    return api.post(USER_BASE_REST_API_URL + `only-role-mentee-users`, formData);
+  }
+  setUserActiveStatus(username, status){
+    
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("status", status);
+    console.log(username + " status: " + status);
+    console.log(`http://localhost:1111/api/courses/find-user/${username}/${status}`);
+    return api.put("/api/users/status", formData);
+
+  }
 }
 
 export default new UserServices();
