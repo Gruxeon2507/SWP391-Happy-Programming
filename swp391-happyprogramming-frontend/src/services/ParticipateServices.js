@@ -50,6 +50,9 @@ class ParticipateServices {
   findAllMentorCourse(){
     return api.get("/api/participates/findMentorCourse");
   }
+  updateMentorCourse(){
+    return api.post("/api/participates/updateMentorCourse");
+  }
 }
 
 export default new ParticipateServices();

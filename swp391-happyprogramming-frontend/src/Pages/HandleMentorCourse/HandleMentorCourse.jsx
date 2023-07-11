@@ -8,6 +8,7 @@ import Select from "react-select";
 import ParticipateServices from "../../services/ParticipateServices";
 import CourseServices from "../../services/CourseServices";
 import PublicService from "../../services/PublicService";
+import api from "../../services/BaseAuthenticationService";
 
 function HandleMentorCourse(props) {
   const [courses, setCourses] = useState([]);
@@ -16,12 +17,44 @@ function HandleMentorCourse(props) {
 
   const [mentorUpdate, setMentorUpdate] = useState([]);
 
-  useEffect(() => {
+  const handleMentorUpdate = (courseId, selectedOptions) => {
+    // Filter out the selectedOptions that are already present in participates array
+    const filteredOptions = selectedOptions.filter((option) => {
+      return !participates.some(
+        (p) =>
+          p.participateKey.courseId === courseId &&
+          p.participateKey.username === option.value
+      );
+    });
+
+    // Create an array of new participate elements to be added
+    const newParticipates = filteredOptions.map((option) => ({
+      participateKey: {
+        courseId: courseId,
+        username: option.value,
+      },
+      // Other properties of the participate object...
+    }));
+
+    // Filter out the mentors that are no longer selected
+    const updatedParticipates = participates.filter(
+      (p) =>
+        p.participateKey.courseId !== courseId ||
+        selectedOptions.some(
+          (option) => option.value === p.participateKey.username
+        )
+    );
+
+    // Update the state by concatenating the newParticipates array with the updatedParticipates array
+    setParticipates([...updatedParticipates, ...newParticipates]);
+  };
+
+  const loadData = () => {
     ParticipateServices.findAllMentorCourse()
       .then((res) => {
         setParticipates(res.data);
-        console.log(res.data);
-        console.log(participates);
+        // console.log(res.data);
+        // console.log(participates);
       })
       .catch((error) => {
         {
@@ -32,7 +65,7 @@ function HandleMentorCourse(props) {
     CourseServices.getAllCourses()
       .then((res) => {
         setCourses(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -41,13 +74,34 @@ function HandleMentorCourse(props) {
     PublicService.getActiveMentors()
       .then((res) => {
         setMentors(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
         alert("Error when get Mentors");
       });
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
+
+  const handleUpdateMentor = (event) => {
+    event.preventDefault();
+    console.log(participates);
+    api
+      .post(
+        `http://localhost:1111/api/participates/updateMentorCourse`,
+        participates
+      )
+      .then((res) => {
+        console.log(res.data);
+        loadData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -68,13 +122,6 @@ function HandleMentorCourse(props) {
                   <td>{c.courseName}</td>
                   <td>{c.createdAt}</td>
                   <td>
-                    {participates.map((p) => {
-                      if (p.participateKey.courseId === c.courseId) {
-                        return <>{p.participateKey.username},</>;
-                      }
-                    })}
-                  </td>
-                  <td>
                     <Select
                       isMulti
                       options={mentors.map((m) => ({
@@ -89,9 +136,16 @@ function HandleMentorCourse(props) {
                           };
                         }
                       })}
-                      onChange={(values) => {}}
+                      onChange={(selectedOptions) => {
+                        handleMentorUpdate(c.courseId, selectedOptions);
+                      }}
                       isSearchable={true}
                     ></Select>
+                  </td>
+                  <td>
+                    <form onSubmit={handleUpdateMentor}>
+                      <button>Update Mentor</button>
+                    </form>
                   </td>
                 </tr>
               );
