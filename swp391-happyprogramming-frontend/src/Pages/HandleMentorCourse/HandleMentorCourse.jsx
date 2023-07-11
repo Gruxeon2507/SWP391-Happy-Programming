@@ -17,7 +17,6 @@ function HandleMentorCourse(props) {
   const [mentorJoinCourse, setMentorJoinCourse] = useState([]);
 
   const handleMentorUpdate = (courseId, selectedOptions) => {
-    // Filter out the selectedOptions that are already present in participates array
     const filteredOptions = selectedOptions.filter((option) => {
       return !participates.some(
         (p) =>
@@ -26,16 +25,13 @@ function HandleMentorCourse(props) {
       );
     });
 
-    // Create an array of new participate elements to be added
     const newParticipates = filteredOptions.map((option) => ({
       participateKey: {
         courseId: courseId,
         username: option.value,
       },
-      // Other properties of the participate object...
     }));
 
-    // Filter out the mentors that are no longer selected
     const updatedParticipates = participates.filter(
       (p) =>
         p.participateKey.courseId !== courseId ||
@@ -44,7 +40,6 @@ function HandleMentorCourse(props) {
         )
     );
 
-    // Update the state by concatenating the newParticipates array with the updatedParticipates array
     setParticipates([...updatedParticipates, ...newParticipates]);
   };
 
@@ -101,11 +96,9 @@ function HandleMentorCourse(props) {
           `http://localhost:1111/api/participates/findMentorJoinCourse/${course.courseId}`
         );
         const courseData = courseResponse.data;
-        // Map the mentor data to the desired object structure
         const mentorJoinCourseForCourse = courseData.map((mentor) => ({
           courseId: course.courseId,
           username: mentor.username,
-          // Other properties of the participate object...
         }));
         mentorJoinCourseData.push(...mentorJoinCourseForCourse);
       }
@@ -128,12 +121,10 @@ function HandleMentorCourse(props) {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    // This effect will run on the initial render and when the counter changes
     console.log("useEffect is running");
     loadDataMentorCourse();
   }, [counter]);
 
-  // Trigger the second run of useEffect
   useEffect(() => {
     if (counter === 1) {
       console.log("Second run of useEffect");
@@ -141,7 +132,6 @@ function HandleMentorCourse(props) {
     loadDataMentorCourse();
   }, [counter]);
 
-  // Update the counter to trigger the second run of useEffect
   setTimeout(() => {
     setCounter(1);
   }, 100);
@@ -212,7 +202,7 @@ function HandleMentorCourse(props) {
                               label: m.username,
                             };
                           }
-                          return null; // Return null or an empty object
+                          return null;
                         })
                         .filter(Boolean)}
                       value={participates.map((p) => {
