@@ -9,7 +9,7 @@ import api from "../../services/BaseAuthenticationService";
 var stompClient = null;
 function CreatePost(props) {
   const editorRef = useRef(null);
-  const { courseId, postId } = props;
+  const { courseId, postId,courseName } = props;
   const [prevContent, setPrevContent] = useState("");
   const [content, setContent] = useState("");
   const string = `nhap cai gi do vao day di`;
@@ -65,7 +65,7 @@ function CreatePost(props) {
           PostServices.createNewPost(content, courseId);
           api.get("/api/courses/mentee/"+courseId).then((result)=>{
             result.data.map((user)=>{
-              sendPrivateValue(user.username,'You Have A New Post In"'+courseId+'"',"/courses/feed/"+courseId)
+              sendPrivateValue(user.username,'You Have A New Post In "'+courseName+'"',"/courses/feed/"+courseId)
             })
           })
         } catch (error) {

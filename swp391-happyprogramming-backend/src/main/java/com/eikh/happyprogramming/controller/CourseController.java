@@ -256,18 +256,19 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
     @GetMapping("mentee/{courseId}")
-    public List<User> getMenteeOfCourse(@PathVariable("courseId") int courseId,HttpServletRequest request){
-        try{
+    public List<User> getMenteeOfCourse(@PathVariable("courseId") int courseId,HttpServletRequest request) {
+        try {
             String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-            User user = userRepository.userHasRole(username,2);
-            if(user!=null){
+            User user = userRepository.userHasRole(username, 2);
+            if (user != null) {
                 List<User> mentees = userRepository.findMenteeOfCourse(courseId);
                 return mentees;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return null;
+    }
     @GetMapping("/find/by-comment/{commentId}")
     public Course findCourseByComment(@PathVariable("commentId") int commentId){
         return courseRepository.findByPosts_Comments_CommentId(commentId);

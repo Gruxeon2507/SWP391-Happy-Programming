@@ -214,6 +214,7 @@ function CourseFeed(props) {
         <CreatePost
           courseId={courseId}
           postId={postId}
+          courseName={courseName}
           onRemoveActive={handleRemoveActive}
         />
       </div>
