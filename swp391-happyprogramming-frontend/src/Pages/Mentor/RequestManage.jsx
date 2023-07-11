@@ -400,7 +400,7 @@ const RequestManage = () => {
                                                     onClick={() => handleSubmitOne(1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
                                                     id="c-m-acceptBttn"
-                                                >Access </button>
+                                                >Accept </button>
                                                 <button
                                                     onClick={() => handleSubmitOne(-1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
