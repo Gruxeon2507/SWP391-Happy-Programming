@@ -9,15 +9,12 @@ import MentorManagement from "./MentorManagement";
 import MenteeManagement from "./MenteeManagement";
 import SettingBar from "../../Components/SettingBar/SettingBar";
 import NavBar from "../../Components/Navbar/NavBar";
+import HandleMentorCourse from "../HandleMentorCourse/HandleMentorCourse";
 
 function AdminManage(props) {
-
   const [active, setActive] = useState(0);
 
-  const setActiveMode = (active) => (
-    setActive(active)
-  )
-
+  const setActiveMode = (active) => setActive(active);
 
   return (
     <div className="body-wraper">
@@ -25,7 +22,9 @@ function AdminManage(props) {
         <NavBar mode={1}></NavBar>
         <div className="ad-nav-list">
           <ul>
-            <button id="admin-add-btn"><span> + </span>New</button>
+            <button id="admin-add-btn">
+              <span> + </span>New
+            </button>
             <li
               className={active === 1 ? "active" : ""}
               onClick={() => setActiveMode(1)}
@@ -48,7 +47,7 @@ function AdminManage(props) {
               className={active === 4 ? "active" : ""}
               onClick={() => setActiveMode(4)}
             >
-              item placeholder
+              Handle Mentors Of Course
             </li>
             <li
               className={active === 5 ? "active" : ""}
@@ -73,7 +72,6 @@ function AdminManage(props) {
         {active === 4 ? <CreateCourse /> : <></>}
         {active === 5 ? <CreateCourse /> : <></>}
         {active === 6 ? <CreateCourse /> : <></>}
-
       </div>
     </div>
   );

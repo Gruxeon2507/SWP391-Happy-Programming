@@ -5,10 +5,7 @@
 package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
-import com.eikh.happyprogramming.model.Conversation;
-import com.eikh.happyprogramming.model.Course;
-import com.eikh.happyprogramming.model.Participate;
-import com.eikh.happyprogramming.model.User;
+import com.eikh.happyprogramming.model.*;
 import com.eikh.happyprogramming.repository.ConversationRepository;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.ParticipateRepository;
@@ -137,6 +134,45 @@ public class ParticipateController {
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return new ResponseEntity<>(participateRepository.findAllMyParticipateCourse(pageable, username, participateRoles, statusIds, searchText), HttpStatus.OK);
+    }
 
+    @GetMapping("/findMentorCourse")
+    ResponseEntity<List<Participate>> findAllMentorCourse(){
+        return ResponseEntity.ok(participateRepository.findAllMentorCourse());
+    }
+
+    @GetMapping("/findMentorJoinCourse/{courseId}")
+    ResponseEntity<?> findAllMentorJoinCourse(@PathVariable("courseId") int courseId){
+        return ResponseEntity.ok(userRepository.findAllMentorJoinCourse(courseId));
+    }
+
+    @PostMapping("/updateMentorCourse")
+    ResponseEntity<?> updateMentorCourse(@RequestBody List<Participate> participates,HttpServletRequest request){
+        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
+        if(user == null){
+            return  ResponseEntity.ok(null);
+        }
+        boolean checkAdmin = false;
+        for (Role r:
+             user.getRoles()) {
+            if(r.getRoleName().equalsIgnoreCase("admin")){
+                checkAdmin = true;
+                break;
+            }
+        }
+        if(!checkAdmin){
+            return  ResponseEntity.ok("Failed");
+        }else{
+            List<Participate> firstParticipates = participateRepository.findAllMentorCourse();
+            for (Participate p:
+                    firstParticipates) {
+                participateRepository.deleteMentorCourse(p.getParticipateKey().getUsername(),p.getParticipateKey().getCourseId());
+            }
+            for (Participate p:
+                    participates) {
+                participateRepository.insertMentorCourse(p.getParticipateKey().getCourseId(),p.getParticipateKey().getUsername());
+            }
+        }
+        return ResponseEntity.ok("Success");
     }
 }
