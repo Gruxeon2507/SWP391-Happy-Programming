@@ -23,6 +23,7 @@ function CourseFeed(props) {
   const [activeMenus, setActiveMenus] = useState({});
   const [mentors, setMentors] = useState([]);
   const [course, setCourse] = useState({});
+  const [uln, setUln] = useState({});
 
   const navigate = useNavigate();
 
@@ -68,8 +69,10 @@ function CourseFeed(props) {
 
       const cc = await api.get(`http://localhost:1111/api/courses/courseDetails/${courseId}`)
       setCourseName(cc.data);
-      console.log("cc");
-      console.log(courseName);
+
+      const ulname = await api.get("/api/users/login")
+      setUln(ulname.data);
+
 
       await PublicService.getCourseByCourseId(courseId)
         .then((res) => {
@@ -85,45 +88,13 @@ function CourseFeed(props) {
       console.error(error);
     }
   };
-  console.log(course)
-  console.log(mentors)
-  // useEffect(() => {
-  //   fetchData();
-  // }, [courseId, posts]);
+  console.log("posts")
+  console.log(posts)
+
 
   useEffect(() => {
     fetchData();
-    // console.log(mentors);
   }, []);
-
-  // useEffect(() => {
-  //   PublicService.getCourseByCourseId(courseId)
-  //     .then((res) => {
-  //       setCourse(res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("error fetching course" + error);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await CourseServices.getCourseById(courseId);
-  //       setCurrentCourse(response.data[0].courseName);
-  //       console.log("currentCourse");
-  //       console.log(currentCourse);
-
-  //       const mentors = await CourseServices.getMentorsOfCourse(courseId);
-  //       console.log("mentorssss");
-  //       console.log(mentors.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   const handleCheckboxChange = () => {
     setIsEditorActive(!isEditorActive);
@@ -134,7 +105,7 @@ function CourseFeed(props) {
   };
 
   const deletePost = (postId) => {
-    const ok = confirm("Yah sure bro?");
+    const ok = confirm("Do you sure to continue?");
     if (ok) {
       PostServices.deletePost(postId);
       fetchData();
@@ -157,7 +128,8 @@ function CourseFeed(props) {
             {posts.map((post) => (
               <div className="post-card-wrap" key={post.postId}>
 
-                {window.localStorage.getItem("role") == "mentor" ? <>
+                {(mentors.some(mentor => mentor.username === uln)) ? <>
+
                   <div className="pcw-edit-opt" ref={toggleRef}>
                     <div className="pcw-edit-opt-btn">
                       <ion-icon
@@ -198,15 +170,25 @@ function CourseFeed(props) {
           </section>
           <aside className="aside-control-nav">
             <div className="sidebar-cf">
+              <div className="course-member">
+                <ion-icon name="people-outline"></ion-icon>
+                <div className="stat">
+                  <span>1234567890</span>
+                  <a href={`/courses/members/${courseId}`}>View members</a>
+                </div>
+              </div>
+
+
               {window.localStorage.getItem("role") == "mentor" ? <>
-                <div>
+                <div className="mentor-bttn">
                   <button onClick={openEditor}>
-                    <ion-icon name="add-circle-outline"></ion-icon> New
+                    <ion-icon name="add-circle-outline"></ion-icon> New Post
                   </button>
+                  <button id="nav-manage" onClick={() => navigate("/request/manage")}>To course manage</button>
                 </div>
               </> : <><div className="side-mentor-list">
                 {mentors.map((mentor) => (
-                  <div className="side-mentor-card" onClick={() => navigate(`/profile/${mentor.username}`)}>
+                  <div className="side-mentor-card" onClick={() => navigate(`/profile/${mentor.username}`)} key={mentor.username}>
                     <div className="avatar">
                       <img src={"http://localhost:1111/api/users/avatar/" + mentor.username} alt="avatar"></img>
                     </div>
@@ -232,6 +214,7 @@ function CourseFeed(props) {
         <CreatePost
           courseId={courseId}
           postId={postId}
+          courseName={course.courseName}
           onRemoveActive={handleRemoveActive}
         />
       </div>

@@ -38,7 +38,7 @@ function Login() {
       localStorage.setItem("role", role);
       localStorage.setItem("status", status);
 
-      window.location.href = "/";
+      window.location.href = "/mycourse";
     } catch (error) {
       console.log("login failed");
       setLoginFailed(true);

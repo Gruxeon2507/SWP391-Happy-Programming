@@ -27,7 +27,8 @@
   text-align: center;
 }
 
-.cf-content {
+.cf-content,
+.c-m-content {
   box-sizing: border-box;
   margin-top: 90px;
   padding: 1rem;
@@ -244,4 +245,67 @@
 .side-mentor-card .avatar img {
   height: 100%;
   width: 100%;
+}
+
+.mentor-bttn {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 400px;
+  margin: 1rem 0;
+}
+.mentor-bttn button {
+  width: fit-content;
+  margin: 4px;
+}
+
+/* #nav-manage {
+  position: absolute;
+  bottom: 0;
+} */
+
+.course-member {
+  width: 100%;
+  background-color: var(--light);
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
+    rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+  display: flex;
+  flex-direction: row;
+
+  padding: 0.5rem;
+
+  border-radius: 1rem;
+}
+
+.course-member .stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0.5rem;
+}
+
+.course-member ion-icon {
+  font-size: 4rem;
+  color: var(--darkItem5);
+  transform: translate(0);
+}
+
+.course-member span {
+  color: var(--darkItem5);
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  transform: translateY(4px);
+}
+
+.course-member .stat a {
+  color: gray;
+  text-decoration: none;
+  transform: translateY(-6px);
+}
+.course-member .stat a:hover {
+  color: var(--darkItem5);
+  text-decoration: underline;
 }

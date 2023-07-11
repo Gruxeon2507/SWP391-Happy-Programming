@@ -46,7 +46,10 @@ function PostDetail() {
       });
   }, []);
 
-  useEffect(() => {}, []);
+  console.log("comments");
+  console.log(comments);
+
+  useEffect(() => { }, []);
 
   const addComment = async () => {
     if (input.trim().length != 0) {
@@ -87,18 +90,19 @@ function PostDetail() {
         </div>
 
         <hr></hr>
-        <section
-          style={{
-            border: "5px solid red",
-            display: showReportDialog ? "block" : "none",
-          }}
-        >
-          <h1>Report</h1>
-          <Report
-            commentId={reportedCommentId}
-            username={loginUsername}
-          ></Report>
-        </section>
+        {showReportDialog ? <>
+
+          <section className="rp-section">
+            <div className="rp-form">
+              <ion-icon name="close-outline" id="closeRP" onClick={() => setShowReportDialog(false)}></ion-icon>
+              <h1>Report</h1>
+              <Report
+                commentId={reportedCommentId}
+                username={loginUsername}
+              ></Report>
+            </div>
+          </section>
+        </> : <></>}
         <div id={"comment-section"}>
           <div className="cmt-input">
             <img

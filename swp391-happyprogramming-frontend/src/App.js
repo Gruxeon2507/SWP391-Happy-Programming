@@ -49,6 +49,7 @@ import Notification from "./Components/Notification/Notification";
 import SentNotification from "./Components/Notification/SentNotification";
 import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
+import CourseMember from "./Pages/CourseFeed/CourseMember";
 
 
 function App() {
@@ -162,6 +163,16 @@ function App() {
         />
 
         <Route
+          path="/courses/members/:courseId"
+          element={
+            <PrivateRoute
+              component={CourseMember}
+              roles={["mentee", "mentor", "admin"]}
+            />
+          }
+        />
+
+        <Route
           path="/chat/:conversationId"
           element={
             <PrivateRoute
@@ -204,6 +215,7 @@ function App() {
             <PrivateRoute component={CreatePost} roles={["mentor", "admin"]} />
           }
         />
+
         <Route
           path="/resetpassword/:username"
           element={<ResetPassword></ResetPassword>}

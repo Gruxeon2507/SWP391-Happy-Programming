@@ -81,4 +81,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     
     @Query(value = "SELECT * FROM User u WHERE u.username NOT IN (SELECT DISTINCT p.username FROM Participate p WHERE p.participateRole IN (1,2))" , nativeQuery = true)
     public  Page<User> getOnlyRoleMenteeUser(Pageable pageable);
+
+    @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE p.participateRole = 3 AND p.courseId = ?1 AND p.statusId=1",nativeQuery = true)
+    public List<User> findMenteeOfCourse(int courseId);
+
 }
