@@ -8,9 +8,10 @@ import NavBar from "../../Components/Navbar/NavBar";
 import baseAVT from "../../Assets/base_user_img.png";
 import RequestService from "../../services/RequestService";
 import RequestButton from "../../Components/RequestButton/RequestButton";
+import api from "../../services/BaseAuthenticationService";
 
 function StarRating({ rating }) {
-  const navigate = useNavigate();
+
 
   const renderStars = () => {
     const stars = [];
@@ -33,31 +34,29 @@ function StarRating({ rating }) {
 const CourseDetails = (props) => {
   const { courseID } = useParams();
   const courseProp = courseID;
+  const navigate = useNavigate();
   const [course, setCourse] = useState({});
   const [mentor, setMentor] = useState({});
   const [rating, setRating] = useState(0);
   const [participation, setParticipation] = useState({});
-  // const [participateStatus, setParticipateStatus] = useState(-1);
+  const [mentors, setMentors] = useState([]);
 
-  // useEffect(() => {
-  //   ParticipateServices.getParticipateByUser(courseID)
-  //     .then((res) => {
-  //       // setParticipation(res.data);
-  //       const p = res.data;
-  //       if (p.length == 0 || p.status.statusId == -1) {
-  //         setParticipateStatus(-1);
-  //         console.log(participateStatus);
-  //       } else if (p.status.statusId == 0) {
-  //         setParticipateStatus(0);
-  //       } else if (p.status.statusId == 1) {
-  //         setParticipateStatus(1);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log("error fetching participation" + error);
-  //     });
-  // }, []);
-  // console.log("PARTICIPATE STATUS " + participateStatus);
+  const fetchMentorData = async () => {
+    try {
+      const mentors = await api.get(`http://localhost:1111/api/courses/find-mentor/${courseID}`)
+      setMentors(mentors.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMentorData();
+  }, []);
+
+  console.log("mentors");
+  console.log(mentors);
 
   useEffect(() => {
     PublicService.getCourseByCourseId(courseID)
@@ -106,10 +105,10 @@ const CourseDetails = (props) => {
   // };
 
   // console.log("PART: " + JSON.stringify(participation));
-  
+
 
   //notification 
-  
+
   return (
     <div>
       <NavBar mode={0}></NavBar>
@@ -130,26 +129,35 @@ const CourseDetails = (props) => {
         </div>
         <div className="mentor-info">
           <div className="basic-info">
-            <div>
+            {/* <div>
               <img
                 src={
                   "http://localhost:1111/api/users/avatar/" + mentor.username
                 }
                 alt="image"
               ></img>
-            </div>
-            <div className="m-i-name">
+            </div> */}
+            {mentors.map((mentor) => (
+              <div className="side-mentor-card" onClick={() => navigate(`/profile/${mentor.username}`)} key={mentor.username}>
+                <div className="avatar">
+                  <img src={"http://localhost:1111/api/users/avatar/" + mentor.username} alt="avatar"></img>
+                </div>
+                <span>{mentor.displayName}</span>
+              </div>
+
+            ))}
+            {/* <div className="m-i-name">
               <span>Mentor</span>
               <span>
                 <a href={`/profile/${mentor.username}`}>{mentor.displayName}</a>
               </span>
-            </div>
+            </div> */}
           </div>
-          <div className="m-i-rating">
+          {/* <div className="m-i-rating">
             <span>
               <StarRating rating={rating} />{" "}
             </span>
-          </div>
+          </div> */}
           {/* {Object.keys(participation).length == 0 ? (
             <div>
               <button id="requestBttn" onClick={() => handleRequest()}>
@@ -208,7 +216,7 @@ const CourseDetails = (props) => {
             </>
           )} */}
           <RequestButton
-            {...{courseID:courseProp,courseName:course.courseName}}
+            {...{ courseID: courseProp, courseName: course.courseName }}
           />
         </div>
       </div>

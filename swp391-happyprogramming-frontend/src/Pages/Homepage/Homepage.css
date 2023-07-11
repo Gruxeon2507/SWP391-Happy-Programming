@@ -199,6 +199,7 @@
 
   position: sticky;
   top: 5rem;
+  /* z-index: 100; */
 }
 .cate-filter h2 {
   margin-left: 0.5rem;
@@ -365,6 +366,7 @@
 
   .cate-filter {
     width: 100%;
+    position: static;
   }
   .select-list {
     width: 100%;

@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import "../Admin/AdminManage.css";
 import basicAvatar from "../../Assets/base_user_img.png";
 import MentorManagement from "./MentorManagement";
+import MenteeManagement from "./MenteeManagement";
 import SettingBar from "../../Components/SettingBar/SettingBar";
 import NavBar from "../../Components/Navbar/NavBar";
 import HandleMentorCourse from "../HandleMentorCourse/HandleMentorCourse";
@@ -40,7 +41,7 @@ function AdminManage(props) {
               className={active === 3 ? "active" : ""}
               onClick={() => setActiveMode(3)}
             >
-              item placeholder
+              Mentee Management
             </li>
             <li
               className={active === 4 ? "active" : ""}
@@ -67,8 +68,8 @@ function AdminManage(props) {
         {active === 0 ? <></> : <></>}
         {active === 1 ? <CreateCourse /> : <></>}
         {active === 2 ? <MentorManagement></MentorManagement> : <></>}
-        {active === 3 ? <CreateCourse /> : <></>}
-        {active === 4 ? <HandleMentorCourse /> : <></>}
+        {active === 3 ? <MenteeManagement></MenteeManagement> : <></>}
+        {active === 4 ? <CreateCourse /> : <></>}
         {active === 5 ? <CreateCourse /> : <></>}
         {active === 6 ? <CreateCourse /> : <></>}
       </div>

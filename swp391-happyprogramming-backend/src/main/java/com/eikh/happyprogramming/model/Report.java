@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -12,6 +13,8 @@ import java.io.Serializable;
 public class Report implements Serializable {
     @EmbeddedId
     private ReportKey reportKey;
+
+    private Timestamp reportTime;
 
     @ManyToOne
     @MapsId("commentId")

@@ -66,22 +66,22 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
             + "                      where u.username = :username \n"
             + "                      AND p.participateRole IN :participateRoles AND s.statusId IN :statusIds\n"
             + "                      AND c.courseName LIKE %:searchText% ", nativeQuery = true)
-    Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
+    Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles,
+            Integer[] statusIds, String searchText);
 
-    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Participate WHERE participateRole=2 AND statusId = 1",nativeQuery = true)
+    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Participate WHERE participateRole=2 AND statusId = 1", nativeQuery = true)
     public List<Participate> findAllMentorCourse();
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM Participate WHERE username = :username AND courseId = :courseId AND participateRole = 2",nativeQuery = true)
-    public void deleteMentorCourse(String username,int courseId);
+    @Query(value = "DELETE FROM Participate WHERE username = :username AND courseId = :courseId AND participateRole = 2", nativeQuery = true)
+    public void deleteMentorCourse(String username, int courseId);
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Participate VALUES(:courseId,:username,2,1)",nativeQuery = true)
+    @Query(value = "INSERT INTO Participate VALUES(:courseId,:username,2,1)", nativeQuery = true)
     public void insertMentorCourse(int courseId, String username);
 
-
-
-
+    public Participate findByUser_UsernameAndParticipateRole_ParticipateRoleAndStatus_StatusId(String username,
+            int participateRole, int statusId);
 }

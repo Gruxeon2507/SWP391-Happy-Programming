@@ -83,7 +83,7 @@
   /* margin: 1rem; */
 }
 
-.banBtn {
+.banBtn, .unbanBtn {
   background-color: var(--lightItem);
   border: 2px solid var(--item);
   color: var(--item);
@@ -91,7 +91,9 @@
   border-radius: 16px;
   padding: 0.2rem 0.5rem;
   font-size: 1.1rem;
+  cursor: pointer;
 }
+.unbanBtn:hover,
 .banBtn:hover {
   background-color: var(--itemActive);
   color: var(--lightItem);

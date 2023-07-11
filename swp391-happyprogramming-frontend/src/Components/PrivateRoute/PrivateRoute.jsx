@@ -5,10 +5,11 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => {
   const isAuthenticated = localStorage.getItem('token'); // Check if the user is authenticated
   const userRoles = localStorage.getItem('role'); // Retrieve the user's roles
   const navigate = useNavigate(); // Hook to navigate to a different route
+  const userStatus = localStorage.getItem('status');
 
-  if (isAuthenticated && roles.includes(userRoles)) {
+  if (isAuthenticated && roles.includes(userRoles)&& userStatus=="true") {
     return <Component {...rest} />;
-  } else {
+  } else { 
     // navigate('/login'); // Redirect to the login page
     return <AccessDenied />; // Render a <Navigate> component to perform the redirect
   }

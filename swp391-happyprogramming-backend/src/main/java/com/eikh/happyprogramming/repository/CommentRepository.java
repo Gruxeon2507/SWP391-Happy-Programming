@@ -25,4 +25,5 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>{
 
     @Query(value = "SELECT * FROM `Comment` WHERE postId = ?1 AND parentId IS NULL ORDER BY commentedAt DESC", nativeQuery = true)
     List<Comment> getTopLevelCommentByPost(int postId);
+
 }

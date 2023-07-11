@@ -102,7 +102,7 @@ function SettingBar(props) {
                         <NavLink className="nav-link" to="/myrequest">My Request <ion-icon name="git-pull-request-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/changesetting">setting <ion-icon name="settings-outline"></ion-icon></NavLink>
+                        <NavLink className="nav-link" to="/changesetting">Setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink
@@ -114,7 +114,7 @@ function SettingBar(props) {
                                 window.localStorage.removeItem("role");
                             }}
                         >
-                            logout <ion-icon name="log-out-outline"></ion-icon>
+                            Logout <ion-icon name="log-out-outline"></ion-icon>
                         </NavLink>
                     </li>
                 </ul>

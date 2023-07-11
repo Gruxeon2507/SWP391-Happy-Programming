@@ -255,7 +255,23 @@ public class CourseController {
         List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
         return ResponseEntity.ok(courses);
     }
-
-
+    @GetMapping("mentee/{courseId}")
+    public List<User> getMenteeOfCourse(@PathVariable("courseId") int courseId,HttpServletRequest request) {
+        try {
+            String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+            User user = userRepository.userHasRole(username, 2);
+            if (user != null) {
+                List<User> mentees = userRepository.findMenteeOfCourse(courseId);
+                return mentees;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+    @GetMapping("/find/by-comment/{commentId}")
+    public Course findCourseByComment(@PathVariable("commentId") int commentId){
+        return courseRepository.findByPosts_Comments_CommentId(commentId);
+    }
 
 }
