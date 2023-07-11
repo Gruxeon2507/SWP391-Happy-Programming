@@ -69,7 +69,7 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
     Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles,
             Integer[] statusIds, String searchText);
 
-    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Participate WHERE participateRole=2 AND statusId = 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Participate p INNER JOIN `User` u on u.username = p.username WHERE participateRole=2 AND statusId = 1 AND u.activeStatus = 1", nativeQuery = true)
     public List<Participate> findAllMentorCourse();
 
     @Modifying
