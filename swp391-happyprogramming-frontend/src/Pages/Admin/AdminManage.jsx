@@ -69,7 +69,7 @@ function AdminManage(props) {
         {active === 1 ? <CreateCourse /> : <></>}
         {active === 2 ? <MentorManagement></MentorManagement> : <></>}
         {active === 3 ? <MenteeManagement></MenteeManagement> : <></>}
-        {active === 4 ? <CreateCourse /> : <></>}
+        {active === 4 ? <HandleMentorCourse /> : <></>}
         {active === 5 ? <CreateCourse /> : <></>}
         {active === 6 ? <CreateCourse /> : <></>}
       </div>

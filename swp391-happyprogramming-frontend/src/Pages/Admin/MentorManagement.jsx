@@ -85,12 +85,13 @@ const MentorManagement = () => {
   };
   useEffect(() => {
     getMentorList();
-  }, []);
+  }, [mentorList]);
 
   const handleUpdate = (e, key) => {
-    UserServices.updateActiveStatusMentor();
+    UserServices.updateActiveStatusMentor(e.target.value, key);
     console.log(e.target.value);
     console.log(key);
+    getMentorList();
   };
   return (
     <div>
@@ -169,7 +170,7 @@ const MentorManagement = () => {
                       className="banBtn"
                       value={mentor.username}
                       onClick={(e) => {
-                        handleUpdate(e, 0);
+                        handleUpdate(e, 1);
                       }}
                     >
                       UnBan
@@ -179,7 +180,7 @@ const MentorManagement = () => {
                       className="banBtn"
                       value={mentor.username}
                       onClick={(e) => {
-                        handleUpdate(e, 1);
+                        handleUpdate(e, 0);
                       }}
                     >
                       Ban
