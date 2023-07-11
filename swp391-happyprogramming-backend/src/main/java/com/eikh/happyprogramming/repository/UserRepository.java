@@ -7,6 +7,8 @@ package com.eikh.happyprogramming.repository;
 import com.eikh.happyprogramming.model.User;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -54,6 +56,18 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur ON u.username = ur.username WHERE ur.roleId = :roleId and u.activeStatus = :activeStatus", nativeQuery = true)
     public List<User> getUsersByRoleActiveStatus(int roleId, int activeStatus);
+    @Query(value = "SELECT distinct * FROM `User` u \n" +
+            "INNER JOIN User_Role ur on ur.username = u.username\n" +
+            "INNER JOIN `Role` r on r.roleId = ur.roleId\n" +
+            "WHERE r.roleName ='mentor'\n" +
+            "AND u.username NOT IN \n" +
+            "(SELECT u.username FROM FU_SWP391_HappyProgramming.Participate p\n" +
+            "INNER JOIN `User` u on u.username = p.username\n" +
+            "INNER JOIN User_Role ur on ur.username = u.username\n" +
+            "INNER JOIN `Role` r on r.roleId = ur.roleId\n" +
+            "WHERE courseId = :courseId and r.roleName = 'mentor') \n" +
+            "OR (u.username IN (SELECT p.username FROM FU_SWP391_HappyProgramming.Participate p WHERE participateRole=2 AND statusId = 1 AND courseId = :courseId) AND r.roleName='mentor')",nativeQuery = true)
+    public List<User> findAllMentorJoinCourse(int courseId);
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId order by u.createdDate")
     List<User> findByRoleId(Integer roleId);
@@ -76,7 +90,11 @@ public interface UserRepository extends JpaRepository<User, String> {
     // duckm
     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE u.username = ?1 AND p.courseId = ?2 AND p.statusId= 1", nativeQuery = true)
     public User findEnrolledUserInCourse(String username, int courseId);
+    
+    @Query(value = "SELECT * FROM User u WHERE u.username NOT IN (SELECT DISTINCT p.username FROM Participate p WHERE p.participateRole IN (1,2))" , nativeQuery = true)
+    public  Page<User> getOnlyRoleMenteeUser(Pageable pageable);
 
     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE p.participateRole = 3 AND p.courseId = ?1 AND p.statusId=1",nativeQuery = true)
     public List<User> findMenteeOfCourse(int courseId);
+
 }

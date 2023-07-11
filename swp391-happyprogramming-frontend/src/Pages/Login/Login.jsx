@@ -32,9 +32,11 @@ function Login() {
       console.log(response);
       const token = response.data.token;
       const role = response.data.role;
+      const status =response.data.status;
       // Store the token in localStorage or a state management solution
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
+      localStorage.setItem("status", status);
 
       window.location.href = "/mycourse";
     } catch (error) {

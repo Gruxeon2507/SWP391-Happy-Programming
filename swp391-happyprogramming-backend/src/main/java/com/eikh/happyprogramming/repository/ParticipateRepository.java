@@ -10,6 +10,7 @@ import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.modelkey.ParticipateKey;
 import java.util.List;
+import javax.mail.Part;
 import javax.transaction.Transactional;
 import org.hibernate.annotations.Parent;
 import org.springframework.data.domain.Page;
@@ -65,7 +66,8 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
             + "                      where u.username = :username \n"
             + "                      AND p.participateRole IN :participateRoles AND s.statusId IN :statusIds\n"
             + "                      AND c.courseName LIKE %:searchText% ", nativeQuery = true)
-    Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
+    Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles,
+            Integer[] statusIds, String searchText);
 
     public Participate findByUser_UsernameAndParticipateRole_ParticipateRoleAndStatus_StatusId(String username, int participateRole, int statusId);
 
