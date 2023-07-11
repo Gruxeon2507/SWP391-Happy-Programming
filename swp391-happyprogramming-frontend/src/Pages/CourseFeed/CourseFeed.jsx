@@ -11,6 +11,7 @@ import CourseServices from "../../services/CourseServices";
 import axios from "axios";
 import UserServices from "../../services/UserServices";
 import PublicService from "../../services/PublicService";
+import { notiError, notiSuccess } from "../../Components/Notification/notify";
 
 
 function CourseFeed(props) {
@@ -108,7 +109,10 @@ function CourseFeed(props) {
     const ok = confirm("Do you sure to continue?");
     if (ok) {
       PostServices.deletePost(postId);
+      notiSuccess();
       fetchData();
+    } else {
+      notiError();
     }
   };
 
@@ -121,6 +125,10 @@ function CourseFeed(props) {
       <NavBar mode={1}></NavBar>
       <main className="cf-content">
         <section className="course-bg-inf">
+          <ion-icon name="chevron-back-outline"
+            id="backArrowBtn"
+            onClick={() => { window.history.back() }}
+          ></ion-icon>
           <h1>{course.courseName}</h1>
         </section>
         <div className="main-posts-cc">
@@ -130,7 +138,9 @@ function CourseFeed(props) {
 
                 {(mentors.some(mentor => mentor.username === uln)) ? <>
 
-                  <div className="pcw-edit-opt" ref={toggleRef}>
+                  <div className="pcw-edit-opt"
+                  // ref={toggleRef}
+                  >
                     <div className="pcw-edit-opt-btn">
                       <ion-icon
                         onClick={() => toggleEditMenu(post.postId)}
@@ -140,7 +150,7 @@ function CourseFeed(props) {
                     <nav
                       className={`pcw-edit-opt-list ${activeMenus[post.postId] ? "active" : ""
                         }`}
-                      ref={toggleRef}
+                    // ref={toggleRef}
                     >
                       <ul>
                         <li
@@ -157,7 +167,19 @@ function CourseFeed(props) {
                     </nav>
                   </div>
                 </> : <></>}
-                <div>{post.postedAt}</div>
+                <div className="post-title">
+                  <div className="post-avt">
+                    <img src={"http://localhost:1111/api/users/avatar/" + post.postByUsername} alt="avatar"></img>
+                  </div>
+                  <div className="post-owner-info">
+                    <span>
+                      {post.postByDisplayName}
+                    </span>
+                    <span>
+                      {post.postedAt}
+                    </span>
+                  </div>
+                </div>
                 <div
                   className="pcw-content"
                   dangerouslySetInnerHTML={{ __html: post.postContent }}

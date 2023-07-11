@@ -21,7 +21,8 @@ function CourseMember(props) {
     // const [postId, setPostId] = useState();
     // const [courseName, setCourseName] = useState();
     // const [activeMenus, setActiveMenus] = useState({});
-    // const [mentors, setMentors] = useState([]);
+    const [mentors, setMentors] = useState([]);
+    const [mentee, setMentee] = useState([]);
     const [course, setCourse] = useState({});
     // const [uln, setUln] = useState({});
 
@@ -64,8 +65,11 @@ function CourseMember(props) {
             // const response = await api.get(`api/courses/posts/${courseId}`);
             // setPosts(response.data);
 
-            // const mentors = await api.get(`http://localhost:1111/api/courses/find-mentor/${courseId}`)
-            // setMentors(mentors.data);
+            const mentors = await api.get(`http://localhost:1111/api/courses/find-mentor/${courseId}`)
+            setMentors(mentors.data);
+
+            const mentee = await api.get(`http://localhost:1111/api/courses/mentee/${courseId}`)
+            setMentee(mentee.data);
 
             // const cc = await api.get(`http://localhost:1111/api/courses/courseDetails/${courseId}`)
             // setCourseName(cc.data);
@@ -87,8 +91,8 @@ function CourseMember(props) {
             console.error(error);
         }
     };
-    // console.log("posts")
-    // console.log(posts)
+    console.log("mentee")
+    console.log(mentee)
 
 
     useEffect(() => {
@@ -120,11 +124,35 @@ function CourseMember(props) {
             <NavBar mode={1}></NavBar>
             <main className="c-m-content">
                 <section className="course-bg-inf">
+                    <ion-icon name="chevron-back-outline"
+                        id="backArrowBtn"
+                        onClick={() => { window.history.back() }}
+                    ></ion-icon>
                     <h1>{course.courseName}</h1>
                 </section>
+                <div className="c-list-member">
+                    <div className="mentor-lst">
+                        <h1>Mentor</h1>
+                        <hr></hr>
+                        {mentors.map((mentor) => (
+                            <div className="u-card" onClick={() => navigate(`/profile/${mentor.username}`)}>
+                                <img src={"http://localhost:1111/api/users/avatar/" + mentor.username} alt="avatar"></img>
+                                <span>{mentor.displayName}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mentee-lst">
+                        <h1>Mentee</h1>
+                        <hr></hr>
+                        {mentee.map((mt) => (
+                            <div className="u-card" onClick={() => navigate(`/profile/${mt.username}`)}>
+                                <img src={"http://localhost:1111/api/users/avatar/" + mt.username} alt="avatar"></img>
+                                <span>{mt.displayName}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </main>
-            <h1>course member</h1>
-            <h2>{courseId}</h2>
         </>
     );
 }
