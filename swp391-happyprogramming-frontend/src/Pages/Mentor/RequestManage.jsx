@@ -156,7 +156,8 @@ const RequestManage = () => {
                         //     }
                             
                         // })
-                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/myrequest")
+                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/courses/feed/"+selectedCourseId)
+
 
                     }
 
@@ -183,7 +184,7 @@ const RequestManage = () => {
                     } else {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for access" + username);
-                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/myrequest")
+                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/courses/feed/"+selectedCourseId)
                         
                         });
                     }
