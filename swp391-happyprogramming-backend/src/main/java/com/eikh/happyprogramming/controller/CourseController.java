@@ -255,7 +255,6 @@ public class CourseController {
         List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
         return ResponseEntity.ok(courses);
     }
-
     @GetMapping("mentee/{courseId}")
     public List<User> getMenteeOfCourse(@PathVariable("courseId") int courseId,HttpServletRequest request){
         try{
@@ -269,6 +268,9 @@ public class CourseController {
             return null;
         }
         return null;
+    @GetMapping("/find/by-comment/{commentId}")
+    public Course findCourseByComment(@PathVariable("commentId") int commentId){
+        return courseRepository.findByPosts_Comments_CommentId(commentId);
     }
 
 }

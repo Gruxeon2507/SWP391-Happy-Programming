@@ -89,6 +89,10 @@ function NavBar(props) {
       to: "/courses"
     },
     {
+      label: "My Courses",
+      to: "/mycourse"
+    },
+    {
       label: "Chat",
       to: "/chat"
     }

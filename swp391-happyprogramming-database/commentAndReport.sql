@@ -4,16 +4,17 @@ USE FU_SWP391_HappyProgramming;
 insert into Post (postedAt, postContent, courseId, postedBy) values ('2023-06-24 00:00:00', '<p>bai mo dau</p>', 1, 'huyenmentor');
 
 -- Insert into Comment
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello huyen', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'co huyen', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 1', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 2', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 3', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 4', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 5', 1, 'huyenmentor');
-insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 6', 1, 'huyenmentor');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen', 1, 'antt');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co', 1, 'antt');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello huyen', 1, 'duckm');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'co huyen', 1, 'giangpt');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 1', 1, 'antt');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 2', 1, 'duckm');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 3', 1, 'duckm');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 4', 1, 'giangpt');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 5', 1, 'phuonghm');
+insert into Comment(commentedAt, commentContent, postId, commentedBy) values ('2023-06-24 01:04:26', 'hello co huyen 6', 1, 'phuonghm');
+
 
 -- Insert into Report Type
 INSERT INTO ReportType (reportName, reportDescription) VALUES ('Others', 'Content does not fit into any other specified category.');
@@ -41,7 +42,7 @@ INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportType
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('2', 'huyenntk', '2023-06-02', '', '10');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('2', 'phuonghm', '2023-06-02', 'khong ua', '1');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('2', 'phuongmentor', '2023-06-02', '', '2');
-INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'duckm', '2023-06-02', '', '3');
+/* INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'antt', '2023-06-02', '', '3');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'dungbt', '2023-06-02', '', '4');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'giangpt', '2023-06-02', '', '5');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('3', 'huyenntk', '2023-06-02', '', '6');
@@ -59,13 +60,13 @@ INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportType
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('5', 'huyenntk', '2023-06-02', '', '8');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('5', 'phuonghm', '2023-06-02', '', '9');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('5', 'phuongmentor', '2023-06-02', '', '10');
-INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('6', 'duckm', '2023-06-02', 'khong ua', '1');
+INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('6', 'antt', '2023-06-02', 'khong ua', '1');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('6', 'dungbt', '2023-06-02', '', '2');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('6', 'giangpt', '2023-06-02', '', '3');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('6', 'huyenntk', '2023-06-02', '', '4');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('6', 'phuonghm', '2023-06-02', '', '5');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('6', 'phuongmentor', '2023-06-02', '', '6');
-INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('7', 'duckm', '2023-06-02', '', '7');
+-- INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('7', 'duckm', '2023-06-02', '', '7');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('7', 'dungbt', '2023-06-02', '', '8');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('7', 'giangpt', '2023-06-02', '', '9');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('7', 'huyenntk', '2023-06-02', '', '10');
@@ -88,4 +89,18 @@ INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportType
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'giangpt', '2023-06-02', '', '7');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'huyenntk', '2023-06-02', '', '8');
 INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuonghm', '2023-06-02', '', '9');
-INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuongmentor', '2023-06-02', '', '10');
+INSERT INTO Report (commentId, reportedBy, reportTime, reportContent, reportTypeId) VALUES ('10', 'phuongmentor', '2023-06-02', '', '10'); 
+*/
+
+-- delete from Report where commentId != -1;
+-- delete from `Comment` where commentId != -1;
+-- drop table `Comment`;
+-- drop table Report;
+-- select * from `User`;
+-- select * from Participate where courseId = 1;
+select * from Report;
+select * from `Comment`;
+
+
+select * from Report r join `Comment` c on r.commentId = c.commentId
+where c.commentedBy = 'antt';

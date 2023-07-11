@@ -8,6 +8,7 @@ import { useParams, Link } from "react-router-dom";
 import "./ViewProfile.css";
 import { Nav } from "react-bootstrap";
 import { notiError, notiSuccess } from "../../Components/Notification/notify";
+import api from "../../services/BaseAuthenticationService";
 
 function ViewProfile(props) {
   const { id } = useParams();
@@ -483,6 +484,24 @@ function ViewProfile(props) {
   //     }); // Replace with your actual API endpoint
   // }, [id]);
 
+  const [uln, setUln] = useState({});
+
+  const fetchUserData = async () => {
+    try {
+      const ulname = await api.get("/api/users/login")
+      setUln(ulname.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  // console.log("uln");
+  // console.log(uln);
+
   return (
     <>
       <NavBar mode={1}></NavBar>
@@ -718,7 +737,10 @@ function ViewProfile(props) {
                       >
                         <div className="i-c">
                           <span>{skill.skillName}</span>
-                          <button><ion-icon name="remove-circle-outline"></ion-icon></button>
+                          {(window.localStorage.getItem("role") == "mentor" && uln === id) ?
+                            <>
+                              <button><ion-icon name="remove-circle-outline"></ion-icon></button>
+                            </> : <></>}
                         </div>
                       </form>
                     </li>

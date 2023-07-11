@@ -5,7 +5,7 @@ import ActionButton from "../ActionButton/ActionButton";
 import CommentServices from "../../services/CommentServices";
 import UserServices from "../../services/UserServices";
 
-const Comment = ({ comment, layer }) => {
+const Comment = ({ comment, layer, onReportClick }) => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -26,11 +26,9 @@ const Comment = ({ comment, layer }) => {
     setReplies(comment.replies);
   }, []);
 
-  // console.log("USER LOGIN: " + loginUsername);
-  const commentField = document.querySelector("#comment-content");
-  const replyField = document.querySelector("#reply-content");
-  // console.log("COMMENT FIELD: ", commentField);
-  // console.log("REPLY FIELD: ", replyField);
+  const handleReportClick = () => {
+    onReportClick(comment.commentId);
+  };
 
   const handleKeyDownCaptureAddReply = (event) => {
     if (event.key === "Enter") {
@@ -109,7 +107,7 @@ const Comment = ({ comment, layer }) => {
     <>
       <img
         className="cmt-avt"
-        src={`http://localhost:1111/api/users/avatar/${loginUsername}`}
+        src={`http://localhost:1111/api/users/avatar/${comment.user.username}`}
         alt="avatar"
       ></img>
       <div className="cmt-item-wrap">
@@ -117,8 +115,8 @@ const Comment = ({ comment, layer }) => {
           <div className="cmt-author-info">
             <span style={{ marginBottom: "0px" }}>
               {`${comment.user && comment.user.displayName
-                  ? comment.user.displayName
-                  : "Username failed to load"
+                ? comment.user.displayName
+                : "Username failed to load"
                 }`}
             </span>
           </div>
@@ -146,7 +144,7 @@ const Comment = ({ comment, layer }) => {
                 <ActionButton
                   className="reply comment"
                   type="CANCEL"
-                  handleClick={() => setEditMode(false)}
+                  handleClick={() => { setEditMode(false), setExpand(false) }}
                 ></ActionButton>
               </div>
             ) : (
@@ -173,7 +171,7 @@ const Comment = ({ comment, layer }) => {
                     handleClick={() => handleNewComment()}
                   ></ActionButton>
                 )}
-                {comment.user.username == loginUsername ? (
+                {(comment.user.username == loginUsername) ? (
                   <>
                     <ActionButton
                       className="comment"
@@ -187,7 +185,13 @@ const Comment = ({ comment, layer }) => {
                     ></ActionButton>
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <ActionButton
+                      className="report comment"
+                      type="REPORT"
+                      handleClick={handleReportClick}
+                    ></ActionButton>
+                  </>
                 )}
               </div>
             )}
@@ -219,7 +223,7 @@ const Comment = ({ comment, layer }) => {
               <ActionButton
                 className="reply"
                 type="CANCEL"
-                handleClick={() => setShowInput(false)}
+                handleClick={() => { setShowInput(false), setExpand(false) }}
               ></ActionButton>
             </div>
           )}
@@ -234,7 +238,7 @@ const Comment = ({ comment, layer }) => {
             </div>
           ))}
         </div>
-      </div>
+      </div >
     </>
   );
 };

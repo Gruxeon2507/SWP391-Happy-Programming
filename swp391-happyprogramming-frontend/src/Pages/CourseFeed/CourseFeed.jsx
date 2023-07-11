@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import CreateCourse from "../Course/CreateCourse";
 import { useParams } from "react-router-dom";
 import CreatePost from "../../Components/CreatePost/CreatePost";
@@ -7,16 +8,24 @@ import "./CourseFeed.css";
 import NavBar from "../../Components/Navbar/NavBar";
 import PostServices from "../../services/PostServices";
 import CourseServices from "../../services/CourseServices";
+import axios from "axios";
+import UserServices from "../../services/UserServices";
+import PublicService from "../../services/PublicService";
 
 
 function CourseFeed(props) {
   const toggleRef = useRef(null);
   const { courseId } = useParams();
   const [posts, setPosts] = useState([]);
-  const [currentCourse, setCurrentCourse] = useState();
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [postId, setPostId] = useState();
+  const [courseName, setCourseName] = useState();
   const [activeMenus, setActiveMenus] = useState({});
+  const [mentors, setMentors] = useState([]);
+  const [course, setCourse] = useState({});
+  const [uln, setUln] = useState({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let handler = (e) => {
@@ -54,31 +63,36 @@ function CourseFeed(props) {
     try {
       const response = await api.get(`api/courses/posts/${courseId}`);
       setPosts(response.data);
+
+      const mentors = await api.get(`http://localhost:1111/api/courses/find-mentor/${courseId}`)
+      setMentors(mentors.data);
+
+      const cc = await api.get(`http://localhost:1111/api/courses/courseDetails/${courseId}`)
+      setCourseName(cc.data);
+
+      const ulname = await api.get("/api/users/login")
+      setUln(ulname.data);
+
+
+      await PublicService.getCourseByCourseId(courseId)
+        .then((res) => {
+          console.log("res.data");
+          console.log(res.data);
+          setCourse(res.data);
+        })
+        .catch((error) => {
+          console.log("error fetching course" + error);
+        });
+
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [courseId, posts]);
-
+  console.log("posts")
+  console.log(posts)
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await CourseServices.getCourseById(courseId);
-
-        setCurrentCourse(response.data[0].courseName);
-
-        console.log("currentCourse");
-        console.log(currentCourse);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -91,7 +105,7 @@ function CourseFeed(props) {
   };
 
   const deletePost = (postId) => {
-    const ok = confirm("Yah sure bro?");
+    const ok = confirm("Do you sure to continue?");
     if (ok) {
       PostServices.deletePost(postId);
       fetchData();
@@ -107,39 +121,42 @@ function CourseFeed(props) {
       <NavBar mode={1}></NavBar>
       <main className="cf-content">
         <section className="course-bg-inf">
-          <h1>{currentCourse}{courseId}</h1>
+          <h1>{course.courseName}</h1>
         </section>
         <div className="main-posts-cc">
           <section className="posts-section">
             {posts.map((post) => (
               <div className="post-card-wrap" key={post.postId}>
-                <div className="pcw-edit-opt" ref={toggleRef}>
-                  <div className="pcw-edit-opt-btn">
-                    <ion-icon
-                      onClick={() => toggleEditMenu(post.postId)}
-                      name="ellipsis-vertical-outline"
-                    ></ion-icon>
+
+                {(mentors.some(mentor => mentor.username === uln)) ? <>
+
+                  <div className="pcw-edit-opt" ref={toggleRef}>
+                    <div className="pcw-edit-opt-btn">
+                      <ion-icon
+                        onClick={() => toggleEditMenu(post.postId)}
+                        name="ellipsis-vertical-outline"
+                      ></ion-icon>
+                    </div>
+                    <nav
+                      className={`pcw-edit-opt-list ${activeMenus[post.postId] ? "active" : ""
+                        }`}
+                      ref={toggleRef}
+                    >
+                      <ul>
+                        <li
+                          onClick={() => {
+                            setIsEditorActive(true);
+                            setPostId(post.postId);
+                            toggleEditMenu(post.postId);
+                          }}
+                        >
+                          Edit
+                        </li>
+                        <li onClick={() => deletePost(post.postId)}>Delete</li>
+                      </ul>
+                    </nav>
                   </div>
-                  <nav
-                    className={`pcw-edit-opt-list ${activeMenus[post.postId] ? "active" : ""
-                      }`}
-                    ref={toggleRef}
-                  >
-                    <ul>
-                      <li>only right mentor can see</li>
-                      <li
-                        onClick={() => {
-                          setIsEditorActive(true);
-                          setPostId(post.postId);
-                          toggleEditMenu(post.postId);
-                        }}
-                      >
-                        Edit
-                      </li>
-                      <li onClick={() => deletePost(post.postId)}>Delete</li>
-                    </ul>
-                  </nav>
-                </div>
+                </> : <></>}
                 <div>{post.postedAt}</div>
                 <div
                   className="pcw-content"
@@ -153,12 +170,38 @@ function CourseFeed(props) {
           </section>
           <aside className="aside-control-nav">
             <div className="sidebar-cf">
-
-              <div>
-                <button onClick={openEditor}>
-                  <ion-icon name="add-circle-outline"></ion-icon> New
-                </button>
+              <div className="course-member">
+                <ion-icon name="people-outline"></ion-icon>
+                <div className="stat">
+                  <span>1234567890</span>
+                  <a href={`/courses/members/${courseId}`}>View members</a>
+                </div>
               </div>
+
+
+              {window.localStorage.getItem("role") == "mentor" ? <>
+                <div className="mentor-bttn">
+                  <button onClick={openEditor}>
+                    <ion-icon name="add-circle-outline"></ion-icon> New Post
+                  </button>
+                  <button id="nav-manage" onClick={() => navigate("/request/manage")}>To course manage</button>
+                </div>
+              </> : <><div className="side-mentor-list">
+                {mentors.map((mentor) => (
+                  <div className="side-mentor-card" onClick={() => navigate(`/profile/${mentor.username}`)} key={mentor.username}>
+                    <div className="avatar">
+                      <img src={"http://localhost:1111/api/users/avatar/" + mentor.username} alt="avatar"></img>
+                    </div>
+                    <span>{mentor.displayName}</span>
+                  </div>
+
+                ))}
+              </div>
+              </>}
+
+
+
+
             </div>
           </aside>
         </div>
