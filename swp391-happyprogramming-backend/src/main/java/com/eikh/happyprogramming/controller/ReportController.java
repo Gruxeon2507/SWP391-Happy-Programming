@@ -6,6 +6,7 @@ import com.eikh.happyprogramming.modelkey.ReportKey;
 import com.eikh.happyprogramming.repository.*;
 import com.eikh.happyprogramming.services.ReportServices;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
+import com.eikh.happyprogramming.utils.RoleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,10 @@ public class ReportController {
 
     @Autowired
     ReportRepository reportRepository;
-
+    
+    @Autowired
+    private RoleUtils roleUtils;
+    
     @GetMapping("/")
     public List<Report> getAllReports() {
         List<Report> reports = reportServices.getAllReports();
@@ -107,6 +111,5 @@ public class ReportController {
             System.out.println("banned ok");
         }
     }
-
 
 }

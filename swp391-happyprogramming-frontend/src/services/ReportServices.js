@@ -9,6 +9,9 @@ class ReportServices {
     console.log("insert report at service called");
     api.post(`api/reports/create`, report);
   }
-
+  getNoReportOfUser(username){
+    console.log("api", username);
+    api.get(`http://localhost:1111/api/reports/find/by-username/${username}`)
+  }
 }
 export default new ReportServices();

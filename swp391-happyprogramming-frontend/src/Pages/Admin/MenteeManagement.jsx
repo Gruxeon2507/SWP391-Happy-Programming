@@ -4,6 +4,7 @@ import convertDateFormat from '../../util/DateConvert';
 import axios from "axios";
 import "./MentorManagement.css";
 import Paging from "../../Components/Pagination/Paging";
+import ReportServices from '../../services/ReportServices';
 
 const MenteeManagement = () => {
   const [isEventClick, setIsEventClick] = useState(false);
@@ -16,7 +17,7 @@ const MenteeManagement = () => {
   var sizePerPage = 10;
   const getPageMentee = (searchText, pageNumber, pageSize, sortField, sortOrder) => {
     UserServices.getOnlyRoleMenteeList(searchText, pageNumber, pageSize, sortField, sortOrder)
-      .then((response) => {
+      .then( (response) => {
         setPageMentees(response.data.content);
         setTotalItems(response.data.totalElements);
       })
@@ -24,6 +25,32 @@ const MenteeManagement = () => {
         console.log("loi lay ra list mentee" + error);
       });
   };
+        
+
+  // const getNoReportOfUser =  (username)=>{
+  //    axios.get(`http://localhost:1111/api/reports/count/by-username/${username}`).then((res) => {
+  //     console.log(res.data);
+  //     return (res.data);
+  //   }).catch((error) => {
+  //     console.log(error);
+  //   })
+    
+  // }
+
+  const [reportsOfUsers, setReportsOfUsers] = useState({});
+  const getReportOfUser = (username) => {
+    axios.get(`http://localhost:1111/api/reports/count/by-username/${username}`).then((response) => {
+      setReportsOfUsers((pre)=>({
+        ...pre,
+        [username]: response.data,
+      }));
+    });
+  };
+  useEffect(() => {
+    pageMentees.forEach((m) => {
+      getReportOfUser(m.username);
+    });
+  }, [pageMentees]);
 
   useEffect(() => {
     getPageMentee(
@@ -89,7 +116,7 @@ const MenteeManagement = () => {
                 </td>
                
                 <td>{convertDateFormat(mentee.createdDate)}</td>
-                <td></td>
+                <td>{reportsOfUsers[mentee.username]}</td>
                 <td>
                   {(mentee.activeStatus == 0) ? (<p>Banned</p>) : (<p>Active</p>)}
                 </td>

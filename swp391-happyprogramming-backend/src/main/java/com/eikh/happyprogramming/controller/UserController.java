@@ -391,9 +391,9 @@ public class UserController {
             @RequestParam(defaultValue = "createdDate") String sortField,
             @RequestParam(defaultValue = "asc") String sortOrder
     ) {
-//        if (!roleUtils.hasRoleFromToken(request, 1)) {
-//            return null;
-//        }
+        if (!roleUtils.hasRoleFromToken(request, 1)) {
+            return null;
+        }
         Sort sort = Sort.by(sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<User> pageMentees = userRepository.getOnlyRoleMenteeUser(pageable);
