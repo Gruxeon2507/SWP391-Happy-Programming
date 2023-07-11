@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.DTO.PostDTO;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Category;
 import com.eikh.happyprogramming.model.Course;
@@ -212,7 +213,12 @@ public class CourseController {
         User user = userRepository.findEnrolledUserInCourse(username, courseId);
         if (user != null) {
             List<Post> posts = postRepository.findByCourse(courseRepository.ducFindByCourseId(courseId));
-            return ResponseEntity.ok(posts);
+            List<PostDTO> postsDTO = new ArrayList<>();
+            for(Post p : posts){
+                PostDTO pDTO = new PostDTO(p.getPostId(),p.getPostedAt(),p.getPostContent(),p.getUser().getUsername(),p.getUser().getDisplayName());
+                postsDTO.add(pDTO);
+            }
+            return ResponseEntity.ok(postsDTO);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
@@ -259,8 +265,7 @@ public class CourseController {
     public List<User> getMenteeOfCourse(@PathVariable("courseId") int courseId,HttpServletRequest request) {
         try {
             String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-            User user = userRepository.userHasRole(username, 2);
-            if (user != null) {
+            if (username != null) {
                 List<User> mentees = userRepository.findMenteeOfCourse(courseId);
                 return mentees;
             }

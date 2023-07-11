@@ -5,11 +5,12 @@ import { waitFor } from "@testing-library/react";
 import UserServices from "../../services/UserServices";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import { notiError, notiSuccess } from "../Notification/notify.js";
 import api from "../../services/BaseAuthenticationService";
 var stompClient = null;
 function CreatePost(props) {
   const editorRef = useRef(null);
-  const { courseId, postId,courseName } = props;
+  const { courseId, postId, courseName } = props;
   const [prevContent, setPrevContent] = useState("");
   const [content, setContent] = useState("");
   const string = `nhap cai gi do vao day di`;
@@ -63,13 +64,17 @@ function CreatePost(props) {
         // create post
         try {
           PostServices.createNewPost(content, courseId);
-          api.get("/api/courses/mentee/"+courseId).then((result)=>{
-            result.data.map((user)=>{
-              sendPrivateValue(user.username,'You Have A New Post In "'+courseName+'"',"/courses/feed/"+courseId)
+          api.get("/api/courses/mentee/" + courseId).then((result) => {
+
+            window.location.reload();
+            notiSuccess();
+            result.data.map((user) => {
+              sendPrivateValue(user.username, 'You Have A New Post In "' + courseName + '"', "/courses/feed/" + courseId)
             })
           })
         } catch (error) {
           console.log("error creating post: " + error);
+          notiError();
         }
       }
     }
@@ -95,7 +100,7 @@ function CreatePost(props) {
     );
     userJoin();
   };
-  const onPrivateMessage = (payload) => {};
+  const onPrivateMessage = (payload) => { };
 
   const onError = (err) => {
     console.log(err);
@@ -156,7 +161,7 @@ function CreatePost(props) {
       //         username:username
       //     }
       //   }
-      const Notification = new FormData();      Notification.append("notificationContent", message);
+      const Notification = new FormData(); Notification.append("notificationContent", message);
       Notification.append("notificationTime", currentDate);
       Notification.append("notificationTypeId", 1);
       Notification.append("username", username);

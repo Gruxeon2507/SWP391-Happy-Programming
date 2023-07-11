@@ -226,6 +226,25 @@
   transform: translate(-50%, -50%);
 
   padding: 3rem;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.rp-cate {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid var(--darkItem3);
+}
+
+.rp-cate ion-icon {
+  font-size: 1.4rem;
+  transform: translateY(15%);
+  cursor: pointer;
+}
+
+.rp-cate span:nth-child(1) {
+  /* background-color: red; */
+  color: var(--item2);
 }
 
 #closeRP {
@@ -241,4 +260,26 @@
 
 #closeRP:hover {
   color: black;
+}
+
+#--rp-form button {
+  padding: 0.2rem 1rem;
+  font-size: 1.2rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  cursor: pointer;
+  background-color: var(--itemActive);
+  border: 2px solid var(--darkItem5);
+  color: var(--lightItem);
+  font-weight: bold;
+}
+
+#--rp-form input[type="text"] {
+  margin-left: 0.5rem;
+  padding: 0.2rem 1rem;
+  font-size: 1.2rem;
+
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  border: 2px solid var(--darkItem5);
 }

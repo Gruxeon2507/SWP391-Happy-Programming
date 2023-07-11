@@ -39,6 +39,15 @@ function SettingBar(props) {
         });
     }
 
+
+    function logout() {
+        if (confirm("Are you sure you want to logout?") == true) {
+            window.localStorage.removeItem("token");
+            window.localStorage.removeItem("role");
+            window.location.href = "/login";
+        }
+    }
+
     // window.localStorage.getItem("role")
 
 
@@ -105,7 +114,7 @@ function SettingBar(props) {
                         <NavLink className="nav-link" to="/changesetting">Setting <ion-icon name="settings-outline"></ion-icon></NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink
+                        {/* <NavLink
                             className="nav-link"
                             to="/login"
                             onClick={() => {
@@ -115,11 +124,14 @@ function SettingBar(props) {
                             }}
                         >
                             Logout <ion-icon name="log-out-outline"></ion-icon>
-                        </NavLink>
+                        </NavLink> */}
+                        <a onClick={() => logout()}>
+                            Logout <ion-icon name="log-out-outline"></ion-icon>
+                        </a>
                     </li>
                 </ul>
             </div>
-        </div>
+        </div >
     );
 }
 
