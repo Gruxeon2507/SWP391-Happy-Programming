@@ -124,24 +124,42 @@ function HandleMentorCourse(props) {
   }, []);
   useEffect(() => {
     loadDataMentorCourse();
-  });
+  }, []);
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    // This effect will run on the initial render and when the counter changes
+    console.log("useEffect is running");
+    loadDataMentorCourse();
+  }, [counter]);
+
+  // Trigger the second run of useEffect
+  useEffect(() => {
+    if (counter === 1) {
+      console.log("Second run of useEffect");
+    }
+    loadDataMentorCourse();
+  }, [counter]);
+
+  // Update the counter to trigger the second run of useEffect
+  setTimeout(() => {
+    setCounter(1);
+  }, 100);
 
   const handleUpdateMentor = (event, courseId) => {
     event.preventDefault();
     console.log(participates);
     console.log(courseId);
     for (const p of participates) {
-      var checkEmpty = false;
+      let checkEmpty = false;
       for (const c of courses) {
         if (c.courseId === p.participateKey.courseId) {
           checkEmpty = true;
           break;
         }
       }
-      if (checkEmpty) {
-        continue;
-      } else {
-        alert("You can not update!!");
+      if (!checkEmpty) {
+        alert("You cannot update!!");
         return;
       }
     }
