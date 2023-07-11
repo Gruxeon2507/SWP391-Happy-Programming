@@ -38,6 +38,14 @@ const RequestManage = () => {
         conversationId: "",
     });
 
+    const [viewPopUpReject, setViewPopUpReject] = useState(false);
+    const [viewPopUpUserName, setViewPopUpUsername] = useState("");
+
+    const handleViewPopUpReject = (username) => {
+        setViewPopUpReject(!viewPopUpReject);
+        setViewPopUpUsername(username);
+    }
+
     const getCoursesOfMentor = () => {
         CourseServices.getCoursesOfMentor()
             .then((response) => {
@@ -131,33 +139,31 @@ const RequestManage = () => {
         getPendingUserOfCourse(selectedCourseId, current - 1, sizePerPage, sortField, sortOrder);
     };
 
-    const handleSubmitOne = (statusId, username) => {
-        const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject this mentee") : false;
-        if (confirmed || statusId === 1) {
 
-            RequestService.updateParticipateInsertRequest(selectedCourseId, statusId, [username])
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Perform actions with the submitted reason
+        console.log('Reason:', reason);
+        handleClosePopup();
+    };
+    const handleSubmitOne = (statusId, username) => {
+        // await setConfirmReject(false)
+        // await setReason(reason);
+        // console.log("reason" + reason);
+        // console.log("trang thai confirmReject", confirmReject);
+        // const confirmed = statusId !== 1 ? confirmReject : false;
+        // if (confirmed || statusId === 1) {
+
+            RequestService.updateParticipateInsertRequest(selectedCourseId, statusId, [username], reason)
                 .then((response) => {
                     console.log(response.data);
                     setCheckedRequest([])
                     getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
                     if (statusId !== 1) {
-                        // teachCourses.map((course)=>{
-                        //     if(course.courseId==selectedCourseId){
-                        // sendPrivateValue(username, "Your request to the course " + course.courseName + " has been rejected","/myrequest")
-                        // }
-
-                        // })
                         sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected", "/myrequest")
 
                     } else {
-                        // teachCourses.map((course)=>{
-                        //     if(course.courseId==selectedCourseId){
-                        //         sendPrivateValue(username, "Your request to the course " + course.courseName+ " has been accepted","/myrequest")
-                        //     }
-
-                        // })
-                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/courses/feed/"+selectedCourseId)
-
+                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted", "/courses/feed/" + selectedCourseId)
 
                     }
 
@@ -165,13 +171,15 @@ const RequestManage = () => {
                 .catch((error) => {
                     console.log("loi update and insert" + error);
                 });
-        }
+        // }
     };
     const handleSubmitMany = () => {
         var statusId = Number(selectedValue);
-        const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject these mentees") : false;
+        console.log("reason" + reason);
+        console.log("trang thai confirmReject", confirmReject);
+        const confirmed = statusId !== 1 ? confirmReject : false;
         if (confirmed || statusId === 1) {
-            RequestService.updateParticipateInsertRequest(selectedCourseId, selectedValue, checkedRequest)
+            RequestService.updateParticipateInsertRequest(selectedCourseId, selectedValue, checkedRequest, reason)
                 .then((response) => {
                     console.log(response.data);
                     getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
@@ -184,8 +192,8 @@ const RequestManage = () => {
                     } else {
                         checkedRequest.forEach(username => {
                             console.log("chay vao for access" + username);
-                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted","/courses/feed/"+selectedCourseId)
-                        
+                            sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted", "/courses/feed/" + selectedCourseId)
+
                         });
                     }
                     setCheckedRequest([])
@@ -297,8 +305,21 @@ const RequestManage = () => {
             setUserData({ ...userData, message: "" });
         }
     };
+    ////////////////////
+    // MÀN HÌNH POP UP NHÉ ÂN 
+    const [reason, setReason] = useState("");
+    const handleReasonChange = (event) => {
+        setReason(event.target.value);
+        console.log(reason);
+    };
+    const handleCancel = async () => {
+        await setReason("");
+    }
+
+
     return (
         <>
+
             <NavBar mode={1}></NavBar>
             <main className="request-manage-main">
                 <nav className="mentor-menu-sideBar">
@@ -402,12 +423,24 @@ const RequestManage = () => {
                                                     disabled={checkedRequest.length > 1}
                                                     id="c-m-acceptBttn"
                                                 >Accept </button>
-                                                <button
-                                                    onClick={() => handleSubmitOne(-1, user.requestKey.username)}
-                                                    disabled={checkedRequest.length > 1}
-                                                    id="c-m-rejectBttn"
-                                                >Reject</button>
+
                                             </td>
+                                            {viewPopUpReject ? (<>
+                                                {viewPopUpUserName === user.requestKey.username ? (<> <div>
+                                                    <label htmlFor="reason">Reason:</label>
+                                                    <textarea
+                                                        id="reason"
+                                                        value={reason}
+                                                        onChange={handleReasonChange}
+                                                        required
+                                                    />
+                                                    <button onClick={() => handleViewPopUpReject(user.requestKey.username)}>Cancel</button>
+                                                    <button onClick={() => handleSubmitOne(-1, user.requestKey.username)}>OK</button>
+                                                </div></>) : (<><button  disabled={checkedRequest.length > 1}
+                                                    id="c-m-rejectBttn" onClick={() => handleViewPopUpReject(user.requestKey.username)}>Reject</button></>)}
+
+                                            </>) : (<><button  disabled={checkedRequest.length > 1}
+                                                    id="c-m-rejectBttn" onClick={() => handleViewPopUpReject(user.requestKey.username)}>Reject</button></>)}
                                         </tr>
                                     );
                                 })}
@@ -450,6 +483,11 @@ const RequestManage = () => {
                     </div>
                 </section>
             </main>
+            <div>
+
+
+
+            </div>
         </>
     );
 };

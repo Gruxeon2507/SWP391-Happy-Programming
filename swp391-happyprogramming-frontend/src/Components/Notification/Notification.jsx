@@ -152,7 +152,7 @@ const Notification = () => {
           {notifications.map((notification) => (
             <li>
               {/* code nay cua duckm */}
-              <NavLink to={notification.url}>
+              <a href={notification.url}>
                 <div className="notification-item">
 
                   <div className="notification-item-left">
@@ -166,7 +166,7 @@ const Notification = () => {
                     {notification.isViewed ? <></> : <div className="notification-mark"></div>}
                   </div>
                 </div>
-              </NavLink>
+              </a>
             </li>
           ))}
         </ul>

@@ -14,11 +14,12 @@ class RequestService {
   }
 
   //phuong 
-  updateParticipateInsertRequest(courseId, statusId, usernames) {
+  updateParticipateInsertRequest(courseId, statusId, usernames, reasonReject) {
     const formData = new FormData();
     formData.append("courseId", courseId);
     formData.append("statusId", statusId);
     formData.append("usernames", usernames);
+    formData.append("reasonReject", reasonReject);
     return api.post("/api/requests/status", formData);
   }
 
