@@ -67,7 +67,7 @@ function ViewProfile(props) {
   const [errorCreateSkill, setErrorCreateSkill] = useState("");
   const [showErrorCreateSkill, setShowErrorCreateSkill] = useState(false);
   const [createSkillName, setCreateSkillName] = useState("");
-  const viewCVOfMentor = (event) => {};
+  const viewCVOfMentor = (event) => { };
 
   //rating course
   const [comment, setComment] = useState("");
@@ -750,7 +750,7 @@ function ViewProfile(props) {
                         <div className="i-c">
                           <span>{skill.skillName}</span>
                           {window.localStorage.getItem("role") == "mentor" &&
-                          uln === id ? (
+                            uln === id ? (
                             <>
                               <button>
                                 <ion-icon name="remove-circle-outline"></ion-icon>
@@ -920,7 +920,15 @@ function ViewProfile(props) {
                                 Rate
                               </button>
                             </>
-                          ) : null}
+                          ) : (<>
+                            <button
+                              onClick={() => {
+                                handleEditRateInfo(course.courseId);
+                              }}
+                            >
+                              Rate
+                            </button>
+                          </>)}
                         </>
                       ) : (
                         <>
