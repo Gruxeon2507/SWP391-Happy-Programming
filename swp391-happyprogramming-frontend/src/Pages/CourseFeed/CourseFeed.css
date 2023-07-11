@@ -245,3 +245,18 @@
   height: 100%;
   width: 100%;
 }
+
+.mentor-bttn {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 400px;
+}
+.mentor-bttn button {
+  width: fit-content;
+}
+
+#nav-manage {
+  position: absolute;
+  bottom: 0;
+}

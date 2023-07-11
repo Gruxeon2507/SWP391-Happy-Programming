@@ -15,7 +15,7 @@ const Comment = ({ comment, layer, onReportClick }) => {
   const replyRef = useRef(null);
   const [replies, setReplies] = useState([]);
 
-  useEffect(() => {}, [replies]);
+  useEffect(() => { }, [replies]);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -107,18 +107,17 @@ const Comment = ({ comment, layer, onReportClick }) => {
     <>
       <img
         className="cmt-avt"
-        src={`http://localhost:1111/api/users/avatar/${loginUsername}`}
+        src={`http://localhost:1111/api/users/avatar/${comment.user.username}`}
         alt="avatar"
       ></img>
       <div className="cmt-item-wrap">
         <div className="cmt-content">
           <div className="cmt-author-info">
             <span style={{ marginBottom: "0px" }}>
-              {`${
-                comment.user && comment.user.displayName
-                  ? comment.user.displayName
-                  : "Username failed to load"
-              }`}
+              {`${comment.user && comment.user.displayName
+                ? comment.user.displayName
+                : "Username failed to load"
+                }`}
             </span>
           </div>
 
@@ -130,7 +129,7 @@ const Comment = ({ comment, layer, onReportClick }) => {
             ref={inputRef}
             id="comment-content"
             onKeyDownCapture={handleKeyDownCaptureEditComment}
-            // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
+          // dangerouslySetInnerHTML={{ __html: comment.commentContent }}
           >
             {decodeHtmlEntities(comment.commentContent)}
           </span>
@@ -145,7 +144,7 @@ const Comment = ({ comment, layer, onReportClick }) => {
                 <ActionButton
                   className="reply comment"
                   type="CANCEL"
-                  handleClick={() => setEditMode(false)}
+                  handleClick={() => { setEditMode(false), setExpand(false) }}
                 ></ActionButton>
               </div>
             ) : (
@@ -172,7 +171,7 @@ const Comment = ({ comment, layer, onReportClick }) => {
                     handleClick={() => handleNewComment()}
                   ></ActionButton>
                 )}
-                {comment.user.username == loginUsername ? (
+                {(comment.user.username == loginUsername) ? (
                   <>
                     <ActionButton
                       className="comment"
@@ -224,7 +223,7 @@ const Comment = ({ comment, layer, onReportClick }) => {
               <ActionButton
                 className="reply"
                 type="CANCEL"
-                handleClick={() => setShowInput(false)}
+                handleClick={() => { setShowInput(false), setExpand(false) }}
               ></ActionButton>
             </div>
           )}
@@ -239,7 +238,7 @@ const Comment = ({ comment, layer, onReportClick }) => {
             </div>
           ))}
         </div>
-      </div>
+      </div >
     </>
   );
 };

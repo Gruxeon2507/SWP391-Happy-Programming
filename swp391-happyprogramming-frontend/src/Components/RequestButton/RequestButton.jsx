@@ -170,6 +170,10 @@ const RequestButton = ({ courseID, courseName }) => {
                             disabled={clickedButtonId === courseID}
                             id="requestBttn"
                             onClick={() => handleRequest()}
+                            style={{
+                                border: "4px solid var(--item2)",
+                                color: "var(--item2)",
+                            }}
                         >
                             Request
                         </button>
@@ -184,8 +188,8 @@ const RequestButton = ({ courseID, courseName }) => {
                         <button
                             id="requestBttn"
                             style={{
-                                border: "4px solid var(--item2)",
-                                color: "var(--item2)",
+                                border: "4px solid var(--item)",
+                                color: "var(--item)",
                             }}
                         >
                             Cancel request
