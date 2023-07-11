@@ -95,7 +95,8 @@ public class RequestController {
             HttpServletRequest request,
             @RequestParam(name = "courseId") Integer courseId,
             @RequestParam(name = "usernames") String[] usernames,
-            @RequestParam(name = "statusId") Integer statusId
+            @RequestParam(name = "statusId") Integer statusId,
+            @RequestParam(name = "reasonReject") String reasonReject
     ) {
         if (!roleUtils.hasRoleFromToken(request, 2)) {
             return null;
@@ -120,6 +121,8 @@ public class RequestController {
                         key.setUsername(menteeUsername);
                         r.setStatus(s);
                         r.setRequestKey(key);
+                        r.setRequestReason(reasonReject);
+                        System.out.println("li do reject"+ r.getRequestReason());
 
                         //update participate
                         participateRepository.updateStatus(statusId, courseId, username);
