@@ -170,12 +170,21 @@ function CourseFeed(props) {
           </section>
           <aside className="aside-control-nav">
             <div className="sidebar-cf">
+              <div className="course-member">
+                <ion-icon name="people-outline"></ion-icon>
+                <div className="stat">
+                  <span>1234567890</span>
+                  <a href={`/courses/members/${courseId}`}>View members</a>
+                </div>
+              </div>
+
+
               {window.localStorage.getItem("role") == "mentor" ? <>
                 <div className="mentor-bttn">
                   <button onClick={openEditor}>
-                    <ion-icon name="add-circle-outline"></ion-icon> New
+                    <ion-icon name="add-circle-outline"></ion-icon> New Post
                   </button>
-                  <button style={{ margin: "auto auto 0px auto" }} onClick={() => navigate("/request/manage")}>To course manage</button>
+                  <button id="nav-manage" onClick={() => navigate("/request/manage")}>To course manage</button>
                 </div>
               </> : <><div className="side-mentor-list">
                 {mentors.map((mentor) => (
