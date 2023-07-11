@@ -19,6 +19,13 @@ const MenteeManagement = () => {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
   const [searchText, setSearchText] = useState("");
+  const [userData, setUserData] = useState({
+    username: "",
+    receivername: "",
+    connected: true,
+    message: "",
+    conversationId: "",
+});
   var sizePerPage = 10;
   const getPageMentee = (searchText, pageNumber, pageSize, sortField, sortOrder) => {
     UserServices.getOnlyRoleMenteeList(searchText, pageNumber, pageSize, sortField, sortOrder)
