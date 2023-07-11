@@ -81,4 +81,7 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
     @Query(value = "INSERT INTO Participate VALUES(:courseId,:username,2,1)",nativeQuery = true)
     public void insertMentorCourse(int courseId, String username);
 
+
+
+
 }

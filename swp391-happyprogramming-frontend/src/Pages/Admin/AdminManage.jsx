@@ -40,13 +40,13 @@ function AdminManage(props) {
               className={active === 3 ? "active" : ""}
               onClick={() => setActiveMode(3)}
             >
-              Handle Mentors Of Course
+              item placeholder
             </li>
             <li
               className={active === 4 ? "active" : ""}
               onClick={() => setActiveMode(4)}
             >
-              item placeholder
+              Handle Mentors Of Course
             </li>
             <li
               className={active === 5 ? "active" : ""}
@@ -67,8 +67,8 @@ function AdminManage(props) {
         {active === 0 ? <></> : <></>}
         {active === 1 ? <CreateCourse /> : <></>}
         {active === 2 ? <MentorManagement></MentorManagement> : <></>}
-        {active === 3 ? <HandleMentorCourse /> : <></>}
-        {active === 4 ? <CreateCourse /> : <></>}
+        {active === 3 ? <CreateCourse /> : <></>}
+        {active === 4 ? <HandleMentorCourse /> : <></>}
         {active === 5 ? <CreateCourse /> : <></>}
         {active === 6 ? <CreateCourse /> : <></>}
       </div>

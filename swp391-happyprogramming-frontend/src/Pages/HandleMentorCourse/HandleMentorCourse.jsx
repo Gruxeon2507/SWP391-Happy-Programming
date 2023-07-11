@@ -14,8 +14,7 @@ function HandleMentorCourse(props) {
   const [courses, setCourses] = useState([]);
   const [participates, setParticipates] = useState([]);
   const [mentors, setMentors] = useState([]);
-
-  const [mentorUpdate, setMentorUpdate] = useState([]);
+  const [mentorJoinCourse, setMentorJoinCourse] = useState([]);
 
   const handleMentorUpdate = (courseId, selectedOptions) => {
     // Filter out the selectedOptions that are already present in participates array
@@ -49,57 +48,120 @@ function HandleMentorCourse(props) {
     setParticipates([...updatedParticipates, ...newParticipates]);
   };
 
-  const loadData = () => {
-    ParticipateServices.findAllMentorCourse()
-      .then((res) => {
-        setParticipates(res.data);
-        // console.log(res.data);
-        // console.log(participates);
-      })
-      .catch((error) => {
-        {
-          console.log(error);
-          alert("Error when get Mentor");
-        }
-      });
-    CourseServices.getAllCourses()
-      .then((res) => {
-        setCourses(res.data);
-        // console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Error when get Courses");
-      });
-    PublicService.getActiveMentors()
-      .then((res) => {
-        setMentors(res.data);
-        // console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Error when get Mentors");
-      });
+  const loadData = async () => {
+    try {
+      const resMentorCourse = await ParticipateServices.findAllMentorCourse();
+      setParticipates(resMentorCourse.data);
+
+      const resAllCourse = await CourseServices.getAllCourses();
+      setCourses(resAllCourse.data);
+
+      const resActiveMentors = await PublicService.getActiveMentors();
+      setMentors(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+    // ParticipateServices.findAllMentorCourse()
+    //   .then((res) => {
+    //     setParticipates(res.data);
+    //     // console.log(res.data);
+    //     // console.log(participates);
+    //   })
+    //   .catch((error) => {
+    //     {
+    //       console.log(error);
+    //       alert("Error when get Mentor");
+    //     }
+    //   });
+    // CourseServices.getAllCourses()
+    //   .then((res) => {
+    //     setCourses(res.data);
+    //     // console.log(res.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     alert("Error when get Courses");
+    //   });
+    // PublicService.getActiveMentors()
+    //   .then((res) => {
+    //     setMentors(res.data);
+    //     // console.log(res.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     alert("Error when get Mentors");
+    //   });
+  };
+
+  const loadDataMentorCourse = async () => {
+    try {
+      const mentorJoinCourseData = [];
+      for (const course of courses) {
+        const courseResponse = await axios.get(
+          `http://localhost:1111/api/participates/findMentorJoinCourse/${course.courseId}`
+        );
+        const courseData = courseResponse.data;
+        // Map the mentor data to the desired object structure
+        const mentorJoinCourseForCourse = courseData.map((mentor) => ({
+          courseId: course.courseId,
+          username: mentor.username,
+          // Other properties of the participate object...
+        }));
+        mentorJoinCourseData.push(...mentorJoinCourseForCourse);
+      }
+      // console.log(mentorJoinCourseData);
+      setMentorJoinCourse(mentorJoinCourseData);
+      // console.log(mentorJoinCourse);
+    } catch (error) {
+      console.log(error);
+      alert("Error when loading mentor join course data");
+    }
   };
 
   useEffect(() => {
+    loadDataMentorCourse();
     loadData();
   }, []);
+  useEffect(() => {
+    loadDataMentorCourse();
+  });
 
-  const handleUpdateMentor = (event) => {
+  const handleUpdateMentor = (event, courseId) => {
     event.preventDefault();
     console.log(participates);
+    console.log(courseId);
+    for (const p of participates) {
+      var checkEmpty = false;
+      for (const c of courses) {
+        if (c.courseId === p.participateKey.courseId) {
+          checkEmpty = true;
+          break;
+        }
+      }
+      if (checkEmpty) {
+        continue;
+      } else {
+        alert("You can not update!!");
+        return;
+      }
+    }
+
+    if (participates.length === 0) {
+      alert("You can not change this course by not let mentor teaching!!");
+      return;
+    }
     api
       .post(
         `http://localhost:1111/api/participates/updateMentorCourse`,
         participates
       )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         loadData();
+        alert("Update successfully!!");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -124,10 +186,17 @@ function HandleMentorCourse(props) {
                   <td>
                     <Select
                       isMulti
-                      options={mentors.map((m) => ({
-                        value: m.username,
-                        label: m.username,
-                      }))}
+                      options={mentorJoinCourse
+                        .map((m) => {
+                          if (m.courseId == c.courseId) {
+                            return {
+                              value: m.username,
+                              label: m.username,
+                            };
+                          }
+                          return null; // Return null or an empty object
+                        })
+                        .filter(Boolean)}
                       value={participates.map((p) => {
                         if (p.participateKey.courseId === c.courseId) {
                           return {
@@ -143,7 +212,11 @@ function HandleMentorCourse(props) {
                     ></Select>
                   </td>
                   <td>
-                    <form onSubmit={handleUpdateMentor}>
+                    <form
+                      onSubmit={(event) => {
+                        handleUpdateMentor(event, c.courseId);
+                      }}
+                    >
                       <button>Update Mentor</button>
                     </form>
                   </td>

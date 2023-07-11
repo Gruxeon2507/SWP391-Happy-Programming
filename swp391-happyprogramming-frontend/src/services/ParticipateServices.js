@@ -48,7 +48,7 @@ class ParticipateServices {
     return api.post("/api/participates/allmy", formData);
   }
   findAllMentorCourse(){
-    return api.get("/api/participates/findMentorCourse");
+    return  api.get("/api/participates/findMentorCourse");
   }
   updateMentorCourse(){
     return api.post("/api/participates/updateMentorCourse");

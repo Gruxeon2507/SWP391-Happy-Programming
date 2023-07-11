@@ -54,6 +54,18 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur ON u.username = ur.username WHERE ur.roleId = :roleId and u.activeStatus = :activeStatus", nativeQuery = true)
     public List<User> getUsersByRoleActiveStatus(int roleId, int activeStatus);
+    @Query(value = "SELECT distinct * FROM `User` u \n" +
+            "INNER JOIN User_Role ur on ur.username = u.username\n" +
+            "INNER JOIN `Role` r on r.roleId = ur.roleId\n" +
+            "WHERE r.roleName ='mentor'\n" +
+            "AND u.username NOT IN \n" +
+            "(SELECT u.username FROM FU_SWP391_HappyProgramming.Participate p\n" +
+            "INNER JOIN `User` u on u.username = p.username\n" +
+            "INNER JOIN User_Role ur on ur.username = u.username\n" +
+            "INNER JOIN `Role` r on r.roleId = ur.roleId\n" +
+            "WHERE courseId = :courseId and r.roleName = 'mentor') \n" +
+            "OR (u.username IN (SELECT p.username FROM FU_SWP391_HappyProgramming.Participate p WHERE participateRole=2 AND statusId = 1 AND courseId = :courseId) AND r.roleName='mentor')",nativeQuery = true)
+    public List<User> findAllMentorJoinCourse(int courseId);
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleId = :roleId order by u.createdDate")
     List<User> findByRoleId(Integer roleId);

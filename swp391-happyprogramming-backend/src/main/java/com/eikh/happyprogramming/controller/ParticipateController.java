@@ -141,6 +141,11 @@ public class ParticipateController {
         return ResponseEntity.ok(participateRepository.findAllMentorCourse());
     }
 
+    @GetMapping("/findMentorJoinCourse/{courseId}")
+    ResponseEntity<?> findAllMentorJoinCourse(@PathVariable("courseId") int courseId){
+        return ResponseEntity.ok(userRepository.findAllMentorJoinCourse(courseId));
+    }
+
     @PostMapping("/updateMentorCourse")
     ResponseEntity<?> updateMentorCourse(@RequestBody List<Participate> participates,HttpServletRequest request){
         User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
@@ -168,7 +173,6 @@ public class ParticipateController {
                 participateRepository.insertMentorCourse(p.getParticipateKey().getCourseId(),p.getParticipateKey().getUsername());
             }
         }
-
         return ResponseEntity.ok("Success");
     }
 }
