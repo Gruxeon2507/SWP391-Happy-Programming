@@ -43,23 +43,26 @@ const Report = ({ commentId, username }) => {
 
   return (
     <>
-      <form style={{ display: showForm ? "block" : "none" }}>
+      <form id="--rp-form" style={{ display: showForm ? "block" : "none" }}>
         Report Description:
         <input
           type="text"
           placeholder={"Tell us more..."}
           onChange={(e) => setInput(e.target.value)}
         />
-        <h6>{input}</h6>
         <button onClick={() => handleSubmitReport()}>Submit</button>
       </form>
       {reportTypes.map((t) => (
-        <div key={t.reportTypeId}>
+        <div key={t.reportTypeId} className="rp-cate">
           <span>{t.reportName}</span>
-          <span>{t.reportDescription}</span>
-          <button onClick={() => chooseReportType(t.reportTypeId)}>
+          <span>{t.reportDescription}
+            <ion-icon name="chevron-forward-outline"
+              onClick={() => chooseReportType(t.reportTypeId)}
+            ></ion-icon>
+          </span>
+          {/* <button onClick={() => chooseReportType(t.reportTypeId)}>
             {">"}
-          </button>
+          </button> */}
         </div>
       ))}
     </>

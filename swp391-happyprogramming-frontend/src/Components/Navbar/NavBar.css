@@ -106,6 +106,12 @@
 .nav-item a {
   padding: 4px 8px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 1rem;
+  cursor: pointer;
 }
 .nav-menu .nav-item a:hover:not(.active) {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.105) 0px 6px 6px;

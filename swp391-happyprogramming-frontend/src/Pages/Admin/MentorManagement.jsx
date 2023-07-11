@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Link } from 'react'
-import UserServices from '../../services/UserServices';
-import convertDateFormat from '../../util/DateConvert';
+import React, { useState, useEffect, Link } from "react";
+import UserServices from "../../services/UserServices";
+import convertDateFormat from "../../util/DateConvert";
 import axios from "axios";
 import "./MentorManagement.css";
 
@@ -16,20 +16,16 @@ const MentorManagement = () => {
   const [errorEmailDuplicate, setErrorEmailDuplicate] = useState("");
   const [showErrorEmailDuplicate, setShowEmailDuplicate] = useState(false);
 
-
   const getMentorList = () => {
     UserServices.getMentorList()
       .then((response) => {
         console.log(response.data);
-        setMentorList(response.data)
-
+        setMentorList(response.data);
       })
       .catch((error) => {
         console.log("loi lay ra list mentor" + error);
       });
   };
-
-
 
   const onChangeEmail = async (event) => {
     const inputEmail = event.target.value;
@@ -60,13 +56,11 @@ const MentorManagement = () => {
       ...user,
       mail: inputEmail,
     });
-
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (showErrorEmail || showErrorEmailDuplicate
-    ) {
+    if (showErrorEmail || showErrorEmailDuplicate) {
       let alertMessage = "";
       if (showErrorEmail) {
         alertMessage = alertMessage + "Email: " + errorEmail + "\n";
@@ -76,50 +70,42 @@ const MentorManagement = () => {
         alertMessage = alertMessage + "Email" + errorEmailDuplicate + "\n";
       }
       alert(alertMessage);
-    }
-    else {
+    } else {
       UserServices.createMentorAccount(user)
         .then((res) => {
           console.log(res.data);
           if (res.data.length > 0)
-            alert("The username and password is sented to " + user.mail)
+            alert("The username and password is sented to " + user.mail);
           alert("Send username and password to" + user.mail + " failed ");
-
         })
         .catch((err) => {
           console.error(err);
         });
-
     }
-
-
-
-
-
-  }
+  };
   useEffect(() => {
     getMentorList();
-  }, []);
+  }, [mentorList]);
 
   const handleUpdate = (e, key) => {
-    // UserServices.updateActiveStatusMentor()
+    UserServices.updateActiveStatusMentor(e.target.value, key);
     console.log(e.target.value);
     console.log(key);
-  }
+    getMentorList();
+  };
   return (
-    <div >
+    <div>
       <div className="create-mentor">
         <div className="create-form">
-
           <form onSubmit={handleSubmit}>
-            <div className='mail-input'>
+            <div className="mail-input">
               <div>
                 <input
                   type="email"
                   id="userEmail"
                   required
                   onChange={onChangeEmail}
-                  placeholder='Gmail'
+                  placeholder="Gmail"
                 />
               </div>
               {showErrorEmail ? (
@@ -137,14 +123,17 @@ const MentorManagement = () => {
                 </>
               ) : null}
             </div>
-            <div className='mail-sbtn'>
-              <button type="submit" onSubmit={handleSubmit} id='mentor-account-gen'>
+            <div className="mail-sbtn">
+              <button
+                type="submit"
+                onSubmit={handleSubmit}
+                id="mentor-account-gen"
+              >
                 Generate account
               </button>
             </div>
           </form>
         </div>
-
       </div>
       <table className="table-mentor-manage">
         <thead>
@@ -160,9 +149,7 @@ const MentorManagement = () => {
             const buttonKey = mentor.activeStatus === 0 ? 0 : 1;
             return (
               <tr key={mentor.username}>
-                <td>
-                  {mentor.displayName}
-                </td>
+                <td>{mentor.displayName}</td>
                 <td>
                   <img
                     src={
@@ -175,13 +162,30 @@ const MentorManagement = () => {
                 <td>{convertDateFormat(mentor.createdDate)}</td>
                 <td>{mentor.mail}</td>
                 <td>
-                  {(mentor.activeStatus == 0) ? (<p>Banned</p>) : (<p>Active</p>)}
+                  {mentor.activeStatus == 0 ? <p>Banned</p> : <p>Active</p>}
                 </td>
                 <td>
-                  {(mentor.activeStatus == 0) ?
-                    (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 0) }}>UnBan</button>) :
-                    (<button className='banBtn' value={mentor.username} onClick={(e) => { handleUpdate(e, 1) }}>Ban</button>)
-                  }
+                  {mentor.activeStatus == 0 ? (
+                    <button
+                      className="banBtn"
+                      value={mentor.username}
+                      onClick={(e) => {
+                        handleUpdate(e, 1);
+                      }}
+                    >
+                      UnBan
+                    </button>
+                  ) : (
+                    <button
+                      className="banBtn"
+                      value={mentor.username}
+                      onClick={(e) => {
+                        handleUpdate(e, 0);
+                      }}
+                    >
+                      Ban
+                    </button>
+                  )}
                 </td>
               </tr>
             );
@@ -189,14 +193,7 @@ const MentorManagement = () => {
         </tbody>
       </table>
     </div>
+  );
+};
 
-  )
-}
-
-export default MentorManagement
-
-
-
-
-
-
+export default MentorManagement;
