@@ -1,84 +1,147 @@
-import React, { Component, useEffect } from "react";
-// import "../Home";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../Components/Navbar/NavBar";
 import "./Home.css";
-import bg from "../../Assets/backround.jpg";
-import { NavLink } from "react-router-dom";
-import gmt from "../../Assets/giangmentor.png";
-import Loading from "../../Components/StateMessage/Loading";
-import LoadFinish, { FailDialog, SuccessDialog } from "../../Components/StateMessage/LoadFinish";
-import { toast } from "react-toastify";
-
+import bg from "../../Assets/Picture1.png";
+import si from "../../Assets/scrollIcon.png";
+import CategoryServices from "../../services/CategoryServices";
+import api from "../../services/BaseAuthenticationService";
 
 function Home(props) {
+  const [currentSection, setCurrentSection] = useState("quote");
+  const [categories, setCategories] = useState([]);
 
+
+  const getAllCategories = () => {
+    CategoryServices.getAllCategories()
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
-    const handleScroll = () => {
-      // Add your logic here for the scroll event
-      // This function will be called when the user scrolls
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    getAllCategories();
   }, []);
 
 
+  useEffect(() => {
+    const sections = document.querySelectorAll(".home-section");
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const { target, isIntersecting } = entry;
+
+        if (isIntersecting) {
+          setCurrentSection(target.getAttribute("data-section"));
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <>
-      {/* {props.url} */}
-      {/* <LoadFinish state={1}></LoadFinish> */}
       <NavBar mode={1} />
-      <div className="scroll-snap-container">
 
-        <div className="scroll-snap-item">
-          <div className="scroll-snap-item">
-            <div className="hapi-pro-gb">
-              <div className="hapi-pro-cover">
-                <h1>EIKH</h1>
-                <q>Unlock Your Code Potential</q>
+      <main>
+        <img
+          src={bg}
+          alt="background"
+          id="homebg"
+          className={currentSection}
+        />
+
+        <div className="scroll-snap-container">
+          <section className="home-section" data-section="start">
+            <div>
+              <div className="quote-content">
+                <span>EmIuKhoaHoc.</span><br></br>
+                <span>Happy Programming</span>
+              </div>
+              <div className="--home--start">
+                <img id="sIcon" src={si} alt="scrollIcon"></img>
+                <span>
+                  Scroll down
+                </span>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="scroll-snap-item">
-          <div className="banner-1">
-            <img src={bg} alt="background" loading="lazy" />
-            <div className="quotes">
-              <h1>Học đi các bạn ơi!!</h1>
-              <p>
-                Văn động viên mấy con vợ tham gia course <br />
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque
-                quisquam rem distinctio itaque quos quia ut in nam obcaecati eaque,
-                tempore voluptate corrupti sint. Suscipit non quia voluptatibus
-                voluptatem placeat?
-              </p>
-              <div className="regisFW">
-                <NavLink to="/register">RegisterNow!!!</NavLink>
+          </section>
+
+          <section className="home-section" data-section="eikh">
+            <div className="quote-content">
+              <span>EmIuKhoaHoc.</span><br></br>
+              <span>Happy Programming</span>
+            </div>
+          </section>
+
+          <section className="home-section" data-section="quote">
+            <span id="quote-section">Number 1 online learning platform in Vietnam</span>
+          </section>
+
+          <section className="home-section" data-section="mentor">
+            <div className="--q-2">
+              <span>Ngồi học thì ấm vào thân</span><br></br>
+              <span>Đi ngủ thì ấm từ thân đến đầu</span>
+            </div>
+          </section>
+
+          <section className="home-section" data-section="courses">
+            <div className="--home-course-section">
+              <span>Diverse course system</span>
+              <div className="--cate--slider">
+
+                {categories.map((category) => (
+                  <div className="--cate" key={category.categoryId}>
+                    {category.categoryName}
+                  </div>
+                ))}
+
               </div>
-
+              <a id="--discover" href="/courses">Discover more &gt;&gt;&gt; </a>
             </div>
-          </div>
-        </div>
+          </section>
 
 
-        <div className="scroll-snap-item">
-          <div className="banner-2">
-            <div className="quotes">
-              <h1>
-                Mentor siu tín
-              </h1>
-              <p>
-                Đội ngũ mentor uy tín, là các giáo sư có tiếng trong ngành, tâm huyết với nghề, dày dặn kinh nghiệm với hơn 20 năm giảng dạy tại cái trường đại học có tiếng trong và ngoài nước.
-              </p>
+          <section className="home-section" data-section="mentor2">
+            <div className="--mentor2">
+              <div className="--hero">
+
+                <div className="--mentor-pv">
+                  <div className="--mt--card">
+                    <img src="http://localhost:1111/api/users/avatar/anmentor"></img>
+                  </div>
+                  <div className="--mt--card">
+                    <img src="http://localhost:1111/api/users/avatar/giangmentor"></img>
+                  </div>
+                  <div className="--mt--card">
+                    <img src="http://localhost:1111/api/users/avatar/ducmentor"></img>
+                  </div>
+                  <div className="--mt--card">
+                    <img src="http://localhost:1111/api/users/avatar/huyenmentor"></img>
+                  </div>
+                  <div className="--mt--card">
+                    <img src="http://localhost:1111/api/users/avatar/phuongmentor"></img>
+                  </div>
+                </div>
+              </div>
             </div>
-            <img src={gmt} alt="background" loading="lazy" />
-          </div>
+          </section>
         </div>
-      </div>
+      </main>
     </>
   );
 }

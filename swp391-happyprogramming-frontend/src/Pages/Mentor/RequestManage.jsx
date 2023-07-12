@@ -154,30 +154,30 @@ const RequestManage = () => {
         // const confirmed = statusId !== 1 ? confirmReject : false;
         // if (confirmed || statusId === 1) {
 
-            RequestService.updateParticipateInsertRequest(selectedCourseId, statusId, [username], reason)
-                .then((response) => {
-                    console.log(response.data);
-                    setCheckedRequest([])
-                    getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
-                    if (statusId !== 1) {
-                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected", "/myrequest")
+        RequestService.updateParticipateInsertRequest(selectedCourseId, statusId, [username], reason)
+            .then((response) => {
+                console.log(response.data);
+                setCheckedRequest([])
+                getPendingUserOfCourse(selectedCourseId, 0, sizePerPage, sortField, sortOrder);
+                if (statusId !== 1) {
+                    sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been rejected", "/myrequest")
 
-                    } else {
-                        sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted", "/courses/feed/" + selectedCourseId)
+                } else {
+                    sendPrivateValue(username, "Your request to the course " + selectedCourseName + " has been accepted", "/courses/feed/" + selectedCourseId)
 
-                    }
+                }
 
-                })
-                .catch((error) => {
-                    console.log("loi update and insert" + error);
-                });
+            })
+            .catch((error) => {
+                console.log("loi update and insert" + error);
+            });
         // }
     };
     const handleSubmitMany = () => {
         var statusId = Number(selectedValue);
         console.log("reason" + reason);
-        console.log("trang thai confirmReject", confirmReject);
-        const confirmed = statusId !== 1 ? confirmReject : false;
+        // console.log("trang thai confirmReject", confirmReject);
+        const confirmed = statusId !== 1 ? window.confirm("Are you sure you want reject these mentees") : false;
         if (confirmed || statusId === 1) {
             RequestService.updateParticipateInsertRequest(selectedCourseId, selectedValue, checkedRequest, reason)
                 .then((response) => {
@@ -422,7 +422,7 @@ const RequestManage = () => {
                                                     onClick={() => handleSubmitOne(1, user.requestKey.username)}
                                                     disabled={checkedRequest.length > 1}
                                                     id="c-m-acceptBttn"
-                                                >Accept </button>
+                                                >Approve</button>
 
                                             </td>
                                             {viewPopUpReject ? (<>
@@ -436,11 +436,11 @@ const RequestManage = () => {
                                                     />
                                                     <button onClick={() => handleViewPopUpReject(user.requestKey.username)}>Cancel</button>
                                                     <button onClick={() => handleSubmitOne(-1, user.requestKey.username)}>OK</button>
-                                                </div></>) : (<><button  disabled={checkedRequest.length > 1}
+                                                </div></>) : (<><button disabled={checkedRequest.length > 1}
                                                     id="c-m-rejectBttn" onClick={() => handleViewPopUpReject(user.requestKey.username)}>Reject</button></>)}
 
-                                            </>) : (<><button  disabled={checkedRequest.length > 1}
-                                                    id="c-m-rejectBttn" onClick={() => handleViewPopUpReject(user.requestKey.username)}>Reject</button></>)}
+                                            </>) : (<><button disabled={checkedRequest.length > 1}
+                                                id="c-m-rejectBttn" onClick={() => handleViewPopUpReject(user.requestKey.username)}>Reject</button></>)}
                                         </tr>
                                     );
                                 })}

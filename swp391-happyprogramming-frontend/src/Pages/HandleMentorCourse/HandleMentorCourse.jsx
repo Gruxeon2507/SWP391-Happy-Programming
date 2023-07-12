@@ -140,9 +140,9 @@ function HandleMentorCourse(props) {
     event.preventDefault();
     console.log(participates);
     console.log(courseId);
-    for (const p of participates) {
+    for (const c of courses) {
       let checkEmpty = false;
-      for (const c of courses) {
+      for (const p of participates) {
         if (c.courseId === p.participateKey.courseId) {
           checkEmpty = true;
           break;
@@ -150,12 +150,14 @@ function HandleMentorCourse(props) {
       }
       if (!checkEmpty) {
         alert("You cannot update!!");
+        loadData();
         return;
       }
     }
 
     if (participates.length === 0) {
       alert("You can not change this course by not let mentor teaching!!");
+      loadData();
       return;
     }
     api

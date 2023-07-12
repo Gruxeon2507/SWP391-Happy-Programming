@@ -52,6 +52,14 @@ class ParticipateServices {
     return api.get("/api/participates/count/mentee/" + courseId);
   }
 
+  findAllMentorCourse() {
+    return api.get("/api/participates/findMentorCourse");
+  }
+  updateMentorCourse() {
+    return api.post("/api/participates/updateMentorCourse");
+  }
+
+
 }
 
 export default new ParticipateServices();
