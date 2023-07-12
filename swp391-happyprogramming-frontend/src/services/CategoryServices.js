@@ -16,10 +16,10 @@ class CategoryServices {
     categoryIds.forEach((categoryId) => {
       axios.post(
         CATEGORY_BASE_REST_API_URL +
-          "/insert?courseId=" +
-          courseId +
-          "&categoryId=" +
-          categoryId
+        "/insert?courseId=" +
+        courseId +
+        "&categoryId=" +
+        categoryId
       );
     });
   }

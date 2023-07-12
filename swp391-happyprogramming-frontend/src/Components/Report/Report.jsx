@@ -50,7 +50,7 @@ const Report = ({ commentId, username }) => {
           placeholder={"Tell us more..."}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button onClick={() => handleSubmitReport()}>Submit</button>
+        <button onClick={() => handleSubmitReport()}>Report</button>
       </form>
       {reportTypes.map((t) => (
         <div key={t.reportTypeId} className="rp-cate">

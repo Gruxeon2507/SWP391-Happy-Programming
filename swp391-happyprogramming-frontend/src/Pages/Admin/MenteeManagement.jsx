@@ -25,11 +25,11 @@ const MenteeManagement = () => {
     connected: true,
     message: "",
     conversationId: "",
-});
+  });
   var sizePerPage = 10;
   const getPageMentee = (searchText, pageNumber, pageSize, sortField, sortOrder) => {
     UserServices.getOnlyRoleMenteeList(searchText, pageNumber, pageSize, sortField, sortOrder)
-      .then( (response) => {
+      .then((response) => {
         setPageMentees(response.data.content);
         setTotalItems(response.data.totalElements);
       })
@@ -37,7 +37,7 @@ const MenteeManagement = () => {
         console.log("loi lay ra list mentee" + error);
       });
   };
-        
+
 
   // const getNoReportOfUser =  (username)=>{
   //    axios.get(`http://localhost:1111/api/reports/count/by-username/${username}`).then((res) => {
@@ -46,13 +46,13 @@ const MenteeManagement = () => {
   //   }).catch((error) => {
   //     console.log(error);
   //   })
-    
+
   // }
 
   const [reportsOfUsers, setReportsOfUsers] = useState({});
   const getReportOfUser = (username) => {
     axios.get(`http://localhost:1111/api/reports/count/by-username/${username}`).then((response) => {
-      setReportsOfUsers((pre)=>({
+      setReportsOfUsers((pre) => ({
         ...pre,
         [username]: response.data,
       }));
@@ -96,13 +96,13 @@ const MenteeManagement = () => {
   };
   const handleUpdate = async (e, key) => {
     await UserServices.setUserActiveStatus(e.target.value, key)
-    .catch((error) => {
+      .catch((error) => {
         console.log("loi update status mentee" + error);
       });;
-    if(key === 0){
-      sendPrivateValue(e.target.value,"Your account has been suppressed by the system, for more information, please contact admin via \"emiukhoahoc2722@gmail.com\"","/")
-    }else{
-      sendPrivateValue(e.target.value,"Your account has been unsuppressed by the system","/")
+    if (key === 0) {
+      sendPrivateValue(e.target.value, "Your account has been suppressed by the system, for more information, please contact admin via \"emiukhoahoc2722@gmail.com\"", "/")
+    } else {
+      sendPrivateValue(e.target.value, "Your account has been unsuppressed by the system", "/")
 
     }
     console.log(e.target.value);
@@ -111,100 +111,100 @@ const MenteeManagement = () => {
 
   }
 
-   //notification
-   useEffect(() => {
+  //notification
+  useEffect(() => {
     console.log(userData);
-}, [userData]);
+  }, [userData]);
 
-const connect = () => {
+  const connect = () => {
     let Sock = new SockJS("http://localhost:1111/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
-};
-const onConnected = () => {
+  };
+  const onConnected = () => {
     setUserData({ ...userData, connected: true });
     // stompClient.subscribe(`/chatroom/${conversationId}`, onMessageReceived);
     stompClient.subscribe(
-        `/user/${userData.username}/private`,
-        onPrivateMessage
+      `/user/${userData.username}/private`,
+      onPrivateMessage
     );
     userJoin();
-};
-const onPrivateMessage = (payload) => { };
+  };
+  const onPrivateMessage = (payload) => { };
 
-const onError = (err) => {
+  const onError = (err) => {
     console.log(err);
-};
-const userJoin = () => {
+  };
+  const userJoin = () => {
     var chatMessage = {
-        senderName: userData.username,
-        status: "JOIN",
+      senderName: userData.username,
+      status: "JOIN",
     };
     stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-};
-useEffect(() => {
+  };
+  useEffect(() => {
     if (userData.username !== "") {
-        connect();
+      connect();
     }
-}, [userData.username]);
+  }, [userData.username]);
 
-const fetchUsername = async () => {
+  const fetchUsername = async () => {
     const loginuser = await UserServices.getLoginUsername();
     const username = loginuser.data;
     setUserData((prevUserData) => ({ ...prevUserData, username: username }));
-};
-useEffect(() => {
+  };
+  useEffect(() => {
     fetchUsername();
-}, []);
+  }, []);
 
-const handleMessage = (event) => {
+  const handleMessage = (event) => {
     const { value } = event.target;
     setUserData({ ...userData, message: value });
-};
-const sendPrivateValue = (username, message, url) => {
+  };
+  const sendPrivateValue = (username, message, url) => {
     if (stompClient) {
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1; // months are zero-based
-        const day = currentDate.getDate();
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth() + 1; // months are zero-based
+      const day = currentDate.getDate();
 
-        var chatMessage = {
-            senderName: userData.username,
-            receiverName: username,
-            message: message,
-            status: "MESSAGE",
-            sentAt: currentDate,
-            url: url,
-            date: year + "-" + month + "-" + day,
-        };
+      var chatMessage = {
+        senderName: userData.username,
+        receiverName: username,
+        message: message,
+        status: "MESSAGE",
+        sentAt: currentDate,
+        url: url,
+        date: year + "-" + month + "-" + day,
+      };
 
-        stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
+      stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
 
-        //   const Notification = {
-        //     notificationContent:message,
-        //     notificationTime:currentDate,
-        //     isViewed:0,
-        //     notificationType:{
-        //         notificationTypeId:1
-        //     },
-        //     user:{
-        //         username:username
-        //     }
-        //   }
-        const Notification = new FormData();
-        Notification.append("notificationContent", message);
-        Notification.append("notificationTime", currentDate);
-        Notification.append("notificationTypeId", 1);
-        Notification.append("username", username);
-        Notification.append("url", url);
-        api.post("/api/notification/save", Notification);
-        setUserData({ ...userData, message: "" });
+      //   const Notification = {
+      //     notificationContent:message,
+      //     notificationTime:currentDate,
+      //     isViewed:0,
+      //     notificationType:{
+      //         notificationTypeId:1
+      //     },
+      //     user:{
+      //         username:username
+      //     }
+      //   }
+      const Notification = new FormData();
+      Notification.append("notificationContent", message);
+      Notification.append("notificationTime", currentDate);
+      Notification.append("notificationTypeId", 1);
+      Notification.append("username", username);
+      Notification.append("url", url);
+      api.post("/api/notification/save", Notification);
+      setUserData({ ...userData, message: "" });
     }
-};
+  };
 
   return (
-    <div >
-  
+    <main className="--mentee-tb">
+
       <table className="table-mentee-manage">
         <thead>
           <th>Mentee</th>
@@ -222,7 +222,7 @@ const sendPrivateValue = (username, message, url) => {
                   {mentee.username} - {mentee.displayName}
 
                 </td>
-               
+
                 <td>{convertDateFormat(mentee.createdDate)}</td>
                 <td>{reportsOfUsers[mentee.username]}</td>
                 <td>
@@ -240,17 +240,17 @@ const sendPrivateValue = (username, message, url) => {
         </tbody>
       </table>
       <div className="Pagination-Container">
-            <Paging
-              {...{
-                totalItems,
-                sizePerPage,
-                currentPage,
-                handlePageChange,
-                name: "mentees",
-              }}
-            />
-          </div>
-    </div>
+        <Paging
+          {...{
+            totalItems,
+            sizePerPage,
+            currentPage,
+            handlePageChange,
+            name: "mentees",
+          }}
+        />
+      </div>
+    </main>
 
   )
 }

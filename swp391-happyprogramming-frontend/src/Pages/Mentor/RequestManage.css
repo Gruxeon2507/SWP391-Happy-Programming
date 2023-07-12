@@ -18,6 +18,7 @@
   height: 100svh;
   box-sizing: border-box;
   position: relative;
+  /* background-color: red; */
 }
 
 .manage-section {
@@ -83,7 +84,7 @@
 }
 .show-info {
   /* background-color: var(--light); */
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   margin-top: 1rem;
 
   border-radius: 1rem;

@@ -72,4 +72,19 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
     public Participate findByUser_UsernameAndParticipateRole_ParticipateRoleAndStatus_StatusId(String username, int participateRole, int statusId);
 
     public int countAllByCourse_CourseIdAndParticipateRole_ParticipateRoleAndStatus_StatusId(int courseId, int participateRoleId, int statusId);
+    
+    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Participate p INNER JOIN `User` u on u.username = p.username WHERE participateRole=2 AND statusId = 1 AND u.activeStatus = 1",nativeQuery = true)
+    public List<Participate> findAllMentorCourse();
+
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM Participate WHERE username = :username AND courseId = :courseId AND participateRole = 2", nativeQuery = true)
+    public void deleteMentorCourse(String username, int courseId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO Participate VALUES(:courseId,:username,2,1)", nativeQuery = true)
+    public void insertMentorCourse(int courseId, String username);
+
 }
