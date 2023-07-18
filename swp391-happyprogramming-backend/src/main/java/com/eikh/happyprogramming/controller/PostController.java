@@ -84,12 +84,15 @@ public class PostController {
         Optional<Post> p = postRepository.findById(postId);
         return p.orElse(null);
     }
+    
+    
+
 
     @GetMapping("/view/all")
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
-
+    
     /**
      * @param postId
      * @param request
@@ -136,5 +139,4 @@ public class PostController {
             }
         }
     }
-
 }

@@ -50,6 +50,7 @@ import SentNotification from "./Components/Notification/SentNotification";
 import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
 import CourseMember from "./Pages/CourseFeed/CourseMember";
+import Editcourse from "./Pages/Course/Editcourse";
 
 
 function App() {
@@ -58,6 +59,8 @@ function App() {
     <>
       <ToastContainer />
       <Routes>
+        {/* TEST */}
+        <Route path="/EditCourse" element={<Editcourse />} />
         {/* GUEST */}
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Homepage />} />

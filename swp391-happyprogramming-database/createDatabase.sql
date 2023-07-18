@@ -309,5 +309,3 @@ SELECT * FROM Participate
 SELECT * FROM Conversation
 SELECT * FROM User_Conversation
 */
-
-

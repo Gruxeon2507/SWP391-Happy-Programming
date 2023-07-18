@@ -10,6 +10,7 @@ import com.eikh.happyprogramming.model.Role;
 import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.modelkey.ParticipateKey;
 import java.util.List;
+import javax.mail.Part;
 import javax.transaction.Transactional;
 import org.hibernate.annotations.Parent;
 import org.springframework.data.domain.Page;
@@ -65,16 +66,25 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
             + "                      where u.username = :username \n"
             + "                      AND p.participateRole IN :participateRoles AND s.statusId IN :statusIds\n"
             + "                      AND c.courseName LIKE %:searchText% ", nativeQuery = true)
-    Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
+    Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles,
+            Integer[] statusIds, String searchText);
 
     public Participate findByUser_UsernameAndParticipateRole_ParticipateRoleAndStatus_StatusId(String username, int participateRole, int statusId);
 
-    /**
-     *
-     * @param courseId
-     * @param participateRoleId
-     * @return number of member with role in a course
-     */
     public int countAllByCourse_CourseIdAndParticipateRole_ParticipateRoleAndStatus_StatusId(int courseId, int participateRoleId, int statusId);
+    
+    @Query(value = "SELECT * FROM FU_SWP391_HappyProgramming.Participate p INNER JOIN `User` u on u.username = p.username WHERE participateRole=2 AND statusId = 1 AND u.activeStatus = 1",nativeQuery = true)
+    public List<Participate> findAllMentorCourse();
+
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM Participate WHERE username = :username AND courseId = :courseId AND participateRole = 2", nativeQuery = true)
+    public void deleteMentorCourse(String username, int courseId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO Participate VALUES(:courseId,:username,2,1)", nativeQuery = true)
+    public void insertMentorCourse(int courseId, String username);
 
 }

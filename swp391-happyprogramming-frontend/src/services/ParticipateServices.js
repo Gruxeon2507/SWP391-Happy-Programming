@@ -21,20 +21,22 @@ class ParticipateServices {
     var statusIds = [];
     if (checked.length > 0) {
       checked.forEach((item) => {
-        if (item === "teaching") {
+        if (item === 'teaching') {
           participateRoles = [...participateRoles, 2];
           statusIds = [...statusIds, 1];
-        } else if (item === "access") {
+        }
+        else if (item === 'access') {
           participateRoles = [...participateRoles, 3];
           statusIds = [...statusIds, 1];
-        } else if (item === "pending") {
+        } else if (item === 'pending') {
           participateRoles = [...participateRoles, 3];
           statusIds = [...statusIds, 0];
-        } else if (item === "reject") {
+        }
+        else if (item === 'reject') {
           participateRoles = [...participateRoles, 3];
           statusIds = [...statusIds, -1];
         }
-      });
+      })
     }
     const formData = new FormData();
     formData.append("pageNumber", pageNumber);
@@ -49,6 +51,15 @@ class ParticipateServices {
   countMenteeInCourse(courseId) {
     return api.get("/api/participates/count/mentee/" + courseId);
   }
+
+  findAllMentorCourse() {
+    return api.get("/api/participates/findMentorCourse");
+  }
+  updateMentorCourse() {
+    return api.post("/api/participates/updateMentorCourse");
+  }
+
+
 }
 
 export default new ParticipateServices();

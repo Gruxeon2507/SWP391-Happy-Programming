@@ -221,7 +221,7 @@ const Homepage = () => {
                   name="search"
                   value={searchText}
                   onChange={handleInputChange}
-                  // onKeyPress={handleKeyPress}
+                // onKeyPress={handleKeyPress}
                 />
               </div>
 

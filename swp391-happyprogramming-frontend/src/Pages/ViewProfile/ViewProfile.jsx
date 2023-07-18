@@ -87,6 +87,8 @@ function ViewProfile(props) {
   const [ratings, setRatings] = useState([]);
   const [editRateInfo, setEditRateInfo] = useState(false);
 
+  const [viewIndexCourse, setViewIndexCourse] = useState("");
+
   /**
    * Handle input, submit
    */
@@ -98,8 +100,11 @@ function ViewProfile(props) {
   const editShowPopupAllRating = () => {
     setShowPopupAllRating(!showPopupAllRating);
   };
-  const handleEditRateInfo = () => {
+  const handleEditRateInfo = (courseId) => {
     setEditRateInfo(!editRateInfo);
+    setViewIndexCourse(courseId);
+    setNoStar(1);
+    setComment("");
   };
   const handleNoStar = (event) => {
     const inputStar = event.target.value;
@@ -163,7 +168,6 @@ function ViewProfile(props) {
         setRatings(res.data);
         console.log(res.data);
         console.log(ratings);
-
       })
       .catch((error) => {
         console.log(error);
@@ -488,7 +492,7 @@ function ViewProfile(props) {
 
   const fetchUserData = async () => {
     try {
-      const ulname = await api.get("/api/users/login")
+      const ulname = await api.get("/api/users/login");
       setUln(ulname.data);
     } catch (error) {
       console.error(error);
@@ -512,7 +516,10 @@ function ViewProfile(props) {
             <div className="upf-avt">
               {/* <img src={avatar} alt="User Avatar" /> */}
               {/* <img src={"http://localhost:1111/api/users/avatar/" + user.username} alt="User Avatar" /> */}
-              <img src={"http://localhost:1111/api/users/avatar/" + id} alt="User Avatar" />
+              <img
+                src={"http://localhost:1111/api/users/avatar/" + id}
+                alt="User Avatar"
+              />
             </div>
           </div>
           {username === id ? (
@@ -552,7 +559,6 @@ function ViewProfile(props) {
           <div className="upf-info">
             <label>Email: </label>
             <span>{user.mail}</span>
-
           </div>
         </section>
         <section className="upf-section">
@@ -597,7 +603,9 @@ function ViewProfile(props) {
                 )}
               </div>
               <div className="upf-edt-btn">
-                <button onClick={handleEditDisplayName}>Change DisplayName</button>
+                <button onClick={handleEditDisplayName}>
+                  Change DisplayName
+                </button>
               </div>
             </>
           ) : (
@@ -613,7 +621,9 @@ function ViewProfile(props) {
           <div className="upf-info">
             <div style={{ margin: "1rem 0" }}>
               <label>Member since: </label>
-              <span>{new Date(user.createdDate).toLocaleDateString(`en-GB`)}</span>
+              <span>
+                {new Date(user.createdDate).toLocaleDateString(`en-GB`)}
+              </span>
             </div>
           </div>
         </section>
@@ -636,29 +646,32 @@ function ViewProfile(props) {
                 </label>
               </div>
               <div className="upf-edit-section">
-                {(user.roles ?? []).some((role) => role.roleName === "mentor") ? (
+                {(user.roles ?? []).some(
+                  (role) => role.roleName === "mentor"
+                ) ? (
                   <>
                     {username != "" ? (
                       <>
                         {" "}
-                        <button onClick={editShowPopupRating}>Rating Users</button>
-
+                        <button onClick={editShowPopupRating}>
+                          Rating Users
+                        </button>
                       </>
                     ) : null}
                   </>
                 ) : null}
               </div>
               <div className="upf-edt-btn">
-                <button onClick={editShowPopupAllRating}>View All Rating</button>
+                <button onClick={editShowPopupAllRating}>
+                  View All Rating
+                </button>
               </div>
-
             </>
           ) : null}
         </section>
         <section className="upf-section">
           {username === id ? (
             <>
-
               <div className="upf-info">
                 <label>Date Of Birth</label>
                 <span style={{ display: editDateOfBirth ? "none" : "block" }}>
@@ -723,7 +736,6 @@ function ViewProfile(props) {
           <>
             <section className="upf-section">
               <div className="upf-info">
-
                 <ul>
                   <li>
                     <span>Skills: </span>
@@ -737,10 +749,16 @@ function ViewProfile(props) {
                       >
                         <div className="i-c">
                           <span>{skill.skillName}</span>
-                          {(window.localStorage.getItem("role") == "mentor" && uln === id) ?
+                          {window.localStorage.getItem("role") == "mentor" &&
+                            uln === id ? (
                             <>
-                              <button><ion-icon name="remove-circle-outline"></ion-icon></button>
-                            </> : <></>}
+                              <button>
+                                <ion-icon name="remove-circle-outline"></ion-icon>
+                              </button>
+                            </>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </form>
                     </li>
@@ -764,9 +782,18 @@ function ViewProfile(props) {
                   </>
                 ) : null}
               </div>
-              {id === username ? <> <div className="upf-edt-btn">
-                <button onClick={handleEditCreateSkill}>Create a skill</button>
-              </div></> : <></>}
+              {id === username ? (
+                <>
+                  {" "}
+                  <div className="upf-edt-btn">
+                    <button onClick={handleEditCreateSkill}>
+                      Create a skill
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </section>
 
             <section className="upf-section">
@@ -799,7 +826,10 @@ function ViewProfile(props) {
                         </form>
                         {showErrorPdf ? (
                           <>
-                            <div className="w-message" style={{ color: "black" }}>
+                            <div
+                              className="w-message"
+                              style={{ color: "black" }}
+                            >
                               {errorPdf}
                             </div>
                           </>
@@ -809,14 +839,18 @@ function ViewProfile(props) {
                   </>
                 ) : null}
               </div>
-              {id === username ? <><div className="upf-edt-btn">
-                <button onClick={handleEditCVPath}>Change CV</button>
-              </div></> : <></>}
-
+              {id === username ? (
+                <>
+                  <div className="upf-edt-btn">
+                    <button onClick={handleEditCVPath}>Change CV</button>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </section>
           </>
         ) : null}
-
       </main>
       <div>
         {showPopupRating ? (
@@ -828,55 +862,85 @@ function ViewProfile(props) {
                 </span>
                 <h2>Courses Being Taught</h2>
                 <ul>
-                  {courses.length === 0 ? "You'd already voted or not yet enrolled in this mentor's course!" : ""}
+                  {courses.length === 0
+                    ? "You'd already voted or not yet enrolled in this mentor's course!"
+                    : ""}
                   {courses.map((course, index) => (
                     <li key={index}>
                       {course.courseName}
-                      <button onClick={handleEditRateInfo}>Rate</button>
                       {editRateInfo ? (
                         <>
                           {" "}
-                          <form
-                            onSubmit={(event) =>
-                              handleRateMentor(event, course.courseId)
-                            }
-                          >
-                            Vote Star:
-                            <div>
-                              {[1, 2, 3, 4, 5].map((value) => (
-                                <span
-                                  key={value}
-                                  onClick={() => onClickNoStar(value)}
-                                  style={{
-                                    cursor: "pointer",
-                                    color:
-                                      value <= noStar ? "gold" : "gray",
-                                  }}
-                                >
-                                  &#9733;
-                                </span>
-                              ))}
-                            </div>
-                            <label>Comment:</label>
-                            <input
-                              type="text"
-                              required
-                              onChange={onChangeComment}
-                            ></input>
-                            {showErrorComment ? (
-                              <>
-                                <div
-                                  className="w-message"
-                                  style={{ color: "black" }}
-                                >
-                                  {errorComment}
+                          {viewIndexCourse === course.courseId ? (
+                            <>
+                              <form
+                                onSubmit={(event) =>
+                                  handleRateMentor(event, course.courseId)
+                                }
+                              >
+                                Vote Star:
+                                <div>
+                                  {[1, 2, 3, 4, 5].map((value) => (
+                                    <span
+                                      key={value}
+                                      onClick={() => onClickNoStar(value)}
+                                      style={{
+                                        cursor: "pointer",
+                                        color:
+                                          value <= noStar ? "gold" : "gray",
+                                      }}
+                                    >
+                                      &#9733;
+                                    </span>
+                                  ))}
                                 </div>
-                              </>
-                            ) : null}
-                            <button>Rate Mentor</button>
-                          </form>
+                                <label>Comment:</label>
+                                <input
+                                  type="text"
+                                  required
+                                  onChange={onChangeComment}
+                                ></input>
+                                {showErrorComment ? (
+                                  <>
+                                    <div
+                                      className="w-message"
+                                      style={{ color: "black" }}
+                                    >
+                                      {errorComment}
+                                    </div>
+                                  </>
+                                ) : null}
+                                <button>Rate Mentor</button>
+                              </form>
+                              <button
+                                onClick={() => {
+                                  handleEditRateInfo(course.courseId);
+                                }}
+                              >
+                                Rate
+                              </button>
+                            </>
+                          ) : (<>
+                            <button
+                              onClick={() => {
+                                handleEditRateInfo(course.courseId);
+                              }}
+                            >
+                              Rate
+                            </button>
+                          </>)}
                         </>
-                      ) : null}
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => {
+                              handleEditRateInfo(course.courseId);
+                            }}
+                          >
+                            Rate
+                          </button>
+                        </>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -894,9 +958,7 @@ function ViewProfile(props) {
                 {ratings.map((rating) => (
                   <div>
                     <div>
-                      <Link
-                        to={`/profile/${rating.ratingKey.ratedFromUser}`}
-                      >
+                      <Link to={`/profile/${rating.ratingKey.ratedFromUser}`}>
                         {rating.ratingKey.ratedFromUser}
                       </Link>{" "}
                       voted {rating.noStar} Stars
@@ -906,8 +968,7 @@ function ViewProfile(props) {
                         <span
                           key={value}
                           style={{
-                            color:
-                              value <= rating.noStar ? "gold" : "gray",
+                            color: value <= rating.noStar ? "gold" : "gray",
                           }}
                         >
                           &#9733;

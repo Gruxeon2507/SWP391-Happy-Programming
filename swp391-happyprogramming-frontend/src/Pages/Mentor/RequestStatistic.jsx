@@ -193,16 +193,16 @@ const RequestStatistic = () => {
                     <div className="overAll-stat">
                         <div className="stat-item">
                             <span>Your Mentee: </span>
-                            <span>90173</span>
+                            <span>13</span>
                             <ion-icon name="people-outline"></ion-icon>
                         </div>
                         <div className="stat-item">
                             <span>Pending Requests: </span>
-                            <span>513</span>
+                            <span>3</span>
                         </div>
                         <div className="stat-item">
                             <span>Rejected: </span>
-                            <span>67</span>
+                            <span>1</span>
                         </div>
                     </div>
                     <div className="chart-container">

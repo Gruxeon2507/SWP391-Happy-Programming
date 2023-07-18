@@ -11,6 +11,8 @@ import CourseServices from "../../services/CourseServices";
 import axios from "axios";
 import UserServices from "../../services/UserServices";
 import PublicService from "../../services/PublicService";
+import { notiError, notiSuccess } from "../../Components/Notification/notify";
+import ParticipateServices from "../../services/ParticipateServices";
 
 function CourseFeed(props) {
   const toggleRef = useRef(null);
@@ -23,6 +25,7 @@ function CourseFeed(props) {
   const [mentors, setMentors] = useState([]);
   const [course, setCourse] = useState({});
   const [uln, setUln] = useState({});
+  const [menteeCount, setMenteeCount] = useState();
 
   const navigate = useNavigate();
 
@@ -74,6 +77,18 @@ function CourseFeed(props) {
       const ulname = await api.get("/api/users/login");
       setUln(ulname.data);
 
+      const countMt = await api.get(`/api/participates/count/mentee/${courseId}`);
+      setMenteeCount(countMt.data);
+      // await ParticipateServices.countMenteeInCourse(courseId)
+      //   .then((response) => {
+      //     console.log("c m t");
+      //     console.log(response);
+      //     setMenteeCount(response.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+
       await PublicService.getCourseByCourseId(courseId)
         .then((res) => {
           console.log("res.data");
@@ -87,12 +102,14 @@ function CourseFeed(props) {
       console.error(error);
     }
   };
-  console.log("posts");
-  console.log(posts);
+  console.log("count mentee");
+  console.log(menteeCount);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+
 
   const handleCheckboxChange = () => {
     setIsEditorActive(!isEditorActive);
@@ -106,7 +123,10 @@ function CourseFeed(props) {
     const ok = confirm("Do you sure to continue?");
     if (ok) {
       PostServices.deletePost(postId);
+      notiSuccess();
       fetchData();
+    } else {
+      notiError();
     }
   };
 
@@ -119,6 +139,13 @@ function CourseFeed(props) {
       <NavBar mode={1}></NavBar>
       <main className="cf-content">
         <section className="course-bg-inf">
+          <ion-icon
+            name="chevron-back-outline"
+            id="backArrowBtn"
+            onClick={() => {
+              window.history.back();
+            }}
+          ></ion-icon>
           <h1>{course.courseName}</h1>
         </section>
         <div className="main-posts-cc">
@@ -127,7 +154,10 @@ function CourseFeed(props) {
               <div className="post-card-wrap" key={post.postId}>
                 {mentors.some((mentor) => mentor.username === uln) ? (
                   <>
-                    <div className="pcw-edit-opt" ref={toggleRef}>
+                    <div
+                      className="pcw-edit-opt"
+                    // ref={toggleRef}
+                    >
                       <div className="pcw-edit-opt-btn">
                         <ion-icon
                           onClick={() => toggleEditMenu(post.postId)}
@@ -135,10 +165,9 @@ function CourseFeed(props) {
                         ></ion-icon>
                       </div>
                       <nav
-                        className={`pcw-edit-opt-list ${
-                          activeMenus[post.postId] ? "active" : ""
-                        }`}
-                        ref={toggleRef}
+                        className={`pcw-edit-opt-list ${activeMenus[post.postId] ? "active" : ""
+                          }`}
+                      // ref={toggleRef}
                       >
                         <ul>
                           <li
@@ -160,7 +189,21 @@ function CourseFeed(props) {
                 ) : (
                   <></>
                 )}
-                <div>{post.postedAt}</div>
+                <div className="post-title">
+                  <div className="post-avt">
+                    <img
+                      src={
+                        "http://localhost:1111/api/users/avatar/" +
+                        post.postByUsername
+                      }
+                      alt="avatar"
+                    ></img>
+                  </div>
+                  <div className="post-owner-info">
+                    <span>{post.postByDisplayName}</span>
+                    <span>{post.postedAt}</span>
+                  </div>
+                </div>
                 <div
                   className="pcw-content"
                   dangerouslySetInnerHTML={{ __html: post.postContent }}
@@ -176,7 +219,7 @@ function CourseFeed(props) {
               <div className="course-member">
                 <ion-icon name="people-outline"></ion-icon>
                 <div className="stat">
-                  <span>1234567890</span>
+                  <span>{menteeCount}</span>
                   <a href={`/courses/members/${courseId}`}>View members</a>
                 </div>
               </div>
