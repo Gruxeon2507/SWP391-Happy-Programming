@@ -9,6 +9,7 @@ import ParticipateServices from "../../services/ParticipateServices";
 import CourseServices from "../../services/CourseServices";
 import PublicService from "../../services/PublicService";
 import api from "../../services/BaseAuthenticationService";
+import "./HandleMentorCourse.css"
 
 function HandleMentorCourse(props) {
   const [courses, setCourses] = useState([]);
@@ -177,7 +178,7 @@ function HandleMentorCourse(props) {
 
   return (
     <>
-      <div>
+      <div className="tb-wrap">
         <table className="table-mentor-manage">
           <thead>
             <th>CourseID</th>
