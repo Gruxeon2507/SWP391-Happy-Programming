@@ -139,4 +139,10 @@ public class ParticipateController {
         return new ResponseEntity<>(participateRepository.findAllMyParticipateCourse(pageable, username, participateRoles, statusIds, searchText), HttpStatus.OK);
 
     }
+
+    @GetMapping("/count/mentee/{courseId}")
+    public int countMenteeInCourse(@PathVariable("courseId") int courseId){
+        System.out.println("COUNTING MENTEE IN COURSE " + courseId);
+        return participateRepository.countAllByCourse_CourseIdAndParticipateRole_ParticipateRoleAndStatus_StatusId(courseId, 3, 1);
+    }
 }

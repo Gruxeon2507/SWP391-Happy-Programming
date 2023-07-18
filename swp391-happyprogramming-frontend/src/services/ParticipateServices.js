@@ -16,36 +16,38 @@ class ParticipateServices {
     return api.get(PARTICIPATE_BASE_REST_API_URL + "/by-user/" + courseId);
   }
 
-  getPageMyCourses(pageNumber, pageSize, searchText, checked){
+  getPageMyCourses(pageNumber, pageSize, searchText, checked) {
     var participateRoles = [];
     var statusIds = [];
     if (checked.length > 0) {
       checked.forEach((item) => {
-            if (item === 'teaching') {
-              participateRoles = [...participateRoles, 2];
-              statusIds = [...statusIds, 1];
-            }
-            else if (item === 'access') {
-              participateRoles = [...participateRoles, 3];
-              statusIds = [...statusIds, 1];
-            } else if (item === 'pending') {
-              participateRoles = [...participateRoles, 3];
-              statusIds = [...statusIds, 0];
-            }
-            else if (item === 'reject') {
-              participateRoles = [...participateRoles, 3];
-              statusIds = [...statusIds, -1];
-            }
-          })
+        if (item === "teaching") {
+          participateRoles = [...participateRoles, 2];
+          statusIds = [...statusIds, 1];
+        } else if (item === "access") {
+          participateRoles = [...participateRoles, 3];
+          statusIds = [...statusIds, 1];
+        } else if (item === "pending") {
+          participateRoles = [...participateRoles, 3];
+          statusIds = [...statusIds, 0];
+        } else if (item === "reject") {
+          participateRoles = [...participateRoles, 3];
+          statusIds = [...statusIds, -1];
         }
+      });
+    }
     const formData = new FormData();
     formData.append("pageNumber", pageNumber);
     formData.append("pageSize", pageSize);
-    formData.append("searchText", searchText)
-    formData.append("participateRoles", participateRoles)
-    formData.append("statusIds", statusIds)
+    formData.append("searchText", searchText);
+    formData.append("participateRoles", participateRoles);
+    formData.append("statusIds", statusIds);
     console.log("dang goi api", participateRoles, statusIds);
     return api.post("/api/participates/allmy", formData);
+  }
+
+  countMenteeInCourse(courseId) {
+    return api.get("/api/participates/count/mentee/" + courseId);
   }
 }
 

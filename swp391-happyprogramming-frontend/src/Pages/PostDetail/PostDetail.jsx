@@ -9,6 +9,7 @@ import CommentServices from "../../services/CommentServices";
 import UserServices from "../../services/UserServices";
 import "./PostDetail.css";
 import NavBar from "../../Components/Navbar/NavBar";
+import ParticipateServices from "../../services/ParticipateServices";
 
 function PostDetail() {
   const { postId } = useParams("postId");
@@ -19,6 +20,7 @@ function PostDetail() {
   const [reportedCommentId, setReportedCommentId] = useState(null);
   const [showReportDialog, setShowReportDialog] = useState(false);
   const inputRef = useRef(null);
+  const [menteeCount, setMenteeCount] = useState(-1);
 
   useEffect(() => {
     UserServices.getLoginUsername()
@@ -26,6 +28,12 @@ function PostDetail() {
       .catch((error) => {
         console.log("ERROR GET LOGIN USERNAME" + error);
       });
+  }, []);
+
+  useEffect(() => {
+    ParticipateServices.countMenteeInCourse(1)
+      .then((res) => setMenteeCount(res.data))
+      .catch((error) => console.log("error counting mentee: " + error));
   }, []);
 
   useEffect(() => {
@@ -46,10 +54,10 @@ function PostDetail() {
       });
   }, []);
 
-  console.log("comments");
-  console.log(comments);
+  // console.log("comments");
+  // console.log(comments);
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   const addComment = async () => {
     if (input.trim().length != 0) {
@@ -86,23 +94,31 @@ function PostDetail() {
       <main className="comment-main">
         <div className="post-card-wrap" key={post.postId}>
           <div>{post.postedAt}</div>
+          {/* <div>No of mentees: {menteeCount}</div> */}
           <div dangerouslySetInnerHTML={{ __html: post.postContent }} />
         </div>
 
         <hr></hr>
-        {showReportDialog ? <>
-
-          <section className="rp-section">
-            <div className="rp-form">
-              <ion-icon name="close-outline" id="closeRP" onClick={() => setShowReportDialog(false)}></ion-icon>
-              <h1>Report</h1>
-              <Report
-                commentId={reportedCommentId}
-                username={loginUsername}
-              ></Report>
-            </div>
-          </section>
-        </> : <></>}
+        {showReportDialog ? (
+          <>
+            <section className="rp-section">
+              <div className="rp-form">
+                <ion-icon
+                  name="close-outline"
+                  id="closeRP"
+                  onClick={() => setShowReportDialog(false)}
+                ></ion-icon>
+                <h1>Report</h1>
+                <Report
+                  commentId={reportedCommentId}
+                  username={loginUsername}
+                ></Report>
+              </div>
+            </section>
+          </>
+        ) : (
+          <></>
+        )}
         <div id={"comment-section"}>
           <div className="cmt-input">
             <img

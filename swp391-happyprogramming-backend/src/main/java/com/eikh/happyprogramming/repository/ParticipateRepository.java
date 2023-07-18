@@ -68,4 +68,13 @@ public interface ParticipateRepository extends JpaRepository<Participate, Partic
     Page<Participate> findAllMyParticipateCourse(Pageable pageable, String username, Integer[] participateRoles, Integer[] statusIds, String searchText);
 
     public Participate findByUser_UsernameAndParticipateRole_ParticipateRoleAndStatus_StatusId(String username, int participateRole, int statusId);
+
+    /**
+     *
+     * @param courseId
+     * @param participateRoleId
+     * @return number of member with role in a course
+     */
+    public int countAllByCourse_CourseIdAndParticipateRole_ParticipateRoleAndStatus_StatusId(int courseId, int participateRoleId, int statusId);
+
 }
