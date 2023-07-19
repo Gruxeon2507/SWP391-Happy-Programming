@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import BarChart from "../../Components/Graph/BarChart";
@@ -10,8 +11,12 @@ import "./RequestStatistic.css"
 import NavBar from "../../Components/Navbar/NavBar";
 import manageIcon from "../../Assets/208-2081675_link-to-manage-travel-ttc-line-5.png"
 import statisticIcon from "../../Assets/1466735.png"
+import UserServices from "../../services/UserServices";
 const RequestStatistic = () => {
 
+    const [accessCount, setAccessCount] = useState();
+    const [pendindCount, setPendingCount] = useState();
+    const [rejectCount, setRejectCount] = useState();
 
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [workState, setWorkState] = useState(0);
@@ -35,6 +40,39 @@ const RequestStatistic = () => {
                 console.log("loi lay ra course" + error);
             });
     }
+    const getNumberAccess = (statusId) => {
+        UserServices.countNumberUserByStatusInCourses(statusId)
+            // api.get("/api/participates/count/user/"+statusId)
+            .then((response) => {
+                setAccessCount(response.data);
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log("Error fetching numbers course status counts: " + error);
+            });
+    }
+    const getNumberReject = (statusId) => {
+        UserServices.countNumberUserByStatusInCourses(statusId)
+            // api.get("/api/participates/count/user/"+statusId)
+            .then((response) => {
+                setRejectCount(response.data);
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log("Error fetching numbers course status counts: " + error);
+            });
+    }
+    const getNumberPending = (statusId) => {
+        UserServices.countNumberUserByStatusInCourses(statusId)
+            // api.get("/api/participates/count/user/"+statusId)
+            .then((response) => {
+                setPendingCount(response.data);
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log("Error fetching numbers course status counts: " + error);
+            });
+    }
     const [userData, setUserData] = useState({
         labels: [],
         datasets: [
@@ -52,7 +90,7 @@ const RequestStatistic = () => {
             },
         ],
     });
-
+    const [total, setTotal] = useState(userData)
     const getCourseStatusCountsByCourseId = (NocourseId) => {
         StatisticServices.getCourseStatusCountsByCourseId(NocourseId)
             // StatisticServices.getAllCourseStatusCounts()
@@ -107,17 +145,29 @@ const RequestStatistic = () => {
                         },
                     ],
                 }));
+                setTotal({
+                    labels: [...new Set(responseData.map((item) => item.courseName))],
+                    datasets: userData.datasets,
+                })
             })
             .catch((error) => {
                 console.log("Error fetching course status counts: " + error);
             });
     };
     useEffect(() => {
+        getNumberAccess(1);
+        getNumberPending(0);
+        getNumberReject(-1);
         getCoursesOfMentor();
         getCourseStatusCountsByCourseId(0);
 
     }, []);
-
+    useEffect(() => {
+        setTotal({
+            labels: total.labels,
+            datasets: userData.datasets,
+        });
+    }, [userData]);
     const [dataOne, setDataOne] = useState([])
     const getCourseStatusCountsByCourseIdOne = (courseId) => {
         StatisticServices.getCourseStatusCountsByCourseId(courseId)
@@ -193,24 +243,32 @@ const RequestStatistic = () => {
                     <div className="overAll-stat">
                         <div className="stat-item">
                             <span>Your Mentee: </span>
-                            <span>13</span>
+                            <span>{accessCount}</span>
                             <ion-icon name="people-outline"></ion-icon>
                         </div>
                         <div className="stat-item">
                             <span>Pending Requests: </span>
-                            <span>3</span>
+                            <span>{pendindCount}</span>
                         </div>
                         <div className="stat-item">
                             <span>Rejected: </span>
-                            <span>1</span>
+                            <span>{rejectCount}</span>
                         </div>
                     </div>
                     <div className="chart-container">
-                        <div className="mentor-all-course-barChart">
+                        {/* <div className="mentor-all-course-barChart">
                             <BarChart chartData={userData} />
                         </div>
                         <div className="mentor-all-course-lineChart">
                             <LineChart chartData={userData} />
+                        </div> */}
+                        <div className="chart-container">
+                            <div className="mentor-all-course-barChart">
+                                <BarChart chartData={total} />
+                            </div>
+                            <div className="mentor-all-course-lineChart">
+                                <LineChart chartData={total} />
+                            </div>
                         </div>
                     </div>
                 </div>

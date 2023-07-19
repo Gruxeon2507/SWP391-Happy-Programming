@@ -97,4 +97,13 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "SELECT * FROM User u INNER JOIN Participate p ON u.username = p.username WHERE p.participateRole = 3 AND p.courseId = ?1 AND p.statusId=1",nativeQuery = true)
     public List<User> findMenteeOfCourse(int courseId);
 
+    @Query(value = "SELECT * FROM Participate p JOIN User u ON u.username = p.username \n" +
+            "           JOIN Course c ON p.courseId = c.courseId\n" +
+            "           JOIN ParticipateRole r ON r.participateRole = p.participateRole\t\t\t\n" +
+            "                      AND p.participateRole IN (1,3) AND p.statusId = :statusId\n" +
+            "                      AND c.courseId IN (SELECT c1.courseId FROM  Course c1 JOIN Participate p1 ON p1.courseId = c1.courseId  \n" +
+            "             JOIN `Status` s1 ON s1.statusId = p1.statusId\n" +
+            "            where p1.participateRole = 2 and p1.username = :mentorName AND p1.statusId = 1)", nativeQuery = true)
+    public List<User> countNumberUserByStatusInCoursesOfMentor(String mentorName, int statusId);
+
 }

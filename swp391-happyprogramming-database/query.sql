@@ -165,7 +165,7 @@ SELECT * FROM `User` u JOIN Participate p ON u.username = p.username
            JOIN Course c ON p.courseId = c.courseId
            JOIN ParticipateRole r ON r.participateRole = p.participateRole
                      JOIN `Status` s ON s.statusId = p.statusId
-                      where u.username = "phuongmentor" 
+                      -- where u.username = "phuongmentor" 
                       AND p.participateRole IN (1,2,3) AND p.statusId IN (0,1,-1)
                       AND c.courseName LIKE '%%'
 
@@ -182,3 +182,15 @@ JOIN Category ca ON  ca.categoryId = cc.categoryId
 where co.courseName LIKE '%Japan%' and 
 ca.categoryId in (1,2)
 (select courseId from Course)
+
+SELECT * FROM `User` u JOIN Participate p ON u.username = p.username 
+           JOIN Course c ON p.courseId = c.courseId
+           JOIN ParticipateRole r ON r.participateRole = p.participateRole			
+                      AND p.participateRole IN (1,3) AND p.statusId = 0
+                      AND c.courseId IN (SELECT c1.courseId FROM  Course c1 JOIN Participate p1 ON p1.courseId = c1.courseId  
+             JOIN `Status` s1 ON s1.statusId = p1.statusId
+            where p1.participateRole = 2 and p1.username = 'phuongmentor' AND p1.statusId = 1)
+                      
+SELECT * FROM  Course c JOIN Participate p ON p.courseId = c.courseId  
+             JOIN `Status` s ON s.statusId = p.statusId
+            where participateRole = 2 and username = 'phuongmentor' AND p.statusId = 1
