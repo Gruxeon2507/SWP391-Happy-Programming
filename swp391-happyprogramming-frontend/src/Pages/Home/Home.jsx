@@ -53,6 +53,34 @@ function Home(props) {
     };
   }, []);
 
+  const mentors = [
+    {
+      img: "anmentor",
+      name: "An Trieu",
+      desc: "Mentor nay dep trai",
+    },
+    {
+      img: "giangmentor",
+      name: "Giam Pham",
+      desc: "mentor day hay uy tin",
+    },
+    {
+      img: "ducmentor",
+      name: "Duc Khieu",
+      desc: "Mentor nay dep trai gan = an tt",
+    },
+    {
+      img: "huyenmentor",
+      name: "Huyen Nguyen",
+      desc: "Co coder xinh dep",
+    }, {
+      img: "phuongmentor",
+      name: "Phuong Hoang",
+      desc: "co giao phuong day rat hay",
+    }
+
+  ]
+
   return (
     <>
       <NavBar mode={1} />
@@ -121,21 +149,23 @@ function Home(props) {
               <div className="--hero">
 
                 <div className="--mentor-pv">
-                  <div className="--mt--card">
-                    <img src="http://localhost:1111/api/users/avatar/anmentor"></img>
-                  </div>
-                  <div className="--mt--card">
-                    <img src="http://localhost:1111/api/users/avatar/giangmentor"></img>
-                  </div>
-                  <div className="--mt--card">
-                    <img src="http://localhost:1111/api/users/avatar/ducmentor"></img>
-                  </div>
-                  <div className="--mt--card">
-                    <img src="http://localhost:1111/api/users/avatar/huyenmentor"></img>
-                  </div>
-                  <div className="--mt--card">
-                    <img src="http://localhost:1111/api/users/avatar/phuongmentor"></img>
-                  </div>
+                  {mentors.map((m) => <>
+                    <div className="--mt--card">
+                      <a href={`#${m.img}`}>
+                        <img src={`http://localhost:1111/api/users/avatar/${m.img}`}></img></a>
+                    </div>
+                  </>)}
+                </div>
+                <div className="--highlight">
+                  {mentors.map((mentor) => <>
+                    <div id={mentor.img} className="--mentor--highlight">
+                      <div className="--mentor--highlight--text">
+                        <span>{mentor.name}</span>
+                        <span>{mentor.desc}</span>
+                      </div>
+                      <img src={`http://localhost:1111/api/users/avatar/${mentor.img}`}></img>
+                    </div>
+                  </>)}
                 </div>
               </div>
             </div>
