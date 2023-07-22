@@ -29,10 +29,13 @@ const PrivateChatRoom = () => {
     []
   );
 
+
+
   const clearInputFile = () => {
     inputFileRef.current.value = null;
     setSelectedImage(null);
   };
+
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [userData, setUserData] = useState({
@@ -120,6 +123,7 @@ const PrivateChatRoom = () => {
     if (conversationId) {
       handleTabChange(conversationId);
       api.get("/api/conversation/message/" + conversationId).then((result) => {
+        console.log(result);
         setCurrentConversationMessage(result.data);
       });
     }
@@ -245,6 +249,12 @@ const PrivateChatRoom = () => {
     window.open(imageUrl, '_blank');
   };
 
+  const getCurrentTime = () => {
+    const currentDate = new Date();
+    const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    return currentDate.toLocaleTimeString(undefined, options);
+  }
+
   return (
     <>
       <NavBar mode={1}></NavBar>
@@ -303,6 +313,7 @@ const PrivateChatRoom = () => {
                       ></img>
                     </div>
                     <div className="msg-text">
+                      {/* <span>{chat.messageKey.sentAt}</span> */}
                       <div className="display-name-msg-to">
                         <span>{chat.messageKey.sentBy}</span>
                       </div>
@@ -316,6 +327,7 @@ const PrivateChatRoom = () => {
                 )}
                 {chat.messageKey.sentBy === userData.username && (
                   <div className="message-from">
+
                     <div className="msg-text">
                       {
                         chat.contentType === "text" ? <MessageTo message={chat.msgContent} /> : <>
@@ -345,6 +357,7 @@ const PrivateChatRoom = () => {
                       ></img>
                     </div>
                     <div className="msg-text">
+                      {/* <span>{chat.messageKey.sentAt}</span> */}
                       <div className="display-name-msg-to">
                         <span>{chat.senderName}</span>
                       </div>
@@ -359,6 +372,7 @@ const PrivateChatRoom = () => {
                 )}
                 {chat.senderName === userData.username && (
                   <div className="message-from">
+                    <span>{ }</span>
                     <div className="msg-text">
                       {
                         chat.contentType === "text" ? <MessageFrom message={chat.message} /> : <>

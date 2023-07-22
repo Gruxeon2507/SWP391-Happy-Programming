@@ -2,8 +2,10 @@ package com.eikh.happyprogramming.controller;
 
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Course;
+import com.eikh.happyprogramming.model.User;
 import com.eikh.happyprogramming.repository.CourseRepository;
 import com.eikh.happyprogramming.repository.CourseStatusCountRepository;
+import com.eikh.happyprogramming.repository.UserRepository;
 import com.eikh.happyprogramming.temptable.CourseStatusCount;
 import com.eikh.happyprogramming.utils.JwtTokenUtil;
 import java.util.ArrayList;
@@ -40,7 +42,8 @@ public class CourseStatusCountController {
 
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
-
+    @Autowired
+    UserRepository userRepository;
     //@maiphuonghoang
     //thống kê tất cả course 
     @GetMapping("/courseStatusCounts")
@@ -69,4 +72,6 @@ public class CourseStatusCountController {
         System.out.println(courseIds);
         return countRepository.getCourseStatusCountsByCourseId(courseIds);
     }
+
+
 }

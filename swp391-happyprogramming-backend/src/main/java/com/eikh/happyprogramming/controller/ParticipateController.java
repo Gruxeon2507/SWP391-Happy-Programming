@@ -182,5 +182,11 @@ public class ParticipateController {
         return participateRepository.countAllByCourse_CourseIdAndParticipateRole_ParticipateRoleAndStatus_StatusId(courseId, 3, 1);
     }
 
-
+    @GetMapping("/count/user/{statusId}")
+    public int countNumberUserByStatusInCourses(HttpServletRequest request, @PathVariable int statusId ){
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String mentorName = jwtTokenUtil.getUsernameFromToken(token);
+        List<User> users =  userRepository.countNumberUserByStatusInCoursesOfMentor(mentorName, statusId);
+        return users.size();
+    }
 }

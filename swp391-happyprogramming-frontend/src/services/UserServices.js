@@ -66,6 +66,10 @@ class UserServices {
     return api.put("/api/users/status", formData);
 
   }
+  countNumberUserByStatusInCourses(statusId){
+    console.log(`http://localhost:1111/api/participates/count/user/${statusId}`);
+    return api.get(`/api/participates/count/user/${statusId}`);
+  }
 }
 
 export default new UserServices();
