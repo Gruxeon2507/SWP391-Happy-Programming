@@ -28,11 +28,11 @@ public class Conversation {
     @Column(unique = true)
     private String conversationName;
     
-    @OneToMany(mappedBy = "conversation")
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<User_Conversation> user_conversations;
     
-    @OneToMany(mappedBy = "conversation")
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.REMOVE)
     private List<Message> messages;
 
 //    @OneToOne

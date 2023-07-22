@@ -60,7 +60,7 @@ function App() {
       <ToastContainer />
       <Routes>
         {/* TEST */}
-        <Route path="/EditCourse" element={<Editcourse />} />
+        <Route path="/EditCourse/:courseID" element={<Editcourse />} />
         {/* GUEST */}
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Homepage />} />

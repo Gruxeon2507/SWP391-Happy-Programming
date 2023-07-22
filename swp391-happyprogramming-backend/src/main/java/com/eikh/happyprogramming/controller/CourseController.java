@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.controller;
 
+import com.eikh.happyprogramming.DTO.CourseRequestDTO;
 import com.eikh.happyprogramming.DTO.PostDTO;
 import com.eikh.happyprogramming.configuration.JwtTokenFilter;
 import com.eikh.happyprogramming.model.Category;
@@ -200,6 +201,8 @@ public class CourseController {
             participateRepository.deleteParticipatesByCourseId(courseId);
             courseRepository.deleteCourseCategoryBycourseId(courseId);
             courseRepository.deleteById(courseId);
+            postRepository.deleteAllByCourse_CourseId(courseId);
+            conversationRepository.deleteAllByCourse_CourseId(courseId);
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -214,8 +217,8 @@ public class CourseController {
         if (user != null) {
             List<Post> posts = postRepository.findByCourse(courseRepository.ducFindByCourseId(courseId));
             List<PostDTO> postsDTO = new ArrayList<>();
-            for(Post p : posts){
-                PostDTO pDTO = new PostDTO(p.getPostId(),p.getPostedAt(),p.getPostContent(),p.getUser().getUsername(),p.getUser().getDisplayName());
+            for (Post p : posts) {
+                PostDTO pDTO = new PostDTO(p.getPostId(), p.getPostedAt(), p.getPostContent(), p.getUser().getUsername(), p.getUser().getDisplayName());
                 postsDTO.add(pDTO);
             }
             return ResponseEntity.ok(postsDTO);
@@ -254,15 +257,17 @@ public class CourseController {
     public List<Course> findCourseByCourseName(@PathVariable String courseName) {
         return courseRepository.findByCourseName(courseName);
     }
+
     @GetMapping("ratingCourse/{username}")
     public ResponseEntity<?> ratingCourse(@PathVariable("username") String username,
-                                          HttpServletRequest request){
+                                          HttpServletRequest request) {
         String usernameMentee = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         List<Course> courses = courseRepository.findAllCourseMentorOfMentee(username, usernameMentee);
         return ResponseEntity.ok(courses);
     }
+
     @GetMapping("mentee/{courseId}")
-    public List<User> getMenteeOfCourse(@PathVariable("courseId") int courseId,HttpServletRequest request) {
+    public List<User> getMenteeOfCourse(@PathVariable("courseId") int courseId, HttpServletRequest request) {
         try {
             String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
             if (username != null) {
@@ -274,9 +279,45 @@ public class CourseController {
         }
         return null;
     }
+
     @GetMapping("/find/by-comment/{commentId}")
-    public Course findCourseByComment(@PathVariable("commentId") int commentId){
+    public Course findCourseByComment(@PathVariable("commentId") int commentId) {
         return courseRepository.findByPosts_Comments_CommentId(commentId);
     }
 
+    @GetMapping("/possible/{courseId}")
+    public List<User> getPossibleMentors(@PathVariable("courseId") int courseId) {
+        return userRepository.findAllMentorJoinCourse(courseId);
+    }
+
+    @PostMapping("/update/{courseId}")
+    public void editCourse(
+            @PathVariable("courseId") int courseId,
+            @RequestBody CourseRequestDTO courseRequestDto,
+            HttpServletRequest request
+    ) {
+        System.out.println("CALLING UPDATE...");
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        User adminUser = userRepository.userHasRole(username, 1);
+        if (adminUser != null) {
+            Course toupdate = courseRepository.findByCourseId(courseId);
+            toupdate.setCourseName(courseRequestDto.getCourseName());
+            toupdate.setCourseDescription(courseRequestDto.getCourseDescription());
+            toupdate.setCategories(courseRequestDto.getCategories());
+            // set lai mentors: courseId vs participates
+            List<Participate> firstParticipates = participateRepository.findAllMentorCourse();
+            for (Participate p :
+                    firstParticipates) {
+                participateRepository.deleteMentorCourse(p.getParticipateKey().getUsername(), courseId);
+            }
+            for (User p : courseRequestDto.getMentors()) {
+                participateRepository.insertMentorCourse(courseId, p.getUsername());
+            }
+            courseRepository.save(toupdate);
+            for (Category p : toupdate.getCategories()) {
+                System.out.println("cate: " + p.getCategoryId());
+            }
+        }
+    }
 }
