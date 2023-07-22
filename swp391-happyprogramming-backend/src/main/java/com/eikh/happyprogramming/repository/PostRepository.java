@@ -31,4 +31,8 @@ public interface PostRepository extends JpaRepository<Post, Integer>{
     @Query(value = "UPDATE Post SET postContent = ?2 where postId = ?1", nativeQuery = true)
     public void updatePost(int postId, String content);
 
+    @Transactional
+    @Modifying
+    public void deleteAllByCourse_CourseId(int courseId);
+
 }

@@ -8,13 +8,8 @@ import com.eikh.happyprogramming.modelkey.ParticipateKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.*;
 
 /**
@@ -51,7 +46,7 @@ public class Participate implements Serializable {
     @JoinColumn(name = "participateRole")
     private ParticipateRole participateRole;
 
-    @OneToMany(mappedBy = "participate") 
+    @OneToMany(mappedBy = "participate", cascade = CascadeType.REMOVE)
     private List<Request> requests;
 
 //    @ManyToOne

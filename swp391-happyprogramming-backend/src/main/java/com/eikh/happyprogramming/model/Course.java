@@ -4,6 +4,7 @@
  */
 package com.eikh.happyprogramming.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
@@ -21,6 +22,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "Course")
 public class Course implements Serializable {
 
@@ -34,17 +36,28 @@ public class Course implements Serializable {
 
     private String courseDescription;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Participate> participates;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany
+    @JoinTable(name = "Course_Category",
+            joinColumns = @JoinColumn(name = "courseId"),
+            inverseJoinColumns = @JoinColumn(name = "categoryId"))
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Conversation> conversations;
+
+//    public static Course of (CourseRequestDTO courseDTO){
+//        return builder().courseId(courseDTO.getCourseId())
+//                .courseName(courseDTO.getCourseName())
+//                .courseDescription(courseDTO.getCourseDescription())
+//                .categories(courseDTO.getCategories())
+//                .build();
+//    }
 }

@@ -243,27 +243,6 @@ function CreateCourse() {
                 />
               </td>
             </tr>
-            {/* <tr> */}
-            {/* <td colSpan={2}> */}
-
-
-            {/* {mentors.map((mentor) => (
-                  <div key={mentor.username}>
-                    <input
-                      type="radio"
-                      name="mentor"
-                      id={mentor.username}
-                      value={mentor.username}
-                      onChange={() => selectMentor(mentor.username)}
-                      required
-                    ></input>
-                    <label htmlFor={mentor.username}>
-                      {mentor.displayName} ({mentor.username})
-                    </label>
-                  </div>
-                ))} */}
-            {/* </td> */}
-            {/* </tr> */}
             <tr>
               <td colSpan={2}>
                 <div className="bttnRow">

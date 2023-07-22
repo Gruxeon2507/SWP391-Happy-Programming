@@ -115,7 +115,7 @@ public class ParticipateController {
         System.out.println("PARTICIPATE INTO " + courseId + " IS " + p);
         return p;
     }
-    
+
     //maiphuonghoang
     @PostMapping("/allmy")
     ResponseEntity<Page<Participate>> findMyCourses(
@@ -137,50 +137,50 @@ public class ParticipateController {
     }
 
     @GetMapping("/findMentorCourse")
-    ResponseEntity<List<Participate>> findAllMentorCourse(){
+    ResponseEntity<List<Participate>> findAllMentorCourse() {
         return ResponseEntity.ok(participateRepository.findAllMentorCourse());
     }
 
     @GetMapping("/findMentorJoinCourse/{courseId}")
-    ResponseEntity<?> findAllMentorJoinCourse(@PathVariable("courseId") int courseId){
+    ResponseEntity<?> findAllMentorJoinCourse(@PathVariable("courseId") int courseId) {
         return ResponseEntity.ok(userRepository.findAllMentorJoinCourse(courseId));
     }
 
     @PostMapping("/updateMentorCourse")
-    ResponseEntity<?> updateMentorCourse(@RequestBody List<Participate> participates,HttpServletRequest request){
+    ResponseEntity<?> updateMentorCourse(@RequestBody List<Participate> participates, HttpServletRequest request) {
         User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
-        if(user == null){
-            return  ResponseEntity.ok(null);
+        if (user == null) {
+            return ResponseEntity.ok(null);
         }
         boolean checkAdmin = false;
-        for (Role r:
-             user.getRoles()) {
-            if(r.getRoleName().equalsIgnoreCase("admin")){
+        for (Role r :
+                user.getRoles()) {
+            if (r.getRoleName().equalsIgnoreCase("admin")) {
                 checkAdmin = true;
                 break;
             }
         }
-        if(!checkAdmin){
-            return  ResponseEntity.ok("Failed");
-        }else{
+        if (!checkAdmin) {
+            return ResponseEntity.ok("Failed");
+        } else {
             List<Participate> firstParticipates = participateRepository.findAllMentorCourse();
-            for (Participate p:
+            for (Participate p :
                     firstParticipates) {
-                participateRepository.deleteMentorCourse(p.getParticipateKey().getUsername(),p.getParticipateKey().getCourseId());
+                participateRepository.deleteMentorCourse(p.getParticipateKey().getUsername(), p.getParticipateKey().getCourseId());
             }
-            for (Participate p:
+            for (Participate p :
                     participates) {
-                participateRepository.insertMentorCourse(p.getParticipateKey().getCourseId(),p.getParticipateKey().getUsername());
+                participateRepository.insertMentorCourse(p.getParticipateKey().getCourseId(), p.getParticipateKey().getUsername());
             }
         }
         return ResponseEntity.ok("Success");
     }
-    
+
     @GetMapping("/count/mentee/{courseId}")
-    public int countMenteeInCourse(@PathVariable("courseId") int courseId){
+    public int countMenteeInCourse(@PathVariable("courseId") int courseId) {
         System.out.println("COUNTING MENTEE IN COURSE " + courseId);
         return participateRepository.countAllByCourse_CourseIdAndParticipateRole_ParticipateRoleAndStatus_StatusId(courseId, 3, 1);
     }
-    
-    
+
+
 }

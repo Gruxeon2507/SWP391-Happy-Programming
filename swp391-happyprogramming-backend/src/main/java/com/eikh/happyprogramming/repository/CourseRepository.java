@@ -104,4 +104,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     public List<Course> findByCourseName(String courseName);
 
     public Course findByPosts_Comments_CommentId(int commentId);
+
 }
