@@ -244,7 +244,6 @@ const RequestStatistic = () => {
                         <div className="stat-item">
                             <span>Your Mentee: </span>
                             <span>{accessCount}</span>
-                            <ion-icon name="people-outline"></ion-icon>
                         </div>
                         <div className="stat-item">
                             <span>Pending Requests: </span>
@@ -266,9 +265,9 @@ const RequestStatistic = () => {
                             <div className="mentor-all-course-barChart">
                                 <BarChart chartData={total} />
                             </div>
-                            <div className="mentor-all-course-lineChart">
+                            {/* <div className="mentor-all-course-lineChart">
                                 <LineChart chartData={total} />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
