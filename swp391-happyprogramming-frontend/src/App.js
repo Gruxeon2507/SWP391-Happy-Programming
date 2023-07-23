@@ -51,6 +51,7 @@ import MyCourseHistory from "./Pages/MyCourse/MyCourseHistory";
 import MyRequestHistory from "./Pages/MyCourse/MyRequestHistory";
 import CourseMember from "./Pages/CourseFeed/CourseMember";
 import Editcourse from "./Pages/Course/Editcourse";
+import SystemStats from "./Pages/Admin/SystemStats";
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
       <Routes>
         {/* TEST */}
         <Route path="/EditCourse/:courseID" element={<Editcourse />} />
+        <Route path="/Stats/" element={<SystemStats />} />
         {/* GUEST */}
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Homepage />} />
