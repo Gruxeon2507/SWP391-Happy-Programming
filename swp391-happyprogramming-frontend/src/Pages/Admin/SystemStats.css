@@ -1,0 +1,66 @@
+.--outer {
+  margin-top: 5.5rem;
+}
+
+.--outer h1 {
+  text-align: center;
+}
+.--main-wraper {
+  display: flex;
+  flex-direction: row;
+}
+
+.plain-stats {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  padding: 1rem;
+  border-right: 2px solid var(--darkItem3);
+}
+
+.--visual {
+  width: 100%;
+}
+
+.--plain {
+  margin: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-size: 0.8rem;
+  color: var(--darkItem5);
+  border-bottom: 3px solid var(--darkItem3);
+  overflow: hidden;
+}
+
+.--plain span:nth-child(1) {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.--plain ion-icon {
+  font-size: 2rem;
+  background-color: var(--lightItem);
+  border-radius: 50%;
+  padding: 0.5rem;
+
+  position: absolute;
+  top: 65%;
+  right: 4px;
+  transform: translateY(-50%);
+}
+
+.visual-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 300px);
+}
+
+.top-stats {
+  display: flex;
+  flex-direction: column;
+}
+
+.--grid--chart {
+  padding: 1rem;
+}

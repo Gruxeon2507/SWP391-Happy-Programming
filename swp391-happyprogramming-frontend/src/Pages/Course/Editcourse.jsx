@@ -6,6 +6,10 @@ import CategoryServices from "../../services/CategoryServices";
 import CourseServices from "../../services/CourseServices";
 import api from "../../services/BaseAuthenticationService";
 function Editcourse({ id }) {
+  const INVALID_COURSENAME_MSG =
+    "Course name must be unique, non-empty and must not contain special characters.";
+  const EMPTY_MENTORLIST_MSG =
+    "You must choose at least 1 mentor for the course.";
   const { courseID } = useParams();
   const [categories, setCategories] = useState([]);
   const [mentors, setMentors] = useState([]);
@@ -37,17 +41,6 @@ function Editcourse({ id }) {
       });
   }, []);
 
-  const fetchMentorData = async () => {
-    try {
-      const mentors = await api.get(
-        `http://localhost:1111/api/courses/find-mentor/${courseID}`
-      );
-      setSelectedMentors(mentors.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     CategoryServices.getAllCategories().then((res) => setCategories(res.data));
   }, []);
@@ -58,11 +51,10 @@ function Editcourse({ id }) {
   }, []);
 
   useEffect(() => {
-    // CategoryServices.getCategoryByCourse(courseID)
     api
       .get("/api/categories/by-course/" + courseID)
       .then((res) => {
-        console.log("RES DATA CATEGORIES: ", res.data);
+        // console.log("RES DATA CATEGORIES: ", res.data);
         setSelectedCategories(res.data);
       })
       .catch((error) => console.log("error getting categories: " + error));
@@ -76,13 +68,11 @@ function Editcourse({ id }) {
           displayName: m.displayName,
         }));
         setSelectedMentors(ms);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => console.log("error getting mentors: " + error));
-    // fetchMentorData();
   }, []);
   useEffect(() => {
-    // Update the course state whenever selectedCategories change
     setSelectedCategories(
       tempCategories.map((c) => ({
         categoryId: c.value,
@@ -93,10 +83,13 @@ function Editcourse({ id }) {
 
   useEffect(() => {
     setSelectedMentors(
-      tempMentors.map((m) => ({ username: m.value, displayName: m.label, dfg: "sdf" }))
+      tempMentors.map((m) => ({
+        username: m.value,
+        displayName: m.label,
+      }))
     );
   }, [tempMentors]);
-  console.log(selectedMentors);
+  // console.log(selectedMentors);
   useEffect(() => {
     setCourse((prevCourse) => ({
       ...prevCourse,
@@ -151,6 +144,14 @@ function Editcourse({ id }) {
   };
 
   const handleSubmit = async (event) => {
+    if (course.courseName.trim().length == 0) {
+      alert(INVALID_COURSENAME_MSG);
+      return;
+    }
+    if (course.mentors.length == 0) {
+      alert(EMPTY_MENTORLIST_MSG);
+      return;
+    }
     event.preventDefault();
     // setLoading(true);
     // if (!(await validateCourseAtCreation(course))) {
@@ -158,14 +159,6 @@ function Editcourse({ id }) {
     //   return;
     // }
     try {
-      // insert into Course + CourseCategories + Participate admin
-      // const response = await CourseServices.createCourse(course);
-      // const newCourse = response.data;
-
-      // insert mentors into Participate table
-      // const courseId = newCourse.courseId;
-      // const mentors = course.mentors.map((m) => m.username);
-      // ParticipateServices.saveParticipate(mentors, courseId, 2, 1);
       // setLoading(false);
       // alert("Course created successfully.");
       // notiSuccess();
@@ -176,7 +169,7 @@ function Editcourse({ id }) {
         categories: selectedCategories,
         mentors: selectedMentors,
       };
-      console.log("SELECTED CATE: ", selectedCategories);
+      // console.log("SELECTED CATE: ", selectedCategories);
       CourseServices.updateCourse(
         courseID,
         updatedCourse,
@@ -184,9 +177,7 @@ function Editcourse({ id }) {
         selectedCategories
       );
       alert("Updated successfully!");
-      // window.location.href("/courses/view/" + courseID);
-      // window.location.href=`/courses/view/${courseID}`;
-      // navigate("courses/view/" + courseID);
+      navigate("/courses/view/" + courseID);
     } catch (error) {
       // setLoading(false);
       alert("Failed to update course: " + error);
@@ -194,9 +185,8 @@ function Editcourse({ id }) {
     }
   };
 
-  // console.log("COURSE RETURNED: ", course);
-  console.log("SELECTED MENTORS: ", selectedMentors.length);
-  console.log("SELECTED CATE: ", selectedCategories.length);
+  // console.log("SELECTED MENTORS: ", selectedMentors.length);
+  // console.log("SELECTED CATE: ", selectedCategories.length);
   return (
     <>
       {/* {loading ? <Loading></Loading> : <></>} */}
